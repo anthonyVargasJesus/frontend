@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "armadillo-5f25c": {
+      "hosting": {
+        "vuexy": [
+          "armadillo-5f25c"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "armadillo-5f25c"
+  }
+}

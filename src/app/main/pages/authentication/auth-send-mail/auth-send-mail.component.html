@@ -1,0 +1,85 @@
+<div class="auth-wrapper auth-v2">
+    <div class="auth-inner row m-0">
+      <!-- Brand logo--><a class="brand-logo" href="javascript:void(0);">
+
+        <!-- <img src="{{ coreConfig.app.appLogoImage }}" alt="brand-logo" height="28" /> -->
+      
+          <!-- <img src="assets/images/logo/fla.png" alt="logo" style="height:70px;"> -->
+
+        <!-- <h2 class="brand-text text-primary ml-1">Vuexy</h2> -->
+      </a>
+      <!-- /Brand logo-->
+      <!-- Left Text-->
+      <div class="d-none d-lg-flex col-lg-8 align-items-center p-5">
+        <div class="w-100 d-lg-flex align-items-center justify-content-center px-5">
+          <img
+            class="img-fluid"
+            [src]="
+              coreConfig.layout.skin === 'dark'
+                ? 'assets/images/pages/forgot-password-v2-dark.svg'
+                : 'assets/images/pages/forgot-password-v2.svg'
+            "
+            alt="Forgot password V2"
+          />
+        </div>
+      </div>
+      <!-- /Left Text-->
+      <!-- Forgot password-->
+      <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
+        <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
+
+                 
+       <div style="width: 100%;">
+
+   
+        
+        <!-- <img src="assets/images/logo/fla.png"  alt="brand-logo"  style="height:20%;width: 70%;  display: block;margin-left: auto;margin-right: auto;"/> -->
+         <!-- <img class="mt-1" src="assets/images/logo/logo_huellitas.png" alt="logo"style="width:130px;height:50px;display: block;margin-left: auto;
+         margin-right: auto;"> -->
+          <br>
+          <br>
+          <!-- <img [src]="siLogin.fileName | imagen:'schools':siLogin.fileName" [height]="siLogin.height" [width]="siLogin.width" alt="logo" style="display: block;margin-left: auto;margin-right: auto;"> -->
+     
+          
+   
+
+       </div>
+
+          <h2 class="card-title font-weight-bold mt-3 mb-1">Confirmación de correo</h2>
+         
+
+          <P>
+            Hemos enviado un correo electrónico de confirmación a {{currentEmail}}, verifique  y haga clic en el enlace para confirmar su dirección de correo electrónico.
+          </P>
+          
+          <form class="auth-forgot-password-form mt-2" [formGroup]="forgotPasswordForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label class="form-label" for="forgot-password-email">Correo electrónico</label>
+              <input
+                class="form-control"
+                type="text"
+                formControlName="email"
+                placeholder="john@ejemplo.com"
+                aria-describedby="forgot-password-email"
+                autofocus=""
+                tabindex="1"
+                [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+              />
+              <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                <div *ngIf="f.email.errors.required">El correo electrónico es requerido</div>
+                <div *ngIf="f.email.errors.email">El correo debe ser una dirección de correo electrónico válida</div>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-block" tabindex="2" rippleEffect>
+              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>REENVIAR CORREO DE VERIFICACIÓN
+            </button>
+          </form>
+          <p class="text-center mt-2">
+            <a [routerLink]="'/pages/authentication/login-v2'"><i data-feather="chevron-left"></i> Regresa al login</a>
+          </p>
+        </div>
+      </div>
+      <!-- /Forgot password-->
+    </div>
+  </div>
+  

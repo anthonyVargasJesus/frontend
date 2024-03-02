@@ -1,0 +1,167 @@
+<div class="content-wrapper">
+    <div class="content-body">
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+        <section id="home-page">
+            <section class="users-list-wrapper">
+                <div class="card">
+
+
+                    <hr>
+                    <div class="row mt-0 mb-0">
+                        <div class="col-md-6 col-12">
+                            <div class="d-flex justify-content-between align-items-center m-1">
+
+                                <label class="d-flex align-items-center">Mostrar
+                                    <select class="form-control mx-25 ng-untouched ng-pristine ng-valid"
+                                        style="margin-left: 10px !important;margin-right: 10px !important;width: 70px !important;">
+                                        <option value="10"> 10 </option>
+                                        <option value="25">25</option>
+                                        <option value="50"> 50 </option>
+                                        <option value="100">100</option>
+                                    </select> registros</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end">
+
+                            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
+                                <label class="d-flex align-items-center ml-1 ml-md-0 mr-1">Buscar
+
+                                    <input #input name="searchValue" name="search" type="search"
+                                        class="form-control ml-25 ng-pristine ng-valid ng-touched"
+                                        style="margin-left: 10px !important;">
+
+                                </label>
+                                <button rippleeffect=""
+                                    class="btn btn-primary waves-effect waves-float waves-light">
+                                    <i data-feather='search'></i>
+                                </button>
+
+                                <button (click)="add()" rippleeffect="" title="Agregar una nuevo norma"
+                                    class="btn btn-primary ml-1 waves-effect waves-float waves-light"
+                                    style="float: right!important;margin-right: 10px;margin-top:0px;">
+                                    <i data-feather='plus'></i>
+                                </button>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th> NOMBRE</th>
+                                    <th> DESCRIPCIÓN</th>
+                                 
+                                    <th class="text-right">ACCIÓN</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+
+                                <ng-container>
+
+                                    <tr>
+                                        <td>Oficial de Seguridad de la Información</td>
+                                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum, blanditiis quos ab ex enim hic possimus unde? Exercitationem ipsam explicabo, eveniet voluptatem quo molestiae corrupti, nulla culpa, adipisci itaque nam? </td>
+                                       
+                                        <td class="text-right">
+                                            <div
+                                                style="display: flex; flex-direction: row-reverse;margin-right: -10px;">
+
+                                                <a 
+                                                    container="body" placement="top" class="mr-1"
+                                                    title="Eliminar">
+                                                    <div class="icon-wrapper">
+                                                        <i class="feather font-medium-4" data-feather='trash-2'></i>
+                                                    </div>
+                                                </a>
+                                                <a container="body" placement="top" title="Abrir" (click)="edit()"
+                                                    class="mr-1">
+                                                    <div class="icon-wrapper">
+                                                        <i class="feather font-medium-3 icon-edit-2"></i>
+                                                    </div>
+                                                </a>
+
+
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Especialista en Infraestructura</td>
+                                        <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vel quos ducimus magnam excepturi aspernatur tempora praesentium quibusdam nisi, quae exercitationem. Voluptatibus iste sapiente magni iusto architecto recusandae sint illum ex. </td>
+                                       
+                                        <td class="text-right">
+                                            <div
+                                                style="display: flex; flex-direction: row-reverse;margin-right: -10px;">
+
+                                                <a 
+                                                    container="body" placement="top" class="mr-1"
+                                                    title="Eliminar">
+                                                    <div class="icon-wrapper">
+                                                        <i class="feather font-medium-4" data-feather='trash-2'></i>
+                                                    </div>
+                                                </a>
+                                                <a container="body" placement="top" title="Abrir" (click)="edit()"
+                                                    class="mr-1">
+                                                    <div class="icon-wrapper">
+                                                        <i class="feather font-medium-3 icon-edit-2"></i>
+                                                    </div>
+                                                </a>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <br>
+                    <hr>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
+                            <div  class="d-flex justify-content-center">
+                                <ul class="pagination text-center">
+                                    <li class="page-item ng-star-inserted">
+                                        <button class="page-link">
+                                            <div class="icon-wrapper">
+                                                <i data-feather='chevron-left'></i>
+                                            </div>
+                                        </button>
+                                    </li>
+                                    <li class="page-item ng-star-inserted" aria-current="page">
+                                        <label class="page-link" style="height:38px;">
+                                            Pag. 1 de 2
+                                        </label>
+                                    </li>
+                                    <li class="page-item ng-star-inserted">
+                                        <button class="page-link">
+                                            <div class="icon-wrapper">
+                                                <i data-feather='chevron-right' style="background:gray;"></i>
+                                            </div>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <p class="d-flex justify-content-right" style="float:right!important;margin-right: 15px;">
+                                dsdsd</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+    </div>
+</div>

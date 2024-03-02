@@ -1,0 +1,421 @@
+<ng-container *ngIf="loading">
+
+
+    <div mat-dialog-title class="d-flex align-items-center" style="margin-top:-5px;">
+        <h4>...</h4>
+        <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto"
+            style="margin-top:-10px; margin-right:-16px;">
+
+            <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
+                <div class="icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-x">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+            </button>
+
+        </div>
+    </div>
+
+    <div class="container text-center mt-5">
+
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+
+    </div>
+
+</ng-container>
+
+<ng-container *ngIf="!loading">
+
+
+    <div mat-dialog-title class="d-flex align-items-center" style="margin-top:-5px;">
+        <h4 >{{control.name.toUpperCase()}}</h4>
+        <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto"
+            style="margin-top:-10px; margin-right:-16px;">
+
+            <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
+                <div class="icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-x">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+            </button>
+
+        </div>
+    </div>
+
+    <div class="card border" style="margin-top: -15px !important;">
+        <div class="card-body">
+            <small class="form-text text-muted mb-2 text-center" style="margin-top: -10px;">Los campos con(*)
+                son obligatorios</small>
+                <form [formGroup]="form" (ngSubmit)="save()" class="auth-login-form mt-0" autocomplete="off">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+    
+                                <div style="display:flex; margin-bottom:-10px;">
+                                    <label class="form-label">Número</label>
+                                    <label style="margin-left: 5px;">(</label>
+                                    <label style="font-size: 22px; margin-top:-1px;">*</label>
+                                    <label>)</label>
+                                </div>
+                                <input type="number" formControlName="number"
+                                    [ngClass]="{ 'is-invalid': submitted && f.number.errors }" maxlength="5" class="form-control" aria-describedby="" 
+                                    autofocus="" tabindex="1">
+                                <div *ngIf="submitted && f.number.errors" class="invalid-feedback">
+                                    <div *ngIf="f.number.errors.required"> El número es obligatorio</div>
+                                    <div *ngIf="f.number.errors.maxlength">El número no puede tener mas de 5 caracteres </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="form-group">
+    
+                                <div style="display:flex; margin-bottom:-10px;">
+                                    <label class="form-label">Nombre</label>
+                                    <label style="margin-left: 5px;">(</label>
+                                    <label style="font-size: 22px; margin-top:-1px;">*</label>
+                                    <label>)</label>
+                                </div>
+                                <input type="text" formControlName="name" [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
+                                    maxlength="100" class="form-control" aria-describedby="" autofocus="" tabindex="1">
+                                <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                                    <div *ngIf="f.name.errors.required"> El nombre es obligatorio</div>
+                                    <div *ngIf="f.name.errors.maxlength">El nombre no puede tener mas de 100 caracteres </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+    
+         
+                    <div class="form-group">
+    
+                        <div style="display:flex; margin-bottom:2px;">
+                            <label class="form-label">Descripción</label>
+                        </div>
+                        <textarea rows="3" formControlName="description"
+                            [ngClass]="{ 'is-invalid': submitted && f.description.errors }" maxlength="500"
+                            class="form-control" aria-describedby="" autofocus="" tabindex="1"></textarea>
+                    </div>
+    
+    
+                    <div class="col-md-12 text-center mt-3">
+                        <button *ngIf="!loading2" type="submit" rippleeffect="" class="btn btn-primary mr-1 waves-effect"
+                            style="width:180px;height: 40px;">GUARDAR</button>
+                        <button *ngIf="loading2" type="button" disabled="" rippleeffect=""
+                            class="btn btn-outline-primary waves-effect mr-1" style="width:180px;height: 40px;">
+                            <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span>
+                            <span class="ml-25 align-middle">Guardando...</span>
+                        </button>
+                        <button type="reset" rippleeffect="" class="btn btn-outline-secondary waves-effect"
+                            (click)="close()">CANCELAR</button>
+                    </div>
+    
+    
+                </form>
+        </div>
+    </div>
+
+</ng-container>
+
+
+
+<!-- <div mat-dialog-title class="d-flex align-items-center" style="margin-top:-5px;">
+    <h4>Políticas de seguridad de la información</h4>
+    <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto" style="margin-right: -16px;">
+
+        <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
+            <div class="icon-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="feather feather-x">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </div>
+        </button>
+
+    </div>
+</div>
+
+<div class="card border" style="margin-top: -15px;">
+    <div class="card-body">
+
+        <ul ngbNav #nav="ngbNav" style="margin-top: -10px !important;" class="nav nav-pills">
+            <li ngbNavItem [ngbNavItem]="1">
+
+                <a ngbNavLink class="d-flex align-items-center"><i data-feather="grid" class="mr-sm-50"></i>
+                    <span class="d-none d-sm-block">DATOS DEL CONTROL</span>
+
+                </a>
+                <ng-template ngbNavContent>
+                    <div class="tab-pane active" id="account" aria-labelledby="account-tab" role="tabpanel">
+
+                        <div class="card border" style="margin-top: -10px !important;">
+                            <div class="card-body">
+
+
+                                <small class="form-text text-muted mb-2 text-center" style="margin-top: -10px;">Los
+                                    campos con(*)
+                                    son obligatorios</small>
+                                <form [formGroup]="form" (ngSubmit)="save()" class="auth-login-form mt-0"
+                                    autocomplete="off">
+
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+
+                                                <div style="display:flex; margin-bottom:-10px;">
+                                                    <label class="form-label">Número</label>
+                                                    <label style="margin-left: 5px;">(</label>
+                                                    <label style="font-size: 22px; margin-top:-1px;">*</label>
+                                                    <label>)</label>
+                                                </div>
+                                                <input type="text" formControlName="numeration"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.numeration.errors }"
+                                                    maxlength="10" class="form-control" aria-describedby="" autofocus=""
+                                                    tabindex="1">
+                                                <div *ngIf="submitted && f.numeration.errors" class="invalid-feedback">
+                                                    <div *ngIf="f.numeration.errors.required"> El numeration es
+                                                        obligatorio</div>
+                                                    <div *ngIf="f.numeration.errors.maxlength">El numeration no puede
+                                                        tener mas de 10
+                                                        caracteres
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="form-group">
+
+                                                <div style="display:flex; margin-bottom:-10px;">
+                                                    <label class="form-label">Nombre</label>
+                                                    <label style="margin-left: 5px;">(</label>
+                                                    <label style="font-size: 22px; margin-top:-1px;">*</label>
+                                                    <label>)</label>
+                                                </div>
+                                                <input type="text" formControlName="name"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
+                                                    maxlength="100" class="form-control" aria-describedby=""
+                                                    autofocus="" tabindex="1">
+                                                <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                                                    <div *ngIf="f.name.errors.required"> El name es obligatorio</div>
+                                                    <div *ngIf="f.name.errors.maxlength">El name no puede tener mas de
+                                                        100 caracteres </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <div style="display:flex; margin-bottom:2px;">
+                                            <label class="form-label">Grupo de control</label>
+                                        </div>
+                                        <ng-container>
+                                            <select formControlName="requirement"
+                                                [ngClass]="{ 'is-invalid': submitted && f.requirement.errors }"
+                                                class="form-control">
+                                                <option value=""> Seleccione </option>
+                                                <option value="1">Controles Organizacionales</option>
+                                                <option value="2">Controles de personas</option>
+                                            </select>
+                                        </ng-container>
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <div style="display:flex; margin-bottom:2px;">
+                                            <label class="form-label">Descripción</label>
+                                        </div>
+                                        <textarea rows="3" formControlName="description"
+                                            [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
+                                            maxlength="500" class="form-control" aria-describedby="" autofocus=""
+                                            tabindex="1"></textarea>
+                                    </div>
+
+                                    <div class="col-md-12 text-center mt-3">
+                                        <button *ngIf="!loading2" type="submit" rippleeffect=""
+                                            class="btn btn-primary mr-1 waves-effect"
+                                            style="width:180px;height: 40px;">GUARDAR</button>
+                                        <button *ngIf="loading2" type="button" disabled="" rippleeffect=""
+                                            class="btn btn-outline-primary waves-effect mr-1"
+                                            style="width:180px;height: 40px;">
+                                            <span role="status" aria-hidden="true"
+                                                class="spinner-border spinner-border-sm"></span>
+                                            <span class="ml-25 align-middle">Guardando...</span>
+                                        </button>
+                                        <button type="reset" rippleeffect=""
+                                            class="btn btn-outline-secondary waves-effect"
+                                            (click)="close()">CANCELAR</button>
+                                    </div>
+
+
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </ng-template>
+            </li>
+
+            <li ngbNavItem [ngbNavItem]="3">
+
+                <a ngbNavLink class="d-flex align-items-center"><i data-feather="list" class="mr-sm-50"></i><span
+                        class="d-none d-sm-block"> POLÍTICAS</span></a>
+                <ng-template ngbNavContent>
+                    <div class="tab-pane active" id="account" aria-labelledby="account-tab" role="tabpanel">
+
+                        <div class="card border" style="margin-top: -10px !important;">
+                            <div class="card-body">
+
+                                <form [formGroup]="form2" class="auth-login-form mt-0" autocomplete="off">
+
+                                    <div class="form-group">
+
+                                        <div style="display:flex; margin-bottom:2px;">
+                                            <label class="form-label">Tipo de control</label>
+                                        </div>
+                                        <ng-container>
+
+                                            <mat-form-field appearance="outline" style="width: 100% !important;">
+                                                <mat-select formControlName="controlTypes"
+                                                    style="font-family: Montserrat, Helvetica, Arial, serif !important;"
+                                                    multiple>
+
+                                                    <mat-option value="1" selected>Preventivo</mat-option>
+                                                    <mat-option value="2">Correctivo</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+
+                                        </ng-container>
+                                    </div>
+
+                                    <div class="form-group" style="margin-top: -20px !important;">
+
+                                        <div style="display:flex; margin-bottom:2px;">
+                                            <label class="form-label">Dimensiones de seguridad de la información</label>
+                                        </div>
+                                        <ng-container>
+
+                                            <mat-form-field appearance="outline" style="width: 100% !important;">
+                                                <mat-select formControlName="dimensions"
+                                                    style="font-family: Montserrat, Helvetica, Arial, serif !important;"
+                                                    multiple>
+
+                                                    <mat-option value="1" selected>Confidencialidad</mat-option>
+                                                    <mat-option value="2">Integridad</mat-option>
+                                                    <mat-option value="3">Disponibilidad</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+
+                                        </ng-container>
+                                    </div>
+
+                                    <div class="form-group" style="margin-top: -20px !important;">
+
+                                        <div style="display:flex; margin-bottom:2px;">
+                                            <label class="form-label">Conceptos de seguridad</label>
+                                        </div>
+                                        <ng-container>
+
+                                            <mat-form-field appearance="outline" style="width: 100% !important;">
+                                                <mat-select formControlName="concepts"
+                                                    style="font-family: Montserrat, Helvetica, Arial, serif !important;"
+                                                    multiple>
+
+                                                    <mat-option value="1" selected>Proteger</mat-option>
+
+                                                </mat-select>
+                                            </mat-form-field>
+
+                                        </ng-container>
+                                    </div>
+
+                                    <div class="form-group" style="margin-top: -20px !important;">
+
+                                        <div style="display:flex; margin-bottom:2px;">
+                                            <label class="form-label">Capacidades operativas</label>
+                                        </div>
+                                        <ng-container>
+
+                                            <mat-form-field appearance="outline" style="width: 100% !important;">
+                                                <mat-select formControlName="capabilities"
+                                                    style="font-family: Montserrat, Helvetica, Arial, serif !important;"
+                                                    multiple>
+
+                                                    <mat-option value="1" selected>Gobernanza</mat-option>
+                                                    <mat-option value="2">Gestion de identidad acceso</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+
+                                        </ng-container>
+                                    </div>
+
+                                    <div class="form-group" style="margin-top: -20px !important;">
+
+                                        <div style="display:flex; margin-bottom:2px;">
+                                            <label class="form-label">Dominios de seguridad</label>
+                                        </div>
+                                        <ng-container>
+
+                                            <mat-form-field appearance="outline" style="width: 100% !important;">
+                                                <mat-select formControlName="domains"
+                                                    style="font-family: Montserrat, Helvetica, Arial, serif !important;"
+                                                    multiple>
+
+                                                    <mat-option value="1" selected>Gobernanza y ecosistemas</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+
+                                        </ng-container>
+                                    </div>
+
+                                    <div class="col-md-12 text-center mt-0">
+                                        <button *ngIf="!loading2" type="submit" rippleeffect=""
+                                            class="btn btn-primary mr-1 waves-effect"
+                                            style="width:180px;height: 40px;">GUARDAR</button>
+                                        <button *ngIf="loading2" type="button" disabled="" rippleeffect=""
+                                            class="btn btn-outline-primary waves-effect mr-1"
+                                            style="width:180px;height: 40px;">
+                                            <span role="status" aria-hidden="true"
+                                                class="spinner-border spinner-border-sm"></span>
+                                            <span class="ml-25 align-middle">Guardando...</span>
+                                        </button>
+                                        <button type="reset" rippleeffect=""
+                                            class="btn btn-outline-secondary waves-effect"
+                                            (click)="close()">CANCELAR</button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </ng-template>
+            </li>
+
+
+        </ul>
+        <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+
+    </div>
+</div> -->

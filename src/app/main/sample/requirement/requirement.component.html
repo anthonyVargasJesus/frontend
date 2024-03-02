@@ -1,0 +1,115 @@
+<div class="content-wrapper">
+    <div class="content-body">
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+        <section id="home-page">
+            <section class="users-list-wrapper">
+                <div class="card">
+
+                    <hr>
+
+                    <div class="row mt-0 mb-0">
+                        <div class="col-md-6 col-12">
+                            <div class="d-flex justify-content-between align-items-center m-1">
+
+                                <label class="d-flex align-items-center">Mostrar
+                                    <select class="form-control mx-25 ng-untouched ng-pristine ng-valid"
+                                        style="margin-left: 10px !important;margin-right: 10px !important;width: 70px !important;">
+                                        <option value="10"> 10 </option>
+                                        <option value="25">25</option>
+                                        <option value="50"> 50 </option>
+                                        <option value="100">100</option>
+                                    </select> registros</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end">
+
+                            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
+                                <label class="d-flex align-items-center ml-1 ml-md-0 mr-1">Buscar
+
+                                    <input #input name="searchValue" name="search" type="search"
+                                        class="form-control ml-25 ng-pristine ng-valid ng-touched"
+                                        style="margin-left: 10px !important;">
+
+                                </label>
+                                <button rippleeffect=""
+                                    class="btn btn-primary waves-effect waves-float waves-light">
+                                    <i data-feather='search'></i>
+                                </button>
+
+                                <button (click)="add()" rippleeffect="" title="Agregar una nuevo requisito"
+                                    class="btn btn-primary ml-1 waves-effect waves-float waves-light"
+                                    style="float: right!important;margin-right: 10px;margin-top:0px;">
+                                    <i data-feather='plus'></i>
+                                </button>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <br>
+                    <mat-accordion class="example-headers-align" multi
+                        style="font-family: Montserrat, Helvetica, Arial, serif !important;">
+
+                        <mat-expansion-panel *ngFor="let requirement of requirements; let i = index">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title
+                                    style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 600 !important;">
+                                    {{requirement.numeration}}. &nbsp; {{requirement.name}}
+                                </mat-panel-title>
+
+                            </mat-expansion-panel-header>
+
+
+                            <span
+                            style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 500 !important;">
+                            A los efectos de este documento, se aplican los términos y definiciones proporcionados en ISO/IEC 27000.
+                            ISO e IEC mantienen bases de datos de terminología para su uso en la normalización en las siguientes direcciones: <br>
+                            — Plataforma de navegación ISO Online: disponible enhttps://www.iso.org/obp <br>
+                            — Electropedia IEC: disponible enhttps://www.electropedia.org/
+                        </span>
+
+
+                        <br>
+                        <br>
+
+
+                            <br>
+                            <br>
+                            <hr>
+    
+    
+                            <div class="text-right">
+                                <div style="display: flex; flex-direction: row-reverse;margin-right: -10px;">
+    
+                                    <a container="body" placement="top" class="mr-1" title="Eliminar" (click)="delete(requirement)">
+                                        <div class="icon-wrapper">
+                                            <i class="feather font-medium-4" data-feather='trash-2'></i>
+                                        </div>
+                                    </a>
+                                  
+                                    <a container="body" placement="top" title="Editar requerimiento" (click)="edit(requirement.requirementId)"
+                                        class="mr-1">
+                                        <div class="icon-wrapper">
+                                            <i class="feather font-medium-3 icon-edit-2"></i>
+                                        </div>
+                                    </a>
+    
+    
+    
+                                </div>
+                            </div>
+
+                            
+                        </mat-expansion-panel>
+
+
+                    </mat-accordion>
+
+                </div>
+            </section>
+        </section>
+
+    </div>
+</div>

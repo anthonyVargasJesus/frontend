@@ -1,0 +1,232 @@
+@import '@core/scss/core.scss';
+@import './assets/scss/styles';
+@import '~swiper/swiper-bundle';
+@import '@core/scss/base/pages/page-profile';
+@import '@core/scss/angular/libs/form-wizard.component.scss';
+@import '@core/scss/angular/libs/select.component.scss';
+@import '@core/scss/base/pages/app-user.scss';
+@import '@core/scss/base/pages/page-profile';
+@import '@core/scss/base/pages/page-faq.scss';
+@import '@core/scss/base/pages/page-pricing';
+@import '@core/scss/angular/libs/datatables.component.scss';
+@import '@core/scss/base/pages/app-user.scss';
+@import '@core/scss/angular/libs/select.component.scss';
+@import '@core/scss/base/pages/app-user.scss';
+
+@import '@core/scss/base/pages/app-calendar.scss';
+@import '@core/scss/angular/libs/flatpickr.component.scss';
+@import '@core/scss/angular/libs/select.component.scss';
+
+@import '@core/scss/base/bootstrap-extended/include.scss'; // Bootstrap includes
+@import '~@fullcalendar/daygrid/main.css';
+
+
+@import '~ngx-toastr/toastr';
+
+
+#toast-container>div {
+  opacity: 1;
+}
+
+// // regular style toast
+// @import '~ngx-toastr/toastr';
+
+// // bootstrap style toast
+// // or import a bootstrap 4 alert styled design (SASS ONLY)
+// // should be after your bootstrap imports, it uses bs4 variables, mixins, functions
+// @import '~ngx-toastr/toastr-bs4-alert';
+
+// // if you'd like to use it without importing all of bootstrap it requires
+// @import '~bootstrap/scss/functions';
+// @import '~bootstrap/scss/variables';
+// @import '~bootstrap/scss/mixins';
+// @import '~ngx-toastr/toastr-bs4-alert';
+
+
+.custom-default-dialog-container .mat-dialog-container {
+  background-color: $datatable-bg-color;
+}
+
+.custom-dark-dialog-container .mat-dialog-container {
+  background-color: $theme-dark-card-bg;
+}
+
+.swiper-pagination-bullet {
+  opacity: 0.5;
+  background-color: #C6C6C6;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
+  background-color: #FF679A;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  right: 10px;
+  padding: 30px;
+  color: #FF679A !important;
+  fill: #FF679A !important;
+  stroke: #FF679A !important;
+}
+
+.w150 {
+  width: 300px;
+  height: 300px;
+}
+
+.rubber {
+  box-shadow: 0 0 0 3px #FF4747, 0 0 0 2px #FF4747 inset;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  display: inline-block;
+  padding: 5px 2px;
+  line-height: 22px;
+  color: #FF4747;
+  font-size: 20px;
+  font-family: 'Black Ops One', cursive;
+  text-transform: uppercase;
+  text-align: center;
+  opacity: 0.8;
+  width: 120px;
+  transform: rotate(-25deg);
+}
+
+.td-header-action {
+  min-width: 100px !important;
+  width: 100px !important;
+  max-width: 100px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.td-action {
+  min-width: 100px !important;
+  width: 100px !important;
+  max-width: 100px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.td-header-number {
+  min-width: 90px !important;
+  width: 90px !important;
+  max-width: 90px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.td-number {
+  min-width: 90px !important;
+  width: 90px !important;
+  max-width: 90px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.td-header-money {
+  min-width: 100px !important;
+  width: 100px !important;
+  max-width: 100px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.td-money {
+  min-width: 100px !important;
+  width: 100px !important;
+  max-width: 100px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+
+.td-header-date {
+  min-width: 130px !important;
+  width: 130px !important;
+  max-width: 130px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.td-date {
+  min-width: 130px !important;
+  width: 130px !important;
+  max-width: 130px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.td-header-state {
+  min-width: 120px !important;
+  width: 120px !important;
+  max-width: 120px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.td-state {
+  min-width: 120px !important;
+  width: 120px !important;
+  max-width: 120px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.td-header-description {
+  min-width: 320px !important;
+  width: 320px !important;
+  max-width: 320px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.td-description {
+  min-width: 320px !important;
+  width: 320px !important;
+  max-width: 320px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.td-header-big-description {
+  min-width: 820px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.td-big-description {
+  min-width: 820px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.td-header-number-2 {
+  min-width: 95px !important;
+  width: 95px !important;
+  max-width: 95px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.td-number-2 {
+  min-width: 95px !important;
+  width: 95px !important;
+  max-width: 95px !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+
+@import '@core/scss/base/bootstrap-extended/include'; // Bootstrap includes
+@import '@core/scss/base/pages/page-auth.scss';
+
+.auth-help-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.fc-widget-content .fc-scroller {
+  height: auto !important;
+}
