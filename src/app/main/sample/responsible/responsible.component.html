@@ -13,6 +13,7 @@
 
                                 <label class="d-flex align-items-center">Mostrar
                                     <select class="form-control mx-25 ng-untouched ng-pristine ng-valid"
+                                        [(ngModel)]="pageSize" (change)="changePageSize($event.target.value)"
                                         style="margin-left: 10px !important;margin-right: 10px !important;width: 70px !important;">
                                         <option value="10"> 10 </option>
                                         <option value="25">25</option>
@@ -27,17 +28,26 @@
                             <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
                                 <label class="d-flex align-items-center ml-1 ml-md-0 mr-1">Buscar
 
-                                    <input #input name="searchValue" name="search" type="search"
+                                    <input #input name="searchValue" (keydown)="onKeydown($event, input.value)"
+                                        [(ngModel)]="searchText" name="search" type="search"
                                         class="form-control ml-25 ng-pristine ng-valid ng-touched"
                                         style="margin-left: 10px !important;">
 
                                 </label>
-                                <button rippleeffect=""
+                                <button *ngIf="!loading" (click)="search(input.value)" rippleeffect=""
                                     class="btn btn-primary waves-effect waves-float waves-light">
                                     <i data-feather='search'></i>
                                 </button>
 
-                                <button (click)="add()" rippleeffect="" title="Agregar una nuevo norma"
+                                <button *ngIf="loading" data-v-aa799a9e="" type="button" disabled="disabled"
+                                    class="btn btn-outline-primary disabled">
+                                    <span data-v-aa799a9e="" aria-hidden="True"
+                                        class="spinner-border spinner-border-sm">
+                                        <!---->
+                                    </span><span data-v-aa799a9e="" class="sr-only">Loading...</span>
+                                </button>
+
+                                <button (click)="add()" rippleeffect="" title="Agregar un nuevo responsible"
                                     class="btn btn-primary ml-1 waves-effect waves-float waves-light"
                                     style="float: right!important;margin-right: 10px;margin-top:0px;">
                                     <i data-feather='plus'></i>
@@ -53,9 +63,9 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th> NOMBRE</th>
-                                    <th> DESCRIPCIÓN</th>
-                                 
+                                    <th> NAME</th>
+                                    <th> DESCRIPTION</th>
+
                                     <th class="text-right">ACCIÓN</th>
                                 </tr>
                             </thead>
@@ -63,25 +73,55 @@
                             <tbody>
 
 
-                                <ng-container>
-
+                                <ng-container *ngIf="loading">
                                     <tr>
-                                        <td>Oficial de Seguridad de la Información</td>
-                                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum, blanditiis quos ab ex enim hic possimus unde? Exercitationem ipsam explicabo, eveniet voluptatem quo molestiae corrupti, nulla culpa, adipisci itaque nam? </td>
-                                       
+                                        <td colspan="3">
+                                            <div class="container text-center mt-5">
+
+                                                <div class="spinner-grow text-primary" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+                                                <div class="spinner-grow text-primary" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+                                                <div class="spinner-grow text-primary" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+
+                                            </div>
+                                        </td>
+
+                                </ng-container>
+                                <ng-container *ngIf="!loading">
+
+                                    <ng-container *ngIf="responsibles.length == 0">
+                                        <tr>
+                                            <td colspan="3">
+                                                <div class="text-center mt-2 mb-2">
+                                                    <div class="empty-row ng-star-inserted">No hay resultados para
+                                                        mostrar</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+
+                                    <tr *ngFor="let responsible of responsibles; let i = index">
+                                        <td> {{responsible.name}} </td>
+                                        <td> {{responsible.description}} </td>
+
                                         <td class="text-right">
                                             <div
                                                 style="display: flex; flex-direction: row-reverse;margin-right: -10px;">
 
-                                                <a 
+                                                <a *ngIf="!responsible.isDeleted" (click)="delete(responsible,true)"
                                                     container="body" placement="top" class="mr-1"
-                                                    title="Eliminar">
+                                                    title="Eliminar a {{responsible.name}}">
                                                     <div class="icon-wrapper">
                                                         <i class="feather font-medium-4" data-feather='trash-2'></i>
                                                     </div>
                                                 </a>
-                                                <a container="body" placement="top" title="Abrir" (click)="edit()"
-                                                    class="mr-1">
+                                                <a container="body" placement="top" title="Abrir {{responsible.name}}"
+                                                    (click)="edit(responsible.responsibleId)" class="mr-1">
                                                     <div class="icon-wrapper">
                                                         <i class="feather font-medium-3 icon-edit-2"></i>
                                                     </div>
@@ -92,60 +132,34 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>Especialista en Infraestructura</td>
-                                        <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vel quos ducimus magnam excepturi aspernatur tempora praesentium quibusdam nisi, quae exercitationem. Voluptatibus iste sapiente magni iusto architecto recusandae sint illum ex. </td>
-                                       
-                                        <td class="text-right">
-                                            <div
-                                                style="display: flex; flex-direction: row-reverse;margin-right: -10px;">
-
-                                                <a 
-                                                    container="body" placement="top" class="mr-1"
-                                                    title="Eliminar">
-                                                    <div class="icon-wrapper">
-                                                        <i class="feather font-medium-4" data-feather='trash-2'></i>
-                                                    </div>
-                                                </a>
-                                                <a container="body" placement="top" title="Abrir" (click)="edit()"
-                                                    class="mr-1">
-                                                    <div class="icon-wrapper">
-                                                        <i class="feather font-medium-3 icon-edit-2"></i>
-                                                    </div>
-                                                </a>
-
-                                            </div>
-                                        </td>
-                                    </tr>
-                                
                                 </ng-container>
                             </tbody>
                         </table>
                     </div>
 
                     <br>
-                    <hr>
+
                     <br>
                     <div class="row">
                         <div class="col-md-4">
                         </div>
                         <div class="col-md-4">
-                            <div  class="d-flex justify-content-center">
+                            <div *ngIf="responsibles.length > 0" class="d-flex justify-content-center">
                                 <ul class="pagination text-center">
                                     <li class="page-item ng-star-inserted">
-                                        <button class="page-link">
+                                        <button [disabled]="previous" (click)="changePage(-pageSize)" class="page-link">
                                             <div class="icon-wrapper">
                                                 <i data-feather='chevron-left'></i>
                                             </div>
                                         </button>
                                     </li>
                                     <li class="page-item ng-star-inserted" aria-current="page">
-                                        <label class="page-link" style="height:38px;">
-                                            Pag. 1 de 2
-                                        </label>
+
+                                        <label class="page-link" style="height:38px;">Pag. {{page}} de
+                                            {{totalPages}}</label>
                                     </li>
                                     <li class="page-item ng-star-inserted">
-                                        <button class="page-link">
+                                        <button [disabled]="Next" (click)="changePage(+pageSize)" class="page-link">
                                             <div class="icon-wrapper">
                                                 <i data-feather='chevron-right' style="background:gray;"></i>
                                             </div>
@@ -156,7 +170,7 @@
                         </div>
                         <div class="col-md-4">
                             <p class="d-flex justify-content-right" style="float:right!important;margin-right: 15px;">
-                                dsdsd</p>
+                                {{results}}</p>
                         </div>
                     </div>
                 </div>

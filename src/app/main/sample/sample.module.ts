@@ -69,6 +69,19 @@ import { IndicatorsComponent } from './evaluation-process/indicators/indicators.
 import { Indicators2Component } from './evaluation-process/indicators2/indicators2.component';
 import { Indicators3Component } from './evaluation-process/indicators3/indicators3.component';
 import { Indicators4Component } from './evaluation-process/indicators4/indicators4.component';
+import { DemoComponent } from './demo/demo.component';
+import { DemoDetalleComponent } from './demo-detalle/demo-detalle.component';
+import { DemoDetalleRepairsComponent } from './demo-detalle-repairs/demo-detalle-repairs.component';
+import { RequirementDocumentationComponent } from './requirement-documentation/requirement-documentation.component';
+import { RequirementEvaluationComponent } from './requirement-evaluation/requirement-evaluation.component';
+import { AddRequirementEvaluationComponent } from './requirement-evaluation/add-requirement-evaluation/add-requirement-evaluation.component';
+import { TableRequirementsEvaluationComponent } from './table-requirements-evaluation/table-requirements-evaluation.component';
+import { EditRequirementEvaluationComponent } from './requirement-evaluation/edit-requirement-evaluation/edit-requirement-evaluation.component';
+import { ControlEvaluationComponent } from './control-evaluation/control-evaluation.component';
+import { AddControlEvaluationComponent } from './control-evaluation/add-control-evaluation/add-control-evaluation.component';
+import { EditControlEvaluationComponent } from './control-evaluation/edit-control-evaluation/edit-control-evaluation.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ControlDashboardComponent } from './control-dashboard/control-dashboard.component';
 
  FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]);
 //FullCalendarModule.registerPlugins([timeGridPlugin, listPlugin, interactionPlugin]);
@@ -115,14 +128,24 @@ const routes = [
     data: { animation: 'evaluation-process-list' }
   },
   {
-    path: 'evaluation-process',
+    path: 'evaluation-process/:id',
     component: EvaluationProcessComponent,
     data: { animation: 'evaluation-process' }
+  },
+  {
+    path: 'demo',
+    component: DemoComponent,
+    data: { animation: 'demo' }
+  },
+  {
+    path: 'demo-detalle',
+    component: DemoDetalleComponent,
+    data: { animation: 'demo-detalle' }
   },
 ];
 
 @NgModule({
-  declarations: [SampleComponent, HomeComponent, StandardComponent, AddStandardComponent, EditStandardComponent, RequirementComponent, AddRequirementComponent, EditRequirementComponent, DocumentationComponent, AddDocumentationComponent, EditDocumentationComponent, ControlComponent, ControlTypeComponent, AddControlTypeComponent, EditControlTypeComponent, EditControlComponent, AddControlComponent, ResponsibleComponent, AddResponsibleComponent, EditResponsibleComponent, MaturityLevelComponent, AddMaturityLevelComponent, EditMaturityLevelComponent, IndicatorComponent, AddIndicatorComponent, EditIndicatorComponent, EvaluationAdminComponent, AddEvaluationAdminComponent, EditEvaluationAdminComponent, EvaluationProcessListComponent, EvaluationProcessComponent, RequirementProcessComponent, ControlProcessComponent, IndicatorsComponent, Indicators2Component, Indicators3Component, Indicators4Component],
+  declarations: [SampleComponent, HomeComponent, StandardComponent, AddStandardComponent, EditStandardComponent, RequirementComponent, AddRequirementComponent, EditRequirementComponent, DocumentationComponent, AddDocumentationComponent, EditDocumentationComponent, ControlComponent, ControlTypeComponent, AddControlTypeComponent, EditControlTypeComponent, EditControlComponent, AddControlComponent, ResponsibleComponent, AddResponsibleComponent, EditResponsibleComponent, MaturityLevelComponent, AddMaturityLevelComponent, EditMaturityLevelComponent, IndicatorComponent, AddIndicatorComponent, EditIndicatorComponent, EvaluationAdminComponent, AddEvaluationAdminComponent, EditEvaluationAdminComponent, EvaluationProcessListComponent, EvaluationProcessComponent, RequirementProcessComponent, ControlProcessComponent, IndicatorsComponent, Indicators2Component, Indicators3Component, Indicators4Component, DemoComponent, DemoDetalleComponent, DemoDetalleRepairsComponent, RequirementDocumentationComponent, RequirementEvaluationComponent, AddRequirementEvaluationComponent, TableRequirementsEvaluationComponent, EditRequirementEvaluationComponent, ControlEvaluationComponent, AddControlEvaluationComponent, EditControlEvaluationComponent, DashboardComponent, ControlDashboardComponent],
   imports: [
     RouterModule.forChild(routes), 
     ContentHeaderModule, 

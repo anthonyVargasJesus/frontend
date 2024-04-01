@@ -1,9 +1,10 @@
-<ng-container>
+<ng-container *ngIf="loading">
 
 
     <div mat-dialog-title class="d-flex align-items-center" style="margin-top:-5px;">
-        <h4>4. Contexto de la organización</h4>
-        <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto" style="margin-right: -16px;">
+        <h4>...</h4>
+        <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto"
+            style="margin-top:-10px; margin-right:-16px;">
 
             <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
                 <div class="icon-wrapper">
@@ -19,12 +20,49 @@
         </div>
     </div>
 
-    <div class="card border" style="margin-top: -15px;">
+    <div class="container text-center mt-5">
+
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+
+    </div>
+
+</ng-container>
+
+<ng-container *ngIf="!loading">
+
+
+    <div mat-dialog-title class="d-flex align-items-center" style="margin-top:-5px;">
+        <h4 *ngIf="requirement.name">{{requirement.name.toUpperCase()}}</h4>
+        <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto"
+            style="margin-top:-10px; margin-right:-16px;">
+
+            <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
+                <div class="icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-x">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+            </button>
+
+        </div>
+    </div>
+
+    <div class="card border" style="margin-top: -15px !important;">
         <div class="card-body">
             <small class="form-text text-muted mb-2 text-center" style="margin-top: -10px;">Los campos con(*)
                 son obligatorios</small>
             <form [formGroup]="form" (ngSubmit)="save()" class="auth-login-form mt-0" autocomplete="off">
-
 
                 <div class="row">
                     <div class="col-md-3">
@@ -36,12 +74,12 @@
                                 <label style="font-size: 22px; margin-top:-1px;">*</label>
                                 <label>)</label>
                             </div>
-                            <input type="text" formControlName="numeration"
-                                [ngClass]="{ 'is-invalid': submitted && f.numeration.errors }" maxlength="10"
+                            <input type="number" formControlName="numeration"
+                                [ngClass]="{ 'is-invalid': submitted && f.numeration.errors }" maxlength="5"
                                 class="form-control" aria-describedby="" autofocus="" tabindex="1">
                             <div *ngIf="submitted && f.numeration.errors" class="invalid-feedback">
-                                <div *ngIf="f.numeration.errors.required"> El numeration es obligatorio</div>
-                                <div *ngIf="f.numeration.errors.maxlength">El numeration no puede tener mas de 10
+                                <div *ngIf="f.numeration.errors.required"> La cláusula es obligatorio</div>
+                                <div *ngIf="f.numeration.errors.maxlength">La cláusula no puede tener mas de 5
                                     caracteres
                                 </div>
                             </div>
@@ -60,14 +98,51 @@
                                 [ngClass]="{ 'is-invalid': submitted && f.name.errors }" maxlength="100"
                                 class="form-control" aria-describedby="" autofocus="" tabindex="1">
                             <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-                                <div *ngIf="f.name.errors.required"> El name es obligatorio</div>
-                                <div *ngIf="f.name.errors.maxlength">El name no puede tener mas de 100 caracteres </div>
+                                <div *ngIf="f.name.errors.required"> El nombre es obligatorio</div>
+                                <div *ngIf="f.name.errors.maxlength">El nombre no puede tener mas de 100 caracteres
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
 
+                            <div style="display:flex; margin-bottom:-10px;">
+                                <label class="form-label">Nivel</label>
+                                <label style="margin-left: 5px;">(</label>
+                                <label style="font-size: 22px; margin-top:-1px;">*</label>
+                                <label>)</label>
+                            </div>
+                            <input type="text" formControlName="level"
+                                [ngClass]="{ 'is-invalid': submitted && f.level.errors }" maxlength="5" mask="separator"
+                                thousandSeparator="," class="form-control" aria-describedby="" autofocus=""
+                                tabindex="1">
+                            <div *ngIf="submitted && f.level.errors" class="invalid-feedback">
+                                <div *ngIf="f.level.errors.required"> El nivel es obligatorio</div>
+                                <div *ngIf="f.level.errors.maxlength">El nivel no puede tener mas de 5 caracteres </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="form-group">
+
+                            <div style="display:flex; margin-bottom:2px;">
+                                <label class="form-label">Familia</label>
+                            </div>
+
+                            <select formControlName="parentId"
+                                [ngClass]="{ 'is-invalid': submitted && f.parentId.errors }" class="form-control">
+                                <option value=0> Seleccione </option>
+                                <option *ngFor="let requirement of requirements" [value]="requirement.requirementId">{{
+                                    requirement.numeration}}. {{ requirement.name}} </option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
 
                     <div style="display:flex; margin-bottom:2px;">
@@ -77,32 +152,19 @@
                         [ngClass]="{ 'is-invalid': submitted && f.description.errors }" maxlength="500"
                         class="form-control" aria-describedby="" autofocus="" tabindex="1"></textarea>
                 </div>
+
+
+
                 <div class="form-group">
 
                     <div style="display:flex; margin-bottom:2px;">
-                        <label class="form-label">Requerimiento de referencia</label>
+                        <label class="form-label">Es aplicable a evaluación</label>
                     </div>
-                    <ng-container>
-                        <select formControlName="requirement"
-                            [ngClass]="{ 'is-invalid': submitted && f.requirement.errors }" class="form-control">
-                            <option value=""> Seleccione </option>
-                             <option value="1">4. Contexto de la organización</option>
-                        </select>
-                    </ng-container>
+                    <mat-slide-toggle style="margin-top:7px;" formControlName="isEvaluable"></mat-slide-toggle>
                 </div>
 
-                <br>
-                <div class="form-group">
 
-                    <div style="display:flex; margin-bottom:2px;">
-                        <label class="form-label">Es aplicable a la evaluación</label>
-                    </div>
-                    <mat-slide-toggle class="example-margin">
-                        Sí
-                    </mat-slide-toggle>
-                </div>
-                
-                <div class="col-md-12 text-center mt-3">
+                <div class=" col-md-12 text-center mt-3">
                     <button *ngIf="!loading2" type="submit" rippleeffect="" class="btn btn-primary mr-1 waves-effect"
                         style="width:180px;height: 40px;">GUARDAR</button>
                     <button *ngIf="loading2" type="button" disabled="" rippleeffect=""

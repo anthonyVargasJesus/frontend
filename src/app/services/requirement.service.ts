@@ -16,8 +16,8 @@ export class RequirementService {
 
   constructor(public http: HttpClient) { }
 
-  getAll() {
-    const url = environment.apiUrl + '/api/requirement/all';
+  getAll(standardId: number) {
+    const url = environment.apiUrl + '/api/requirement/all?standardId=' + standardId;
     return this.http.get(url);
   }
 

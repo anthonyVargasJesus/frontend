@@ -7,5 +7,7 @@ export class Control {
         public description?: string,
         public controlGroupId?: number,
         public standardId?: number,
+        public numerationToShow?: string,
+
     ) { }
 }

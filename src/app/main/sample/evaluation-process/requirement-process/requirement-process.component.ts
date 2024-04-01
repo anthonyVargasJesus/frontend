@@ -1,9 +1,17 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ChipModel } from 'app/models/chip-model';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import {MatChipInputEvent} from '@angular/material/chips';
-import { Observable } from 'rxjs';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+
+import { Requirement } from 'app/models/requirement';
+import { MatAccordion } from '@angular/material/expansion';
+import { Subject } from 'rxjs';
+import { RequirementService } from 'app/services/requirement.service';
+import { LoginService } from 'app/services/login.service';
+import { CoreConfigService } from '@core/services/config.service';
+import { PAGE_SIZE, getResults } from 'app/config/config';
+import { takeUntil } from 'rxjs/operators';
+import { ErrorManager } from 'app/errors/error-manager';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-requirement-process',
@@ -13,115 +21,150 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 })
 export class RequirementProcessComponent implements OnInit {
 
-  emails: ChipModel[] = [];
-  addOnBlur = true;
-  readonly separatorKeysCodes = [ENTER, COMMA] as const;
-  
-  @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
-  @ViewChild('fruitInput2') fruitInput2: ElementRef<HTMLInputElement>;
+  requirements: Requirement[] = [];
+  selectedRow = 0;
+  page = 1;
+  skip = 0;
+  pageSize;
+  total = 0;
+  totalPages = 0;
+  loading = false;
+  searchText: string = '';
+  results: string;
+  previous = true;
+  next = true;
 
-  responsibleOptions: string[] = [  'Oficial de Seguridad de la Información',
-  'Dirección Ejecutiva',
-  'Comité de Gobierno Digital'];
+  public currentSkin: string;
+  private _unsubscribeAll: Subject<any>;
+  private panelClass: string;
 
-  options: string[] = [  'Analisis de contexto interno',
-  'Analisis de contexto externo',
-  'Matriz de Partes Interesadas',
-  'Documento de Definición del Alcance',
-  'Politica General del SGSI',
-  'Politicas Especidicas del SGSI',
-  'Requerimientos de la Partes Interesadas'];
-
-  selectedResponsibles: ChipModel[] = [];
-
-  filteredOptions: Observable<string[]>;
-  
-  public contentHeader: object;
-  constructor() { }
-
-  ngOnInit(): void {
-    this.selectedResponsibles.push({ name: 'Oficial de Seguridad de la Información'});
-    this.emails.push({ name: 'Analisis de contexto interno'});
-    this.emails.push({ name: 'Analisis de contexto externo'});
-    this.initMenuName();
-  }
-
-  initMenuName() {
-    this.contentHeader = {
-      headerTitle: 'Cargar',
-      actionButton: false,
-      breadcrumb: {
-        type: '',
-        links: [
-          {
-            name: 'Evaluaciones',
-            isLink: false,
-            link: '#'
-          },
-          {
-            name: 'Cargar',
-            isLink: false
-          }
-        ]
-      }
-    }
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
-  }
-
-
-  add(){
-
-  }
-  edit(){
-
-  }
-
-  remove(email: ChipModel): void {
-
-    const index = this.emails.indexOf(email);
-
-    if (index >= 0) 
-      this.emails.splice(index, 1);
-    
-  }
+  @Input()
+  standardId: number;
+  @Input()
+  evaluationId: number;
 
   
-  remove2(email: ChipModel): void {
+  constructor(
+    private requirementService: RequirementService,
+    private loginService: LoginService,
+    private _coreConfigService: CoreConfigService,
+    private dialog: MatDialog
+  ) {
 
-    const index = this.selectedResponsibles.indexOf(email);
-
-    if (index >= 0) 
-      this.selectedResponsibles.splice(index, 1);
-    
   }
 
-  add2(event: any): void {
 
-    // const value = (event.value || '').trim();
-
-    // if (value == '') 
-    //   return;
-    
-
-    // if (value)
-    //     this.emails.push({ name: value });
-    //    event.chipInput!.clear();
+  ngOnInit() {
+    this.getTheme();
+    this.pageSize = PAGE_SIZE;
+    this.get();
   }
 
-  selected(event: MatAutocompleteSelectedEvent): void {
-    this.emails.push({name: event.option.viewValue});
-    this.fruitInput.nativeElement.value = '';
-    //this.options.setValue(null);
+  getTheme() {
+    this._unsubscribeAll = new Subject();
+    this._coreConfigService
+      .getConfig()
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(config => {
+        this.currentSkin = config.layout.skin;
+        this.setDialogContainerStyle();
+      });
   }
 
-  selected2(event: MatAutocompleteSelectedEvent): void {
-    this.selectedResponsibles.push({name: event.option.viewValue});
-    this.fruitInput2.nativeElement.value = '';
-    //this.options.setValue(null);
+  setDialogContainerStyle() {
+    if (this.currentSkin == 'dark')
+      this.panelClass = 'custom-dark-dialog-container';
+    else
+      this.panelClass = 'custom-default-dialog-container';
+  }
+
+
+  search(text: string) {
+    this.searchText = text;
+    this.skip = 0;
+
+    this.get();
+  }
+
+  get() {
+
+    this.loading = true;
+    this.requirementService.get(this.skip, this.pageSize, this.searchText, this.standardId)
+      .subscribe((res: any) => {
+        this.asignObjects(res);
+          this.page = (this.skip / this.pageSize) + 1;
+        this.results = getResults(this.total, this.totalPages);
+        this.loading = false;
+        this.disabledPagination();
+      }, error => {
+        this.loading = false;
+        ErrorManager.handleError(error);
+      });
+  }
+
+  changePageSize(value) {
+    this.pageSize = value;
+    this.get();
+  }
+
+  changePage(value: number) {
+    const desde = this.skip + value;
+    if (desde >= this.total)
+      return;
+
+    if (desde < 0)
+      return;
+
+    this.skip += value;
+    this.get();
+  }
+
+  disabledPagination() {
+
+    this.previous = true;
+    this.next = true;
+
+    if (this.page > 1)
+      this.previous = false;
+
+    if (this.page < this.totalPages)
+      this.next = false;
+  }
+
+
+
+  edit(id: number) {
+
+   
+
+  }
+
+
+
+  delete(requirement: Requirement) {
+
+
+
+  }
+
+
+  onKeydown(event, text: string) {
+
+    this.searchText = text;
+    if (event.key === 'Enter')
+      this.search(this.searchText);
+
+  }
+
+  asignObjects(res) {
+    this.requirements = res.data;
+    this.total = res.pagination.totalRows;
+    this.totalPages = res.pagination.totalPages;
+  }
+
+  addChild(requirementId: number, level: number) {
+
+
   }
 
 

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddStandardComponent } from './add-standard/add-standard.component';
-import { EditStandardComponent } from './edit-standard/edit-standard.component';
 import { Router } from '@angular/router';
 import { Standard } from 'app/models/standard';
 import { Subject } from 'rxjs';
@@ -13,12 +12,14 @@ import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { ErrorManager } from 'app/errors/error-manager';
 import Swal from 'sweetalert2';
 
+
 @Component({
   selector: 'app-standard',
   templateUrl: './standard.component.html',
   styles: [
   ]
 })
+
 export class StandardComponent implements OnInit {
 
   standards: Standard[] = [];

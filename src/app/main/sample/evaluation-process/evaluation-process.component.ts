@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ErrorManager } from 'app/errors/error-manager';
+import { Evaluation } from 'app/models/evaluation';
+import { EvaluationService } from 'app/services/evaluation.service';
 
 @Component({
   selector: 'app-evaluation-process',
@@ -13,22 +16,50 @@ export class EvaluationProcessComponent implements OnInit {
 
 
   public contentHeader: object;
+  evaluation: Evaluation = new Evaluation();
 
   constructor(
-
-    private router: Router,
+    private evaluationService: EvaluationService,
+    private route: ActivatedRoute,
   ) { }
 
 
   loading = false;
   loading2 = false;
+  evaluationId: string;
 
   public submitted = false;
+  standardId: string = '';
 
+  standardName: string = '';
 
   ngOnInit(): void {
 
     this.initMenuName();
+
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.evaluationId = params.get('id').toString();
+      this.obtain(this.evaluationId);
+    });
+
+  }
+
+
+  obtain(id: string) {
+    this.loading = true;
+    this.evaluationService.obtain(id)
+      .subscribe((res: any) => {
+        this.evaluation = res.data;
+        if (this.evaluation)
+        if (this.evaluation.standard)
+          this.standardName = this.evaluation.standard.name;
+        
+        this.standardId = this.evaluation.standardId.toString();
+        this.loading = false;
+      }, error => {
+        this.loading = false;
+        ErrorManager.handleError(error);
+      });
   }
 
 
@@ -67,7 +98,7 @@ export class EvaluationProcessComponent implements OnInit {
   } 
   
   navigateToBack() {
-    this.router.navigate(['/evaluation-process-list']);
+    //this.router.navigate(['/evaluation-process-list']);
   }
 
 }

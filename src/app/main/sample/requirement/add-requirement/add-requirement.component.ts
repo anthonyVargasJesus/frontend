@@ -29,27 +29,34 @@ export class AddRequirementComponent implements OnInit {
   loading2 = false;
   public form: FormGroup;
   public submitted = false;
+
   standardId: string;
+  requirementId: string;
+  level: string;
 
   ngOnInit(): void {
+
+    this.standardId = this.data['standardId'];
+    this.requirementId = this.data['requirementId'];
+    this.level = this.data['level'];
+
     this.initForm();
     this.getAllRequirements();
-    this.standardId = this.data['standardId'];
   }
 
   initForm() {
     this.form = this._formBuilder.group({
-      numeration: [, [Validators.required, Validators.maxLength(8),]],
+      numeration: ['', [Validators.required, Validators.maxLength(8),]],
       name: ['', [Validators.required, Validators.maxLength(100),]],
       description: ['', [Validators.maxLength(500),]],
-      level: [, [Validators.required, Validators.maxLength(8),]],
-      parentId: [0, []],
+      level: [Number(this.level), [Validators.required, Validators.maxLength(8),]],
+      parentId: [Number(this.requirementId), []],
       isEvaluable: [false, [Validators.maxLength(5),]],
     });
   }
 
   getAllRequirements() {
-    this.requirementService.getAll()
+    this.requirementService.getAll(Number(this.standardId))
       .subscribe((res: any) => {
         this.requirements = res.data;
       }, error => {

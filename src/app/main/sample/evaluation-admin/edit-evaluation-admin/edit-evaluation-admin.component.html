@@ -1,9 +1,10 @@
-<ng-container>
+<ng-container *ngIf="loading">
 
 
     <div mat-dialog-title class="d-flex align-items-center" style="margin-top:-5px;">
-        <h4>PVN-SGSI-EVALUACION DE REQUISITOS Y CONTROLES-ISO-27001 VF</h4>
-        <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto" style="margin-right: -16px;">
+        <h4>...</h4>
+        <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto"
+            style="margin-top:-10px; margin-right:-16px;">
 
             <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
                 <div class="icon-wrapper">
@@ -19,39 +20,109 @@
         </div>
     </div>
 
-    <div class="card border" style="margin-top: -15px;">
+    <div class="container text-center mt-5">
+
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+
+    </div>
+
+</ng-container>
+
+<ng-container *ngIf="!loading">
+
+
+    <div mat-dialog-title class="d-flex align-items-center" style="margin-top:-5px;">
+        <h4 >EDITAR EVALUACIÓN</h4>
+        <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto"
+            style="margin-top:-10px; margin-right:-16px;">
+
+            <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
+                <div class="icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-x">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+            </button>
+
+        </div>
+    </div>
+
+    <div class="card border" style="margin-top: -15px !important;">
         <div class="card-body">
             <small class="form-text text-muted mb-2 text-center" style="margin-top: -10px;">Los campos con(*)
                 son obligatorios</small>
             <form [formGroup]="form" (ngSubmit)="save()" class="auth-login-form mt-0" autocomplete="off">
 
+                <div class="form-group">
+
+                    <div style="display:flex; margin-bottom:-10px;">
+                        <label class="form-label">Norma</label>
+                        <label style="margin-left: 5px;">(</label>
+                        <label style="font-size: 22px; margin-top:-1px;">*</label>
+                        <label>)</label>
+                    </div>
+
+                    <select formControlName="standard" [ngClass]="{ 'is-invalid': submitted && f.standard.errors }"
+                        class="form-control">
+                        <option value=''> Seleccione </option>
+                        <option *ngFor="let standard of standards" [value]="standard.standardId">{{
+                            standard.name}} </option>
+                    </select>
+
+                    <div *ngIf="submitted && f.standard.errors" class="invalid-feedback">
+                        <div *ngIf="f.standard.errors.required">La norma es obligatoria</div>
+                    </div>
+
+                </div>
 
                 <div class="row">
+
                     <div class="col-md-6">
                         <div class="form-group">
 
-                            <div style="display:flex; margin-bottom:2px;">
-                                <label class="form-label">Fecha de inicio</label>
+                            <div style="display:flex; margin-bottom:-10px;">
+                                <label class="form-label">Inicio</label>
+                                <label style="margin-left: 5px;">(</label>
+                                <label style="font-size: 22px; margin-top:-1px;">*</label>
+                                <label>)</label>
                             </div>
                             <div class="input-group date datepicker">
-                                <input matInput readonly tabindex="1" class="form-control" formControlName="startDate"
+                                <input matInput tabindex="1" class="form-control" formControlName="startDate"  [ngClass]="{ 'is-invalid': submitted && f.startDate.errors }"
                                     name="startDate" [matDatepicker]="basicDatepickerstartDate">
                                 <span class="input-group-addon input-group-append border"
-                                    style="height: 37px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">
+                                    style="margin-top: -1px !important;height: 38px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">
                                     <mat-datepicker-toggle [for]="basicDatepickerstartDate"></mat-datepicker-toggle>
                                 </span>
                             </div>
                             <mat-datepicker #basicDatepickerstartDate required style="z-index:99999;"></mat-datepicker>
+                            <div *ngIf="submitted && f.startDate.errors" style="    width: 100%;
+                            margin-top: 5px;
+                            font-size: 0.857rem;
+                            color: #ea5455;">
+                              <div *ngIf="f.startDate.errors.required">La fecha de inicio es obligatoria</div>
+                            </div>
                         </div>
                     </div>
+
                     <div class="col-md-6">
                         <div class="form-group">
 
                             <div style="display:flex; margin-bottom:2px;">
-                                <label class="form-label">Fecha de término</label>
+                                <label class="form-label">Fin</label>
                             </div>
                             <div class="input-group date datepicker">
-                                <input matInput readonly tabindex="1" class="form-control" formControlName="endDate"
+                                <input matInput tabindex="1" class="form-control" formControlName="endDate"
                                     name="endDate" [matDatepicker]="basicDatepickerendDate">
                                 <span class="input-group-addon input-group-append border"
                                     style="height: 37px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">
@@ -61,20 +132,7 @@
                             <mat-datepicker #basicDatepickerendDate required style="z-index:99999;"></mat-datepicker>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-
-                    <div style="display:flex; margin-bottom:2px;">
-                        <label class="form-label">Norma aplicada</label>
-                    </div>
-                    <ng-container>
-                        <select formControlName="requirement"
-                            [ngClass]="{ 'is-invalid': submitted && f.requirement.errors }" class="form-control">
-                            <option value=""> Seleccione </option>
-                            <option value="1">ISO 270001</option>
-                        </select>
-                    </ng-container>
                 </div>
 
                 <div class="form-group">
@@ -86,6 +144,7 @@
                         [ngClass]="{ 'is-invalid': submitted && f.description.errors }" maxlength="250"
                         class="form-control" aria-describedby="" autofocus="" tabindex="1"></textarea>
                 </div>
+               
 
 
                 <div class="col-md-12 text-center mt-3">

@@ -1,3 +1,4 @@
+import { RequirementEvaluation } from "./requirement-evaluation";
 
 export class Requirement {
     constructor(
@@ -9,5 +10,10 @@ export class Requirement {
         public level?: number,
         public parentId?: number,
         public isEvaluable?: boolean,
+        public children?: Requirement[],
+        public parentNumeration?: number,
+        public requirementEvaluations?: RequirementEvaluation[],
+        public numerationToShow?: string,
+        public value?: number,
     ) { }
 }

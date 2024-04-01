@@ -120,7 +120,8 @@ export class RequirementComponent implements OnInit {
     this.requirementService.get(this.skip, this.pageSize, this.searchText, this.standardId)
       .subscribe((res: any) => {
         this.asignObjects(res);
-        this.page = (this.skip / this.pageSize) + 1;
+        console.log(res),
+          this.page = (this.skip / this.pageSize) + 1;
         this.results = getResults(this.total, this.totalPages);
         this.loading = false;
         this.disabledPagination();
@@ -159,14 +160,18 @@ export class RequirementComponent implements OnInit {
       this.next = false;
   }
 
-  add() {
+
+
+  edit(id: number) {
 
     if (this.loginService.isAuthenticated()) {
-      let dialogRef = this.dialog.open(AddRequirementComponent, {
+      let dialogRef = this.dialog.open(EditRequirementComponent, {
         height: '600px',
         width: '600px',
+        data: {
+          _id: id,
+        },
         autoFocus: false,
-        data: { standardId: this.standardId },
         panelClass: this.panelClass
       });
 
@@ -178,31 +183,6 @@ export class RequirementComponent implements OnInit {
           this.get();
       });
     }
-
-  }
-
-
-  edit(id: number) {
-
-    // if (this.loginService.isAuthenticated()) {
-    //   let dialogRef = this.dialog.open(EditControlTypeComponent, {
-    //     height: '600px',
-    //     width: '600px',
-    //     data: {
-    //       _id: id,
-    //     },
-    //     autoFocus: false,
-    //     panelClass: this.panelClass
-    //   });
-
-    //   dialogRef.afterClosed().subscribe(data => {
-    //     if (data == null)
-    //       return;
-
-    //     if (data.updated == true)
-    //       this.get();
-    //   });
-    // }
 
   }
 
@@ -250,30 +230,30 @@ export class RequirementComponent implements OnInit {
     this.totalPages = res.pagination.totalPages;
   }
 
-  addControlFromGroup(requirementId: number){
+  addChild(requirementId: number, level: number) {
+    console.log(requirementId);
+    if (this.loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(AddRequirementComponent, {
+        height: '600px',
+        width: '600px',
+        autoFocus: false,
+        data: {
+          requirementId: requirementId,
+          level: level,
+          standardId: this.standardId
+        },
+        panelClass: this.panelClass
+      });
 
-    // console.log(requirementId);
-    // if (this.loginService.isAuthenticated()) {
-    //   let dialogRef = this.dialog.open(AddControlComponent, {
-    //     height: '600px',
-    //     width: '600px',
-    //     autoFocus: false, 
-    //     data: { 
-    //       requirementId: requirementId, 
-    //       standardId: this.standardId 
-    //     },
-    //      panelClass: this.panelClass
-    //   });
-  
-    //   dialogRef.afterClosed().subscribe(data => {
-    //            if (data == null)
-    //        return;
-        
-    //       // if (data.updated == true)
-    //       //   this.loadData();
-    //   });
-    //   }
+      dialogRef.afterClosed().subscribe(data => {
+        if (data == null)
+          return;
 
-      
+         if (data.updated == true)
+           this.get();
+      });
+    }
+
+
   }
 }

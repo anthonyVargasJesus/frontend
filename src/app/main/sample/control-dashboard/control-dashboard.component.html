@@ -1,0 +1,100 @@
+<div class="card border" style="margin-top: -10px !important;">
+    <div class="card-body">
+  
+      <div class="row m-1">
+        <div class="col-md-12 p-1" style="border-radius: 5px;">
+          <h2 class="text-center" style="text-decoration: underline;margin-top: -10px !important;">RESUMEN DE RESULTADOS DEL
+            ESTADO DE LOS CONTROLES DE LA {{standardName}}
+          </h2>
+          <br>
+        </div>
+        <div class="col-md-6">
+  
+          <div class="card border">
+            <div class="card-body">
+              <app-indicators3 [single]="pieControlDashboardControlGroup" *ngIf="colorScheme" [colorScheme]="colorScheme"></app-indicators3>
+            </div>
+          </div>
+  
+  
+        </div>
+        
+        <div class="col-md-6">
+  
+          <div class="card border">
+            <div class="card-body">
+              <app-indicators4 [multi]="bartVerticalDashboardControlGroupDto" *ngIf="colorScheme" [colorScheme]="colorScheme"></app-indicators4>
+            </div>
+          </div>
+  
+        </div>
+      </div>
+  
+      <div class="row m-1">
+        <!-- <div class="col-md-2">
+  
+        </div> -->
+        <div class="col-md-12">
+          <div class="table-responsive">
+  
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th style="color: white; background-color: black;"> REQUERIMIENTOS</th>
+                  <th *ngFor="let maturityLevel of maturityLevels; let i = index" class="td-header-number-2 text-center" [style.background-color]="maturityLevel.color">
+  
+                    <h4 style="color: white;"> {{maturityLevel.abbreviation}}
+                    </h4>
+                    <span style="color: black;font-size: 8px;"> {{maturityLevel.name}}</span> 
+  
+                  </th>
+                  <th class="text-center" style="color: white; background-color: black;"> Calificación</th>
+                </tr>
+              </thead>
+  
+              <tbody>
+  
+  
+                <ng-container>
+  
+                  <tr *ngFor="let group of controlGroups;">
+  
+                    <td><span style="font-weight: 600;">Anexo {{group.number}}</span> - {{group.name}}</td>
+  
+                    <td *ngFor="let item of group.maturityLevels;" class="td-humber-2 text-center">
+                      <span>{{item.value}}</span>
+                    </td>
+  
+                    <td class="text-center">
+  
+                      <ng-container *ngIf="group.indicator">
+                        <span style="font-weight: 700;" [style.color]="group.indicator.color">
+                          {{group.indicator.name}}
+                          </span>
+                      </ng-container>
+  
+                    </td>
+                  </tr>
+  
+                  <tr>
+                      <th>TOTAL</th>
+                      <th *ngFor="let maturityLevel of maturityLevels; let i = index" class="td-header-number-2 text-center">
+                        <span>{{maturityLevel.value}}</span>
+                      </th>
+                      <th class="td-header-number-2 text-center" style="font-size: 14px;">   <span>{{total}}</span></th>
+                    </tr>
+  
+  
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- <div class="col-md-2">
+  
+        </div> -->
+      </div>
+  
+  
+    </div>
+  </div>
