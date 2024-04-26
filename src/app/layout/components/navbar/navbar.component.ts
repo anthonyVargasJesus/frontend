@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 import { LoginModel } from 'app/models/login-model';
 //import { LoginService } from 'app/services/login.service';
 import { getRandomColor } from 'app/config/config';
+import { LoginService } from 'app/services/login.service';
 
 @Component({
   selector: 'app-navbar',
@@ -86,7 +87,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private _coreSidebarService: CoreSidebarService,
     private _mediaObserver: MediaObserver,
     public _translateService: TranslateService,
-    //private _loginService: LoginService,
+    private _loginService: LoginService,
   ) {
     this._authenticationService.currentUser.subscribe(x => (this.currentUser = x));
 
@@ -195,8 +196,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // get the currentUser details from localStorage
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-   // this.currentLoginModel = this._loginService.getCurrentUser();
+
+   
+
+    this.currentLoginModel = this._loginService.getCurrentUser();
     this.color = getRandomColor();
+
+    console.log('currentLoginModel', this.currentLoginModel);
 
     // Subscribe to the config changes
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {

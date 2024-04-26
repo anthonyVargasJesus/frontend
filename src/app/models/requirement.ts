@@ -2,7 +2,7 @@ import { RequirementEvaluation } from "./requirement-evaluation";
 
 export class Requirement {
     constructor(
-        public requirementId?: string,
+        public requirementId?: number,
         public numeration?: number,
         public name?: string,
         public description?: string,

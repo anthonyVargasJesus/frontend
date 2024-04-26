@@ -94,7 +94,7 @@
                                 <label>)</label>
                             </div>
                             <input type="text" formControlName="name"
-                                [ngClass]="{ 'is-invalid': submitted && f.name.errors }" maxlength="100"
+                                [ngClass]="{ 'is-invalid': submitted && f.name.errors }" maxlength="200"
                                 class="form-control" aria-describedby="" autofocus="" tabindex="1">
                             <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
                                 <div *ngIf="f.name.errors.required"> El nombre es obligatorio</div>

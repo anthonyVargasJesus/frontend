@@ -5,6 +5,7 @@
             <section class="users-list-wrapper">
                 <div class="card">
 
+                    <hr>
                     <div class="row mt-0 mb-0">
                         <div class="col-md-6 col-12">
                             <div class="d-flex justify-content-between align-items-center m-1">
@@ -46,7 +47,7 @@
                                 </button>
 
                                 <button (click)="add()" rippleeffect="" title="Agregar un nuevo documentation"
-                                    class="btn btn-primary ml-1 waves-effect waves-float waves-light"
+                                    class="btn btn-danger ml-1 waves-effect waves-float waves-light"
                                     style="float: right!important;margin-right: 10px;margin-top:0px;">
                                     <i data-feather='plus'></i>
                                 </button>
@@ -61,9 +62,9 @@
                         <table class="table table-bordered" style="font-family: Montserrat, Helvetica, Arial, serif !important;">
                             <thead>
                                 <tr>
-                                    <th> NAME</th>
-                                    <th> DESCRIPTION</th>
-                                    <th> TEMPLATE</th>
+                                    <th> NOMBRE</th>
+                                    <th> DESCRIPCIÓN</th>
+                                    <th> PLANTILLA</th>
 
                                     <th class="text-right">ACCIÓN</th>
                                 </tr>
@@ -117,13 +118,13 @@
                                                     container="body" placement="top" class="mr-1"
                                                     title="Eliminar a {{documentation.name}}">
                                                     <div class="icon-wrapper">
-                                                        <i class="feather font-medium-4" data-feather='trash-2'></i>
+                                                        <i class="feather font-medium-4 text-primary" data-feather='trash-2'></i>
                                                     </div>
                                                 </a>
                                                 <a container="body" placement="top" title="Abrir {{documentation.name}}"
                                                     (click)="edit(documentation.documentationId)" class="mr-1">
                                                     <div class="icon-wrapper">
-                                                        <i class="feather font-medium-3 icon-edit-2"></i>
+                                                        <i class="feather font-medium-3 icon-edit-2 text-primary"></i>
                                                     </div>
                                                 </a>
 

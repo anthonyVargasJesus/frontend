@@ -42,10 +42,9 @@ export class AddControlComponent implements OnInit {
   standardId: string;
 
   ngOnInit(): void {
-
-    this.getAllControlGroups();
     this.controlGroupId = this.data['controlGroupId'];
     this.standardId = this.data['standardId'];
+    this.getAllControlGroups();
     this.initForm();
     this.initControl();
   }
@@ -82,9 +81,12 @@ export class AddControlComponent implements OnInit {
 
 
   getAllControlGroups() {
-    this.controlGroupService.getAll()
+    this.controlGroupService.getAll(this.standardId)
       .subscribe((res: any) => {
         this.controlGroups = res.data;
+
+        console.log(res);
+
         this.initControl();
       }, error => {
         ErrorManager.handleError(error);

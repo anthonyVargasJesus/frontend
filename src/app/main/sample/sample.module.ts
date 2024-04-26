@@ -82,6 +82,43 @@ import { AddControlEvaluationComponent } from './control-evaluation/add-control-
 import { EditControlEvaluationComponent } from './control-evaluation/edit-control-evaluation/edit-control-evaluation.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ControlDashboardComponent } from './control-dashboard/control-dashboard.component';
+import { DocumentTypeComponent } from './document-type/document-type.component';
+import { AddDocumentTypeComponent } from './document-type/add-document-type/add-document-type.component';
+import { EditDocumentTypeComponent } from './document-type/edit-document-type/edit-document-type.component';
+import { DefaultSectionComponent } from './default-section/default-section.component';
+import { AddDefaultSectionComponent } from './default-section/add-default-section/add-default-section.component';
+import { EditDefaultSectionComponent } from './default-section/edit-default-section/edit-default-section.component';
+import { DocumentationManagerComponent } from './documentation-manager/documentation-manager.component';
+import { VersionComponent } from './version/version.component';
+import { AddVersionComponent } from './version/add-version/add-version.component';
+import { EditVersionComponent } from './version/edit-version/edit-version.component';
+import { EditDocumentationManagerComponent } from './documentation-manager/edit-documentation-manager/edit-documentation-manager.component';
+import { SupportForRequirementComponent } from './support-for-requirement/support-for-requirement.component';
+import { AddSupportForRequirementComponent } from './support-for-requirement/add-support-for-requirement/add-support-for-requirement.component';
+import { EditSupportForRequirementComponent } from './support-for-requirement/edit-support-for-requirement/edit-support-for-requirement.component';
+import { DocumentationSupportComponent } from './documentation-support/documentation-support.component';
+import { EditDocumentationSupportComponent } from './documentation-support/edit-documentation-support/edit-documentation-support.component';
+import { ConfidentialityLevelComponent } from './confidentiality-level/confidentiality-level.component';
+import { AddConfidentialityLevelComponent } from './confidentiality-level/add-confidentiality-level/add-confidentiality-level.component';
+import { EditConfidentialityLevelComponent } from './confidentiality-level/edit-confidentiality-level/edit-confidentiality-level.component';
+import { SupportForControlComponent } from './support-for-control/support-for-control.component';
+import { AddSupportForControlComponent } from './support-for-control/add-support-for-control/add-support-for-control.component';
+import { EditSupportForControlComponent } from './support-for-control/edit-support-for-control/edit-support-for-control.component';
+import { SectionComponent } from './section/section.component';
+import { AddSectionComponent } from './section/add-section/add-section.component';
+import { EditSectionComponent } from './section/edit-section/edit-section.component';
+import { PersonalComponent } from './personal/personal.component';
+import { AddPersonalComponent } from './personal/add-personal/add-personal.component';
+import { EditPersonalComponent } from './personal/edit-personal/edit-personal.component';
+import { CreatorComponent } from './creator/creator.component';
+import { AddCreatorComponent } from './creator/add-creator/add-creator.component';
+import { EditCreatorComponent } from './creator/edit-creator/edit-creator.component';
+import { ReviewerComponent } from './reviewer/reviewer.component';
+import { AddReviewerComponent } from './reviewer/add-reviewer/add-reviewer.component';
+import { EditReviewerComponent } from './reviewer/edit-reviewer/edit-reviewer.component';
+import { ApproverComponent } from './approver/approver.component';
+import { AddApproverComponent } from './approver/add-approver/add-approver.component';
+import { EditApproverComponent } from './approver/edit-approver/edit-approver.component';
 
  FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]);
 //FullCalendarModule.registerPlugins([timeGridPlugin, listPlugin, interactionPlugin]);
@@ -142,10 +179,50 @@ const routes = [
     component: DemoDetalleComponent,
     data: { animation: 'demo-detalle' }
   },
+  {
+    path: 'document-type',
+    component: DocumentTypeComponent,
+    data: { animation: 'document-type' }
+  },
+  {
+    path: 'edit-document-type/:id',
+    component: EditDocumentTypeComponent,
+    data: { animation: 'edit-document' }
+  },
+  {
+    path: 'documentation-manager',
+    component: DocumentationManagerComponent,
+    data: { animation: 'document-manager' }
+  },
+  {
+    path: 'edit-document-manager/:id/:id2',
+    component: EditDocumentationManagerComponent,
+    data: { animation: 'edit-document-manager' }
+  },
+  {
+    path: 'supports',
+    component: DocumentationSupportComponent,
+    data: { animation: 'supports' }
+  },
+  {
+    path: 'support-detail/:id',
+    component: EditDocumentationSupportComponent,
+    data: { animation: 'supports' }
+  },
+  {
+    path: 'confidentiality-level',
+    component: ConfidentialityLevelComponent,
+    data: { animation: 'confidentiality-level' }
+  },
+  {
+    path: 'personal',
+    component: PersonalComponent,
+    data: { animation: 'personal' }
+  },
 ];
 
 @NgModule({
-  declarations: [SampleComponent, HomeComponent, StandardComponent, AddStandardComponent, EditStandardComponent, RequirementComponent, AddRequirementComponent, EditRequirementComponent, DocumentationComponent, AddDocumentationComponent, EditDocumentationComponent, ControlComponent, ControlTypeComponent, AddControlTypeComponent, EditControlTypeComponent, EditControlComponent, AddControlComponent, ResponsibleComponent, AddResponsibleComponent, EditResponsibleComponent, MaturityLevelComponent, AddMaturityLevelComponent, EditMaturityLevelComponent, IndicatorComponent, AddIndicatorComponent, EditIndicatorComponent, EvaluationAdminComponent, AddEvaluationAdminComponent, EditEvaluationAdminComponent, EvaluationProcessListComponent, EvaluationProcessComponent, RequirementProcessComponent, ControlProcessComponent, IndicatorsComponent, Indicators2Component, Indicators3Component, Indicators4Component, DemoComponent, DemoDetalleComponent, DemoDetalleRepairsComponent, RequirementDocumentationComponent, RequirementEvaluationComponent, AddRequirementEvaluationComponent, TableRequirementsEvaluationComponent, EditRequirementEvaluationComponent, ControlEvaluationComponent, AddControlEvaluationComponent, EditControlEvaluationComponent, DashboardComponent, ControlDashboardComponent],
+  declarations: [SampleComponent, HomeComponent, StandardComponent, AddStandardComponent, EditStandardComponent, RequirementComponent, AddRequirementComponent, EditRequirementComponent, DocumentationComponent, AddDocumentationComponent, EditDocumentationComponent, ControlComponent, ControlTypeComponent, AddControlTypeComponent, EditControlTypeComponent, EditControlComponent, AddControlComponent, ResponsibleComponent, AddResponsibleComponent, EditResponsibleComponent, MaturityLevelComponent, AddMaturityLevelComponent, EditMaturityLevelComponent, IndicatorComponent, AddIndicatorComponent, EditIndicatorComponent, EvaluationAdminComponent, AddEvaluationAdminComponent, EditEvaluationAdminComponent, EvaluationProcessListComponent, EvaluationProcessComponent, RequirementProcessComponent, ControlProcessComponent, IndicatorsComponent, Indicators2Component, Indicators3Component, Indicators4Component, DemoComponent, DemoDetalleComponent, DemoDetalleRepairsComponent, RequirementDocumentationComponent, RequirementEvaluationComponent, AddRequirementEvaluationComponent, TableRequirementsEvaluationComponent, EditRequirementEvaluationComponent, ControlEvaluationComponent, AddControlEvaluationComponent, EditControlEvaluationComponent, DashboardComponent, ControlDashboardComponent, DocumentTypeComponent, AddDocumentTypeComponent, EditDocumentTypeComponent, DefaultSectionComponent, AddDefaultSectionComponent, EditDefaultSectionComponent, DocumentationManagerComponent, VersionComponent, AddVersionComponent, EditVersionComponent, EditDocumentationManagerComponent, SupportForRequirementComponent, AddSupportForRequirementComponent, EditSupportForRequirementComponent, DocumentationSupportComponent, EditDocumentationSupportComponent, ConfidentialityLevelComponent, AddConfidentialityLevelComponent, EditConfidentialityLevelComponent, SupportForControlComponent, AddSupportForControlComponent, EditSupportForControlComponent, SectionComponent, AddSectionComponent, EditSectionComponent, PersonalComponent, AddPersonalComponent, EditPersonalComponent, CreatorComponent, AddCreatorComponent, EditCreatorComponent, ReviewerComponent, AddReviewerComponent, EditReviewerComponent, ApproverComponent, AddApproverComponent, EditApproverComponent],
   imports: [
     RouterModule.forChild(routes), 
     ContentHeaderModule, 

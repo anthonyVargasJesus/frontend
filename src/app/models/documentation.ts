@@ -1,3 +1,5 @@
+import { DocumentType } from "./document-type";
+import { Standard } from "./standard";
 
 export class Documentation {
     constructor(
@@ -5,7 +7,9 @@ export class Documentation {
         public name?: string,
         public description?: string,
         public template?: string,
+        public documentTypeId?: number,
         public standardId?: number,
-        public array?: string[],
+        public standard?: Standard[],
+        public documentType?: DocumentType[],
     ) { }
 }

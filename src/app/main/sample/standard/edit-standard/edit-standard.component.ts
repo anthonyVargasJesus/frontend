@@ -39,12 +39,6 @@ export class EditStandardComponent implements OnInit {
     this.initMenuName();
     this.initStandard();
     this.getAllStandards();
-
-
-
-
-
-   
   }
 
   initMenuName() {

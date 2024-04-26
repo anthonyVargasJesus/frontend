@@ -21,6 +21,11 @@ export class DocumentationService {
     return this.http.get(url);
   }
 
+  getManager(skip: number, pageSize: number, search: string) {
+    const url = environment.apiUrl + '/api/documentation/ByCompany' + '?skip=' + skip + '&pageSize=' + pageSize + '&search=' + search;
+    return this.http.get(url);
+  }
+
   get(skip: number, pageSize: number, search: string, standardId: number) {
     const url = environment.apiUrl + '/api/documentation' + '?skip=' + skip + '&pageSize=' + pageSize + '&standardId=' + standardId + '&search=' + search;
     return this.http.get(url);

@@ -1,7 +1,7 @@
 
 export class Control {
     constructor(
-        public controlId?: string,
+        public controlId?: number,
         public number?: number,
         public name?: string,
         public description?: string,

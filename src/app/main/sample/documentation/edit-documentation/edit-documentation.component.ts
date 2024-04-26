@@ -9,6 +9,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RequirementService } from 'app/services/requirement.service';
 import { Requirement } from 'app/models/requirement';
 import { DialogData } from 'app/models/dialog-data';
+import { DocumentTypeService } from 'app/services/document-type.service';
 
 
 @Component({
@@ -25,10 +26,11 @@ export class EditDocumentationComponent implements OnInit {
     private _formBuilder: FormBuilder,
     public router: Router, private requirementService: RequirementService,
     @Inject(MAT_DIALOG_DATA) private data: DialogData, private dialogRef: MatDialogRef<EditDocumentationComponent>,
-
+    private documentTypeService: DocumentTypeService,
   ) { }
 
   requirements: Requirement[] = [];
+  documentTypes: DocumentType[] = [];
 
   documentation: Documentation;
   loading = false;
@@ -38,10 +40,12 @@ export class EditDocumentationComponent implements OnInit {
   public last: string = '';
 
   standardId: string = '';
+  title: string = '';
 
   ngOnInit(): void {
     this.initForm();
     this.initDocumentation();
+    this.getAllDocumentTypes();
     this.id = this.data['_id'];
     this.standardId = this.data['standardId'];
     this.getAllRequirements();
@@ -57,14 +61,28 @@ export class EditDocumentationComponent implements OnInit {
       name: ['', [Validators.required, Validators.maxLength(100),]],
       description: ['', [Validators.maxLength(500),]],
       template: ['', [Validators.maxLength(250),]],
+      documentType: ['', []],
     });
   }
+
+  getAllDocumentTypes() {
+    this.documentTypeService.getAll()
+      .subscribe((res: any) => {
+        this.documentTypes = res.data;
+
+        this.initDocumentation();
+      }, error => {
+        ErrorManager.handleError(error);
+      });
+  }
+
 
   obtain(id: string) {
     this.loading = true;
     this.documentationService.obtain(id)
       .subscribe((res: any) => {
         this.documentation = res.data;
+        this.title = this.documentation.name.toUpperCase();
         this.setFormValue(this.documentation);
         this.loading = false;
       }, error => {
@@ -78,14 +96,15 @@ export class EditDocumentationComponent implements OnInit {
       name: ((documentation.name == null) ? '' : documentation.name),
       description: ((documentation.description == null) ? '' : documentation.description),
       template: ((documentation.template == null) ? '' : documentation.template),
+      documentType: ((documentation.documentTypeId == null) ? '' : documentation.documentTypeId),
     });
   }
-
 
   getFormValue() {
     this.documentation.name = this.form.value.name;
     this.documentation.description = this.form.value.description;
     this.documentation.template = this.form.value.template;
+    this.documentation.documentTypeId = this.form.value.documentType;
   }
 
   getAllRequirements() {
@@ -110,6 +129,8 @@ export class EditDocumentationComponent implements OnInit {
 
     this.loading2 = true;
     this.getFormValue();
+
+   this.documentation.documentationId = Number(this.id);
 
     this.documentationService.update(this.documentation)
       .subscribe(res => {

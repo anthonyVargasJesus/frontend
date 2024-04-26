@@ -25,7 +25,7 @@
 
                       <div class="d-flex flex-column ml-1">
                         <div style="margin-top: 15px;">
-                          <h1 class="text-primary" style="margin-bottom: 5px;">
+                          <h1 style="margin-bottom: 5px;">
                             {{standard.name}} </h1>
                           <span class="card-text" style="margin-bottom: 15px;">
                             {{standard.description}}
@@ -150,7 +150,7 @@
                 </span>
                 </a>
               <ng-template ngbNavContent>
-                <div class="tab-pane active" id="account" aria-labelledby="account-tab" role="tabpanel">
+                <div class="tab-pane" id="account2" aria-labelledby="account-tab" role="tabpanel">
 
                   <div class="card border" style="margin-top: -10px !important;">
                     <div class="card-body">
@@ -164,10 +164,29 @@
 
             <li ngbNavItem [ngbNavItem]="4">
 
+              <a ngbNavLink class="d-flex align-items-center"><i data-feather="edit" class="mr-sm-50"></i><span
+                  class="d-none d-sm-block">CONTROLES</span></a>
+              <ng-template ngbNavContent>
+                <div class="tab-pane" id="account3" aria-labelledby="account-tab" role="tabpanel">
+
+                  <div class="card border" style="margin-top: -10px !important;">
+                    <div class="card-body">
+
+                      <app-control-type [standardId]="id"></app-control-type>
+
+                    </div>
+                  </div>
+
+                </div>
+              </ng-template>
+            </li>
+
+            <li ngbNavItem [ngbNavItem]="5">
+
               <a ngbNavLink class="d-flex align-items-center"><i data-feather="users" class="mr-sm-50"></i><span
                   class="d-none d-sm-block">RESPONSABLES</span></a>
               <ng-template ngbNavContent>
-                <div class="tab-pane active" id="account" aria-labelledby="account-tab" role="tabpanel">
+                <div class="tab-pane" id="account4" aria-labelledby="account-tab" role="tabpanel">
 
                   <div class="card border" style="margin-top: -10px !important;">
                     <div class="card-body">
@@ -182,7 +201,7 @@
               </ng-template>
             </li>
 
-            <li ngbNavItem [ngbNavItem]="5">
+            <li ngbNavItem [ngbNavItem]="6">
 
               <a ngbNavLink class="d-flex align-items-center"><i data-feather="layers" class="mr-sm-50"></i><span
                   class="d-none d-sm-block">DOCUMENTACIÓN</span></a>
@@ -199,24 +218,7 @@
               </ng-template>
             </li>
 
-            <li ngbNavItem [ngbNavItem]="6">
-
-              <a ngbNavLink class="d-flex align-items-center"><i data-feather="edit" class="mr-sm-50"></i><span
-                  class="d-none d-sm-block">CONTROLES</span></a>
-              <ng-template ngbNavContent>
-                <div class="tab-pane active" id="account" aria-labelledby="account-tab" role="tabpanel">
-
-                  <div class="card border" style="margin-top: -10px !important;">
-                    <div class="card-body">
-
-                      <app-control-type [standardId]="id"></app-control-type>
-
-                    </div>
-                  </div>
-
-                </div>
-              </ng-template>
-            </li>
+         
 
           </ul>
           <div [ngbNavOutlet]="nav" class="mt-2"></div>

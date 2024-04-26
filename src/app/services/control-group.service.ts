@@ -16,8 +16,8 @@ export class ControlGroupService {
 
   constructor(public http: HttpClient) { }
 
-  getAll() {
-    const url = environment.apiUrl + '/api/controlGroup/all';
+  getAll(standardId: string) {
+    const url = environment.apiUrl + '/api/controlGroup/all?standardId=' + standardId;
     return this.http.get(url);
   }
 

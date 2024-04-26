@@ -187,13 +187,14 @@ export class ControlComponent implements OnInit {
 
 
   edit(id: number) {
-    console.log('id', id);
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(EditControlComponent, {
         height: '600px',
         width: '600px',
         data: { 
-         _id: id,},
+         _id: id,
+         standardId: this.standardId 
+        },
         autoFocus: false,
         panelClass: this.panelClass
       });

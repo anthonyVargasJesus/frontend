@@ -15,7 +15,10 @@ export class ControlService {
 
   constructor(public http: HttpClient) { }
 
-
+  getAll(standardId: number) {
+    const url = environment.apiUrl + '/api/control/all?standardId=' + standardId;
+    return this.http.get(url);
+  }
 
   get(skip: number, pageSize: number, search: string, controlGroupId: number) {
     const url = environment.apiUrl + '/api/control' + '?skip=' + skip + '&pageSize=' + pageSize + '&controlGroupId=' + controlGroupId + '&search=' + search ;

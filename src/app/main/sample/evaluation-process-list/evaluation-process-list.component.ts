@@ -78,18 +78,18 @@ export class EvaluationProcessListComponent implements OnInit {
 
   initMenuName() {
     this.contentHeader = {
-      headerTitle: 'Evaluation',
+      headerTitle: 'Evaluaciones',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'Evaluation',
+            name: 'Evaluaciones',
             isLink: false,
             link: '#'
           },
           {
-            name: 'Evaluation',
+            name: 'Proceso',
             isLink: false
           }
         ]

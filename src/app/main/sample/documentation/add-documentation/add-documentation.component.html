@@ -39,6 +39,20 @@
                         <div *ngIf="f.name.errors.maxlength">El name no puede tener mas de 100 caracteres </div>
                     </div>
                 </div>
+
+                <div class="form-group">
+
+                    <div style="display:flex; margin-bottom:2px;">
+                        <label class="form-label">Tipo de documento</label>
+                    </div>
+                        <select formControlName="documentType"
+                            [ngClass]="{ 'is-invalid': submitted && f.documentType.errors }" class="form-control">
+                            <option value=""> Seleccione </option>
+                            <option *ngFor="let documentType of documentTypes" [value]="documentType.documentTypeId">{{
+                                documentType.name}} </option>
+                        </select>
+                </div>
+
                 <div class="form-group">
 
                     <div style="display:flex; margin-bottom:2px;">
@@ -63,7 +77,7 @@
                     </select>
 
                 </div> -->
-           
+
 
                 <div class="col-md-12 text-center mt-3">
                     <button *ngIf="!loading2" type="submit" rippleeffect="" class="btn btn-primary mr-1 waves-effect"

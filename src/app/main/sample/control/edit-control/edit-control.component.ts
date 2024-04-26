@@ -38,14 +38,14 @@ export class EditControlComponent implements OnInit {
   public submitted = false;
   public last: string = '';
 
+  standardId: string;
+
   ngOnInit(): void {
-    this.initForm();
-
-    this.getAllControlGroups();
-
+    this.initForm();   
     this.initControl();
-
     this.id = this.data['_id'];
+    this.standardId = this.data['standardId'];
+    this.getAllControlGroups();
     this.obtain(this.id);
   }
 
@@ -103,7 +103,7 @@ export class EditControlComponent implements OnInit {
   }
 
   getAllControlGroups() {
-    this.controlGroupService.getAll()
+    this.controlGroupService.getAll(this.standardId)
       .subscribe((res: any) => {
         this.controlGroups = res.data;
         this.initControl();
@@ -126,6 +126,7 @@ export class EditControlComponent implements OnInit {
     this.loading2 = true;
     this.getFormValue();
 
+    this.control.controlId = Number(this.id);
     this.controlService.update(this.control)
       .subscribe(res => {
         this.control = res.data;

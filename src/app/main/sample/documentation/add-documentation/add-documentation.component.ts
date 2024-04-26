@@ -7,8 +7,9 @@ import { DocumentationService } from 'app/services/documentation.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RequirementService } from 'app/services/requirement.service';
 import { Requirement } from 'app/models/requirement';
-import { Standard } from 'app/models/standard';
 import { DialogData } from 'app/models/dialog-data';
+import { DocumentTypeService } from 'app/services/document-type.service';
+
 
 @Component({
   selector: 'app-add-documentation',
@@ -20,12 +21,13 @@ export class AddDocumentationComponent implements OnInit {
 
   constructor(
     private documentationService: DocumentationService,
-    private _formBuilder: FormBuilder, private dialogRef: MatDialogRef<AddDocumentationComponent>, 
+    private _formBuilder: FormBuilder, private dialogRef: MatDialogRef<AddDocumentationComponent>,
     private requirementService: RequirementService,
     @Inject(MAT_DIALOG_DATA) private data: DialogData,
-
+    private documentTypeService: DocumentTypeService,
   ) { }
 
+  documentTypes: DocumentType[] = [];
   requirements: Requirement[] = [];
 
   documentation: Documentation;
@@ -38,6 +40,7 @@ export class AddDocumentationComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.standardId = this.data['standardId'];
+    this.getAllDocumentTypes();
     this.getAllRequirements();
     this.initDocumentation();
   }
@@ -47,7 +50,19 @@ export class AddDocumentationComponent implements OnInit {
       name: ['', [Validators.required, Validators.maxLength(100),]],
       description: ['', [Validators.maxLength(500),]],
       template: ['', [Validators.maxLength(250),]],
+      documentType: ['', []],
     });
+  }
+
+
+  getAllDocumentTypes() {
+    this.documentTypeService.getAll()
+      .subscribe((res: any) => {
+        this.documentTypes = res.data;
+        this.initDocumentation();
+      }, error => {
+        ErrorManager.handleError(error);
+      });
   }
 
   initDocumentation() {
@@ -67,16 +82,12 @@ export class AddDocumentationComponent implements OnInit {
   }
 
 
-
   getFormValue() {
     this.documentation.name = this.form.value.name;
     this.documentation.description = this.form.value.description;
     this.documentation.template = this.form.value.template;
+    this.documentation.documentTypeId = this.form.value.documentType;
   }
-
-
-
-
 
 
   get f() {
@@ -91,7 +102,7 @@ export class AddDocumentationComponent implements OnInit {
 
     this.loading2 = true;
     this.getFormValue();
-    
+
     this.documentation.standardId = Number(this.standardId);
 
     this.documentationService.insert(this.documentation)
