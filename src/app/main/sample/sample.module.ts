@@ -24,8 +24,8 @@ import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
-import {MatIconModule} from '@angular/material/icon';
-import {MatExpansionModule} from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { MatMenuModule } from '@angular/material/menu';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -44,8 +44,8 @@ import { AddControlTypeComponent } from './control-type/add-control-type/add-con
 import { EditControlTypeComponent } from './control-type/edit-control-type/edit-control-type.component';
 import { EditControlComponent } from './control/edit-control/edit-control.component';
 import { AddControlComponent } from './control/add-control/add-control.component';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { ResponsibleComponent } from './responsible/responsible.component';
 import { AddResponsibleComponent } from './responsible/add-responsible/add-responsible.component';
 import { EditResponsibleComponent } from './responsible/edit-responsible/edit-responsible.component';
@@ -61,9 +61,9 @@ import { EditEvaluationAdminComponent } from './evaluation-admin/edit-evaluation
 import { EvaluationProcessListComponent } from './evaluation-process-list/evaluation-process-list.component';
 import { EvaluationProcessComponent } from './evaluation-process/evaluation-process.component';
 import { RequirementProcessComponent } from './evaluation-process/requirement-process/requirement-process.component';
-import {MatListModule} from '@angular/material/list';
-import {MatChipsModule} from '@angular/material/chips';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatListModule } from '@angular/material/list';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ControlProcessComponent } from './evaluation-process/control-process/control-process.component';
 import { IndicatorsComponent } from './evaluation-process/indicators/indicators.component';
 import { Indicators2Component } from './evaluation-process/indicators2/indicators2.component';
@@ -119,8 +119,41 @@ import { EditReviewerComponent } from './reviewer/edit-reviewer/edit-reviewer.co
 import { ApproverComponent } from './approver/approver.component';
 import { AddApproverComponent } from './approver/add-approver/add-approver.component';
 import { EditApproverComponent } from './approver/edit-approver/edit-approver.component';
+import { MacroprocessComponent } from './macroprocess/macroprocess.component';
+import { AddMacroprocessComponent } from './macroprocess/add-macroprocess/add-macroprocess.component';
+import { EditMacroprocessComponent } from './macroprocess/edit-macroprocess/edit-macroprocess.component';
+import { SubprocessComponent } from './subprocess/subprocess.component';
+import { AddSubprocessComponent } from './subprocess/add-subprocess/add-subprocess.component';
+import { EditSubprocessComponent } from './subprocess/edit-subprocess/edit-subprocess.component';
+import { ActiveTypeComponent } from './active-type/active-type.component';
+import { AddActiveTypeComponent } from './active-type/add-active-type/add-active-type.component';
+import { EditActiveTypeComponent } from './active-type/edit-active-type/edit-active-type.component';
+import { OwnerComponent } from './owner/owner.component';
+import { AddOwnerComponent } from './owner/add-owner/add-owner.component';
+import { EditOwnerComponent } from './owner/edit-owner/edit-owner.component';
+import { CustodianComponent } from './custodian/custodian.component';
+import { AddCustodianComponent } from './custodian/add-custodian/add-custodian.component';
+import { EditCustodianComponent } from './custodian/edit-custodian/edit-custodian.component';
+import { UsageClassificationComponent } from './usage-classification/usage-classification.component';
+import { AddUsageClassificationComponent } from './usage-classification/add-usage-classification/add-usage-classification.component';
+import { EditUsageClassificationComponent } from './usage-classification/edit-usage-classification/edit-usage-classification.component';
+import { SupportTypeComponent } from './support-type/support-type.component';
+import { AddSupportTypeComponent } from './support-type/add-support-type/add-support-type.component';
+import { EditSupportTypeComponent } from './support-type/edit-support-type/edit-support-type.component';
+import { LocationComponent } from './location/location.component';
+import { AddLocationComponent } from './location/add-location/add-location.component';
+import { EditLocationComponent } from './location/edit-location/edit-location.component';
+import { ImpactValuationComponent } from './impact-valuation/impact-valuation.component';
+import { AddImpactValuationComponent } from './impact-valuation/add-impact-valuation/add-impact-valuation.component';
+import { EditImpactValuationComponent } from './impact-valuation/edit-impact-valuation/edit-impact-valuation.component';
+import { ActivesInventoryComponent } from './actives-inventory/actives-inventory.component';
+import { AddActivesInventoryComponent } from './actives-inventory/add-actives-inventory/add-actives-inventory.component';
+import { EditActivesInventoryComponent } from './actives-inventory/edit-actives-inventory/edit-actives-inventory.component';
+import { ValuationInActiveByActivesInventoryComponent } from './valuation-in-active-by-actives-inventory/valuation-in-active-by-actives-inventory.component';
+import { AddValuationInActiveByActivesInventoryComponent } from './valuation-in-active-by-actives-inventory/add-valuation-in-active-by-actives-inventory/add-valuation-in-active-by-actives-inventory.component';
+import { EditValuationInActiveByActivesInventoryComponent } from './valuation-in-active-by-actives-inventory/edit-valuation-in-active-by-actives-inventory/edit-valuation-in-active-by-actives-inventory.component';
 
- FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]);
+FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]);
 //FullCalendarModule.registerPlugins([timeGridPlugin, listPlugin, interactionPlugin]);
 
 const routes = [
@@ -219,14 +252,100 @@ const routes = [
     component: PersonalComponent,
     data: { animation: 'personal' }
   },
+  {
+    path: 'macroprocess',
+    component: MacroprocessComponent,
+    data: { animation: 'macroprocess' }
+  },
+  {
+    path: 'subprocess',
+    component: SubprocessComponent,
+    data: { animation: 'subprocess' }
+  },
+  {
+    path: 'active-type',
+    component: ActiveTypeComponent,
+    data: { animation: 'active-type' }
+  },
+  {
+    path: 'owner',
+    component: OwnerComponent,
+    data: { animation: 'owner' }
+  },
+  {
+    path: 'custodian',
+    component: CustodianComponent,
+    data: { animation: 'custodian' }
+  },
+  {
+    path: 'usage-classification',
+    component: UsageClassificationComponent,
+    data: { animation: 'usage-classification' }
+  },
+  {
+    path: 'support-type',
+    component: SupportTypeComponent,
+    data: { animation: 'support-type' }
+  },
+  {
+    path: 'location',
+    component: LocationComponent,
+    data: { animation: 'location' }
+  },
+  {
+    path: 'impact-valuation',
+    component: ImpactValuationComponent,
+    data: { animation: 'impact-valuation' }
+  },
+  {
+    path: 'actives-inventory',
+    component: ActivesInventoryComponent,
+    data: { animation: 'actives-inventory' }
+  },
+  {
+    path: 'add-actives-inventory',
+    component: AddActivesInventoryComponent,
+    data: { animation: 'add-actives-inventory' }
+  },
+  {
+    path: 'edit-actives-inventory/:id',
+    component: EditActivesInventoryComponent,
+    data: { animation: 'edit-actives-inventory' }
+  },
 ];
 
 @NgModule({
-  declarations: [SampleComponent, HomeComponent, StandardComponent, AddStandardComponent, EditStandardComponent, RequirementComponent, AddRequirementComponent, EditRequirementComponent, DocumentationComponent, AddDocumentationComponent, EditDocumentationComponent, ControlComponent, ControlTypeComponent, AddControlTypeComponent, EditControlTypeComponent, EditControlComponent, AddControlComponent, ResponsibleComponent, AddResponsibleComponent, EditResponsibleComponent, MaturityLevelComponent, AddMaturityLevelComponent, EditMaturityLevelComponent, IndicatorComponent, AddIndicatorComponent, EditIndicatorComponent, EvaluationAdminComponent, AddEvaluationAdminComponent, EditEvaluationAdminComponent, EvaluationProcessListComponent, EvaluationProcessComponent, RequirementProcessComponent, ControlProcessComponent, IndicatorsComponent, Indicators2Component, Indicators3Component, Indicators4Component, DemoComponent, DemoDetalleComponent, DemoDetalleRepairsComponent, RequirementDocumentationComponent, RequirementEvaluationComponent, AddRequirementEvaluationComponent, TableRequirementsEvaluationComponent, EditRequirementEvaluationComponent, ControlEvaluationComponent, AddControlEvaluationComponent, EditControlEvaluationComponent, DashboardComponent, ControlDashboardComponent, DocumentTypeComponent, AddDocumentTypeComponent, EditDocumentTypeComponent, DefaultSectionComponent, AddDefaultSectionComponent, EditDefaultSectionComponent, DocumentationManagerComponent, VersionComponent, AddVersionComponent, EditVersionComponent, EditDocumentationManagerComponent, SupportForRequirementComponent, AddSupportForRequirementComponent, EditSupportForRequirementComponent, DocumentationSupportComponent, EditDocumentationSupportComponent, ConfidentialityLevelComponent, AddConfidentialityLevelComponent, EditConfidentialityLevelComponent, SupportForControlComponent, AddSupportForControlComponent, EditSupportForControlComponent, SectionComponent, AddSectionComponent, EditSectionComponent, PersonalComponent, AddPersonalComponent, EditPersonalComponent, CreatorComponent, AddCreatorComponent, EditCreatorComponent, ReviewerComponent, AddReviewerComponent, EditReviewerComponent, ApproverComponent, AddApproverComponent, EditApproverComponent],
+  declarations: [SampleComponent, HomeComponent, StandardComponent, AddStandardComponent, EditStandardComponent, RequirementComponent, AddRequirementComponent,
+    EditRequirementComponent, DocumentationComponent, AddDocumentationComponent, EditDocumentationComponent, ControlComponent, ControlTypeComponent,
+    AddControlTypeComponent, EditControlTypeComponent, EditControlComponent, AddControlComponent, ResponsibleComponent, AddResponsibleComponent,
+    EditResponsibleComponent, MaturityLevelComponent, AddMaturityLevelComponent, EditMaturityLevelComponent, IndicatorComponent, AddIndicatorComponent,
+    EditIndicatorComponent, EvaluationAdminComponent, AddEvaluationAdminComponent, EditEvaluationAdminComponent, EvaluationProcessListComponent,
+    EvaluationProcessComponent, RequirementProcessComponent, ControlProcessComponent, IndicatorsComponent, Indicators2Component, Indicators3Component,
+    Indicators4Component, DemoComponent, DemoDetalleComponent, DemoDetalleRepairsComponent, RequirementDocumentationComponent, RequirementEvaluationComponent,
+    AddRequirementEvaluationComponent, TableRequirementsEvaluationComponent, EditRequirementEvaluationComponent, ControlEvaluationComponent,
+    AddControlEvaluationComponent, EditControlEvaluationComponent, DashboardComponent, ControlDashboardComponent, DocumentTypeComponent,
+    AddDocumentTypeComponent, EditDocumentTypeComponent, DefaultSectionComponent, AddDefaultSectionComponent, EditDefaultSectionComponent,
+    DocumentationManagerComponent, VersionComponent, AddVersionComponent, EditVersionComponent, EditDocumentationManagerComponent,
+    SupportForRequirementComponent, AddSupportForRequirementComponent, EditSupportForRequirementComponent, DocumentationSupportComponent,
+    EditDocumentationSupportComponent, ConfidentialityLevelComponent, AddConfidentialityLevelComponent, EditConfidentialityLevelComponent,
+    SupportForControlComponent, AddSupportForControlComponent, EditSupportForControlComponent, SectionComponent, AddSectionComponent,
+    EditSectionComponent, PersonalComponent, AddPersonalComponent, EditPersonalComponent, CreatorComponent, AddCreatorComponent, EditCreatorComponent,
+    ReviewerComponent, AddReviewerComponent, EditReviewerComponent, ApproverComponent, AddApproverComponent, EditApproverComponent,
+    MacroprocessComponent, AddMacroprocessComponent, EditMacroprocessComponent,
+    SubprocessComponent, AddSubprocessComponent, EditSubprocessComponent,
+    ActiveTypeComponent, AddActiveTypeComponent, EditActiveTypeComponent,
+    OwnerComponent, AddOwnerComponent, EditOwnerComponent,
+    CustodianComponent, AddCustodianComponent, EditCustodianComponent,
+    UsageClassificationComponent, AddUsageClassificationComponent, EditUsageClassificationComponent,
+    SupportTypeComponent, AddSupportTypeComponent, EditSupportTypeComponent,
+    LocationComponent, AddLocationComponent, EditLocationComponent,
+    ImpactValuationComponent, AddImpactValuationComponent, EditImpactValuationComponent,
+    ActivesInventoryComponent, AddActivesInventoryComponent, EditActivesInventoryComponent,
+    ValuationInActiveByActivesInventoryComponent, AddValuationInActiveByActivesInventoryComponent, EditValuationInActiveByActivesInventoryComponent],
   imports: [
-    RouterModule.forChild(routes), 
-    ContentHeaderModule, 
-    TranslateModule, 
+    RouterModule.forChild(routes),
+    ContentHeaderModule,
+    TranslateModule,
     CoreCommonModule,
     MatDialogModule,
     MatButtonModule,
@@ -242,7 +361,7 @@ const routes = [
     MatButtonModule,
     MatExpansionModule,
     MatMenuModule,
-    MatFormFieldModule, 
+    MatFormFieldModule,
     MatSelectModule,
     MatListModule,
     MatChipsModule,
@@ -251,4 +370,4 @@ const routes = [
   exports: [SampleComponent, HomeComponent],
 
 })
-export class SampleModule {}
+export class SampleModule { }

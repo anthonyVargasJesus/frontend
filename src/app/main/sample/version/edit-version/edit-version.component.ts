@@ -9,7 +9,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ConfidentialityLevel } from 'app/models/confidentiality-level';
 import { DialogData } from 'app/models/dialog-data';
 import { ConfidentialityLevelService } from 'app/services/confidentialityLevel.service';
-
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-edit-version',
@@ -41,6 +41,8 @@ export class EditVersionComponent implements OnInit {
   documentationId: number;
 
   standardId: number;
+  loadingExcel = false;
+
 
   ngOnInit(): void {
     this.initForm();
@@ -175,6 +177,25 @@ export class EditVersionComponent implements OnInit {
 
   close() {
     this.dialogRef.close();
+  }
+
+  public downloadExcel(): any {
+
+    this.loadingExcel = true;
+    var fileName = 'plantilla_version_' + this.version.number + '.docx';
+    var mediaType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document.docx'
+    this.versionService.getWordDocument(this.id,)
+      .subscribe(res => {
+        this.loadingExcel = false;
+
+        var blob = new Blob([res], { type: mediaType });
+        saveAs(blob, fileName);
+
+      }, error => {
+        this.loadingExcel = false;
+        ErrorManager.handleError(error);
+      });
+
   }
 
 }

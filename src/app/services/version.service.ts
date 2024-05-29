@@ -69,5 +69,21 @@ export class VersionService {
     }
 
 
+    getWordDocument(versionId: string) {
+
+        const url = environment.apiUrl + '/api/version/word-document?versionId=' + versionId;
+    
+        return this.http.get(url, { responseType: 'blob' })
+          .pipe(map((resp: any) => {
+            return resp;
+          }
+          ))
+          .pipe(catchError((err) => {
+            ErrorManager.handleError(err);
+            return throwError(err);
+          }));
+    
+      }
+
 }
 

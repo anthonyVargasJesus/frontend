@@ -275,6 +275,18 @@
                                                     class="spinner-border spinner-border-sm"></span>
                                                 <span class="ml-25 align-middle">Guardando...</span>
                                             </button>
+
+                                            <button *ngIf="!loadingExcel" type="button" (click)="downloadExcel()" rippleeffect=""
+                                            class="btn btn-success mr-1 waves-effect" style="width:220px;height: 40px; margin-left: 10px;">DESCARGAR
+                                            PLANTILLA
+                                          </button>
+                                
+                                          <button *ngIf="loadingExcel" type="button" disabled="" rippleeffect=""
+                                            class="btn btn-outline-primary waves-effect mr-1" style="width:220px;height: 40px; margin-left: 10px;">
+                                            <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span>
+                                            <span class="ml-25 align-middle">Descargando...</span>
+                                          </button>
+
                                             <button type="reset" rippleeffect=""
                                                 class="btn btn-outline-secondary waves-effect"
                                                 (click)="close()">CANCELAR</button>
