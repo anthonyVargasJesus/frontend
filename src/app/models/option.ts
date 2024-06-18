@@ -2,7 +2,7 @@ import { OptionInMenuInRole } from "./option-in-menu-in-role";
 
 export class Option {
     constructor(
-        public _id?: string,
+        public optionId?: Number,
         public name?: string,
         public image?: string,
         public url?: string,
@@ -13,8 +13,8 @@ export class Option {
         public isChecked?: boolean,
         public loading?: boolean,
         public optionInMenuInRole?: OptionInMenuInRole,
-        public array?: string[],
-        public order?: Number
+        public order?: Number,
+        public optionInMenuInRoleId?: number,
     ) { }
 }
 

@@ -3,7 +3,7 @@ import { Option } from "./option";
 
 export class Menu {
     constructor(
-        public _id?: string,
+        public menuId?: Number,
         public name?: string,
         public image?: string,
         public menuInRole?: MenuInRole,

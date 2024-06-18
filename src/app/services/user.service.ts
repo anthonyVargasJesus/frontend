@@ -15,13 +15,14 @@ export class UserService {
 
     constructor(public http: HttpClient) { }
 
+
     getAll() {
         const url = environment.apiUrl + '/api/user/all';
         return this.http.get(url);
     }
 
-    get(skip: number, pageSize: number) {
-        const url = environment.apiUrl + '/api/user' + '?skip=' + skip + '&pageSize=' + pageSize;
+    get(skip: number, pageSize: number, search: string) {
+        const url = environment.apiUrl + '/api/user' + '?skip=' + skip + '&pageSize=' + pageSize + '&search=' + search;
         return this.http.get(url);
     }
 
@@ -50,7 +51,7 @@ export class UserService {
     }
 
     update(user: User) {
-        const url = environment.apiUrl + '/api/user/' + user._id;
+        const url = environment.apiUrl + '/api/user/' + user.userId;
 
         return this.http.put(url, user)
             .pipe(map((resp: any) => {
@@ -64,8 +65,8 @@ export class UserService {
             }));
     }
 
-    delete(id: string, unsubscribe: boolean) {
-        const url = environment.apiUrl + '/api/user/' + id + '/' + unsubscribe;
+    delete(id: string) {
+        const url = environment.apiUrl + '/api/user/' + id ;
         return this.http.delete(url)
             .pipe(map((resp: any) => {
                 Swal.fire('Usuario actualizado', 'El usuario se eliminó satisfactoriamente', 'success');
@@ -85,7 +86,7 @@ export class UserService {
 
     updateImage(user: User) {
 
-        const url = environment.apiUrl + '/api/user/image/' + user._id;
+        const url = environment.apiUrl + '/api/user/image/' + user.userId;
 
         return this.http.put(url, user)
             .pipe(map((resp: any) => {

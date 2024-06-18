@@ -16,7 +16,8 @@ export class ActivesInventoryService {
     constructor(public http: HttpClient) { }
 
     get(skip: number, pageSize: number, search: string) {
-        const url = environment.apiUrl + '/api/activesInventory' + '?skip=' + skip + '&pageSize=' + pageSize + '&search=' + search;
+        const url = environment.apiUrl + '/api/activesInventory' + '?skip=' + skip + '&pageSize=' + 
+        pageSize + '&search=' + search;
         return this.http.get(url);
     }
 

@@ -3,7 +3,7 @@ import { Option } from "./option";
 
 export class OptionInMenuInRole {
     constructor(
-        public _id?: string,
+        public optionInMenuInRoleId?: number,
         public menuInRole?: MenuInRole,
         public option?: Option,
         public order?: number,

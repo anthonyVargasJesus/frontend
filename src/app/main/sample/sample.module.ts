@@ -152,6 +152,29 @@ import { EditActivesInventoryComponent } from './actives-inventory/edit-actives-
 import { ValuationInActiveByActivesInventoryComponent } from './valuation-in-active-by-actives-inventory/valuation-in-active-by-actives-inventory.component';
 import { AddValuationInActiveByActivesInventoryComponent } from './valuation-in-active-by-actives-inventory/add-valuation-in-active-by-actives-inventory/add-valuation-in-active-by-actives-inventory.component';
 import { EditValuationInActiveByActivesInventoryComponent } from './valuation-in-active-by-actives-inventory/edit-valuation-in-active-by-actives-inventory/edit-valuation-in-active-by-actives-inventory.component';
+import { OptionComponent } from './option/option.component';
+import { AddOptionComponent } from './option/add-option/add-option.component';
+import { EditOptionComponent } from './option/edit-option/edit-option.component';
+import { MenuComponent } from './menu/menu.component';
+import { AddMenuComponent } from './menu/add-menu/add-menu.component';
+import { EditMenuComponent } from './menu/edit-menu/edit-menu.component';
+import { RoleComponent } from './role/role.component';
+import { AddRoleComponent } from './role/add-role/add-role.component';
+import { EditRoleComponent } from './role/edit-role/edit-role.component';
+import { OptionInMenuByMenuComponent } from './option-in-menu-by-menu/option-in-menu-by-menu.component';
+import { AddOptionInMenuByMenuComponent } from './option-in-menu-by-menu/add-option-in-menu-by-menu/add-option-in-menu-by-menu.component';
+import { EditOptionInMenuByMenuComponent } from './option-in-menu-by-menu/edit-option-in-menu-by-menu/edit-option-in-menu-by-menu.component';
+import { MenuInRoleComponent } from './menu-in-role/menu-in-role.component';
+import { UserStateComponent } from './user-state/user-state.component';
+import { AddUserStateComponent } from './user-state/add-user-state/add-user-state.component';
+import { EditUserStateComponent } from './user-state/edit-user-state/edit-user-state.component';
+import { UserComponent } from './user/user.component';
+import { AddUserComponent } from './user/add-user/add-user.component';
+import { EditUserComponent } from './user/edit-user/edit-user.component';
+import { HeaderUserComponent } from './user/header-user/header-user.component';
+import { RoleInUserByUserComponent } from './role-in-user-by-user/role-in-user-by-user.component';
+import { AddRoleInUserByUserComponent } from './role-in-user-by-user/add-role-in-user-by-user/add-role-in-user-by-user.component';
+import { EditRoleInUserByUserComponent } from './role-in-user-by-user/edit-role-in-user-by-user/edit-role-in-user-by-user.component';
 
 FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]);
 //FullCalendarModule.registerPlugins([timeGridPlugin, listPlugin, interactionPlugin]);
@@ -312,6 +335,41 @@ const routes = [
     component: EditActivesInventoryComponent,
     data: { animation: 'edit-actives-inventory' }
   },
+  {
+    path: 'option',
+    component: OptionComponent,
+    data: { animation: 'option' }
+  },
+  {
+    path: 'menu',
+    component: MenuComponent,
+    data: { animation: 'menu' }
+  },
+  {
+    path: 'role',
+    component: RoleComponent,
+    data: { animation: 'role' }
+  },
+  {
+    path: 'user-state',
+    component: UserStateComponent,
+    data: { animation: 'user-state' }
+  },
+  {
+    path: 'user',
+    component: UserComponent,
+    data: { animation: 'user' }
+  },
+  {
+    path: 'add-user',
+    component: AddUserComponent,
+    data: { animation: 'edit-actives-inventory' }
+  },
+  {
+    path: 'edit-user/:id',
+    component: EditUserComponent,
+    data: { animation: 'edit-actives-inventory' }
+  },
 ];
 
 @NgModule({
@@ -341,7 +399,14 @@ const routes = [
     LocationComponent, AddLocationComponent, EditLocationComponent,
     ImpactValuationComponent, AddImpactValuationComponent, EditImpactValuationComponent,
     ActivesInventoryComponent, AddActivesInventoryComponent, EditActivesInventoryComponent,
-    ValuationInActiveByActivesInventoryComponent, AddValuationInActiveByActivesInventoryComponent, EditValuationInActiveByActivesInventoryComponent],
+    ValuationInActiveByActivesInventoryComponent, AddValuationInActiveByActivesInventoryComponent, EditValuationInActiveByActivesInventoryComponent,
+    OptionComponent, AddOptionComponent, EditOptionComponent,
+    MenuComponent, AddMenuComponent, EditMenuComponent, RoleComponent, AddRoleComponent, EditRoleComponent,
+    OptionInMenuByMenuComponent, AddOptionInMenuByMenuComponent, EditOptionInMenuByMenuComponent, MenuInRoleComponent,
+    UserStateComponent, AddUserStateComponent, EditUserStateComponent,
+    UserComponent, AddUserComponent, EditUserComponent, HeaderUserComponent,
+    RoleInUserByUserComponent,AddRoleInUserByUserComponent, EditRoleInUserByUserComponent
+  ],
   imports: [
     RouterModule.forChild(routes),
     ContentHeaderModule,

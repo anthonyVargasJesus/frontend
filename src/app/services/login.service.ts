@@ -77,7 +77,7 @@ export class LoginService {
 
         localStorage.setItem('tk', resp.data.token);
 
-          this.router.navigate(['/home']);
+          this.router.navigate(['/evaluation-process-list']);
 
         return true;
       }

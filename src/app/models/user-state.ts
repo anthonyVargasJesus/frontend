@@ -1,7 +1,7 @@
 
 export class UserState {
     constructor(
-        public _id?: string,
+        public userStateId?: number,
         public name?: string,
         public description?: string,
         public constant?: string,

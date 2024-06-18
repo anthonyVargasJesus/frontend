@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
-import { getResults, getSearchResults, INIT_PAGE, PAGE_SIZE } from 'app/config/config';
+import { getResults, PAGE_SIZE } from 'app/config/config';
 import { LoginService } from 'app/services/login.service';
 import { ErrorManager } from 'app/errors/error-manager';
 import { ActiveType } from 'app/models/active-type';
@@ -13,13 +12,13 @@ import { EditActiveTypeComponent } from './edit-active-type/edit-active-type.com
 import { AddActiveTypeComponent } from './add-active-type/add-active-type.component';
 import { MatDialog } from '@angular/material/dialog';
 
-
 @Component({
   selector: 'app-active-type',
   templateUrl: './active-type.component.html',
   styles: [
   ]
 })
+
 export class ActiveTypeComponent implements OnInit {
 
 
@@ -39,7 +38,6 @@ export class ActiveTypeComponent implements OnInit {
   public currentSkin: string;
   private _unsubscribeAll: Subject<any>;
   private panelClass: string;
-
 
   constructor(private activeTypeService: ActiveTypeService, private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
@@ -73,9 +71,6 @@ export class ActiveTypeComponent implements OnInit {
       this.panelClass = 'custom-default-dialog-container';
   }
 
-
-
-
   initMenuName() {
     this.contentHeader = {
       headerTitle: 'Tipos de activos',
@@ -96,7 +91,6 @@ export class ActiveTypeComponent implements OnInit {
       }
     }
   }
-
 
 
   get() {
@@ -144,14 +138,12 @@ export class ActiveTypeComponent implements OnInit {
   }
 
   add() {
-
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(AddActiveTypeComponent, {
         height: '600px',
         width: '600px',
         autoFocus: false, panelClass: this.panelClass
       });
-
       dialogRef.afterClosed().subscribe(data => {
         if (data == null)
           return;
@@ -160,11 +152,9 @@ export class ActiveTypeComponent implements OnInit {
           this.get();
       });
     }
-
   }
 
   edit(id: String) {
-
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(EditActiveTypeComponent, {
         height: '600px',
@@ -175,7 +165,6 @@ export class ActiveTypeComponent implements OnInit {
         autoFocus: false,
         panelClass: this.panelClass
       });
-
       dialogRef.afterClosed().subscribe(data => {
         if (data == null)
           return;

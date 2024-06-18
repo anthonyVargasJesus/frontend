@@ -21,6 +21,7 @@ export class EvaluationProcessComponent implements OnInit {
   constructor(
     private evaluationService: EvaluationService,
     private route: ActivatedRoute,
+    public router: Router,
   ) { }
 
 
@@ -98,7 +99,7 @@ export class EvaluationProcessComponent implements OnInit {
   } 
   
   navigateToBack() {
-    //this.router.navigate(['/evaluation-process-list']);
+    this.router.navigate(['/evaluation-process-list']);
   }
 
 }

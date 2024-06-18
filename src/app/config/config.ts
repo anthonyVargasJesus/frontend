@@ -56,7 +56,7 @@ export function mapperVuexyToCustom(menu: Menu) {
 
   let menuVuexy = {
     icon: menu.image,
-    id: menu._id,
+    id: menu.menuId,
     title: menu.name,
     translate: "MENU.SECURITY",
     type: "collapsible",

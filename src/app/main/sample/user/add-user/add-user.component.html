@@ -1,0 +1,334 @@
+<div Class="content-wrapper">
+  <div Class="content-body">
+
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <section class="app-user-edit">
+      <div class="card">
+        <div class="card-body">
+
+          <ng-container *ngIf="loading">
+
+            <div class="container text-center mt-5">
+
+              <div class="spinner-grow text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+              <div class="spinner-grow text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+              <div class="spinner-grow text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+
+            </div>
+
+          </ng-container>
+
+          <ng-container *ngIf="!loading">
+
+            <div style="display: flex; ">
+              <a container="body" placement="top" (click)="navigateToBack()" class="" style="margin-top:7px;">
+                <div class="icon-wrapper">
+                  <i class="feather font-medium-3 icon-arrow-left"></i>
+                </div>
+              </a>
+              <h1 class="ml-1"> NUEVO USUARIO </h1>
+            </div>
+
+            <br>
+
+
+            <ul ngbNav #nav="ngbNav" class="nav nav-pills">
+              <li ngbNavItem>
+
+                <a ngbNavLink class="d-flex align-items-center"><i data-feather="user" class="mr-sm-50"></i><span
+                    class="d-none d-sm-block">DATOS DEL
+                    USUARIO</span></a>
+                <ng-template ngbNavContent>
+                  <div class="tab-pane active" id="account" aria-labelledby="account-tab" role="tabpanel">
+
+
+                    <div class="card border" style="margin-top: -15px !important;">
+                      <div class="card-body">
+                        <small class="form-text text-muted mb-2 text-center" style="margin-top: -10px;">Los campos
+                          con(*)
+                          son obligatorios</small>
+                          <form [formGroup]="form" (ngSubmit)="save()" class="auth-login-form mt-0" autocomplete="off">
+
+                            <div class="d-flex mt-1 mb-1"><svg xmlns="http://www.w3.org/2000/svg" width="19px" height="19px"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                              </svg>
+                              <h4 class="mb-0 ml-50">Información personal </h4>
+                            </div>
+    
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group">
+    
+                                  <div style="display: flex; margin-bottom: -10px;">
+                                    <label class="form-label" for="login-email">Primer nombre</label>
+                                    <label style="margin-left: 5px;">(</label>
+                                    <label style="font-size: 22px; margin-top: -1px;">*</label>
+                                    <label>)</label>
+                                  </div>
+    
+                                  <input type="text" formControlName="name" class="form-control" maxlength="50"
+                                    [ngClass]="{ 'is-invalid': submitted && f.name.errors }" placeholder=""
+                                    aria-describedby="" autofocus="" tabindex="1" />
+    
+                                  <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                                    <div *ngIf="f.name.errors.required">El primer nombre del usuario es obligatorio</div>
+                                  </div>
+    
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group">
+    
+                                  <div style="display: flex; margin-bottom: 2px;">
+                                    <label class="form-label" for="login-email">Segundo nombre</label>
+    
+                                  </div>
+    
+                                  <input type="text" formControlName="middleName" class="form-control" maxlength="50"
+                                    placeholder="" aria-describedby="" autofocus="" tabindex="1" />
+    
+    
+                                </div>
+                              </div>
+                            </div>
+    
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group">
+    
+                                  <div style="display: flex; margin-bottom: -10px;">
+                                    <label class="form-label" for="login-email">Apellido paterno</label>
+                                    <label style="margin-left: 5px;">(</label>
+                                    <label style="font-size: 22px; margin-top: -1px;">*</label>
+                                    <label>)</label>
+                                  </div>
+    
+                                  <input type="text" formControlName="firstName" class="form-control" maxlength="50"
+                                    [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" placeholder=""
+                                    aria-describedby="" autofocus="" tabindex="1" />
+    
+                                  <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+                                    <div *ngIf="f.firstName.errors.required">El apellido paterno del usuario es obligatorio
+                                    </div>
+                                  </div>
+    
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group">
+    
+                                  <div style="display: flex; margin-bottom: 2px;">
+                                    <label class="form-label" for="login-email">Apellido materno</label>
+    
+                                  </div>
+    
+                                  <input type="text" formControlName="lastName" class="form-control" maxlength="50"
+                                    placeholder="" aria-describedby="" autofocus="" tabindex="1" />
+    
+    
+                                </div>
+                              </div>
+                            </div>
+    
+    
+    
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group">
+    
+                                  <div style="display: flex; margin-bottom: 2px;">
+                                    <label class="form-label" for="login-email">DNI</label>
+                                  </div>
+    
+                                  <input type="text" formControlName="documentNumber" class="form-control" maxlength="50"
+                                    [ngClass]="{ 'is-invalid': submitted && f.documentNumber.errors }" placeholder=""
+                                    aria-describedby="" autofocus="" tabindex="1" />
+    
+                                  <div *ngIf="submitted && f.documentNumber.errors" class="invalid-feedback">
+                                    <div *ngIf="f.documentNumber.errors.maxlength">
+                                      El DNI del usuario no puede tener mas de 8 caracteres
+                                    </div>
+                                  </div>
+    
+    
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                
+                                
+                                <!-- <div class="form-group">
+    
+                                  <div style="display: flex; margin-bottom: 9px;">
+                                    <label class="form-label" for="login-email">Sexo</label>
+                                  </div>
+    
+                                  <div value="male" id="gender" role="radiogroup" tabindex="-1" class="bv-no-focus-ring">
+                                    <div class="custom-control custom-control-inline custom-radio">
+                                      <input id="gender_BV_option_0" type="radio" formControlName="sex"
+                                        class="custom-control-input" value="Masculino"
+                                        [ngClass]="{ 'is-invalid': submitted && f.sex.errors }">
+                                      <label for="gender_BV_option_0" class="custom-control-label">
+                                        <span>Masculino</span></label>
+    
+                                    </div>
+                                    <div class="custom-control custom-control-inline custom-radio">
+                                      <input id="gender_BV_option_1" type="radio" formControlName="sex"
+                                        class="custom-control-input" value="Femenino"
+                                        [ngClass]="{ 'is-invalid': submitted && f.sex.errors }">
+                                      <label for="gender_BV_option_1" class="custom-control-label"><span>Femenino</span>
+                                      </label>
+    
+                                    </div>
+    
+                                  </div>
+    
+                                </div>
+    
+                                <div *ngIf="submitted && f.sex.errors" style="font-size: 0.857rem;
+                                color: #ea5455;">
+                                  <div *ngIf="f.sex.errors.required">El sexo del usuario es obligatorio
+                                  </div>
+                                </div> -->
+    
+    
+                              </div>
+    
+    
+                            </div>
+    
+                            <div class="d-flex mt-2 mb-1">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="19px" height="19px" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-map-pin">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                              </svg>
+                              <h4 class="mb-0 ml-50">Información de contacto </h4>
+                            </div>
+    
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group">
+    
+                                  <div style="display: flex; margin-bottom: -10px;">
+                                    <label class="form-label" for="login-email">Correo electrónico</label>
+                                    <label style="margin-left: 5px;">(</label>
+                                    <label style="font-size: 22px; margin-top: -1px;">*</label>
+                                    <label>)</label>
+                                  </div>
+    
+                                  <input type="text" formControlName="email" class="form-control" maxlength="50"
+                                    [ngClass]="{ 'is-invalid': submitted && f.email.errors }" placeholder=""
+                                    aria-describedby="" autofocus="" tabindex="1" />
+    
+                                  <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                                    <div *ngIf="f.email.errors.required">El correo electrónico del usuario es obligatorio
+                                    </div>
+                                    <div *ngIf="f.email.errors.email">El correo debe ser una dirección de correo electrónico válida</div>
+                                  </div>
+    
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group">
+    
+                                  <div style="display: flex; margin-bottom: 2px;">
+                                    <label class="form-label" for="login-email">Celular</label>
+    
+                                  </div>
+    
+                                  <input type="text" formControlName="phone" class="form-control" maxlength="50"
+                                    placeholder="" aria-describedby="" autofocus="" tabindex="1" />
+    
+    
+                                </div>
+                              </div>
+                            </div>
+    
+                            
+               
+    
+                            <div class="d-flex mt-2">
+                              <div class="icon-wrapper">
+                                <i class="feather font-medium-4" data-feather='shopping-bag'></i>
+                              </div>
+                              <h4 class="mb-0 ml-50"> Información del sistema </h4>
+                            </div>
+    
+                            <br>
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group">
+    
+                                  <div style="display: flex; margin-bottom: -10px;">
+                                    <label class="form-label" for="login-email">Estado actual</label>
+                                    <label style="margin-left: 5px;">(</label>
+                                    <label style="font-size: 22px; margin-top: -1px;">*</label>
+                                    <label>)</label>
+                                  </div>
+    
+                        
+                                    <select formControlName="userState"
+                                      [ngClass]="{ 'is-invalid': submitted && f.userState.errors }" tabindex="1"
+                                      class="form-control">
+                                      <option value=""> Seleccione </option>
+                                      <option *ngFor="let userState of userStates" [value]="userState.userStateId">
+                                        {{userState.name}} </option>
+                                    </select>
+                                
+    
+                                  <div *ngIf="submitted && f.userState.errors" class="invalid-feedback">
+                                    <div *ngIf="f.userState.errors.required">El estado del usuario es obligatorio
+                                    </div>
+                                  </div>
+    
+                                </div>
+                              </div>
+    
+                              <div class="col-md-3">
+                                
+                              </div>
+                            </div>
+    
+    
+                            <div class="col-md-12 text-center mt-4">
+                              <button *ngIf="!loading2" type="submit" rippleeffect=""
+                                class="btn btn-primary mr-1 waves-effect" style="width:180px;height: 40px;">
+                                GUARDAR</button>
+                              <button *ngIf="loading2" type="button" disabled="" rippleeffect=""
+                                class="btn btn-outline-primary waves-effect mr-1" style="width:180px;height: 40px;">
+                                <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span>
+                                <span class="ml-25 align-middle">Guardando...</span>
+                              </button>
+    
+                            </div>
+    
+                          </form>
+                      </div>
+                    </div>
+
+                  </div>
+                </ng-template>
+              </li>
+            </ul>
+            <div [ngbNavOutlet]="nav" class="mt - 2"></div>
+
+          </ng-container>
+
+
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>

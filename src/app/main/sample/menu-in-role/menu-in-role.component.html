@@ -1,0 +1,141 @@
+<div class="content-wrapper">
+    <div class="content-body">
+
+        <section id="home-page">
+            <section class="users-list-wrapper">
+                <div class="card">
+
+
+
+                    <div class="row mt-0 mb-0">
+                        <div class="col-md-6 col-12">
+
+                        </div>
+
+                        <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end">
+
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="table-responsive" style="overflow: auto; max-height: 370px;">
+
+                        <table class="table">
+
+                            <tbody>
+
+
+                                <ng-container *ngIf="loading">
+                                    <tr>
+                                        <td colspan="3">
+                                            <div class="container text-center mt-5">
+
+                                                <div class="spinner-grow text-primary" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+                                                <div class="spinner-grow text-primary" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+                                                <div class="spinner-grow text-primary" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                                <ng-container *ngIf="!loading">
+
+                                    <ng-container *ngIf="menus.length == 0">
+                                        <tr>
+                                            <td colspan="3">
+                                                <div class="text-center mt-2">
+                                                    <div class="empty-row ng-star-inserted">No hay resultados para
+                                                        mostrar</div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+
+                                    <tr *ngFor="let menu of menus; let i = index">
+
+                                        <td>
+                                            <div class="card border mt-1">
+
+                                                <div class="card-header p-1">
+                                                    <h4 class="card-title font-medium-2">
+                                                        <span class="align-middle ml-50">
+
+                                                            Menú: {{ menu.name}}
+
+                                                        </span>
+                                                    </h4>
+                                                </div>
+                                                <div class="mb-0 table-responsive">
+                                                    <table role="table"
+                                                        class="table table-bordered b-table table-striped">
+
+
+                                                        <tbody role="rowgroup">
+
+                                                            <tr role="row" *ngFor="let option of menu.options" class="">
+
+                                                                <td class="td-number" aria-colindex="1" role="cell">
+
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div *ngIf="!option.loading"
+                                                                                class="custom-control custom-checkbox"
+                                                                                style="margin-left:25px;">
+                                                                                <input type="checkbox"
+                                                                                    [(ngModel)]="option.isChecked"
+                                                                                    (change)="fieldsChange($event, menu, option)"
+                                                                                    [id]="option.optionId"
+                                                                                    class="custom-control-input">
+                                                                                <label [for]="option.optionId"
+                                                                                    class="custom-control-label"></label>
+                                                                            </div>
+                                                                            <div *ngIf="option.loading"
+                                                                                style="margin-left:20px !important;height: 15px !important;width: 30px !important;margin-top:-5px;text-align: center !important;">
+                                                                                <span data-v-aa799a9e=""
+                                                                                    aria-hidden="True"
+                                                                                    class="spinner-border spinner-border-sm text-primary"
+                                                                                    style="height:16px;width:16px;">
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+
+
+                                                                </td>
+                                                                <td aria-colindex="2" role="cell" class="">
+                                                                    {{option.name}} </td>
+
+                                                            </tr>
+
+
+                                                        </tbody>
+
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                        </td>
+
+
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </section>
+        </section>
+
+    </div>
+</div>

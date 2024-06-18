@@ -3,7 +3,7 @@ import { UserState } from "./user-state";
 
 export class User {
     constructor(
-        public _id?: string,
+        public userId?: number,
         public birthDate?: Date,
         public name?: string,
         public middleName?: string,
@@ -31,7 +31,8 @@ export class User {
         public token?: string,
         public color?: string,
         public roles?: Role[],
-        public array?: string[]
+        public userStateId?: number,
+        public documentNumber?: string,
     ) { }
 }
 

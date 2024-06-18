@@ -3,10 +3,12 @@ import { Option } from "./option";
 
 export class OptionInMenu {
     constructor(
-        public _id?: string,
+        public optionInMenuId?: number,
         public menu?: Menu,
         public option?: Option,
-        public array?: string[]
+        public menuId?: number,
+        public optionId?: number,
+        public order?: number,
     ) { }
 }
 

@@ -1,12 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
-import { ParamMap, Router } from '@angular/router';
 import { ActiveType } from 'app/models/active-type';
 import { ErrorManager } from 'app/errors/error-manager';
 import { ActiveTypeService } from 'app/services/active-type.service';
 import { MatDialogRef } from '@angular/material/dialog';
-
-
 
 @Component({
   selector: 'app-add-active-type',
@@ -15,16 +12,13 @@ import { MatDialogRef } from '@angular/material/dialog';
   ]
 })
 
-
 export class AddActiveTypeComponent implements OnInit {
 
   constructor(
     private activeTypeService: ActiveTypeService,
-
-    private _formBuilder: FormBuilder, private dialogRef: MatDialogRef<AddActiveTypeComponent>,
-
+    private _formBuilder: FormBuilder,
+    private dialogRef: MatDialogRef<AddActiveTypeComponent>,
   ) { }
-
 
   activeType: ActiveType;
   loading = false;
@@ -32,12 +26,9 @@ export class AddActiveTypeComponent implements OnInit {
   public form: FormGroup;
   public submitted = false;
 
-
   ngOnInit(): void {
     this.initForm();
-
     this.initActiveType();
-
   }
 
   initForm() {
@@ -50,17 +41,9 @@ export class AddActiveTypeComponent implements OnInit {
     this.activeType = new ActiveType();
   }
 
-
-
-
   getFormValue() {
     this.activeType.name = this.form.value.name;
   }
-
-
-
-
-
 
   get f() {
     return this.form.controls;
@@ -75,8 +58,6 @@ export class AddActiveTypeComponent implements OnInit {
     this.loading2 = true;
     this.getFormValue();
 
-
-
     this.activeTypeService.insert(this.activeType)
       .subscribe(res => {
         this.activeType = res.data;
@@ -87,8 +68,12 @@ export class AddActiveTypeComponent implements OnInit {
         ErrorManager.handleError(error);
       });
 
-  } close() {
+  } 
+  
+  close() {
     this.dialogRef.close();
   }
+
+
 }
 
