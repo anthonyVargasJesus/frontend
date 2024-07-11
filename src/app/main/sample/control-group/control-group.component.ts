@@ -1,28 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { getResults, PAGE_SIZE } from 'app/config/config';
-import { LoginService } from 'app/services/login.service';
-import { ErrorManager } from 'app/errors/error-manager';
-import { ControlType } from 'app/models/control-type';
-import { ControlTypeService } from 'app/services/control-type.service';
-import Swal from 'sweetalert2';
-import { Subject } from 'rxjs/internal/Subject';
-import { CoreConfigService } from '@core/services/config.service';
-import { takeUntil } from 'rxjs/internal/operators/takeUntil';
-import { EditControlTypeComponent } from './edit-control-type/edit-control-type.component';
-import { AddControlTypeComponent } from './add-control-type/add-control-type.component';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-
+import { AddControlGroupComponent } from './add-control-group/add-control-group.component';
+import { EditControlGroupComponent } from './edit-control-group/edit-control-group.component';
+import { MatAccordion } from '@angular/material/expansion';
+import { AddControlComponent } from '../control/add-control/add-control.component';
+import { ControlGroup } from 'app/models/control-group';
+import { Subject } from 'rxjs';
+import { ControlGroupService } from 'app/services/control-group.service';
+import { LoginService } from 'app/services/login.service';
+import { CoreConfigService } from '@core/services/config.service';
+import { PAGE_SIZE, getResults } from 'app/config/config';
+import { takeUntil } from 'rxjs/operators';
+import { ErrorManager } from 'app/errors/error-manager';
+import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-control-type',
-  templateUrl: './control-type.component.html',
+  selector: 'app-control-group',
+  templateUrl: './control-group.component.html',
   styles: [
   ]
 })
-export class ControlTypeComponent implements OnInit {
+export class ControlGroupComponent implements OnInit {
+
+  @ViewChild(MatAccordion) accordion: MatAccordion;
 
 
-  controlTypes: ControlType[] = [];
+  controlGroups: ControlGroup[] = [];
   selectedRow = 0;
   page = 1;
   skip = 0;
@@ -39,13 +42,18 @@ export class ControlTypeComponent implements OnInit {
   private _unsubscribeAll: Subject<any>;
   private panelClass: string;
 
+  @Input()
+  standardId: number;
 
-  constructor(private controlTypeService: ControlTypeService, private loginService: LoginService,
+  constructor(
+    private controlGroupService: ControlGroupService,
+    private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
     private dialog: MatDialog
   ) {
 
   }
+
 
   ngOnInit() {
     this.getTheme();
@@ -73,22 +81,24 @@ export class ControlTypeComponent implements OnInit {
   }
 
 
-
-
   initMenuName() {
     this.contentHeader = {
-      headerTitle: 'ControlType',
+      headerTitle: 'Controles',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'ControlType',
+            name: 'Configuración',
             isLink: false,
             link: '#'
           },
           {
-            name: 'ControlType',
+            name: 'Normas',
+            isLink: false
+          },
+          {
+            name: 'ISO 27001',
             isLink: false
           }
         ]
@@ -98,9 +108,17 @@ export class ControlTypeComponent implements OnInit {
 
 
 
+  search(text: string) {
+    this.searchText = text;
+    this.skip = 0;
+
+    this.get();
+  }
+
   get() {
+
     this.loading = true;
-    this.controlTypeService.get(this.skip, this.pageSize, this.searchText)
+    this.controlGroupService.get(this.skip, this.pageSize, this.searchText, this.standardId)
       .subscribe((res: any) => {
         this.asignObjects(res);
         this.page = (this.skip / this.pageSize) + 1;
@@ -145,10 +163,12 @@ export class ControlTypeComponent implements OnInit {
   add() {
 
     if (this.loginService.isAuthenticated()) {
-      let dialogRef = this.dialog.open(AddControlTypeComponent, {
+      let dialogRef = this.dialog.open(AddControlGroupComponent, {
         height: '600px',
-        width: '550px',
-        autoFocus: false, panelClass: this.panelClass
+        width: '600px',
+        autoFocus: false,
+        data: { standardId: this.standardId },
+        panelClass: this.panelClass
       });
 
       dialogRef.afterClosed().subscribe(data => {
@@ -162,10 +182,11 @@ export class ControlTypeComponent implements OnInit {
 
   }
 
-  edit(id: String) {
+
+  edit(id: number) {
 
     if (this.loginService.isAuthenticated()) {
-      let dialogRef = this.dialog.open(EditControlTypeComponent, {
+      let dialogRef = this.dialog.open(EditControlGroupComponent, {
         height: '600px',
         width: '600px',
         data: {
@@ -183,12 +204,15 @@ export class ControlTypeComponent implements OnInit {
           this.get();
       });
     }
+
   }
 
-  delete(controlType: ControlType) {
+
+
+  delete(controlGroup: ControlGroup) {
 
     let text: string;
-    text = '¿Esta seguro de eliminar la controlType ' + controlType.name + '?';
+    text = '¿Esta seguro de eliminar el grupo: ' + controlGroup.name + '?';
 
     Swal.fire({
       title: 'Confirmación',
@@ -202,7 +226,7 @@ export class ControlTypeComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.controlTypeService.delete(controlType.controlTypeId)
+        this.controlGroupService.delete(controlGroup.controlGroupId.toString())
           .subscribe(deleted => {
             this.get();
           });
@@ -212,41 +236,46 @@ export class ControlTypeComponent implements OnInit {
 
   }
 
-  search(text: string) {
-    this.searchText = text;
-    this.skip = 0;
-    this.get();
-  }
 
   onKeydown(event, text: string) {
+
     this.searchText = text;
     if (event.key === 'Enter')
       this.search(this.searchText);
+
   }
 
   asignObjects(res) {
-    this.controlTypes = res.data;
+    this.controlGroups = res.data;
     this.total = res.pagination.totalRows;
     this.totalPages = res.pagination.totalPages;
   }
 
+  addControlFromGroup(controlGroupId: number){
 
-}  //{
-//path: 'control-type',
-//component: ControlTypeComponent,
-//data: { animation: 'control-type' }
-//},
+    console.log(controlGroupId);
+    if (this.loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(AddControlComponent, {
+        height: '600px',
+        width: '600px',
+        autoFocus: false, 
+        data: { 
+          controlGroupId: controlGroupId, 
+          standardId: this.standardId 
+        },
+         panelClass: this.panelClass
+      });
+  
+      dialogRef.afterClosed().subscribe(data => {
+               if (data == null)
+           return;
+        
+          // if (data.updated == true)
+          //   this.loadData();
+      });
+      }
 
-//ControlTypeComponent, AddControlTypeComponent, EditControlTypeComponent
-//{
-//id: 'controlType',
-//title: '',
-//translate: 'MENU.CONTROLTYPE',
-//type: 'item',
-//icon: 'file',
-//url: 'controlType'
-//},
+      
+  }
 
-//   CONTROLTYPE: 'ControlType'
-
-
+}

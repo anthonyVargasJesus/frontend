@@ -45,7 +45,8 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(appRoutes, {
       scrollPositionRestoration: 'enabled', // Add options right here
-      relativeLinkResolution: 'legacy'
+      relativeLinkResolution: 'legacy',
+      useHash: true
     }),
     TranslateModule.forRoot(),
 

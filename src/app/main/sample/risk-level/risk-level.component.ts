@@ -1,28 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { getResults, PAGE_SIZE } from 'app/config/config';
+
+import { getResults, getSearchResults, INIT_PAGE, PAGE_SIZE } from 'app/config/config';
 import { LoginService } from 'app/services/login.service';
 import { ErrorManager } from 'app/errors/error-manager';
-import { ControlType } from 'app/models/control-type';
-import { ControlTypeService } from 'app/services/control-type.service';
+import { RiskLevel } from 'app/models/risk-level';
+import { RiskLevelService } from 'app/services/risk-level.service';
 import Swal from 'sweetalert2';
 import { Subject } from 'rxjs/internal/Subject';
 import { CoreConfigService } from '@core/services/config.service';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
-import { EditControlTypeComponent } from './edit-control-type/edit-control-type.component';
-import { AddControlTypeComponent } from './add-control-type/add-control-type.component';
+import { EditRiskLevelComponent } from './edit-risk-level/edit-risk-level.component';
+import { AddRiskLevelComponent } from './add-risk-level/add-risk-level.component';
 import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
-  selector: 'app-control-type',
-  templateUrl: './control-type.component.html',
+  selector: 'app-risk-level',
+  templateUrl: './risk-level.component.html',
   styles: [
   ]
 })
-export class ControlTypeComponent implements OnInit {
+export class RiskLevelComponent implements OnInit {
 
 
-  controlTypes: ControlType[] = [];
+  riskLevels: RiskLevel[] = [];
   selectedRow = 0;
   page = 1;
   skip = 0;
@@ -40,7 +41,7 @@ export class ControlTypeComponent implements OnInit {
   private panelClass: string;
 
 
-  constructor(private controlTypeService: ControlTypeService, private loginService: LoginService,
+  constructor(private riskLevelService: RiskLevelService, private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
     private dialog: MatDialog
   ) {
@@ -77,18 +78,18 @@ export class ControlTypeComponent implements OnInit {
 
   initMenuName() {
     this.contentHeader = {
-      headerTitle: 'ControlType',
+      headerTitle: 'RiskLevel',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'ControlType',
+            name: 'RiskLevel',
             isLink: false,
             link: '#'
           },
           {
-            name: 'ControlType',
+            name: 'RiskLevel',
             isLink: false
           }
         ]
@@ -100,8 +101,11 @@ export class ControlTypeComponent implements OnInit {
 
   get() {
     this.loading = true;
-    this.controlTypeService.get(this.skip, this.pageSize, this.searchText)
+    this.riskLevelService.get(this.skip, this.pageSize, this.searchText)
       .subscribe((res: any) => {
+
+        console.log(res);
+        
         this.asignObjects(res);
         this.page = (this.skip / this.pageSize) + 1;
         this.results = getResults(this.total, this.totalPages);
@@ -145,9 +149,9 @@ export class ControlTypeComponent implements OnInit {
   add() {
 
     if (this.loginService.isAuthenticated()) {
-      let dialogRef = this.dialog.open(AddControlTypeComponent, {
+      let dialogRef = this.dialog.open(AddRiskLevelComponent, {
         height: '600px',
-        width: '550px',
+        width: '600px',
         autoFocus: false, panelClass: this.panelClass
       });
 
@@ -165,7 +169,7 @@ export class ControlTypeComponent implements OnInit {
   edit(id: String) {
 
     if (this.loginService.isAuthenticated()) {
-      let dialogRef = this.dialog.open(EditControlTypeComponent, {
+      let dialogRef = this.dialog.open(EditRiskLevelComponent, {
         height: '600px',
         width: '600px',
         data: {
@@ -185,10 +189,10 @@ export class ControlTypeComponent implements OnInit {
     }
   }
 
-  delete(controlType: ControlType) {
+  delete(riskLevel: RiskLevel) {
 
     let text: string;
-    text = '¿Esta seguro de eliminar la controlType ' + controlType.name + '?';
+    text = '¿Esta seguro de eliminar la riskLevel ' + riskLevel.name + '?';
 
     Swal.fire({
       title: 'Confirmación',
@@ -202,7 +206,7 @@ export class ControlTypeComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.controlTypeService.delete(controlType.controlTypeId)
+        this.riskLevelService.delete(riskLevel.riskLevelId)
           .subscribe(deleted => {
             this.get();
           });
@@ -225,28 +229,28 @@ export class ControlTypeComponent implements OnInit {
   }
 
   asignObjects(res) {
-    this.controlTypes = res.data;
+    this.riskLevels = res.data;
     this.total = res.pagination.totalRows;
     this.totalPages = res.pagination.totalPages;
   }
 
 
 }  //{
-//path: 'control-type',
-//component: ControlTypeComponent,
-//data: { animation: 'control-type' }
+//path: 'risk-level',
+//component: RiskLevelComponent,
+//data: { animation: 'risk-level' }
 //},
 
-//ControlTypeComponent, AddControlTypeComponent, EditControlTypeComponent
+//RiskLevelComponent, AddRiskLevelComponent, EditRiskLevelComponent
 //{
-//id: 'controlType',
+//id: 'riskLevel',
 //title: '',
-//translate: 'MENU.CONTROLTYPE',
+//translate: 'MENU.RISKLEVEL',
 //type: 'item',
 //icon: 'file',
-//url: 'controlType'
+//url: 'riskLevel'
 //},
 
-//   CONTROLTYPE: 'ControlType'
+//   RISKLEVEL: 'RiskLevel'
 
 

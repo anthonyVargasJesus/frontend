@@ -2,30 +2,30 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { ControlType } from 'app/models/control-type';
+import { RiskLevel } from 'app/models/risk-level';
 import { ErrorManager } from 'app/errors/error-manager';
-import { ControlTypeService } from 'app/services/control-type.service';
+import { RiskLevelService } from 'app/services/risk-level.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogData } from 'app/models/dialog-data';
 
 @Component({
-  selector: 'app-edit-control-type',
-  templateUrl: './edit-control-type.component.html',
+  selector: 'app-edit-risk-level',
+  templateUrl: './edit-risk-level.component.html',
   styles: [
   ]
 })
-export class EditControlTypeComponent implements OnInit {
+export class EditRiskLevelComponent implements OnInit {
 
   constructor(
-    private controlTypeService: ControlTypeService,
+    private riskLevelService: RiskLevelService,
     private route: ActivatedRoute,
     private _formBuilder: FormBuilder,
-    public router: Router, @Inject(MAT_DIALOG_DATA) private data: DialogData, private dialogRef: MatDialogRef<EditControlTypeComponent>,
+    public router: Router, @Inject(MAT_DIALOG_DATA) private data: DialogData, private dialogRef: MatDialogRef<EditRiskLevelComponent>,
 
   ) { }
 
 
-  controlType: ControlType;
+  riskLevel: RiskLevel;
   loading = false;
   id: string;
   loading2 = false; public form: FormGroup;
@@ -36,7 +36,7 @@ export class EditControlTypeComponent implements OnInit {
     this.initForm();
 
 
-    this.initControlType();
+    this.initRiskLevel();
 
     this.id = this.data['_id'];
     this.obtain(this.id);
@@ -45,8 +45,8 @@ export class EditControlTypeComponent implements OnInit {
   }
 
 
-  initControlType() {
-    this.controlType = new ControlType();
+  initRiskLevel() {
+    this.riskLevel = new RiskLevel();
   }
 
 
@@ -58,7 +58,7 @@ export class EditControlTypeComponent implements OnInit {
   initForm() {
     this.form = this._formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(100),]],
-      description: ['', [Validators.required, Validators.maxLength(500),]],
+      description: ['', [Validators.maxLength(500),]],
       abbreviation: ['', [Validators.required, Validators.maxLength(10),]],
       factor: ['', [Validators.maxLength(8),]],
       minimum: ['', [Validators.required, Validators.maxLength(8),]],
@@ -69,10 +69,10 @@ export class EditControlTypeComponent implements OnInit {
 
   obtain(id: string) {
     this.loading = true;
-    this.controlTypeService.obtain(id)
+    this.riskLevelService.obtain(id)
       .subscribe((res: any) => {
-        this.controlType = res.data;
-        this.setFormValue(this.controlType);
+        this.riskLevel = res.data;
+        this.setFormValue(this.riskLevel);
         this.loading = false;
       }, error => {
         this.loading = false;
@@ -80,35 +80,35 @@ export class EditControlTypeComponent implements OnInit {
       });
   }
 
-  setFormValue(controlType: ControlType) {
+  setFormValue(riskLevel: RiskLevel) {
     this.form.setValue({
-      name: ((controlType.name == null) ? '' : controlType.name),
-      description: ((controlType.description == null) ? '' : controlType.description),
-      abbreviation: ((controlType.abbreviation == null) ? '' : controlType.abbreviation),
-      factor: ((controlType.factor == null) ? '' : controlType.factor),
-      minimum: ((controlType.minimum == null) ? '' : controlType.minimum),
-      maximum: ((controlType.maximum == null) ? '' : controlType.maximum),
-      color: ((controlType.color == null) ? '' : controlType.color),
+      name: ((riskLevel.name == null) ? '' : riskLevel.name),
+      description: ((riskLevel.description == null) ? '' : riskLevel.description),
+      abbreviation: ((riskLevel.abbreviation == null) ? '' : riskLevel.abbreviation),
+      factor: ((riskLevel.factor == null) ? '' : riskLevel.factor),
+      minimum: ((riskLevel.minimum == null) ? '' : riskLevel.minimum),
+      maximum: ((riskLevel.maximum == null) ? '' : riskLevel.maximum),
+      color: ((riskLevel.color == null) ? '' : riskLevel.color),
     });
   }
 
 
   getFormValue() {
-    this.controlType.controlTypeId = Number(this.id);
-    this.controlType.name = this.form.value.name;
-    this.controlType.description = this.form.value.description;
-    this.controlType.abbreviation = this.form.value.abbreviation;
-    this.controlType.factor = this.form.value.factor;
-    this.controlType.minimum = this.form.value.minimum;
-    this.controlType.maximum = this.form.value.maximum;
-    this.controlType.color = this.form.value.color;
+    this.riskLevel.riskLevelId = Number(this.id);
+    this.riskLevel.name = this.form.value.name;
+    this.riskLevel.description = this.form.value.description;
+    this.riskLevel.abbreviation = this.form.value.abbreviation;
+    this.riskLevel.factor = this.form.value.factor;
+    this.riskLevel.minimum = this.form.value.minimum;
+    this.riskLevel.maximum = this.form.value.maximum;
+    this.riskLevel.color = this.form.value.color;
 
     if (this.form.value.minimum == "")
-      this.controlType.minimum = null;
+      this.riskLevel.minimum = null;
     if (this.form.value.maximum == "")
-      this.controlType.maximum = null;
+      this.riskLevel.maximum = null;
     if (this.form.value.factor == "")
-      this.controlType.factor = null;
+      this.riskLevel.factor = null;
     
   }
 
@@ -129,9 +129,9 @@ export class EditControlTypeComponent implements OnInit {
 
 
 
-    this.controlTypeService.update(this.controlType)
+    this.riskLevelService.update(this.riskLevel)
       .subscribe(res => {
-        this.controlType = res.data;
+        this.riskLevel = res.data;
         this.dialogRef.close({ updated: true });
         this.loading2 = false;
 
@@ -148,3 +148,4 @@ export class EditControlTypeComponent implements OnInit {
   }
 
 }
+

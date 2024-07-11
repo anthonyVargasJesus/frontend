@@ -40,9 +40,8 @@
 
 
   <div mat-dialog-title class="d-flex align-items-center" style="margin-top:-5px;">
-    <h4 *ngIf="controlType.name">{{controlType.name.toUpperCase()}}</h4>
-    <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto"
-      style="margin-top:-10px; margin-right:-16px;">
+    <h4>NUEVO RISKLEVEL</h4>
+    <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto" style="margin-right: -16px;">
 
       <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
         <div class="icon-wrapper">
@@ -95,7 +94,7 @@
                   <label style="font-size: 22px; margin-top:-1px;">*</label>
                   <label>)</label>
                   <div style="width: 100px; height: 20px; margin-left: 10px;"
-                    [style.background-color]="controlType.color">
+                    [style.background-color]="riskLevel.color">
                   </div>
                 </div>
                 <input type="text" formControlName="color" [ngClass]="{ 'is-invalid': submitted && f.color.errors }"
@@ -177,19 +176,14 @@
   
           <div class="form-group">
   
-            <div style="display:flex; margin-bottom:-10px;">
+            <div style="display:flex; margin-bottom:0px;">
               <label class="form-label">Descripción</label>
-              <label style="margin-left: 5px;">(</label>
-              <label style="font-size: 22px; margin-top:-1px;">*</label>
-              <label>)</label>
+           
             </div>
             <textarea rows="2" formControlName="description"
               [ngClass]="{ 'is-invalid': submitted && f.description.errors }" maxlength="500" class="form-control"
               aria-describedby="" autofocus="" tabindex="1"></textarea>
-            <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
-              <div *ngIf="f.description.errors.required">La descripción es obligatorio</div>
-              <div *ngIf="f.description.errors.maxlength">La descripción no puede tener mas de 500 caracteres </div>
-            </div>
+         
           </div>
   
   

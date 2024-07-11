@@ -1,14 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
-import { ParamMap, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { User } from 'app/models/user';
 import { ErrorManager } from 'app/errors/error-manager';
 import { UserService } from 'app/services/user.service';
-
 import { UserStateService } from 'app/services/user-state.service';
 import { UserState } from 'app/models/user-state';
-
-
 
 @Component({
   selector: 'app-add-user',
@@ -17,15 +14,12 @@ import { UserState } from 'app/models/user-state';
   ]
 })
 
-
 export class AddUserComponent implements OnInit {
 
   constructor(
     private userService: UserService,
     public router: Router,
     private _formBuilder: FormBuilder, private userStateService: UserStateService,
-
-
   ) { }
 
   userStates: UserState[] = [];

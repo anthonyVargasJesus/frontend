@@ -1,32 +1,32 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ParamMap, Router } from '@angular/router';
-import { ControlType } from 'app/models/control-type';
+import { RiskLevel } from 'app/models/risk-level';
 import { ErrorManager } from 'app/errors/error-manager';
-import { ControlTypeService } from 'app/services/control-type.service';
+import { RiskLevelService } from 'app/services/risk-level.service';
 import { MatDialogRef } from '@angular/material/dialog';
 
 
 
 @Component({
-  selector: 'app-add-control-type',
-  templateUrl: './add-control-type.component.html',
+  selector: 'app-add-risk-level',
+  templateUrl: './add-risk-level.component.html',
   styles: [
   ]
 })
 
 
-export class AddControlTypeComponent implements OnInit {
+export class AddRiskLevelComponent implements OnInit {
 
   constructor(
-    private controlTypeService: ControlTypeService,
+    private riskLevelService: RiskLevelService,
 
-    private _formBuilder: FormBuilder, private dialogRef: MatDialogRef<AddControlTypeComponent>,
+    private _formBuilder: FormBuilder, private dialogRef: MatDialogRef<AddRiskLevelComponent>,
 
   ) { }
 
 
-  controlType: ControlType;
+  riskLevel: RiskLevel;
   loading = false;
   loading2 = false;
   public form: FormGroup;
@@ -36,14 +36,14 @@ export class AddControlTypeComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
 
-    this.initControlType();
+    this.initRiskLevel();
 
   }
 
   initForm() {
     this.form = this._formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(100),]],
-      description: ['', [Validators.required, Validators.maxLength(500),]],
+      description: ['', [Validators.maxLength(500),]],
       abbreviation: ['', [Validators.required, Validators.maxLength(10),]],
       factor: ['', [Validators.maxLength(8),]],
       minimum: ['', [Validators.required, Validators.maxLength(8),]],
@@ -52,28 +52,29 @@ export class AddControlTypeComponent implements OnInit {
     });
   }
 
-  initControlType() {
-    this.controlType = new ControlType();
+  initRiskLevel() {
+    this.riskLevel = new RiskLevel();
   }
 
 
 
 
   getFormValue() {
-    this.controlType.name = this.form.value.name;
-    this.controlType.description = this.form.value.description;
-    this.controlType.abbreviation = this.form.value.abbreviation;
-    this.controlType.factor = this.form.value.factor;
-    this.controlType.minimum = this.form.value.minimum;
-    this.controlType.maximum = this.form.value.maximum;
-    this.controlType.color = this.form.value.color;
+    this.riskLevel.name = this.form.value.name;
+    this.riskLevel.description = this.form.value.description;
+    this.riskLevel.abbreviation = this.form.value.abbreviation;
+    this.riskLevel.factor = this.form.value.factor;
+    this.riskLevel.minimum = this.form.value.minimum;
+    this.riskLevel.maximum = this.form.value.maximum;
+    this.riskLevel.color = this.form.value.color;
 
     if (this.form.value.minimum == "")
-      this.controlType.minimum = null;
+      this.riskLevel.minimum = null;
     if (this.form.value.maximum == "")
-      this.controlType.maximum = null;
+      this.riskLevel.maximum = null;
     if (this.form.value.factor == "")
-      this.controlType.factor = null;
+      this.riskLevel.factor = null;
+
   }
 
 
@@ -94,9 +95,11 @@ export class AddControlTypeComponent implements OnInit {
     this.loading2 = true;
     this.getFormValue();
 
-    this.controlTypeService.insert(this.controlType)
+
+
+    this.riskLevelService.insert(this.riskLevel)
       .subscribe(res => {
-        this.controlType = res.data;
+        this.riskLevel = res.data;
         this.loading2 = false;
         this.dialogRef.close({ updated: true });
       }, error => {
@@ -108,3 +111,4 @@ export class AddControlTypeComponent implements OnInit {
     this.dialogRef.close();
   }
 }
+

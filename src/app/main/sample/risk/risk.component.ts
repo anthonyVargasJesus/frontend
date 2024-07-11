@@ -1,28 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { getResults, PAGE_SIZE } from 'app/config/config';
+
+import { getResults, getSearchResults, INIT_PAGE, PAGE_SIZE } from 'app/config/config';
 import { LoginService } from 'app/services/login.service';
 import { ErrorManager } from 'app/errors/error-manager';
-import { ControlType } from 'app/models/control-type';
-import { ControlTypeService } from 'app/services/control-type.service';
+import { Risk } from 'app/models/risk';
+import { RiskService } from 'app/services/risk.service';
 import Swal from 'sweetalert2';
 import { Subject } from 'rxjs/internal/Subject';
 import { CoreConfigService } from '@core/services/config.service';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
-import { EditControlTypeComponent } from './edit-control-type/edit-control-type.component';
-import { AddControlTypeComponent } from './add-control-type/add-control-type.component';
+//import { EditRiskComponent } from './edit-risk/edit-risk.component';
+import { AddRiskComponent } from './add-risk/add-risk.component';
 import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
-  selector: 'app-control-type',
-  templateUrl: './control-type.component.html',
+  selector: 'app-risk',
+  templateUrl: './risk.component.html',
   styles: [
   ]
 })
-export class ControlTypeComponent implements OnInit {
+export class RiskComponent implements OnInit {
 
 
-  controlTypes: ControlType[] = [];
+  risks: Risk[] = [];
   selectedRow = 0;
   page = 1;
   skip = 0;
@@ -40,7 +41,7 @@ export class ControlTypeComponent implements OnInit {
   private panelClass: string;
 
 
-  constructor(private controlTypeService: ControlTypeService, private loginService: LoginService,
+  constructor(private riskService: RiskService, private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
     private dialog: MatDialog
   ) {
@@ -77,18 +78,18 @@ export class ControlTypeComponent implements OnInit {
 
   initMenuName() {
     this.contentHeader = {
-      headerTitle: 'ControlType',
+      headerTitle: 'Risk',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'ControlType',
+            name: 'Risk',
             isLink: false,
             link: '#'
           },
           {
-            name: 'ControlType',
+            name: 'Risk',
             isLink: false
           }
         ]
@@ -100,7 +101,7 @@ export class ControlTypeComponent implements OnInit {
 
   get() {
     this.loading = true;
-    this.controlTypeService.get(this.skip, this.pageSize, this.searchText)
+    this.riskService.get(this.skip, this.pageSize, this.searchText)
       .subscribe((res: any) => {
         this.asignObjects(res);
         this.page = (this.skip / this.pageSize) + 1;
@@ -145,9 +146,9 @@ export class ControlTypeComponent implements OnInit {
   add() {
 
     if (this.loginService.isAuthenticated()) {
-      let dialogRef = this.dialog.open(AddControlTypeComponent, {
+      let dialogRef = this.dialog.open(AddRiskComponent, {
         height: '600px',
-        width: '550px',
+        width: '600px',
         autoFocus: false, panelClass: this.panelClass
       });
 
@@ -164,31 +165,32 @@ export class ControlTypeComponent implements OnInit {
 
   edit(id: String) {
 
-    if (this.loginService.isAuthenticated()) {
-      let dialogRef = this.dialog.open(EditControlTypeComponent, {
-        height: '600px',
-        width: '600px',
-        data: {
-          _id: id,
-        },
-        autoFocus: false,
-        panelClass: this.panelClass
-      });
+    // if (this.loginService.isAuthenticated()) {
+    //   let dialogRef = this.dialog.open(EditRiskComponent, {
+    //     height: '600px',
+    //     width: '600px',
+    //     data: {
+    //       _id: id,
+    //     },
+    //     autoFocus: false,
+    //     panelClass: this.panelClass
+    //   });
 
-      dialogRef.afterClosed().subscribe(data => {
-        if (data == null)
-          return;
+    //   dialogRef.afterClosed().subscribe(data => {
+    //     if (data == null)
+    //       return;
 
-        if (data.updated == true)
-          this.get();
-      });
-    }
+    //     if (data.updated == true)
+    //       this.get();
+    //   });
+    // }
+
   }
 
-  delete(controlType: ControlType) {
+  delete(risk: Risk) {
 
     let text: string;
-    text = '¿Esta seguro de eliminar la controlType ' + controlType.name + '?';
+    text = '¿Esta seguro de eliminar la risk ' + risk.activesInventoryName + '?';
 
     Swal.fire({
       title: 'Confirmación',
@@ -202,7 +204,7 @@ export class ControlTypeComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.controlTypeService.delete(controlType.controlTypeId)
+        this.riskService.delete(risk.riskId)
           .subscribe(deleted => {
             this.get();
           });
@@ -225,28 +227,28 @@ export class ControlTypeComponent implements OnInit {
   }
 
   asignObjects(res) {
-    this.controlTypes = res.data;
+    this.risks = res.data;
     this.total = res.pagination.totalRows;
     this.totalPages = res.pagination.totalPages;
   }
 
 
 }  //{
-//path: 'control-type',
-//component: ControlTypeComponent,
-//data: { animation: 'control-type' }
+//path: 'risk',
+//component: RiskComponent,
+//data: { animation: 'risk' }
 //},
 
-//ControlTypeComponent, AddControlTypeComponent, EditControlTypeComponent
+//RiskComponent, AddRiskComponent, EditRiskComponent
 //{
-//id: 'controlType',
+//id: 'risk',
 //title: '',
-//translate: 'MENU.CONTROLTYPE',
+//translate: 'MENU.RISK',
 //type: 'item',
 //icon: 'file',
-//url: 'controlType'
+//url: 'risk'
 //},
 
-//   CONTROLTYPE: 'ControlType'
+//   RISK: 'Risk'
 
 

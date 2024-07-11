@@ -39,9 +39,8 @@ import { DocumentationComponent } from './documentation/documentation.component'
 import { AddDocumentationComponent } from './documentation/add-documentation/add-documentation.component';
 import { EditDocumentationComponent } from './documentation/edit-documentation/edit-documentation.component';
 import { ControlComponent } from './control/control.component';
-import { ControlTypeComponent } from './control-type/control-type.component';
-import { AddControlTypeComponent } from './control-type/add-control-type/add-control-type.component';
-import { EditControlTypeComponent } from './control-type/edit-control-type/edit-control-type.component';
+import { ControlGroupComponent } from './control-group/control-group.component';
+
 import { EditControlComponent } from './control/edit-control/edit-control.component';
 import { AddControlComponent } from './control/add-control/add-control.component';
 import { MatSelectModule } from '@angular/material/select';
@@ -175,6 +174,28 @@ import { HeaderUserComponent } from './user/header-user/header-user.component';
 import { RoleInUserByUserComponent } from './role-in-user-by-user/role-in-user-by-user.component';
 import { AddRoleInUserByUserComponent } from './role-in-user-by-user/add-role-in-user-by-user/add-role-in-user-by-user.component';
 import { EditRoleInUserByUserComponent } from './role-in-user-by-user/edit-role-in-user-by-user/edit-role-in-user-by-user.component';
+import { MenaceTypeComponent } from './menace-type/menace-type.component';
+import { AddMenaceTypeComponent } from './menace-type/add-menace-type/add-menace-type.component';
+import { EditMenaceTypeComponent } from './menace-type/edit-menace-type/edit-menace-type.component';
+import { MenaceComponent } from './menace/menace.component';
+import { AddMenaceComponent } from './menace/add-menace/add-menace.component';
+import { EditMenaceComponent } from './menace/edit-menace/edit-menace.component';
+import { VulnerabilityTypeComponent } from './vulnerability-type/vulnerability-type.component';
+import { AddVulnerabilityTypeComponent } from './vulnerability-type/add-vulnerability-type/add-vulnerability-type.component';
+import { EditVulnerabilityTypeComponent } from './vulnerability-type/edit-vulnerability-type/edit-vulnerability-type.component';
+import { VulnerabilityComponent } from './vulnerability/vulnerability.component';
+import { AddVulnerabilityComponent } from './vulnerability/add-vulnerability/add-vulnerability.component';
+import { EditVulnerabilityComponent } from './vulnerability/edit-vulnerability/edit-vulnerability.component';
+import { AddControlGroupComponent } from './control-group/add-control-group/add-control-group.component';
+import { EditControlGroupComponent } from './control-group/edit-control-group/edit-control-group.component';
+import { ControlTypeComponent } from './control-type/control-type.component';
+import { AddControlTypeComponent } from './control-type/add-control-type/add-control-type.component';
+import { EditControlTypeComponent } from './control-type/edit-control-type/edit-control-type.component';
+import { RiskLevelComponent } from './risk-level/risk-level.component';
+import { AddRiskLevelComponent } from './risk-level/add-risk-level/add-risk-level.component';
+import { EditRiskLevelComponent } from './risk-level/edit-risk-level/edit-risk-level.component';
+import { RiskComponent } from './risk/risk.component';
+import { AddRiskComponent } from './risk/add-risk/add-risk.component';
 
 FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]);
 //FullCalendarModule.registerPlugins([timeGridPlugin, listPlugin, interactionPlugin]);
@@ -370,12 +391,47 @@ const routes = [
     component: EditUserComponent,
     data: { animation: 'edit-actives-inventory' }
   },
+  {
+    path: 'menace-type',
+    component: MenaceTypeComponent,
+    data: { animation: 'menace-type' }
+  },
+  {
+    path: 'menace',
+    component: MenaceComponent,
+    data: { animation: 'menace' }
+  },
+  {
+    path: 'vulnerability-type',
+    component: VulnerabilityTypeComponent,
+    data: { animation: 'vulnerability-type' }
+  },
+  {
+    path: 'vulnerability',
+    component: VulnerabilityComponent,
+    data: { animation: 'vulnerability' }
+  },
+  {
+    path: 'control-type',
+    component: ControlTypeComponent,
+    data: { animation: 'control-type' }
+  },
+  {
+    path: 'risk-level',
+    component: RiskLevelComponent,
+    data: { animation: 'risk-level' }
+  },
+  {
+    path: 'risk',
+    component: RiskComponent,
+    data: { animation: 'risk' }
+  },
 ];
 
 @NgModule({
   declarations: [SampleComponent, HomeComponent, StandardComponent, AddStandardComponent, EditStandardComponent, RequirementComponent, AddRequirementComponent,
-    EditRequirementComponent, DocumentationComponent, AddDocumentationComponent, EditDocumentationComponent, ControlComponent, ControlTypeComponent,
-    AddControlTypeComponent, EditControlTypeComponent, EditControlComponent, AddControlComponent, ResponsibleComponent, AddResponsibleComponent,
+    EditRequirementComponent, DocumentationComponent, AddDocumentationComponent, EditDocumentationComponent, ControlComponent, ControlGroupComponent,
+    AddControlGroupComponent, EditControlGroupComponent, EditControlComponent, AddControlComponent, ResponsibleComponent, AddResponsibleComponent,
     EditResponsibleComponent, MaturityLevelComponent, AddMaturityLevelComponent, EditMaturityLevelComponent, IndicatorComponent, AddIndicatorComponent,
     EditIndicatorComponent, EvaluationAdminComponent, AddEvaluationAdminComponent, EditEvaluationAdminComponent, EvaluationProcessListComponent,
     EvaluationProcessComponent, RequirementProcessComponent, ControlProcessComponent, IndicatorsComponent, Indicators2Component, Indicators3Component,
@@ -405,7 +461,14 @@ const routes = [
     OptionInMenuByMenuComponent, AddOptionInMenuByMenuComponent, EditOptionInMenuByMenuComponent, MenuInRoleComponent,
     UserStateComponent, AddUserStateComponent, EditUserStateComponent,
     UserComponent, AddUserComponent, EditUserComponent, HeaderUserComponent,
-    RoleInUserByUserComponent,AddRoleInUserByUserComponent, EditRoleInUserByUserComponent
+    RoleInUserByUserComponent, AddRoleInUserByUserComponent, EditRoleInUserByUserComponent,
+    MenaceTypeComponent, AddMenaceTypeComponent, EditMenaceTypeComponent,
+    MenaceComponent, AddMenaceComponent, EditMenaceComponent,
+    VulnerabilityTypeComponent, AddVulnerabilityTypeComponent, EditVulnerabilityTypeComponent,
+    VulnerabilityComponent, AddVulnerabilityComponent, EditVulnerabilityComponent,
+    ControlTypeComponent, AddControlTypeComponent, EditControlTypeComponent,
+    RiskLevelComponent, AddRiskLevelComponent, EditRiskLevelComponent,
+    RiskComponent, AddRiskComponent//, EditRiskComponent
   ],
   imports: [
     RouterModule.forChild(routes),

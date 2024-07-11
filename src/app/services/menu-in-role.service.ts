@@ -35,7 +35,7 @@ export class MenuInRoleService {
         return this.http.get(url);
     }
 
-    insert(body: any) {
+    insert2(body: any) {
         const url = environment.apiUrl + '/api/menuInRole';
         return this.http.post(url, body)
             .pipe(map((resp: any) => {
