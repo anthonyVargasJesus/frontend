@@ -91,7 +91,7 @@
           <select formControlName="option" [ngClass]="{ 'is-invalid': submitted && f.option.errors }"
             class="form-control">
             <option value=""> Seleccione </option>
-            <option *ngFor="let option of options" [value]="option.optionId">{{ option.name}} </option>
+            <option *ngFor="let option of options" [value]="option.optionId">{{ option.name}} {{option.url}}</option>
           </select>
           <div *ngIf="submitted && f.option.errors" class="invalid-feedback">
             <div *ngIf="f.option.errors.required">La opción es obligatorio</div>

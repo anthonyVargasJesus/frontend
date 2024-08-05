@@ -67,6 +67,5 @@ export class RiskService {
             }));
     }
 
-
 }
 

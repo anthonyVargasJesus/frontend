@@ -33,6 +33,7 @@ export class User {
         public roles?: Role[],
         public userStateId?: number,
         public documentNumber?: string,
+        public standardId?: number,
     ) { }
 }
 

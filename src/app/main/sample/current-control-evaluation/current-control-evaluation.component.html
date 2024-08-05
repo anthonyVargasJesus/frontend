@@ -1,0 +1,26 @@
+<div class="content-wrapper">
+    <div class="content-body">
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+        <section id="home-page">
+            <section class="users-list-wrapper">
+                <div class="card">
+
+
+                    <hr>
+
+                    <h1 class="text-center" style="margin-top: 5px;margin-bottom: 5px;"> {{title}} </h1>
+
+                    <br>
+
+                    <div class="table-responsive">
+                        <app-control-evaluation *ngIf="standardId > 0 && evaluationId > 0" [standardId]="standardId"
+                            [evaluationId]="evaluationId"></app-control-evaluation>
+                    </div>
+                  
+
+                </div>
+            </section>
+        </section>
+
+    </div>
+</div>

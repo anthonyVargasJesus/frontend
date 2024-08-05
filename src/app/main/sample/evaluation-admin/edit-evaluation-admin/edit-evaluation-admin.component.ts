@@ -24,24 +24,25 @@ export class EditEvaluationAdminComponent implements OnInit {
     private evaluationService: EvaluationService,
     private route: ActivatedRoute,
     private _formBuilder: FormBuilder,
-    public router: Router, private standardService: StandardService,
+    public router: Router, 
     @Inject(MAT_DIALOG_DATA) private data: DialogData, 
     private dialogRef: MatDialogRef<EditEvaluationAdminComponent>,
 
   ) { }
 
-  standards: Standard[] = [];
-
+  evaluations: Evaluation[] = [];
   evaluation: Evaluation;
   loading = false;
   id: string;
   loading2 = false; public form: FormGroup;
   public submitted = false;
-  public last: string = '';
+  //public last: string = '';
+  minDate: Date;
+
 
   ngOnInit(): void {
     this.initForm();
-    this.getAllStandards();
+    this.getAllEvaluations();
     this.initEvaluation();
     this.id = this.data['_id'];
     this.obtain(this.id);
@@ -55,8 +56,10 @@ export class EditEvaluationAdminComponent implements OnInit {
     this.form = this._formBuilder.group({
       startDate: ['', [Validators.required,]],
       endDate: ['', []],
-      description: ['', [Validators.maxLength(250),]],
-      standard: ['', [Validators.required,]],
+      description: ['', [Validators.required, Validators.maxLength(250),]],
+      evaluation: ['', []],
+      isGapAnalysis: [false, [Validators.maxLength(5),]],
+      isCurrent:[false, [Validators.required, Validators.maxLength(5), ]],
     });
   }
 
@@ -66,7 +69,6 @@ export class EditEvaluationAdminComponent implements OnInit {
       .subscribe((res: any) => {
         this.evaluation = res.data;
         this.setFormValue(this.evaluation);
-        console.log(res);
         this.loading = false;
       }, error => {
         this.loading = false;
@@ -79,22 +81,29 @@ export class EditEvaluationAdminComponent implements OnInit {
       startDate: ((evaluation.startDate == null) ? '' : evaluation.startDate),
       endDate: ((evaluation.endDate == null) ? '' : evaluation.endDate),
       description: ((evaluation.description == null) ? '' : evaluation.description),
-      standard: ((evaluation.standardId == null) ? '' : evaluation.standardId),
+      evaluation: ((evaluation.referenceEvaluationId == null) ? '' : evaluation.referenceEvaluationId),
+      isGapAnalysis: ((evaluation.isGapAnalysis == null) ? '' : evaluation.isGapAnalysis),
+      isCurrent: ((evaluation.isCurrent == null) ? '' : evaluation.isCurrent),
     });
+    this.minDate = evaluation.startDate;
   }
 
 
   getFormValue() {
+    this.evaluation.evaluationId = Number(this.id);
     this.evaluation.startDate = this.form.value.startDate;
     this.evaluation.endDate = this.form.value.endDate;
     this.evaluation.description = this.form.value.description;
-    this.evaluation.standardId = this.form.value.standard;
+    this.evaluation.referenceEvaluationId =(this.form.value.evaluation == '')?null:this.form.value.evaluation ;
+    this.evaluation.isGapAnalysis =(this.form.value.isGapAnalysis == '')?null:this.form.value.isGapAnalysis ;
+    this.evaluation.isCurrent = this.form.value.isCurrent;
   }
 
-  getAllStandards() {
-    this.standardService.getAll()
+  getAllEvaluations() {
+    this.evaluationService.getAll()
       .subscribe((res: any) => {
-        this.standards = res.data;
+        this.evaluations = res.data;
+        this.evaluations = this.evaluations.filter((evaluation) => evaluation.evaluationId != Number(this.id));
         this.initEvaluation();
       }, error => {
         ErrorManager.handleError(error);
@@ -105,7 +114,6 @@ export class EditEvaluationAdminComponent implements OnInit {
   get f() {
     return this.form.controls;
   }
-
 
   save() {
 
@@ -128,9 +136,14 @@ export class EditEvaluationAdminComponent implements OnInit {
 
   }
 
+  initDateChanged(event: any, ) {
+    this.minDate = event.value;
+  }
+
   close() {
     this.dialogRef.close();
   }
+
 
 }
 

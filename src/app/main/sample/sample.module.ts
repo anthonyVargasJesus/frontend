@@ -196,6 +196,9 @@ import { AddRiskLevelComponent } from './risk-level/add-risk-level/add-risk-leve
 import { EditRiskLevelComponent } from './risk-level/edit-risk-level/edit-risk-level.component';
 import { RiskComponent } from './risk/risk.component';
 import { AddRiskComponent } from './risk/add-risk/add-risk.component';
+import { EditCompanyComponent } from './company/edit-company/edit-company.component';
+import { CurrentRequirementEvaluationComponent } from './current-requirement-evaluation/current-requirement-evaluation.component';
+import { CurrentControlEvaluationComponent } from './current-control-evaluation/current-control-evaluation.component';
 
 FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]);
 //FullCalendarModule.registerPlugins([timeGridPlugin, listPlugin, interactionPlugin]);
@@ -217,7 +220,7 @@ const routes = [
     data: { animation: 'standard' }
   },
   {
-    path: 'edit-standard/:id',
+    path: 'edit-standard/:id/:id2',
     component: EditStandardComponent,
     data: { animation: 'edit-standard' }
   },
@@ -272,7 +275,7 @@ const routes = [
     data: { animation: 'document-manager' }
   },
   {
-    path: 'edit-document-manager/:id/:id2',
+    path: 'edit-document-manager/:id',
     component: EditDocumentationManagerComponent,
     data: { animation: 'edit-document-manager' }
   },
@@ -389,7 +392,7 @@ const routes = [
   {
     path: 'edit-user/:id',
     component: EditUserComponent,
-    data: { animation: 'edit-actives-inventory' }
+    data: { animation: 'edit-user' }
   },
   {
     path: 'menace-type',
@@ -425,6 +428,41 @@ const routes = [
     path: 'risk',
     component: RiskComponent,
     data: { animation: 'risk' }
+  },
+  {
+    path: 'edit-company',
+    component: EditCompanyComponent,
+    data: { animation: 'edit-company' }
+  },
+  {
+    path: 'requirement/:id',
+    component: RequirementComponent,
+    data: { animation: 'requirement' }
+  },
+  {
+    path: 'control-group/:id',
+    component: ControlGroupComponent,
+    data: { animation: 'control-group' }
+  },
+  {
+    path: 'responsible/:id',
+    component: ResponsibleComponent,
+    data: { animation: 'responsible' }
+  },
+  {
+    path: 'documentation/:id',
+    component: DocumentationComponent,
+    data: { animation: 'documentation' }
+  },
+  {
+    path: 'requirement-evaluation',
+    component: CurrentRequirementEvaluationComponent,
+    data: { animation: 'requirement-evaluation' }
+  },
+  {
+    path: 'control-evaluation',
+    component: CurrentControlEvaluationComponent,
+    data: { animation: 'control-evaluation' }
   },
 ];
 
@@ -468,7 +506,8 @@ const routes = [
     VulnerabilityComponent, AddVulnerabilityComponent, EditVulnerabilityComponent,
     ControlTypeComponent, AddControlTypeComponent, EditControlTypeComponent,
     RiskLevelComponent, AddRiskLevelComponent, EditRiskLevelComponent,
-    RiskComponent, AddRiskComponent//, EditRiskComponent
+    RiskComponent, AddRiskComponent,//, EditRiskComponent
+    EditCompanyComponent, CurrentRequirementEvaluationComponent, CurrentControlEvaluationComponent
   ],
   imports: [
     RouterModule.forChild(routes),

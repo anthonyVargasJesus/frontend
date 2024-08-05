@@ -78,18 +78,18 @@ export class RoleComponent implements OnInit {
 
   initMenuName() {
     this.contentHeader = {
-      headerTitle: 'Role',
+      headerTitle: 'Roles',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'Role',
+            name: 'CONFIGURACIÓN',
             isLink: false,
             link: '#'
           },
           {
-            name: 'Role',
+            name: 'Roles',
             isLink: false
           }
         ]
@@ -147,7 +147,7 @@ export class RoleComponent implements OnInit {
 
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(AddRoleComponent, {
-        height: '400px',
+        height: '500px',
         width: '450px',
         autoFocus: false, panelClass: this.panelClass
       });

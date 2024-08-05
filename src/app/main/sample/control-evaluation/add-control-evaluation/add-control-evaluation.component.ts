@@ -4,7 +4,7 @@ import { ParamMap, Router } from '@angular/router';
 import { ControlEvaluation } from 'app/models/control-evaluation';
 import { ErrorManager } from 'app/errors/error-manager';
 import { ControlEvaluationService } from 'app/services/control-evaluation.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MaturityLevelService } from 'app/services/maturity-level.service';
 import { MaturityLevel } from 'app/models/maturity-level';
 import { ResponsibleService } from 'app/services/responsible.service';
@@ -15,6 +15,12 @@ import { DialogData } from 'app/models/dialog-data';
 import { DocumentationService } from 'app/services/documentation.service';
 import { Documentation } from 'app/models/documentation';
 import { ReferenceDocumentation } from 'app/models/reference-documentation';
+import { LoginService } from 'app/services/login.service';
+import { CoreConfigService } from '@core/services/config.service';
+import { Subject } from 'rxjs/internal/Subject';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+import { AddResponsibleComponent } from '../../responsible/add-responsible/add-responsible.component';
+import { AddDocumentationComponent } from '../../documentation/add-documentation/add-documentation.component';
 
 
 @Component({
@@ -32,7 +38,9 @@ export class AddControlEvaluationComponent implements OnInit {
     private responsibleService: ResponsibleService,
     private documentationService: DocumentationService,
     @Inject(MAT_DIALOG_DATA) private data: DialogData,
-
+    private loginService: LoginService,
+    private dialog: MatDialog,
+    private _coreConfigService: CoreConfigService,
   ) { }
 
   maturityLevels: MaturityLevel[] = [];
@@ -54,9 +62,14 @@ export class AddControlEvaluationComponent implements OnInit {
 
   selectedMaturityLevel: MaturityLevel = new MaturityLevel();
 
-  ngOnInit(): void {
-    this.initForm();
+  public currentSkin: string;
+  private _unsubscribeAll: Subject<any>;
+  private panelClass: string;
 
+  ngOnInit(): void {
+
+    this.getTheme();
+    this.initForm();
     this.evaluationId = this.data['evaluationId'];
     this.controlId = this.data['controlId'];
     this.controlName = this.data['controlName'];
@@ -68,6 +81,24 @@ export class AddControlEvaluationComponent implements OnInit {
     this.initControlEvaluation();
   }
 
+  getTheme() {
+    this._unsubscribeAll = new Subject();
+    this._coreConfigService
+      .getConfig()
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(config => {
+        this.currentSkin = config.layout.skin;
+        this.setDialogContainerStyle();
+      });
+  }
+
+  setDialogContainerStyle() {
+    if (this.currentSkin == 'dark')
+      this.panelClass = 'custom-dark-dialog-container';
+    else
+      this.panelClass = 'custom-default-dialog-container';
+  }
+  
   initForm() {
     this.form = this._formBuilder.group({
       maturityLevel: ['', [Validators.required,]],
@@ -87,7 +118,6 @@ export class AddControlEvaluationComponent implements OnInit {
     this.documentationService.getAll(Number(this.standardId))
       .subscribe((res: any) => {
         this.documentations = res.data;
-        console.log(res);
       }, error => {
         ErrorManager.handleError(error);
       });
@@ -108,7 +138,7 @@ export class AddControlEvaluationComponent implements OnInit {
     this.responsibleService.getAll(Number(this.standardId))
       .subscribe((res: any) => {
         this.responsibles = res.data;
-        this.initControlEvaluation();
+        //this.initControlEvaluation();
       }, error => {
         ErrorManager.handleError(error);
       });
@@ -202,6 +232,54 @@ export class AddControlEvaluationComponent implements OnInit {
 
   }
 
+  addResponsible() {
+
+    if (this.loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(AddResponsibleComponent, {
+        height: '600px',
+        width: '600px',
+        autoFocus: false,
+        data: {
+          standardId: this.standardId
+        },
+        panelClass: this.panelClass
+      });
+
+      dialogRef.afterClosed().subscribe(data => {
+        if (data == null)
+          return;
+
+         if (data.updated == true)
+           this.getAllResponsibles();
+
+      });
+    }
+
+  }
+
+  addDocumentation() {
+
+    if (this.loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(AddDocumentationComponent, {
+        height: '600px',
+        width: '600px',
+        autoFocus: false,
+        data: {
+          standardId: this.standardId
+        },
+        panelClass: this.panelClass
+      });
+
+      dialogRef.afterClosed().subscribe(data => {
+        if (data == null)
+          return;
+
+        if (data.updated == true)
+          this.getAllDocumentations();
+      });
+    }
+
+  }
 
   close() {
     this.dialogRef.close();

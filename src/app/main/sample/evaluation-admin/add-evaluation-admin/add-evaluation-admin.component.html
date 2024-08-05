@@ -40,7 +40,7 @@
 
 
     <div mat-dialog-title class="d-flex align-items-center" style="margin-top:-5px;">
-        <h4>NUEVO EVALUATION</h4>
+        <h4>NUEVA EVALUACIÓN</h4>
         <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto" style="margin-right: -16px;">
 
             <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
@@ -63,26 +63,27 @@
                 son obligatorios</small>
             <form [formGroup]="form" (ngSubmit)="save()" class="auth-login-form mt-0" autocomplete="off">
 
-                <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
 
-                    <div style="display:flex; margin-bottom:-10px;">
-                        <label class="form-label">Norma</label>
-                        <label style="margin-left: 5px;">(</label>
-                        <label style="font-size: 22px; margin-top:-1px;">*</label>
-                        <label>)</label>
+                            <div style="display:flex; margin-bottom:2px;">
+                                <label class="form-label">¿Es la actual ?</label>
+                                <mat-slide-toggle style="margin-left: 10px;margin-top:-2px;" formControlName="isCurrent"></mat-slide-toggle>
+                            </div>
+                          
+                        </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
 
-                    <select formControlName="standard" [ngClass]="{ 'is-invalid': submitted && f.standard.errors }"
-                        class="form-control">
-                        <option value=''> Seleccione </option>
-                        <option *ngFor="let standard of standards" [value]="standard.standardId">{{
-                            standard.name}} </option>
-                    </select>
-
-                    <div *ngIf="submitted && f.standard.errors" class="invalid-feedback">
-                        <div *ngIf="f.standard.errors.required">La norma es obligatoria</div>
+                            <div style="display:flex; margin-bottom:2px;">
+                                <label class="form-label">¿Es análisis de brechas ?</label>
+                                <mat-slide-toggle style="margin-left: 10px;margin-top:-2px;" formControlName="isGapAnalysis"></mat-slide-toggle>
+                            </div>
+                          
+                        </div>
                     </div>
-
                 </div>
 
                 <div class="row">
@@ -97,11 +98,13 @@
                                 <label>)</label>
                             </div>
                             <div class="input-group date datepicker">
-                                <input matInput tabindex="1" class="form-control" formControlName="startDate"  [ngClass]="{ 'is-invalid': submitted && f.startDate.errors }"
-                                    name="startDate" [matDatepicker]="basicDatepickerstartDate">
+                                <input matInput tabindex="1" class="form-control" formControlName="startDate" (dateChange)="initDateChanged($event)"
+                                    [ngClass]="{ 'is-invalid': submitted && f.startDate.errors }" name="startDate"
+                                    [matDatepicker]="basicDatepickerstartDate">
                                 <span class="input-group-addon input-group-append border"
                                     style="margin-top: -1px !important;height: 38px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">
-                                    <mat-datepicker-toggle [for]="basicDatepickerstartDate"></mat-datepicker-toggle>
+                                    <mat-datepicker-toggle [for]="basicDatepickerstartDate"
+                                        class="text-primary"></mat-datepicker-toggle>
                                 </span>
                             </div>
                             <mat-datepicker #basicDatepickerstartDate required style="z-index:99999;"></mat-datepicker>
@@ -109,7 +112,7 @@
                             margin-top: 5px;
                             font-size: 0.857rem;
                             color: #ea5455;">
-                              <div *ngIf="f.startDate.errors.required">La fecha de inicio es obligatoria</div>
+                                <div *ngIf="f.startDate.errors.required">La fecha de inicio es obligatoria</div>
                             </div>
                         </div>
                     </div>
@@ -121,27 +124,54 @@
                                 <label class="form-label">Fin</label>
                             </div>
                             <div class="input-group date datepicker">
-                                <input matInput tabindex="1" class="form-control" formControlName="endDate"
+                                <input matInput tabindex="1" class="form-control" formControlName="endDate" [min]="minDate"
                                     name="endDate" [matDatepicker]="basicDatepickerendDate">
                                 <span class="input-group-addon input-group-append border"
                                     style="height: 37px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">
-                                    <mat-datepicker-toggle [for]="basicDatepickerendDate"></mat-datepicker-toggle>
+                                    <mat-datepicker-toggle [for]="basicDatepickerendDate"
+                                        class="text-primary"></mat-datepicker-toggle>
                                 </span>
                             </div>
                             <mat-datepicker #basicDatepickerendDate required style="z-index:99999;"></mat-datepicker>
                         </div>
                     </div>
 
+
+
+                </div>
+
+               
+
+                <div class="form-group">
+
+                    <div style="display:flex; margin-bottom:-10px;">
+                        <label class="form-label">Descripción</label>
+                        <label style="margin-left: 5px;">(</label>
+                        <label style="font-size: 22px; margin-top:-1px;">*</label>
+                        <label>)</label>
+                    </div>
+                    <textarea rows="2" formControlName="description"
+                        [ngClass]="{ 'is-invalid': submitted && f.description.errors }" maxlength="250"
+                        class="form-control" aria-describedby="" autofocus="" tabindex="1"></textarea>
+                    <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                        <div *ngIf="f.description.errors.required">La descripción es obligatorio</div>
+                        <div *ngIf="f.description.errors.maxlength">La descripción no puede tener mas de 250
+                            caracteres </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
 
                     <div style="display:flex; margin-bottom:2px;">
-                        <label class="form-label">Descripción</label>
+                        <label class="form-label">Evaluación de referencia</label>
                     </div>
-                    <textarea rows="3" formControlName="description"
-                        [ngClass]="{ 'is-invalid': submitted && f.description.errors }" maxlength="250"
-                        class="form-control" aria-describedby="" autofocus="" tabindex="1"></textarea>
+                    <select formControlName="evaluation" [ngClass]="{ 'is-invalid': submitted && f.evaluation.errors }"
+                        class="form-control">
+                        <option value=""> Seleccione </option>
+                        <option *ngFor="let evaluation of evaluations" [value]="evaluation.evaluationId">
+                            {{ evaluation.description}}
+                        </option>
+                    </select>
                 </div>
 
 

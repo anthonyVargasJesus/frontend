@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 import { RequirementEvaluation } from 'app/models/requirement-evaluation';
 import { ErrorManager } from 'app/errors/error-manager';
 import { RequirementEvaluationService } from 'app/services/requirement-evaluation.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MaturityLevelService } from 'app/services/maturity-level.service';
 import { MaturityLevel } from 'app/models/maturity-level';
 import { ResponsibleService } from 'app/services/responsible.service';
@@ -15,6 +15,12 @@ import { Console } from 'console';
 import { DocumentationService } from 'app/services/documentation.service';
 import { Documentation } from 'app/models/documentation';
 import { ReferenceDocumentation } from 'app/models/reference-documentation';
+import { LoginService } from 'app/services/login.service';
+import { AddResponsibleComponent } from '../../responsible/add-responsible/add-responsible.component';
+import { CoreConfigService } from '@core/services/config.service';
+import { Subject } from 'rxjs/internal/Subject';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+import { AddDocumentationComponent } from '../../documentation/add-documentation/add-documentation.component';
 
 
 @Component({
@@ -33,7 +39,9 @@ export class EditRequirementEvaluationComponent implements OnInit {
     private responsibleService: ResponsibleService,
     private documentationService: DocumentationService,
     @Inject(MAT_DIALOG_DATA) private data: DialogData, private dialogRef: MatDialogRef<EditRequirementEvaluationComponent>,
-
+    private loginService: LoginService,
+    private dialog: MatDialog,
+    private _coreConfigService: CoreConfigService,
   ) { }
 
   maturityLevels: MaturityLevel[] = [];
@@ -51,7 +59,14 @@ export class EditRequirementEvaluationComponent implements OnInit {
 
   selectedMaturityLevel: MaturityLevel = new MaturityLevel();
 
+
+  public currentSkin: string;
+  private _unsubscribeAll: Subject<any>;
+  private panelClass: string;
+
   ngOnInit(): void {
+
+    this.getTheme();
     this.initForm();
   
     this.initRequirementEvaluation();
@@ -59,27 +74,31 @@ export class EditRequirementEvaluationComponent implements OnInit {
     this.standardId = this.data['standardId'];
     this.requirementName = this.data['requirementName'];
     this.numeration = this.data['numeration'];
-    this.getAllMaturityLevels();
     this.getAllResponsibles();
     this.getAllDocumentations();
-
+    this.getAllMaturityLevels();
   }
 
+  getTheme() {
+    this._unsubscribeAll = new Subject();
+    this._coreConfigService
+      .getConfig()
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(config => {
+        this.currentSkin = config.layout.skin;
+        this.setDialogContainerStyle();
+      });
+  }
+
+  setDialogContainerStyle() {
+    if (this.currentSkin == 'dark')
+      this.panelClass = 'custom-dark-dialog-container';
+    else
+      this.panelClass = 'custom-default-dialog-container';
+  }
 
   initRequirementEvaluation() {
     this.requirementEvaluation = new RequirementEvaluation();
-    this.initMaturityLevel();
-    this.initResponsible();
-  }
-  initMaturityLevel() {
-    if (this.maturityLevels.length > 0)
-      this.requirementEvaluation.maturityLevel = this.maturityLevels[0];
-  }
-
-
-  initResponsible() {
-    if (this.responsibles.length > 0)
-      this.requirementEvaluation.responsible = this.responsibles[0];
   }
 
 
@@ -99,7 +118,6 @@ export class EditRequirementEvaluationComponent implements OnInit {
     this.documentationService.getAll(Number(this.standardId))
       .subscribe((res: any) => {
         this.documentations = res.data;
-        this.obtain(this.id);
       }, error => {
         ErrorManager.handleError(error);
       });
@@ -135,6 +153,7 @@ export class EditRequirementEvaluationComponent implements OnInit {
 
 
   getFormValue() {
+    this.requirementEvaluation.requirementEvaluationId = Number(this.id);
     if (this.form.value.maturityLevel)
       this.requirementEvaluation.maturityLevelId = this.form.value.maturityLevel;
     if (this.form.value.responsible)
@@ -149,6 +168,7 @@ export class EditRequirementEvaluationComponent implements OnInit {
       .subscribe((res: any) => {
         this.maturityLevels = res.data;
         this.initRequirementEvaluation();
+        this.obtain(this.id);
       }, error => {
         ErrorManager.handleError(error);
       });
@@ -158,7 +178,7 @@ export class EditRequirementEvaluationComponent implements OnInit {
     this.responsibleService.getAll(Number(this.standardId))
       .subscribe((res: any) => {
         this.responsibles = res.data;
-        this.initRequirementEvaluation();
+        //this.initRequirementEvaluation();
       }, error => {
         ErrorManager.handleError(error);
       });
@@ -229,6 +249,56 @@ export class EditRequirementEvaluationComponent implements OnInit {
         });
       }
     });
+
+  }
+
+  addResponsible() {
+
+    if (this.loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(AddResponsibleComponent, {
+        height: '600px',
+        width: '600px',
+        autoFocus: false,
+        data: {
+          standardId: this.standardId
+        },
+        panelClass: this.panelClass
+      });
+
+      dialogRef.afterClosed().subscribe(data => {
+        if (data == null)
+          return;
+
+         if (data.updated == true)
+           this.getAllResponsibles();
+
+      });
+    }
+
+  }
+
+  addDocumentation() {
+
+    if (this.loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(AddDocumentationComponent, {
+        height: '600px',
+        width: '600px',
+        autoFocus: false,
+        data: {
+          standardId: this.standardId
+        },
+        panelClass: this.panelClass
+      });
+
+      dialogRef.afterClosed().subscribe(data => {
+        if (data == null)
+          return;
+
+        if (data.updated == true)
+          this.getAllDocumentations();
+      });
+    }
+
 
   }
 

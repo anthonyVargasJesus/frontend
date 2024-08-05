@@ -40,7 +40,7 @@
 
 
     <div mat-dialog-title class="d-flex align-items-center" style="margin-top:-5px;">
-        <h4>{{numeration}} &nbsp; {{requirementName}}</h4>
+        <h4>Editar evaluación</h4>
         <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto"
             style="margin-top:-10px; margin-right:-16px;">
 
@@ -60,8 +60,24 @@
 
     <div class="card border" style="margin-top: -15px !important;">
         <div class="card-body">
-         
+
             <form [formGroup]="form" (ngSubmit)="save()" class="auth-login-form mt-0" autocomplete="off">
+
+                <div class="form-group">
+
+                    <div style="display:flex; margin-bottom:0px;">
+                        <label class="form-label">Requerimiento</label>
+
+                    </div>
+
+                    <div class="border" style="border-radius: 5px; padding: 10px;">
+                        <h5>
+                            {{numeration}} &nbsp; {{requirementName}}
+                        </h5>
+                    </div>
+                </div>
+
+
 
                 <div class="row">
                     <div class="col-md-5">
@@ -93,7 +109,8 @@
                         </div>
                         <div style="height: 40px; margin-left: 0px; border: 0.5px solid lightgray !important; border-radius: 5px;"
                             [style.background-color]="selectedMaturityLevel.color">
-                            <h3 class="text-center" style="margin-top: 5px;opacity: 0.8; font-weight: 700;color: white;">
+                            <h3 class="text-center"
+                                style="margin-top: 5px;opacity: 0.8; font-weight: 700;color: white;">
                                 {{selectedMaturityLevel.abbreviation}}
                             </h3>
                         </div>
@@ -108,12 +125,27 @@
                                 <label>)</label>
                             </div>
 
-                            <select formControlName="responsible"
-                                [ngClass]="{ 'is-invalid': submitted && f.responsible.errors }" class="form-control">
-                                <option value=""> Seleccione </option>
-                                <option *ngFor="let responsible of responsibles" [value]="responsible.responsibleId">{{
-                                    responsible.name}} </option>
-                            </select>
+                            <div style="display: flex;">
+
+                                <select formControlName="responsible"
+                                    [ngClass]="{ 'is-invalid': submitted && f.responsible.errors }"
+                                    class="form-control">
+                                    <option value=""> Seleccione </option>
+                                    <option *ngFor="let responsible of responsibles"
+                                        [value]="responsible.responsibleId">{{
+                                        responsible.name}} </option>
+                                </select>
+
+                                <button *ngIf="!loading" type="button" title="Agregar un nuevo responsable"
+                                    (click)="addResponsible()" rippleeffect=""
+                                    class="btn btn-danger waves-effect waves-float waves-light"
+                                    style="margin-left: 5px;">
+                                    <i data-feather='plus'></i>
+
+                                </button>
+
+                            </div>
+
 
                             <div *ngIf="submitted && f.responsible.errors" class="invalid-feedback">
                                 <div *ngIf="f.responsible.errors.required"> El responsable es obligatorio</div>
@@ -133,29 +165,44 @@
                         <label>)</label>
                     </div>
 
-                    <ng-container>
+                    <div style="display: flex;">
 
-                        <mat-form-field appearance="outline" style="width: 100% !important; ">
-                            <mat-label>Seleccione</mat-label>
-                            <mat-select formControlName="documentation"
-                                style="font-family: Montserrat, Helvetica, Arial, serif !important; font-size: 14px;" multiple>
+                            <mat-form-field appearance="outline" style="width: 100% !important; ">
+                                <mat-label>Seleccione</mat-label>
+                                <mat-select formControlName="documentation"
+                                    style="font-family: Montserrat, Helvetica, Arial, serif !important; font-size: 13px !important;"
+                                    multiple>
 
-                                <mat-option *ngFor="let documentation of documentations" 
-                                    [value]="documentation.documentationId">
-                                    {{documentation.name}}</mat-option>
-                            </mat-select>
+                                    <mat-option *ngFor="let documentation of documentations"
+                                        style="font-family: Montserrat, Helvetica, Arial, serif !important;font-size: 13px !important; opacity: 0.8;"
+                                        [value]="documentation.documentationId">
+                                        {{documentation.name}}</mat-option>
+                                </mat-select>
 
-                            
-                        </mat-form-field>
 
-                        <div *ngIf="submitted && f.documentation.errors" style="    width: 100%;
-                            margin-top: -18px;
-                            font-size: 0.857rem;
-                            color: #ea5455;">
-                              <div *ngIf="f.documentation.errors.required">La documentación de referencia es obligatoria</div>
-                            </div>
+                            </mat-form-field>
 
-                    </ng-container>
+
+
+
+                        <button *ngIf="!loading" type="button" title="Agregar un nuevo documento de referencia"
+                            (click)="addDocumentation()" rippleeffect=""
+                            class="btn btn-danger waves-effect waves-float waves-light"
+                            style="margin-top: 8px;margin-left: 5px; height: 39px ! important;">
+                            <i data-feather='plus'></i>
+
+                        </button>
+
+                    </div>
+
+                    <div *ngIf="submitted && f.documentation.errors" style="    width: 100%;
+                    margin-top: -18px;
+                    font-size: 0.857rem;
+                    color: #ea5455;">
+                        <div *ngIf="f.documentation.errors.required">La documentación de referencia es obligatoria
+                        </div>
+                    </div>
+
                 </div>
 
 

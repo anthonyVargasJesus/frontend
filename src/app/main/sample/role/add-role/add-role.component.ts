@@ -42,6 +42,7 @@ export class AddRoleComponent implements OnInit {
 
   initForm() {
     this.form = this._formBuilder.group({
+      code: ['', [Validators.required, Validators.maxLength(10),]],
       name: ['', [Validators.required, Validators.maxLength(100),]],
     });
   }
@@ -50,17 +51,10 @@ export class AddRoleComponent implements OnInit {
     this.role = new Role();
   }
 
-
-
-
   getFormValue() {
+    this.role.code = this.form.value.code;
     this.role.name = this.form.value.name;
   }
-
-
-
-
-
 
   get f() {
     return this.form.controls;
@@ -74,8 +68,6 @@ export class AddRoleComponent implements OnInit {
 
     this.loading2 = true;
     this.getFormValue();
-
-
 
     this.roleService.insert(this.role)
       .subscribe(res => {

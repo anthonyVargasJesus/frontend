@@ -28,6 +28,7 @@ export class EditStandardComponent implements OnInit {
   standard: Standard = new Standard();
   loading = false;
   id: string;
+  comingfromMenu: string;
   loading2 = false; public form: FormGroup;
   public submitted = false;
   public last: string = '';
@@ -112,6 +113,7 @@ export class EditStandardComponent implements OnInit {
         this.initStandard();
         this.route.paramMap.subscribe((params: ParamMap) => {
           this.id = params.get('id').toString();
+          this.comingfromMenu = params.get('id2').toString();
           this.obtain(this.id);
         });
       }, error => {

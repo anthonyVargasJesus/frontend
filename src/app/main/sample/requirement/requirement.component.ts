@@ -12,6 +12,7 @@ import { PAGE_SIZE, getResults } from 'app/config/config';
 import { takeUntil } from 'rxjs/operators';
 import { ErrorManager } from 'app/errors/error-manager';
 import Swal from 'sweetalert2';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-requirement',
@@ -48,17 +49,29 @@ export class RequirementComponent implements OnInit {
     private requirementService: RequirementService,
     private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private route: ActivatedRoute,
   ) {
 
   }
 
 
   ngOnInit() {
+
     this.getTheme();
     this.initMenuName();
     this.pageSize = PAGE_SIZE;
-    this.get();
+
+    if (this.standardId == undefined) {
+      this.route.paramMap.subscribe((params: ParamMap) => {
+        this.standardId = Number(params.get('id').toString());
+        this.get();
+      });
+    } else 
+      this.get();
+    
+
+
   }
 
   getTheme() {
@@ -249,8 +262,8 @@ export class RequirementComponent implements OnInit {
         if (data == null)
           return;
 
-         if (data.updated == true)
-           this.get();
+        if (data.updated == true)
+          this.get();
       });
     }
 

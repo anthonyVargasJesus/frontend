@@ -48,7 +48,7 @@
                                 </button>
 
                                 <button (click)="add()" rippleeffect="" title="Agregar un nuevo grupo de controles"
-                                    class="btn btn-primary ml-1 waves-effect waves-float waves-light"
+                                    class="btn btn-danger ml-1 waves-effect waves-float waves-light"
                                     style="float: right!important;margin-right: 10px;margin-top:0px;">
                                     <i data-feather='plus'></i>
                                     AGREGAR GRUPO
@@ -62,12 +62,12 @@
                     <mat-accordion class="example-headers-align" multi
                     style="font-family: Montserrat, Helvetica, Arial, serif !important;">
 
-                    <mat-expansion-panel *ngFor="let controlGroup of controlGroups; let i = index">
+                    <mat-expansion-panel *ngFor="let controlGroup of controlGroups; let i = index" style="background-color: transparent !important;">
                         <mat-expansion-panel-header>
 
                             <mat-panel-title
                                 style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 600 !important; opacity: 0.8;">
-                                {{controlGroup.number}}. &nbsp; {{controlGroup.name}}
+                               <h5> {{controlGroup.number}}. &nbsp; {{controlGroup.name}} </h5> 
                             </mat-panel-title>
 
                             <mat-panel-description>
@@ -115,7 +115,6 @@
                 </mat-accordion>
 
                     <br>
-                    <hr>
                     <br>
                     <div class="row">
                         <div class="col-md-4">
@@ -146,8 +145,8 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <p class="d-flex justify-content-right" style="float:right!important;margin-right: 15px;">
-                                {{results}}</p>
+                            <span class="d-flex justify-content-right" style="float:right!important;margin-right: 15px;">
+                                {{results}}</span>
                         </div>
                     </div>
                 </div>

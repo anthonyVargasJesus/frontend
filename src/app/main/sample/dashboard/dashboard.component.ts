@@ -3,7 +3,6 @@ import { ErrorManager } from 'app/errors/error-manager';
 import { MaturityLevel } from 'app/models/maturity-level';
 import { Requirement } from 'app/models/requirement';
 import { EvaluationService } from 'app/services/evaluation.service';
-import { saveAs } from 'file-saver';
 
 
 @Component({
@@ -65,23 +64,6 @@ export class DashboardComponent implements OnInit {
       });
   }
 
-  public downloadExcel(): any {
 
-    this.loadingExcel = true;
-    var fileName = 'dashboard.xlsx';
-    var mediaType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-    this.evaluationService.getExcelDashboard(this.standardId.toString(), this.evaluationId.toString())
-      .subscribe(res => {
-        this.loadingExcel = false;
-
-        var blob = new Blob([res], { type: mediaType });
-        saveAs(blob, fileName);
-
-      }, error => {
-        this.loadingExcel = false;
-        ErrorManager.handleError(error);
-      });
-
-  }
 
 }

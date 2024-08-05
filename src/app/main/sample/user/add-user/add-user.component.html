@@ -295,8 +295,32 @@
                                 </div>
                               </div>
     
-                              <div class="col-md-3">
+                              <div class="col-md-6">
+                                <div class="form-group">
+    
+                                  <div style="display: flex; margin-bottom: -10px;">
+                                    <label class="form-label" for="login-email">Norma</label>
+                                    <label style="margin-left: 5px;">(</label>
+                                    <label style="font-size: 22px; margin-top: -1px;">*</label>
+                                    <label>)</label>
+                                  </div>
+    
+                        
+                                    <select formControlName="standard"
+                                      [ngClass]="{ 'is-invalid': submitted && f.standard.errors }" tabindex="1"
+                                      class="form-control">
+                                      <option value=""> Seleccione </option>
+                                      <option *ngFor="let standard of standards" [value]="standard.standardId">
+                                        {{standard.name}} </option>
+                                    </select>
                                 
+    
+                                  <div *ngIf="submitted && f.standard.errors" class="invalid-feedback">
+                                    <div *ngIf="f.standard.errors.required">La norma del usuario es obligatorio
+                                    </div>
+                                  </div>
+    
+                                </div>
                               </div>
                             </div>
     

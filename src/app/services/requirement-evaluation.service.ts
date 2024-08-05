@@ -35,7 +35,7 @@ export class RequirementEvaluationService {
         const url = environment.apiUrl + '/api/requirementEvaluation';
         return this.http.post(url, requirementEvaluation)
             .pipe(map((resp: any) => {
-                Swal.fire('RequirementEvaluation registrado', 'El RequirementEvaluation se registró satisfactoriamente', 'success');
+                Swal.fire('Requerimiento registrado', 'El requerimiento se registró satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -49,7 +49,7 @@ export class RequirementEvaluationService {
         const url = environment.apiUrl + '/api/requirementEvaluation/' + requirementEvaluation.requirementEvaluationId;
         return this.http.put(url, requirementEvaluation)
             .pipe(map((resp: any) => {
-                Swal.fire('RequirementEvaluation actualizado', 'El RequirementEvaluation se actualizó satisfactoriamente', 'success');
+                Swal.fire('Requerimiento actualizado', 'El requerimiento se actualizó satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -63,7 +63,7 @@ export class RequirementEvaluationService {
         const url = environment.apiUrl + '/api/requirementEvaluation/' + id ;
         return this.http.delete(url)
             .pipe(map((resp: any) => {
-                Swal.fire('RequirementEvaluation eliminado', 'El RequirementEvaluation se eliminó satisfactoriamente', 'success');
+                Swal.fire('Requerimiento eliminado', 'El requerimiento se eliminó satisfactoriamente', 'success');
                 return resp;
             }
             ))

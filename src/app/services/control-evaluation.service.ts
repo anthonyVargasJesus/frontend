@@ -35,7 +35,7 @@ export class ControlEvaluationService {
         const url = environment.apiUrl + '/api/controlEvaluation';
         return this.http.post(url, controlEvaluation)
             .pipe(map((resp: any) => {
-                Swal.fire('ControlEvaluation registrado', 'El ControlEvaluation se registró satisfactoriamente', 'success');
+                Swal.fire('Control registrado', 'El control se registró satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -49,7 +49,7 @@ export class ControlEvaluationService {
         const url = environment.apiUrl + '/api/controlEvaluation/' + controlEvaluation.controlEvaluationId;
         return this.http.put(url, controlEvaluation)
             .pipe(map((resp: any) => {
-                Swal.fire('ControlEvaluation actualizado', 'El ControlEvaluation se actualizó satisfactoriamente', 'success');
+                Swal.fire('Control actualizado', 'El control se actualizó satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -63,7 +63,7 @@ export class ControlEvaluationService {
         const url = environment.apiUrl + '/api/controlEvaluation/' + id ;
         return this.http.delete(url)
             .pipe(map((resp: any) => {
-                Swal.fire('ControlEvaluation eliminado', 'El ControlEvaluation se eliminó satisfactoriamente', 'success');
+                Swal.fire('Control eliminado', 'El control se eliminó satisfactoriamente', 'success');
                 return resp;
             }
             ))

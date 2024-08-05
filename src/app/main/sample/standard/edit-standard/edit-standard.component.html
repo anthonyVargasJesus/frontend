@@ -16,7 +16,7 @@
                   <div class="d-flex justify-content-between flex-column col-xl-12 col-21">
                     <div class="d-flex justify-content-start">
 
-                      <a container="body" placement="top" title="Ir al listado" (click)="navigateToBack()" class="mr-1"
+                      <a *ngIf="comingfromMenu == '0'" container="body" placement="top" title="Ir al listado" (click)="navigateToBack()" class="mr-1"
                         style="margin-top:0px;font-size: 50px;">
                         <div class="icon-wrapper">
                           <i class="feather font-medium-5 icon-arrow-left"></i>

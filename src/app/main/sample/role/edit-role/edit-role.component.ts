@@ -34,14 +34,9 @@ export class EditRoleComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-
-
     this.initRole();
-
     this.id = this.data['_id'];
     this.obtain(this.id);
-
-
   }
 
 
@@ -51,6 +46,7 @@ export class EditRoleComponent implements OnInit {
 
   initForm() {
     this.form = this._formBuilder.group({
+      code: ['', [Validators.required, Validators.maxLength(10),]],
       name: ['', [Validators.required, Validators.maxLength(100),]],
     });
   }
@@ -70,17 +66,16 @@ export class EditRoleComponent implements OnInit {
 
   setFormValue(role: Role) {
     this.form.setValue({
+      code: ((role.code == null) ? '' : role.code),
       name: ((role.name == null) ? '' : role.name),
     });
   }
 
-
   getFormValue() {
     this.role.roleId = Number(this.id);
+    this.role.code = this.form.value.code;
     this.role.name = this.form.value.name;
   }
-
-
 
   get f() {
     return this.form.controls;

@@ -174,7 +174,7 @@ export class StandardComponent implements OnInit {
 
 
   edit(id: number) {
-    this.router.navigate(['/edit-standard',id]);
+    this.router.navigate(['/edit-standard',id,'0']);
   }
 
 

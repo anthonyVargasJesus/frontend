@@ -12,6 +12,9 @@ import { PAGE_SIZE, getResults } from 'app/config/config';
 import { takeUntil } from 'rxjs/operators';
 import { ErrorManager } from 'app/errors/error-manager';
 import Swal from 'sweetalert2';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { StandardService } from 'app/services/standard.service';
+import { Standard } from 'app/models/standard';
 
 @Component({
   selector: 'app-responsible',
@@ -41,12 +44,16 @@ export class ResponsibleComponent implements OnInit {
 
   @Input()
   standardId: number;
+  
+  standard: Standard = new Standard();
 
   constructor(
     private responsibleService: ResponsibleService,
     private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private route: ActivatedRoute,
+    private standardService: StandardService
   ) {
 
   }
@@ -54,9 +61,29 @@ export class ResponsibleComponent implements OnInit {
 
   ngOnInit() {
     this.getTheme();
-    this.initMenuName();
+  
     this.pageSize = PAGE_SIZE;
-    this.get();
+    if (this.standardId == undefined) {
+      this.route.paramMap.subscribe((params: ParamMap) => {
+        this.standardId = Number(params.get('id').toString());
+        this.obtainStandard(this.standardId);
+      });
+    } else 
+      this.obtainStandard(this.standardId);
+  }
+
+  obtainStandard(id: number) {
+    this.loading = true;
+    this.standardService.obtain(id.toString())
+      .subscribe((res: any) => {
+        this.standard = res.data;
+        this.loading = false;
+        this.initMenuName();
+        this.get();
+      }, error => {
+        this.loading = false;
+        ErrorManager.handleError(error);
+      });
   }
 
   getTheme() {
@@ -79,6 +106,11 @@ export class ResponsibleComponent implements OnInit {
 
 
   initMenuName() {
+
+    let title = '';
+    if (this.standard)
+      title = this.standard.name;
+    
     this.contentHeader = {
       headerTitle: 'Responsables',
       actionButton: false,
@@ -86,18 +118,14 @@ export class ResponsibleComponent implements OnInit {
         type: '',
         links: [
           {
-            name: 'Configuración',
+            name: title,
             isLink: false,
             link: '#'
           },
           {
-            name: 'Normas',
+            name: 'Responsables',
             isLink: false
           },
-          {
-            name: 'ISO 27001',
-            isLink: false
-          }
         ]
       }
     }

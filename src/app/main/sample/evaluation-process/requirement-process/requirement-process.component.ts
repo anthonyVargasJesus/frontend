@@ -55,6 +55,7 @@ export class RequirementProcessComponent implements OnInit {
 
 
   ngOnInit() {
+
     this.getTheme();
     this.pageSize = PAGE_SIZE;
     this.get();

@@ -6,6 +6,8 @@ import { ErrorManager } from 'app/errors/error-manager';
 import { UserService } from 'app/services/user.service';
 import { UserStateService } from 'app/services/user-state.service';
 import { UserState } from 'app/models/user-state';
+import { Standard } from 'app/models/standard';
+import { StandardService } from 'app/services/standard.service';
 
 @Component({
   selector: 'app-add-user',
@@ -19,11 +21,14 @@ export class AddUserComponent implements OnInit {
   constructor(
     private userService: UserService,
     public router: Router,
-    private _formBuilder: FormBuilder, private userStateService: UserStateService,
+    private _formBuilder: FormBuilder, 
+    private userStateService: UserStateService,
+    private standardService: StandardService
   ) { }
 
   userStates: UserState[] = [];
-
+  standards: Standard[] = [];
+  
   user: User;
   loading = false;
   loading2 = false;
@@ -34,10 +39,11 @@ export class AddUserComponent implements OnInit {
   ngOnInit(): void {
     this.initForm(); this.initMenuName();
     this.getAllUserStates();
-
+    this.getAllStandards();
     this.initUser();
-
-  } initMenuName() {
+  } 
+  
+  initMenuName() {
     this.contentHeader = {
       headerTitle: 'Product',
       actionButton: false,
@@ -68,6 +74,7 @@ export class AddUserComponent implements OnInit {
       phone: ['', [Validators.maxLength(100),]],
       userState: ['', [Validators.required,]],
       documentNumber: ['', [Validators.required, Validators.maxLength(20),]],
+      standard: ['', [Validators.required,]],
     });
   }
 
@@ -87,7 +94,15 @@ export class AddUserComponent implements OnInit {
       });
   }
 
-
+  getAllStandards() {
+    this.standardService.getAll()
+      .subscribe((res: any) => {
+        this.standards = res.data;
+        this.initUser();
+      }, error => {
+        ErrorManager.handleError(error);
+      });
+  }
 
   getFormValue() {
     this.user.name = this.form.value.name;
@@ -98,6 +113,7 @@ export class AddUserComponent implements OnInit {
     this.user.phone = this.form.value.phone;
     this.user.userStateId = this.form.value.userState;
     this.user.documentNumber = this.form.value.documentNumber;
+    this.user.standardId = this.form.value.standard;
   }
 
 

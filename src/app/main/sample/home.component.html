@@ -4,508 +4,95 @@
     <section id="home-page">
       <section class="users-list-wrapper">
 
-        <div class="card">
+        <div *ngIf="evaluation" class="card">
           <div class="card-body">
-          
+            <div class="row">
+              <div class="col-md-12">
 
-          </div>
-        </div>
 
-        <div class="card">
-
-          <div class="card">
-            <div class="card-body">
-
-              <h2 class="text-primary text-center">ISO 27001</h2>
-              <p class="card-text mb-2 text-center"><span>Seguridad de la información, ciberseguridad y
-                protección de la privacidad — Sistemas de
-                gestión de la seguridad de la información —
-                Requisitos</span></p>
+                <div class="text-center">
+                  <h1>{{evaluation.description}}</h1>
+                </div>
 
                 <hr>
-
-              <ul ngbNav #nav="ngbNav" class="nav nav-pills">
-                <li ngbNavItem [ngbNavItem]="1">
-
-                  <a ngbNavLink class="d-flex align-items-center"><i data-feather="grid" class="mr-sm-50"></i>
-                    <span class="d-none d-sm-block"> DOCUMENTACIÓN DE REFERENCIA</span>
-
-                  </a>
-                  <ng-template ngbNavContent>
-                    <div class="tab-pane active" id="account" aria-labelledby="account-tab" role="tabpanel">
-
-
-                      <div class="card border">
-                        <div class="card-body">
-
-                          <!-- <div class="example-action-buttons">
-                            <button mat-button (click)="accordion.openAll()">Expand All</button>
-                            <button mat-button (click)="accordion.closeAll()">Collapse All</button>
-                          </div> -->
-
-                          <mat-accordion class="example-headers-align" multi style="margin: 30px; ">
-
-                            <mat-expansion-panel>
-                              <mat-expansion-panel-header>
-                                <mat-panel-title
-                                  style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 500 !important;">
-                                  1. ALCANCE
-                                </mat-panel-title>
-
-                              </mat-expansion-panel-header>
-
-
-                              <div class="demo-spacing-0"
-                                style="font-family: Montserrat, Helvetica, Arial, serif !important;">
-                                <ngb-alert role="alert" class="alert show alert-info fade ng-star-inserted">
-                                  <div class="alert-body"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                      stroke-linecap="round" stroke-linejoin="round"
-                                      class="feather feather-info mr-50 align-middle">
-                                      <circle cx="12" cy="12" r="10"></circle>
-                                      <line x1="12" y1="16" x2="12" y2="12"></line>
-                                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                                    </svg><span>Esta sección <strong>no requiere</strong> documentos de
-                                      referencia.</span>
-                                  </div><!---->
-                                </ngb-alert><!---->
-                              </div>
-
-
-                            </mat-expansion-panel>
-
-                            <mat-expansion-panel>
-                              <mat-expansion-panel-header>
-                                <mat-panel-title
-                                  style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 500 !important;">
-                                  2. REFERENCIAS NORMATIVAS
-                                </mat-panel-title>
-
-                              </mat-expansion-panel-header>
-
-
-                              <div class="demo-spacing-0"
-                                style="font-family: Montserrat, Helvetica, Arial, serif !important;">
-                                <ngb-alert role="alert" class="alert show alert-info fade ng-star-inserted">
-                                  <div class="alert-body"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                      stroke-linecap="round" stroke-linejoin="round"
-                                      class="feather feather-info mr-50 align-middle">
-                                      <circle cx="12" cy="12" r="10"></circle>
-                                      <line x1="12" y1="16" x2="12" y2="12"></line>
-                                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                                    </svg><span>Esta sección <strong>no requiere</strong> documentos de
-                                      referencia.</span>
-                                  </div><!---->
-                                </ngb-alert><!---->
-                              </div>
-
-
-                            </mat-expansion-panel>
-
-                            <mat-expansion-panel>
-                              <mat-expansion-panel-header>
-                                <mat-panel-title
-                                  style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 500 !important;">
-                                  3. TÉRMINOS Y DEFINICIONES
-                                </mat-panel-title>
-
-                              </mat-expansion-panel-header>
-
-
-                              <div class="demo-spacing-0"
-                                style="font-family: Montserrat, Helvetica, Arial, serif !important;">
-                                <ngb-alert role="alert"
-                                  class="alert show alert-info fade ng-star-inserted bg-light-primary">
-                                  <div class="alert-body"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                      stroke-linecap="round" stroke-linejoin="round"
-                                      class="feather feather-info mr-50 align-middle">
-                                      <circle cx="12" cy="12" r="10"></circle>
-                                      <line x1="12" y1="16" x2="12" y2="12"></line>
-                                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                                    </svg><span>Esta sección <strong>no requiere</strong> documentos de
-                                      referencia.</span>
-                                  </div><!---->
-                                </ngb-alert><!---->
-                              </div>
-
-
-                            </mat-expansion-panel>
-
-                            <mat-expansion-panel>
-                              <mat-expansion-panel-header>
-                                <mat-panel-title
-                                  style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 500 !important;color: #ea5455 !important;">
-                                  4. CONTEXTO DE LA ORGANIZACIÓN
-                                </mat-panel-title>
-
-                              </mat-expansion-panel-header>
-
-
-                              <br>
-                              <mat-accordion class="example-headers-align" multi>
-                                <mat-expansion-panel>
-                                  <mat-expansion-panel-header>
-                                    <mat-panel-title
-                                      style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 500 !important;color: #ea5455 !important;">
-                                      4.1. Entender la organización y su contexto
-                                    </mat-panel-title>
-                                    <mat-panel-description>
-
-                                    </mat-panel-description>
-                                  </mat-expansion-panel-header>
-
-
-                                  <div class="table-responsive"
-                                    style="font-family: Montserrat, Helvetica, Arial, serif !important;">
-                                    <table class="table table-bordered">
-                                      <thead>
-                                        <tr>
-                                          <th style="padding-top: 20px;"> 1. Análisis de contexto interno</th>
-                                          <th class="text-center" style="padding-top: 20px;"> ÚLTIMA MODIFICACIÓN</th>
-                                          <th class="text-center" style="padding-top: 20px;"> TAMAÑO</th>
-                                          <th class="text-right">
-                                            <button mat-icon-button [matMenuTriggerFor]="menu">
-                                              <mat-icon>more_vert</mat-icon>
-                                            </button>
-                                          </th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        <tr>
-                                          <td>
-                                            <div class="d-flex align-items-center">
-
-                                              <i data-feather='file-text' class="mr-1"></i>
-
-                                              <span>Analisis_de_contexto_interno.pdf</span>
-
-                                            </div>
-                                          </td>
-
-                                          <td class="text-center">
-                                            4 feb 2024
-                                          </td>
-                                          <td class="text-center">
-                                            847 KB
-                                          </td>
-                                          <td class="text-right">
-                                            <!-- <svg (contextmenu)="onContextMenu($event)" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                              stroke-linejoin="round" class="feather feather-more-vertical cursor-pointer">
-                                              <circle cx="12" cy="12" r="1"></circle>
-                                              <circle cx="12" cy="5" r="1"></circle>
-                                              <circle cx="12" cy="19" r="1"></circle>
-                                            </svg> -->
-                                            <button mat-icon-button [matMenuTriggerFor]="menu2"
-                                              aria-label="Example icon-button with a menu">
-                                              <mat-icon>more_vert</mat-icon>
-                                            </button>
-
-
-                                          </td>
-                                        </tr>
-
-
-
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                  <br>
-
-                                  <div class="table-responsive"
-                                    style="font-family: Montserrat, Helvetica, Arial, serif !important;">
-                                    <table class="table table-bordered">
-                                      <thead>
-                                        <tr>
-                                          <th>2. Análisis de contexto externo</th>
-                                          <th class="text-center"> ÚLTIMA MODIFICACIÓN</th>
-                                          <th class="text-center"> TAMAÑO</th>
-                                          <th class="text-right">ACCIÓN</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-
-                                        <tr>
-                                          <td class="text-center" colspan="4">
-                                            <span class="text-center" style="color: #ea5455 !important;">
-                                              No hay ningún documento cargado
-                                            </span>
-                                          </td>
-                                        </tr>
-
-
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                  <br>
-
-                                </mat-expansion-panel>
-
-                                <mat-expansion-panel>
-                                  <mat-expansion-panel-header>
-                                    <mat-panel-title
-                                      style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 500 !important;">
-                                      4.2. Comprender las necesidades y expectativas de las partes interesadas
-                                    </mat-panel-title>
-
-                                  </mat-expansion-panel-header>
-
-                                  <div class="table-responsive"
-                                    style="font-family: Montserrat, Helvetica, Arial, serif !important;">
-                                    <table class="table table-bordered">
-                                      <thead>
-                                        <tr>
-                                          <th style="padding-top: 20px;"> 1. Requerimientos de la Partes Interesadas
-                                          </th>
-                                          <th class="text-center" style="padding-top: 20px;"> ÚLTIMA MODIFICACIÓN</th>
-                                          <th class="text-center" style="padding-top: 20px;"> TAMAÑO</th>
-                                          <th class="text-right">
-                                            <button mat-icon-button [matMenuTriggerFor]="menu">
-                                              <mat-icon>more_vert</mat-icon>
-                                            </button>
-                                          </th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        <tr>
-                                          <td>
-                                            <div class="d-flex align-items-center">
-
-                                              <i data-feather='file-text' class="mr-1"></i>
-
-                                              <span>Analisis_de_contexto_interno.pdf</span>
-
-                                            </div>
-                                          </td>
-
-                                          <td class="text-center">
-                                            4 feb 2024
-                                          </td>
-                                          <td class="text-center">
-                                            847 KB
-                                          </td>
-                                          <td class="text-right">
-                                            <!-- <svg (contextmenu)="onContextMenu($event)" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round" class="feather feather-more-vertical cursor-pointer">
-                                            <circle cx="12" cy="12" r="1"></circle>
-                                            <circle cx="12" cy="5" r="1"></circle>
-                                            <circle cx="12" cy="19" r="1"></circle>
-                                          </svg> -->
-                                            <button mat-icon-button [matMenuTriggerFor]="menu2"
-                                              aria-label="Example icon-button with a menu">
-                                              <mat-icon>more_vert</mat-icon>
-                                            </button>
-
-
-                                          </td>
-                                        </tr>
-
-
-
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                  <br>
-
-                                  <div class="table-responsive"
-                                    style="font-family: Montserrat, Helvetica, Arial, serif !important;">
-                                    <table class="table table-bordered">
-                                      <thead>
-                                        <tr>
-                                          <th>2. Matriz de Partes Interesadas</th>
-                                          <th class="text-center"> ÚLTIMA MODIFICACIÓN</th>
-                                          <th class="text-center"> TAMAÑO</th>
-                                          <th class="text-right">ACCIÓN</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-
-                                        <tr>
-                                          <td>
-                                            <div class="d-flex align-items-center">
-
-                                              <i data-feather='file-text' class="mr-1"></i>
-
-                                              <span>Analisis_de_contexto_interno.pdf</span>
-
-                                            </div>
-                                          </td>
-
-                                          <td class="text-center">
-                                            4 feb 2024
-                                          </td>
-                                          <td class="text-center">
-                                            847 KB
-                                          </td>
-                                          <td class="text-right">
-                                            <!-- <svg (contextmenu)="onContextMenu($event)" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round" class="feather feather-more-vertical cursor-pointer">
-                                            <circle cx="12" cy="12" r="1"></circle>
-                                            <circle cx="12" cy="5" r="1"></circle>
-                                            <circle cx="12" cy="19" r="1"></circle>
-                                          </svg> -->
-                                            <button mat-icon-button [matMenuTriggerFor]="menu2"
-                                              aria-label="Example icon-button with a menu">
-                                              <mat-icon>more_vert</mat-icon>
-                                            </button>
-
-
-                                          </td>
-                                        </tr>
-
-
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                  <br>
-
-                                </mat-expansion-panel>
-
-                              </mat-accordion>
-
-
-                            </mat-expansion-panel>
-
-                            <mat-expansion-panel>
-                              <mat-expansion-panel-header>
-                                <mat-panel-title
-                                  style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 500 !important;">
-                                  5. LIDERAZGO
-                                </mat-panel-title>
-
-                              </mat-expansion-panel-header>
-
-
-                              <mat-accordion class="example-headers-align" multi>
-                                <mat-expansion-panel>
-                                  <mat-expansion-panel-header>
-                                    <mat-panel-title
-                                      style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 500 !important;">
-                                      5.1. Liderazgo y compromiso
-                                    </mat-panel-title>
-
-                                  </mat-expansion-panel-header>
-
-
-
-                                </mat-expansion-panel>
-
-                                <mat-expansion-panel>
-                                  <mat-expansion-panel-header>
-                                    <mat-panel-title
-                                      style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 500 !important;">
-                                      5.2. Política
-                                    </mat-panel-title>
-
-                                  </mat-expansion-panel-header>
-
-
-
-                                </mat-expansion-panel>
-
-                              </mat-accordion>
-
-
-                            </mat-expansion-panel>
-
-                          </mat-accordion>
-
-                        </div>
-                      </div>
-
-                    </div>
-                  </ng-template>
-                </li>
-
-                <!-- <li ngbNavItem [ngbNavItem]="2">
-  
-                  <a ngbNavLink class="d-flex align-items-center"><i data-feather="twitch" class="mr-sm-50"></i><span
-                      class="d-none d-sm-block"> PAGOS</span></a>
-                  <ng-template ngbNavContent>
-                    <div class="tab-pane active" id="account" aria-labelledby="account-tab" role="tabpanel">
-  
-  
-                      <div class="card border">
-                        <div class="card-body">
-                        
-                        </div>
-                      </div>
-  
-                    </div>
-                  </ng-template>
-                </li> -->
-
-                <!-- <li ngbNavItem [ngbNavItem]="3">
-  
-                  <a ngbNavLink class="d-flex align-items-center"><i data-feather="list" class="mr-sm-50"></i><span
-                      class="d-none d-sm-block"> SESIONES</span></a>
-                  <ng-template ngbNavContent>
-                    <div class="tab-pane active" id="account" aria-labelledby="account-tab" role="tabpanel">
-  
-                      <div class="card border">
-                        <div class="card-body">
-                         
-                        </div>
-                      </div>
-  
-                    </div>
-                  </ng-template>
-                </li> -->
-
-
-
-              </ul>
-              <div [ngbNavOutlet]="nav" class="mt-2"></div>
+                
+                <div class="text-center">
+
+                  <button *ngIf="!loadingExcel" type="button" (click)="downloadExcel()" rippleeffect=""
+                    class="btn btn-success mr-1 waves-effect"
+                    style="width:220px;height: 40px; margin-left: 10px;">DESCARGAR
+                    EXCEL
+                  </button>
+
+                  <button *ngIf="loadingExcel" type="button" disabled="" rippleeffect=""
+                    class="btn btn-outline-primary waves-effect mr-1"
+                    style="width:220px;height: 40px; margin-left: 10px;">
+                    <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span>
+                    <span class="ml-25 align-middle">Descargando...</span>
+                  </button>
+
+                </div>
+
+              </div>
             </div>
           </div>
-
-
         </div>
+
+        <div class="card">
+          <div class="card-body">
+
+            <ul ngbNav #nav="ngbNav" style="margin-top: -10px !important;" class="nav nav-pills">
+
+
+              <li ngbNavItem [ngbNavItem]="3">
+
+                <a ngbNavLink class="d-flex align-items-center">
+                  <!-- <i data-feather="list" class="mr-sm-50"></i> -->
+                  <i data-feather='list' class="mr-sm-50"></i>
+                  <span class="d-none d-sm-block">REQUERIMIENTOS
+                  </span>
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="tab-pane active" id="account" aria-labelledby="account-tab" role="tabpanel">
+
+
+                    <app-dashboard *ngIf="standardId != ''" [standardId]="standardId" [evaluationId]="evaluationId"
+                      [standardName]="standardName"></app-dashboard>
+
+
+
+                  </div>
+                </ng-template>
+              </li>
+
+              <li ngbNavItem [ngbNavItem]="4">
+
+                <a ngbNavLink class="d-flex align-items-center"><i data-feather="users" class="mr-sm-50"></i><span
+                    class="d-none d-sm-block">CONTROLES</span></a>
+                <ng-template ngbNavContent>
+                  <div class="tab-pane active" id="account" aria-labelledby="account-tab" role="tabpanel">
+
+                    <app-control-dashboard *ngIf="standardId != ''" [standardId]="standardId"
+                      [evaluationId]="evaluationId" [standardName]="standardName"></app-control-dashboard>
+
+
+                  </div>
+                </ng-template>
+              </li>
+
+
+
+            </ul>
+
+            <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+
+          </div>
+        </div>
+
+
       </section>
     </section>
 
   </div>
 </div>
-
-
-<div style="visibility: hidden; position: fixed" [style.left]="contextMenuPosition.x"
-  [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="contextMenu">
-</div>
-
-<mat-menu #contextMenu="matMenu" #menu="matMenu" style="font-family: Segoe UI;">
-  <ng-template matMenuContent let-item="item">
-    <button mat-menu-item>
-      <mat-icon>file_upload</mat-icon>
-      <span>Agregar documento</span>
-    </button>
-    <hr style="margin-top: 0px; margin-bottom: 0px;">
-    <button mat-menu-item>
-      <mat-icon>download</mat-icon>
-      <span>Descargar plantilla</span>
-    </button>
-
-  </ng-template>
-</mat-menu>
-
-
-<mat-menu #menu2="matMenu" style="font-family: Segoe UI;">
-  <ng-template matMenuContent let-item="item">
-    <button mat-menu-item>
-      <mat-icon>file_download</mat-icon>
-      <span>Descargar</span>
-    </button>
-    <hr style="margin-top: 0px; margin-bottom: 0px;">
-    <button mat-menu-item>
-      <mat-icon>edit_note</mat-icon>
-      <span>Cambiar nombre</span>
-    </button>
-    <button mat-menu-item>
-      <mat-icon>delete_outline</mat-icon>
-      <span>Eliminar</span>
-    </button>
-  </ng-template>
-</mat-menu>

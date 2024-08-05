@@ -15,6 +15,11 @@ export class EvaluationService {
 
     constructor(public http: HttpClient) { }
 
+    getCurrent() {
+        const url = environment.apiUrl + '/api/evaluation/current';
+        return this.http.get(url);
+    }
+
     getDashboard(standardId: number, evaluationId: number) {
         const url = environment.apiUrl + '/api/evaluation/dashboard' + '?standardId='+ standardId + '&evaluationId=' + evaluationId;
         return this.http.get(url);
@@ -58,7 +63,7 @@ export class EvaluationService {
         const url = environment.apiUrl + '/api/evaluation/' + evaluation.evaluationId;
         return this.http.put(url, evaluation)
             .pipe(map((resp: any) => {
-                Swal.fire('Evaluation actualizado', 'El Evaluation se actualizó satisfactoriamente', 'success');
+                Swal.fire('Evaluación actualizada', 'El Evaluation se actualizó satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -68,11 +73,11 @@ export class EvaluationService {
             }));
     }
 
-    delete(id: string) {
+    delete(id: number) {
         const url = environment.apiUrl + '/api/evaluation/' + id;
         return this.http.delete(url)
             .pipe(map((resp: any) => {
-                Swal.fire('Evaluation eliminado', 'El Evaluation se eliminó satisfactoriamente', 'success');
+                Swal.fire('Evaluación eliminada', 'El Evaluation se eliminó satisfactoriamente', 'success');
                 return resp;
             }
             ))

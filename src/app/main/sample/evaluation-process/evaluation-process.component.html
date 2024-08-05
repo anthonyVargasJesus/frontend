@@ -25,11 +25,13 @@
 
                       <div class="d-flex flex-column ml-1">
                         <div style="margin-top: 15px;">
-                          <h2 style="margin-bottom: 5px;">
-                            PVN-SGSI-EVALUACION DE REQUISITOS Y CONTROLES-ISO-27001 VF </h2>
-
+                          <h1 *ngIf="evaluation.standard" style="margin-bottom: 5px;">
+                            {{evaluation.standard.name}}
+                          </h1>
+                          <span *ngIf="evaluation" class="card-text" style="margin-bottom: 15px;">
+                            {{evaluation.description}}
+                          </span>
                           <br>
-
 
                         </div>
 
@@ -70,7 +72,8 @@
                   <div class="card border" style="margin-top: -10px !important;">
                     <div class="card-body">
                       <!-- <app-requirement-process *ngIf="standardId != ''" [standardId]="standardId" [evaluationId]="evaluationId"></app-requirement-process> -->
-                      <app-requirement-evaluation *ngIf="standardId != ''" [standardId]="standardId" [evaluationId]="evaluationId"></app-requirement-evaluation>
+                      <app-requirement-evaluation *ngIf="standardId != ''" [standardId]="standardId"
+                        [evaluationId]="evaluationId"></app-requirement-evaluation>
 
                     </div>
                   </div>
@@ -89,7 +92,8 @@
                   <div class="card border" style="margin-top: -10px !important;">
                     <div class="card-body">
 
-                      <app-control-evaluation *ngIf="standardId != ''" [standardId]="standardId" [evaluationId]="evaluationId"></app-control-evaluation>
+                      <app-control-evaluation *ngIf="standardId != ''" [standardId]="standardId"
+                        [evaluationId]="evaluationId"></app-control-evaluation>
 
 
                     </div>
@@ -106,16 +110,18 @@
               <ng-template ngbNavContent>
                 <div class="tab-pane active" id="account" aria-labelledby="account-tab" role="tabpanel">
 
-                <app-dashboard *ngIf="standardId != ''" [standardId]="standardId" [evaluationId]="evaluationId" [standardName]="standardName" ></app-dashboard>
+                  <app-dashboard *ngIf="standardId != ''" [standardId]="standardId" [evaluationId]="evaluationId"
+                    [standardName]="standardName"></app-dashboard>
 
-                <br>
-                <app-control-dashboard *ngIf="standardId != ''" [standardId]="standardId" [evaluationId]="evaluationId" [standardName]="standardName" ></app-control-dashboard>
+                  <br>
+                  <app-control-dashboard *ngIf="standardId != ''" [standardId]="standardId"
+                    [evaluationId]="evaluationId" [standardName]="standardName"></app-control-dashboard>
 
                 </div>
               </ng-template>
             </li>
 
-          
+
 
           </ul>
 

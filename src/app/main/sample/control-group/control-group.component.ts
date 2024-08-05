@@ -13,6 +13,7 @@ import { PAGE_SIZE, getResults } from 'app/config/config';
 import { takeUntil } from 'rxjs/operators';
 import { ErrorManager } from 'app/errors/error-manager';
 import Swal from 'sweetalert2';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-control-group',
@@ -49,7 +50,8 @@ export class ControlGroupComponent implements OnInit {
     private controlGroupService: ControlGroupService,
     private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private route: ActivatedRoute,
   ) {
 
   }
@@ -59,7 +61,13 @@ export class ControlGroupComponent implements OnInit {
     this.getTheme();
     this.initMenuName();
     this.pageSize = PAGE_SIZE;
-    this.get();
+    if (this.standardId == undefined) {
+      this.route.paramMap.subscribe((params: ParamMap) => {
+        this.standardId = Number(params.get('id').toString());
+        this.get();
+      });
+    } else 
+      this.get();
   }
 
   getTheme() {

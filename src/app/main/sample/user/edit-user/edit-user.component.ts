@@ -7,6 +7,8 @@ import { ErrorManager } from 'app/errors/error-manager';
 import { UserService } from 'app/services/user.service';
 import { UserStateService } from 'app/services/user-state.service';
 import { UserState } from 'app/models/user-state';
+import { Standard } from 'app/models/standard';
+import { StandardService } from 'app/services/standard.service';
 
 
 @Component({
@@ -21,12 +23,14 @@ export class EditUserComponent implements OnInit {
     private userService: UserService,
     private route: ActivatedRoute,
     private _formBuilder: FormBuilder,
-    public router: Router, private userStateService: UserStateService,
-
+    public router: Router, 
+    private userStateService: UserStateService,
+    private standardService: StandardService
 
   ) { }
 
   userStates: UserState[] = [];
+  standards: Standard[] = [];
 
   user: User = new User();
   loading = false;
@@ -39,13 +43,13 @@ export class EditUserComponent implements OnInit {
     this.initForm();
     this.initMenuName(); 
     this.getAllUserStates();
+    this.getAllStandards();
     this.initUser();
 
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.id = params.get('id').toString();
       this.obtain(this.id);
     });
-
 
   }
 
@@ -76,8 +80,12 @@ export class EditUserComponent implements OnInit {
       phone: ['', [Validators.maxLength(100),]],
       userState: ['', [Validators.required,]],
       documentNumber: ['', [Validators.required, Validators.maxLength(20),]],
+      standard: ['', [Validators.required,]],
     });
-  } initMenuName() {
+  } 
+  
+  
+  initMenuName() {
     this.contentHeader = {
       headerTitle: 'Usuarios',
       actionButton: false,
@@ -103,7 +111,6 @@ export class EditUserComponent implements OnInit {
     this.userService.obtain(id)
       .subscribe((res: any) => {
         this.user = res.data;
-        console.log(res);
         this.setFormValue(this.user);
         this.loading = false;
       }, error => {
@@ -122,6 +129,7 @@ export class EditUserComponent implements OnInit {
       phone: ((user.phone == null) ? '' : user.phone),
       userState: ((user.userStateId == null) ? '' : user.userStateId),
       documentNumber: ((user.documentNumber == null) ? '' : user.documentNumber),
+      standard: ((user.standardId == null) ? '' : user.standardId),
     });
   }
 
@@ -136,6 +144,7 @@ export class EditUserComponent implements OnInit {
     this.user.phone = this.form.value.phone;
     this.user.userStateId = this.form.value.userState;
     this.user.documentNumber = this.form.value.documentNumber;
+    this.user.standardId = this.form.value.standard;
   }
 
   getAllUserStates() {
@@ -148,6 +157,15 @@ export class EditUserComponent implements OnInit {
       });
   }
 
+  getAllStandards() {
+    this.standardService.getAll()
+      .subscribe((res: any) => {
+        this.standards = res.data;
+        this.initUser();
+      }, error => {
+        ErrorManager.handleError(error);
+      });
+  }
 
   get f() {
     return this.form.controls;

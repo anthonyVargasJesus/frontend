@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 import { ControlEvaluation } from 'app/models/control-evaluation';
 import { ErrorManager } from 'app/errors/error-manager';
 import { ControlEvaluationService } from 'app/services/control-evaluation.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MaturityLevelService } from 'app/services/maturity-level.service';
 import { MaturityLevel } from 'app/models/maturity-level';
 import { ResponsibleService } from 'app/services/responsible.service';
@@ -15,6 +15,12 @@ import { Console } from 'console';
 import { DocumentationService } from 'app/services/documentation.service';
 import { Documentation } from 'app/models/documentation';
 import { ReferenceDocumentation } from 'app/models/reference-documentation';
+import { LoginService } from 'app/services/login.service';
+import { CoreConfigService } from '@core/services/config.service';
+import { Subject } from 'rxjs/internal/Subject';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+import { AddResponsibleComponent } from '../../responsible/add-responsible/add-responsible.component';
+import { AddDocumentationComponent } from '../../documentation/add-documentation/add-documentation.component';
 
 
 @Component({
@@ -33,7 +39,9 @@ export class EditControlEvaluationComponent implements OnInit {
     private responsibleService: ResponsibleService,
     private documentationService: DocumentationService,
     @Inject(MAT_DIALOG_DATA) private data: DialogData, private dialogRef: MatDialogRef<EditControlEvaluationComponent>,
-
+    private loginService: LoginService,
+    private dialog: MatDialog,
+    private _coreConfigService: CoreConfigService,
   ) { }
 
   maturityLevels: MaturityLevel[] = [];
@@ -51,9 +59,14 @@ export class EditControlEvaluationComponent implements OnInit {
 
   selectedMaturityLevel: MaturityLevel = new MaturityLevel();
 
-  ngOnInit(): void {
-    this.initForm();
+  public currentSkin: string;
+  private _unsubscribeAll: Subject<any>;
+  private panelClass: string;
   
+
+  ngOnInit(): void {
+    this.getTheme();
+    this.initForm();
     this.initControlEvaluation();
     this.id = this.data['_id'];
     this.standardId = this.data['standardId'];
@@ -62,9 +75,25 @@ export class EditControlEvaluationComponent implements OnInit {
     this.getAllMaturityLevels();
     this.getAllResponsibles();
     this.getAllDocumentations();
-
   }
 
+  getTheme() {
+    this._unsubscribeAll = new Subject();
+    this._coreConfigService
+      .getConfig()
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(config => {
+        this.currentSkin = config.layout.skin;
+        this.setDialogContainerStyle();
+      });
+  }
+
+  setDialogContainerStyle() {
+    if (this.currentSkin == 'dark')
+      this.panelClass = 'custom-dark-dialog-container';
+    else
+      this.panelClass = 'custom-default-dialog-container';
+  }
 
   initControlEvaluation() {
     this.controlEvaluation = new ControlEvaluation();
@@ -232,6 +261,56 @@ export class EditControlEvaluationComponent implements OnInit {
 
   }
 
+
+  
+  addResponsible() {
+
+    if (this.loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(AddResponsibleComponent, {
+        height: '600px',
+        width: '600px',
+        autoFocus: false,
+        data: {
+          standardId: this.standardId
+        },
+        panelClass: this.panelClass
+      });
+
+      dialogRef.afterClosed().subscribe(data => {
+        if (data == null)
+          return;
+
+         if (data.updated == true)
+           this.getAllResponsibles();
+
+      });
+    }
+
+  }
+
+  addDocumentation() {
+
+    if (this.loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(AddDocumentationComponent, {
+        height: '600px',
+        width: '600px',
+        autoFocus: false,
+        data: {
+          standardId: this.standardId
+        },
+        panelClass: this.panelClass
+      });
+
+      dialogRef.afterClosed().subscribe(data => {
+        if (data == null)
+          return;
+
+        if (data.updated == true)
+          this.getAllDocumentations();
+      });
+    }
+
+  }
 
   close() {
     this.dialogRef.close();

@@ -117,8 +117,8 @@ export class RequirementEvaluationComponent implements OnInit {
 
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(AddRequirementEvaluationComponent, {
-        height: '700px',
-        width: '670px',
+        height: '750px',
+        width: '700px',
         autoFocus: false,
         data: {
           requirementId: requirement.requirementId,
@@ -148,8 +148,8 @@ export class RequirementEvaluationComponent implements OnInit {
 
       if (this.loginService.isAuthenticated()) {
         let dialogRef = this.dialog.open(EditRequirementEvaluationComponent, {
-          height: '700px',
-          width: '670px',
+          height: '750px',
+        width: '700px',
           data: {
             _id: requirementEvaluation.requirementEvaluationId,
             standardId: this.standardId,

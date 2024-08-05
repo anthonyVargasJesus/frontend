@@ -9,13 +9,18 @@ import { getResults, PAGE_SIZE } from 'app/config/config';
 import { Router } from '@angular/router';
 import {MatAccordion} from '@angular/material/expansion';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { EvaluationService } from 'app/services/evaluation.service';
+import { Evaluation } from 'app/models/evaluation';
+import { saveAs } from 'file-saver';
+
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, AfterContentInit {
+
+export class HomeComponent implements OnInit {
 
 
   public contentHeader: object;
@@ -24,27 +29,25 @@ export class HomeComponent implements OnInit, AfterContentInit {
   private _unsubscribeAll: Subject<any>;
   coreConfig: any;
 
-  @ViewChild(MatAccordion) accordion: MatAccordion;
-  @ViewChild(MatMenuTrigger)
-  contextMenu: MatMenuTrigger;
-  contextMenuPosition = { x: '0px', y: '0px' };
-  
+  evaluation: Evaluation = new Evaluation();
+  loading = false;
+  loadingExcel = false;
+
+  evaluationId: string;
+  standardId: string = '';
+  standardName: string = '';
+
   constructor(
     private _formBuilder: FormBuilder,
     private dialog: MatDialog,
     private _coreConfigService: CoreConfigService,
     private router: Router,
+    private evaluationService: EvaluationService,
   ) {
 
     this._unsubscribeAll = new Subject();
 
   }
-  ngAfterContentInit(): void {
-    if (this.accordion)
-    this.accordion.openAll();
-  }
-
-
 
 
   ngOnInit(): void {
@@ -52,44 +55,68 @@ export class HomeComponent implements OnInit, AfterContentInit {
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       this.coreConfig = config;
     });
-    this.initMenuName();
+
+    this.getCurrent();
 
   }
 
-  onContextMenu(event: MouseEvent) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    //this.contextMenu.menuData = { 'item': cloth };
-    this.contextMenu.menu.focusFirstItem('mouse');
-    this.contextMenu.openMenu();
+  getCurrent() {
+    this.loading = true;
+    this.evaluationService.getCurrent()
+      .subscribe((res: any) => {
+        this.evaluation = res.data;
+        this.standardId = this.evaluation.standardId.toString();
+        this.evaluationId =  this.evaluation.evaluationId.toString();
+        this.standardName = this.evaluation.standard.name;
+        this.loading = false;
+        this.initMenuName();
+      }, error => {
+        this.loading = false;
+        ErrorManager.handleError(error);
+      });
   }
 
-  onContextMenuAction1() {
-  
-  }
 
 
   initMenuName() {
+
     this.contentHeader = {
-      headerTitle: 'ISO 27001',
+      headerTitle: 'RESUMEN DE RESULTADOS',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'NORMAS ISO',
+            name: 'EVALUACIÓN',
             isLink: false,
             link: '#'
           },
           {
-            name: 'ISO 27001',
+            name: 'Resumen',
             isLink: false
-          }
+          },
         ]
       }
     }
   }
 
+  public downloadExcel(): any {
+
+    this.loadingExcel = true;
+    var fileName = 'dashboard.xlsx';
+    var mediaType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    this.evaluationService.getExcelDashboard(this.standardId.toString(), this.evaluationId.toString())
+      .subscribe(res => {
+        this.loadingExcel = false;
+
+        var blob = new Blob([res], { type: mediaType });
+        saveAs(blob, fileName);
+
+      }, error => {
+        this.loadingExcel = false;
+        ErrorManager.handleError(error);
+      });
+
+  }
 
 }

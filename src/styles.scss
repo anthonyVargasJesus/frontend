@@ -279,3 +279,8 @@
 .fc-widget-content .fc-scroller {
   height: auto !important;
 }
+
+.mat-expansion-indicator::after {
+  color: #636363;
+}
+

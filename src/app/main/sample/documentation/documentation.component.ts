@@ -12,6 +12,9 @@ import { PAGE_SIZE, getResults } from 'app/config/config';
 import { takeUntil } from 'rxjs/operators';
 import { ErrorManager } from 'app/errors/error-manager';
 import Swal from 'sweetalert2';
+import { Standard } from 'app/models/standard';
+import { StandardService } from 'app/services/standard.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 
 @Component({
@@ -43,11 +46,15 @@ export class DocumentationComponent implements OnInit {
   @Input()
   standardId: number;
 
+  standard: Standard = new Standard();
+
   constructor(
     private documentationService: DocumentationService,
     private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private standardService: StandardService,
+    private route: ActivatedRoute,
   ) {
 
   }
@@ -57,9 +64,29 @@ export class DocumentationComponent implements OnInit {
     this.getTheme();
     this.initMenuName();
     this.pageSize = PAGE_SIZE;
-    this.get();
+    if (this.standardId == undefined) {
+      this.route.paramMap.subscribe((params: ParamMap) => {
+        this.standardId = Number(params.get('id').toString());
+        this.obtainStandard(this.standardId);
+      });
+    } else 
+      this.obtainStandard(this.standardId);
   }
 
+  obtainStandard(id: number) {
+    this.loading = true;
+    this.standardService.obtain(id.toString())
+      .subscribe((res: any) => {
+        this.standard = res.data;
+        this.loading = false;
+        this.initMenuName();
+        this.get();
+      }, error => {
+        this.loading = false;
+        ErrorManager.handleError(error);
+      });
+  }
+  
   getTheme() {
     this._unsubscribeAll = new Subject();
     this._coreConfigService
@@ -80,6 +107,11 @@ export class DocumentationComponent implements OnInit {
 
 
   initMenuName() {
+
+    let title = '';
+    if (this.standard)
+      title = this.standard.name;
+
     this.contentHeader = {
       headerTitle: 'Documentación',
       actionButton: false,
@@ -87,18 +119,14 @@ export class DocumentationComponent implements OnInit {
         type: '',
         links: [
           {
-            name: 'Configuración',
+            name: title,
             isLink: false,
             link: '#'
           },
           {
-            name: 'Normas',
+            name: 'Documentación',
             isLink: false
           },
-          {
-            name: 'ISO 27001',
-            isLink: false
-          }
         ]
       }
     }
