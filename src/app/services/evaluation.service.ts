@@ -30,6 +30,12 @@ export class EvaluationService {
         return this.http.get(url);
     }
 
+    getPendingDocumentation(skip: number, pageSize: number,search: string, standardId: number, evaluationId: number) {
+        const url = environment.apiUrl + '/api/evaluation/PendingDocumentation' + '?standardId='+ standardId + '&evaluationId=' + evaluationId +'&skip=' + skip + '&pageSize=' + pageSize + '&search=' + search;
+        return this.http.get(url);
+    }
+
+
     getAll() {
         const url = environment.apiUrl + '/api/evaluation/all';
         return this.http.get(url);

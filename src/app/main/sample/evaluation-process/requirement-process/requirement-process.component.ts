@@ -1,16 +1,15 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-
 import { Requirement } from 'app/models/requirement';
-import { MatAccordion } from '@angular/material/expansion';
 import { Subject } from 'rxjs';
 import { RequirementService } from 'app/services/requirement.service';
 import { LoginService } from 'app/services/login.service';
 import { CoreConfigService } from '@core/services/config.service';
-import { PAGE_SIZE, getResults } from 'app/config/config';
+import { getResults } from 'app/config/config';
 import { takeUntil } from 'rxjs/operators';
 import { ErrorManager } from 'app/errors/error-manager';
-import Swal from 'sweetalert2';
+import { User } from 'app/models/user';
+import { LoginModel } from 'app/models/login-model';
 
 
 @Component({
@@ -23,16 +22,10 @@ export class RequirementProcessComponent implements OnInit {
 
   requirements: Requirement[] = [];
   selectedRow = 0;
-  page = 1;
-  skip = 0;
-  pageSize;
   total = 0;
-  totalPages = 0;
   loading = false;
-  searchText: string = '';
   results: string;
-  previous = true;
-  next = true;
+
 
   public currentSkin: string;
   private _unsubscribeAll: Subject<any>;
@@ -43,6 +36,7 @@ export class RequirementProcessComponent implements OnInit {
   @Input()
   evaluationId: number;
 
+  currentLoginModel: LoginModel = new LoginModel();
   
   constructor(
     private requirementService: RequirementService,
@@ -53,11 +47,10 @@ export class RequirementProcessComponent implements OnInit {
 
   }
 
-
   ngOnInit() {
-
+    this.currentLoginModel = this.loginService.getCurrentUser();
+    console.log('currentLoginModel', this.currentLoginModel);
     this.getTheme();
-    this.pageSize = PAGE_SIZE;
     this.get();
   }
 
@@ -80,56 +73,18 @@ export class RequirementProcessComponent implements OnInit {
   }
 
 
-  search(text: string) {
-    this.searchText = text;
-    this.skip = 0;
-
-    this.get();
-  }
-
   get() {
 
     this.loading = true;
-    this.requirementService.get(this.skip, this.pageSize, this.searchText, this.standardId)
+    this.requirementService.get(this.standardId)
       .subscribe((res: any) => {
         this.asignObjects(res);
-          this.page = (this.skip / this.pageSize) + 1;
-        this.results = getResults(this.total, this.totalPages);
+        this.results = getResults(this.total, 0);
         this.loading = false;
-        this.disabledPagination();
       }, error => {
         this.loading = false;
         ErrorManager.handleError(error);
       });
-  }
-
-  changePageSize(value) {
-    this.pageSize = value;
-    this.get();
-  }
-
-  changePage(value: number) {
-    const desde = this.skip + value;
-    if (desde >= this.total)
-      return;
-
-    if (desde < 0)
-      return;
-
-    this.skip += value;
-    this.get();
-  }
-
-  disabledPagination() {
-
-    this.previous = true;
-    this.next = true;
-
-    if (this.page > 1)
-      this.previous = false;
-
-    if (this.page < this.totalPages)
-      this.next = false;
   }
 
 
@@ -145,22 +100,12 @@ export class RequirementProcessComponent implements OnInit {
   delete(requirement: Requirement) {
 
 
-
   }
 
-
-  onKeydown(event, text: string) {
-
-    this.searchText = text;
-    if (event.key === 'Enter')
-      this.search(this.searchText);
-
-  }
 
   asignObjects(res) {
     this.requirements = res.data;
     this.total = res.pagination.totalRows;
-    this.totalPages = res.pagination.totalPages;
   }
 
   addChild(requirementId: number, level: number) {

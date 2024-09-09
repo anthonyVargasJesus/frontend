@@ -1,14 +1,11 @@
-import { AfterContentInit, Component, OnInit, ViewChild } from '@angular/core'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core'
+import { FormBuilder,} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CoreConfigService } from '@core/services/config.service';
 import { Subject } from 'rxjs/internal/Subject';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { ErrorManager } from 'app/errors/error-manager';
-import { getResults, PAGE_SIZE } from 'app/config/config';
 import { Router } from '@angular/router';
-import {MatAccordion} from '@angular/material/expansion';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { EvaluationService } from 'app/services/evaluation.service';
 import { Evaluation } from 'app/models/evaluation';
 import { saveAs } from 'file-saver';

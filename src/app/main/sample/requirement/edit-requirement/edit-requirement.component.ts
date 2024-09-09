@@ -54,7 +54,7 @@ export class EditRequirementComponent implements OnInit {
     this.form = this._formBuilder.group({
       numeration: ['', [Validators.required, Validators.maxLength(8),]],
       name: ['', [Validators.required, Validators.maxLength(200),]],
-      description: ['', [Validators.maxLength(500),]],
+      description: ['', [Validators.maxLength(1000),]],
       level: ['', [Validators.required, Validators.maxLength(8),]],
       parentId: [0, []],
       isEvaluable: [false, [Validators.maxLength(5),]],

@@ -20,6 +20,16 @@ export class SectionService {
         return this.http.get(url);
     }
 
+    getAllByDocumentationId(documentationId: number) {
+        const url = environment.apiUrl + '/api/section/All-by-documentation' + '?documentationId=' + documentationId;
+        return this.http.get(url);
+    }
+
+    getByDocumentationId(documentationId: number) {
+        const url = environment.apiUrl + '/api/section/documentation' + '?documentationId=' + documentationId;
+        return this.http.get(url);
+    }
+
     get(skip: number, pageSize: number, search: string, versionId: number) {
         const url = environment.apiUrl + '/api/section' + '?skip=' + skip + '&pageSize=' + pageSize + '&versionId=' + versionId + '&search=' + search;
         return this.http.get(url);

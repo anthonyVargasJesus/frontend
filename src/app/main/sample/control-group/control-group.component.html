@@ -6,50 +6,25 @@
                 <div class="card">
 
 
-                    <hr>
-                    <div class="row mt-0 mb-0">
+                    <div class="row mt-1 mb-0">
                         <div class="col-md-6 col-12">
                             <div class="d-flex justify-content-between align-items-center m-1">
-
-                                <label class="d-flex align-items-center">Mostrar
-                                    <select class="form-control mx-25 ng-untouched ng-pristine ng-valid"
-                                        [(ngModel)]="pageSize" (change)="changePageSize($event.target.value)"
-                                        style="margin-left: 10px !important;margin-right: 10px !important;width: 70px !important;">
-                                        <option value="10"> 10 </option>
-                                        <option value="25">25</option>
-                                        <option value="50"> 50 </option>
-                                        <option value="100">100</option>
-                                    </select> registros</label>
+                                <h1 class="ml-2">{{currentLoginModel.cs}}</h1>
                             </div>
                         </div>
 
                         <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end">
 
                             <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
-                                <label class="d-flex align-items-center ml-1 ml-md-0 mr-1">Buscar
-
-                                    <input #input name="searchValue" (keydown)="onKeydown($event, input.value)"
-                                        [(ngModel)]="searchText" name="search" type="search"
-                                        class="form-control ml-25 ng-pristine ng-valid ng-touched"
-                                        style="margin-left: 10px !important;">
-
-                                </label>
-                                <button *ngIf="!loading" (click)="search(input.value)" rippleeffect=""
-                                    class="btn btn-primary waves-effect waves-float waves-light">
-                                    <i data-feather='search'></i>
-                                </button>
-
-                                <button *ngIf="loading" data-v-aa799a9e="" type="button" disabled="disabled"
-                                    class="btn btn-outline-primary disabled">
-                                    <span data-v-aa799a9e="" aria-hidden="True"
-                                        class="spinner-border spinner-border-sm">
-                                        <!---->
-                                    </span><span data-v-aa799a9e="" class="sr-only">Loading...</span>
-                                </button>
+                                
+                                <div class="example-action-buttons mt-1">
+                                    <button style="font-family: Montserrat, Helvetica, Arial, serif !important;" mat-button (click)="expandAll()">Expandir</button>
+                                    <button style="font-family: Montserrat, Helvetica, Arial, serif !important;" mat-button (click)="collapseAll()">Colapsar</button>
+                                </div>
 
                                 <button (click)="add()" rippleeffect="" title="Agregar un nuevo grupo de controles"
                                     class="btn btn-danger ml-1 waves-effect waves-float waves-light"
-                                    style="float: right!important;margin-right: 10px;margin-top:0px;">
+                                    style="float: right!important;margin-right: 0px;margin-top:-10px;">
                                     <i data-feather='plus'></i>
                                     AGREGAR GRUPO
                                 </button>
@@ -59,8 +34,10 @@
 
                     </div>
 
+                    <hr style="margin-top: -5px !important;">
+
                     <mat-accordion class="example-headers-align" multi
-                    style="font-family: Montserrat, Helvetica, Arial, serif !important;">
+                    style="font-family: Montserrat, Helvetica, Arial, serif !important;margin: 15px;margin-top: 5px !important;">
 
                     <mat-expansion-panel *ngFor="let controlGroup of controlGroups; let i = index" style="background-color: transparent !important;">
                         <mat-expansion-panel-header>
@@ -81,24 +58,22 @@
                         </ng-container>
                        
 
-                        <br>
-                        <br>
                         <hr>
 
 
                         <div class="text-right">
                             <div style="display: flex; flex-direction: row-reverse;margin-right: -10px;">
 
-                                <a container="body" placement="top" class="mr-1" title="Eliminar" (click)="delete(controlGroup)">
+                                <a container="body" placement="top" class="mr-1" title="Eliminar grupo" (click)="delete(controlGroup)">
                                     <div class="icon-wrapper">
-                                        <i class="feather font-medium-4 text-primary" data-feather='trash-2'></i>
+                                        <i class="feather font-medium-4" data-feather='trash-2'></i>
                                     </div>
                                 </a>
                               
-                                <a container="body" placement="top" title="Editar requerimiento" (click)="edit(controlGroup.controlGroupId)"
+                                <a container="body" placement="top" title="Editar grupo" (click)="edit(controlGroup.controlGroupId)"
                                     class="mr-1">
                                     <div class="icon-wrapper">
-                                        <i class="feather font-medium-3 icon-edit-2 text-primary"></i>
+                                        <i class="feather font-medium-3 icon-edit-2"></i>
                                     </div>
                                 </a>
 

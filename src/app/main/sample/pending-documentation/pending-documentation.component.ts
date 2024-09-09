@@ -1,7 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AddDocumentationComponent } from './add-documentation/add-documentation.component';
-import { EditDocumentationComponent } from './edit-documentation/edit-documentation.component';
 import { Documentation } from 'app/models/documentation';
 import { MatAccordion } from '@angular/material/expansion';
 import { Subject } from 'rxjs';
@@ -14,16 +12,17 @@ import { ErrorManager } from 'app/errors/error-manager';
 import Swal from 'sweetalert2';
 import { Standard } from 'app/models/standard';
 import { StandardService } from 'app/services/standard.service';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { EvaluationService } from 'app/services/evaluation.service';
 
 
 @Component({
-  selector: 'app-documentation',
-  templateUrl: './documentation.component.html',
+  selector: 'app-pending-documentation',
+  templateUrl: './pending-documentation.component.html',
   styles: [
   ]
 })
-export class DocumentationComponent implements OnInit {
+export class PendingDocumentationComponent implements OnInit {
 
 
   documentations: Documentation[] = [];
@@ -46,16 +45,16 @@ export class DocumentationComponent implements OnInit {
   @Input()
   standardId: number;
 
+  @Input()
+  evaluationId: number;
+
   standard: Standard = new Standard();
 
   constructor(
-    private documentationService: DocumentationService,
+    private evaluationService: EvaluationService,
     private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
     private dialog: MatDialog,
-    private standardService: StandardService,
-    private route: ActivatedRoute,
-    private router: Router,
   ) {
 
   }
@@ -63,31 +62,11 @@ export class DocumentationComponent implements OnInit {
 
   ngOnInit() {
     this.getTheme();
-    this.initMenuName();
     this.pageSize = PAGE_SIZE;
-    if (this.standardId == undefined) {
-      this.route.paramMap.subscribe((params: ParamMap) => {
-        this.standardId = Number(params.get('id').toString());
-        this.obtainStandard(this.standardId);
-      });
-    } else 
-      this.obtainStandard(this.standardId);
+    this.get();
   }
 
-  obtainStandard(id: number) {
-    this.loading = true;
-    this.standardService.obtain(id.toString())
-      .subscribe((res: any) => {
-        this.standard = res.data;
-        this.loading = false;
-        this.initMenuName();
-        this.get();
-      }, error => {
-        this.loading = false;
-        ErrorManager.handleError(error);
-      });
-  }
-  
+
   getTheme() {
     this._unsubscribeAll = new Subject();
     this._coreConfigService
@@ -107,33 +86,6 @@ export class DocumentationComponent implements OnInit {
   }
 
 
-  initMenuName() {
-
-    let title = '';
-    if (this.standard)
-      title = this.standard.name;
-
-    this.contentHeader = {
-      headerTitle: 'Documentación',
-      actionButton: false,
-      breadcrumb: {
-        type: '',
-        links: [
-          {
-            name: title,
-            isLink: false,
-            link: '#'
-          },
-          {
-            name: 'Documentación',
-            isLink: false
-          },
-        ]
-      }
-    }
-  }
-
-
   search(text: string) {
     this.searchText = text;
     this.skip = 0;
@@ -141,13 +93,15 @@ export class DocumentationComponent implements OnInit {
     this.get();
   }
 
+  
   get() {
 
     this.loading = true;
-    this.documentationService.get(this.skip, this.pageSize, this.searchText, this.standardId)
+    this.evaluationService.getPendingDocumentation(this.skip, this.pageSize, this.searchText, this.standardId, this.evaluationId)
       .subscribe((res: any) => {
         this.asignObjects(res);
-          this.page = (this.skip / this.pageSize) + 1;
+        console.log(res);
+        this.page = (this.skip / this.pageSize) + 1;
         this.results = getResults(this.total, this.totalPages);
         this.loading = false;
         this.disabledPagination();
@@ -190,7 +144,26 @@ export class DocumentationComponent implements OnInit {
 
   edit(id: number) {
 
-    this.router.navigate(['/edit-documentation',id]);
+    // if (this.loginService.isAuthenticated()) {
+    //   let dialogRef = this.dialog.open(EditDocumentationComponent, {
+    //     height: '650px',
+    //     width: '650px',
+    //     data: {
+    //       _id: id,
+    //       standardId: this.standardId
+    //     },
+    //     autoFocus: false,
+    //     panelClass: this.panelClass
+    //   });
+
+    //   dialogRef.afterClosed().subscribe(data => {
+    //     if (data == null)
+    //       return;
+
+    //     if (data.updated == true)
+    //       this.get();
+    //   });
+    // }
 
   }
 
@@ -198,28 +171,6 @@ export class DocumentationComponent implements OnInit {
 
   delete(documentation: Documentation) {
 
-    let text: string;
-    text = '¿Esta seguro de eliminar el documento: ' + documentation.name + '?';
-
-    Swal.fire({
-      title: 'Confirmación',
-      text: text,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí',
-      cancelButtonText: 'No'
-    }).then((result) => {
-      if (result.isConfirmed) {
-
-        this.documentationService.delete(documentation.documentationId.toString())
-          .subscribe(deleted => {
-            this.get();
-          });
-
-      }
-    })
 
   }
 
@@ -240,28 +191,7 @@ export class DocumentationComponent implements OnInit {
 
   add() {
 
-    if (this.loginService.isAuthenticated()) {
-      let dialogRef = this.dialog.open(AddDocumentationComponent, {
-        height: '600px',
-        width: '600px',
-        autoFocus: false,
-        data: {
-          standardId: this.standardId
-        },
-        panelClass: this.panelClass
-      });
-
-      dialogRef.afterClosed().subscribe(data => {
-        if (data == null)
-          return;
-
-        if (data.updated == true)
-          this.get();
-      });
-    }
-
 
   }
-
 
 }

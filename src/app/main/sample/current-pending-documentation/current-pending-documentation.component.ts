@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ErrorManager } from 'app/errors/error-manager';
 import { Evaluation } from 'app/models/evaluation';
 import { EvaluationService } from 'app/services/evaluation.service';
 
 @Component({
-  selector: 'app-current-requirement-evaluation',
-  templateUrl: './current-requirement-evaluation.component.html',
+  selector: 'app-current-pending-documentation',
+  templateUrl: './current-pending-documentation.component.html',
   styles: [
   ]
 })
-export class CurrentRequirementEvaluationComponent implements OnInit {
+
+export class CurrentPendingDocumentationComponent implements OnInit {
 
   standardId: number = 0;
   evaluationId: number = 0;
@@ -19,8 +19,7 @@ export class CurrentRequirementEvaluationComponent implements OnInit {
   public contentHeader: object;
   title = '';
 
-  constructor(private evaluationService: EvaluationService,
-    private route: ActivatedRoute,) { }
+  constructor(private evaluationService: EvaluationService) { }
 
   ngOnInit(): void {
     this.getCurrent();
@@ -50,24 +49,23 @@ export class CurrentRequirementEvaluationComponent implements OnInit {
       title = this.evaluation.description;
 
     this.contentHeader = {
-      headerTitle: 'Evaluación de requerimientos',
+      headerTitle: 'Pendientes',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'EVALUACIÓN',
+            name: 'DOCUMENTACIÓN',
             isLink: false,
             link: '#'
           },
           {
-            name: 'Requerimientos',
+            name: 'Pendientes',
             isLink: false
           },
         ]
       }
     }
   }
-
 
 }

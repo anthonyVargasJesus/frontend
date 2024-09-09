@@ -6,6 +6,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DialogData } from 'app/models/dialog-data';
 import { Section } from 'app/models/section';
 import { SectionService } from 'app/services/section.service';
+import { Version } from 'app/models/version';
+import { VersionService } from 'app/services/version.service';
 
 
 @Component({
@@ -35,13 +37,23 @@ export class AddSectionComponent implements OnInit {
   documentationId: number;
   level: string;
 
+
+
   ngOnInit(): void {
     this.documentationId = this.data['documentationId'];
     this.versionId = this.data['versionId'];
+
+    console.log('versionId', this.versionId);
+
     this.sectionId = this.data['sectionId'];
     this.level = this.data['level'];
     this.initForm();
-    this.getAllSections();
+
+    if (this.versionId)
+      this.getAllSectionsByVersionId();
+    else
+      this.getAllSectionsByDocumentationId();
+
     this.initSection();
   }
 
@@ -61,7 +73,8 @@ export class AddSectionComponent implements OnInit {
   }
 
 
-  getAllSections() {
+
+  getAllSectionsByVersionId() {
     this.sectionService.getAll(this.versionId)
       .subscribe((res: any) => {
         this.sections = res.data;
@@ -71,6 +84,16 @@ export class AddSectionComponent implements OnInit {
       });
   }
 
+  getAllSectionsByDocumentationId() {
+    this.sectionService.getAllByDocumentationId(this.documentationId)
+      .subscribe((res: any) => {
+        this.sections = res.data;
+        console.log(res);
+        this.initSection();
+      }, error => {
+        ErrorManager.handleError(error);
+      });
+  }
 
   getFormValue() {
     this.section.numeration = this.form.value.numeration;

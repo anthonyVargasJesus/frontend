@@ -37,9 +37,6 @@ export class EditVersionComponent implements OnInit {
   loading2 = false; public form: FormGroup;
   public submitted = false;
   public title: string = '';
-
-  documentationId: number;
-
   standardId: number;
   loadingExcel = false;
 
@@ -88,7 +85,9 @@ export class EditVersionComponent implements OnInit {
     this.versionService.obtain(id)
       .subscribe((res: any) => {
         this.version = res.data;
-        this.documentationId = this.version.documentationId;
+
+        console.log(res);
+
         this.standardId = this.version.standardId;
         this.title = this.version.name + ' v' + this.version.number.toFixed(2);
         this.setNullValues();
@@ -150,8 +149,6 @@ export class EditVersionComponent implements OnInit {
 
   save() {
 
-    console.log(this.form);
-
     this.submitted = true;
     if (this.form.invalid)
       return;
@@ -159,6 +156,7 @@ export class EditVersionComponent implements OnInit {
     this.loading2 = true;
     this.getFormValue();
     this.version.versionId = Number(this.id);
+    this.version.fileName = '';
 
     this.versionService.update(this.version)
       .subscribe(res => {

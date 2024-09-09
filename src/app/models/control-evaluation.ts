@@ -24,6 +24,7 @@ export class ControlEvaluation {
         public arrayReferenceDocumentations?: Number[],
         public controlType?: string,
         public controlDescription?: string,
+        
     ) { }
 }
 

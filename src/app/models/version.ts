@@ -16,6 +16,7 @@ export class Version {
         public standardId?: number,
         public confidentialityLevel?: ConfidentialityLevel,
         public documentation?: Documentation,
+        public versionReferenceId?: number
     ) { }
 }
 

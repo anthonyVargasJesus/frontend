@@ -14,12 +14,13 @@
                             <thead>
                                 <tr>
                                     <th class="td-header-number"> CLÁUSULA</th>
-                                    <th>Título del requerimiento</th>
+                                    <th>Título del CONTROL</th>
                                     <th></th>
                                     <th class="td-header-state text-center"
                                         style="padding-left: 4px !important; padding-right: 4px !important;">
                                         CALIFICACIÓN</th>
                                     <th> RESPONSABLE</th>
+                                    <th> DOCUMENTACIÓN DE REFERENCIA</th>
                                     <th> JUSTIFICATION</th>
 
                                 </tr>
@@ -137,6 +138,17 @@
                                                                                 {{controlEvaluation.responsible.name}}
                                                                             </ng-container>
                                                                         </td>
+
+                                                                        <td class="td-little-description">
+                                                                            <ng-container *ngIf="controlEvaluation.referenceDocumentations">
+                                                                                <ul style="margin-left: -20px !important;margin-right: -5px !important;">
+                                                                                    <li *ngFor="let doc of controlEvaluation.referenceDocumentations">
+                                                                                        {{doc.name}}
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </ng-container>
+                                                                        </td>
+    
             
                                                                         <td class="td-big-description">
                                                                             {{controlEvaluation.justification}} </td>

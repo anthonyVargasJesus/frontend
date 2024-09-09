@@ -21,8 +21,8 @@ export class RequirementService {
     return this.http.get(url);
   }
 
-  get(skip: number, pageSize: number, search: string, standardId: number) {
-    const url = environment.apiUrl + '/api/requirement' + '?skip=' + skip + '&pageSize=' + pageSize + '&standardId=' + standardId + '&search=' + search;
+  get(standardId: number) {
+    const url = environment.apiUrl + '/api/requirement' + '?standardId=' + standardId;
     return this.http.get(url);
   }
 

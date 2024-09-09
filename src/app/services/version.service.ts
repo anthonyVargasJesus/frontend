@@ -15,6 +15,10 @@ export class VersionService {
 
     constructor(public http: HttpClient) { }
 
+    getAllBydocumentationId(documentationId: number) {
+        const url = environment.apiUrl + '/api/version/All' + '?&documentationId=' + documentationId;
+        return this.http.get(url);
+    }
 
     getBydocumentationId(skip: number, pageSize: number, documentationId: number, search: string) {
         const url = environment.apiUrl + '/api/version' + '?skip=' + skip + '&pageSize=' + pageSize + '&documentationId=' + documentationId + '&search=' + search;

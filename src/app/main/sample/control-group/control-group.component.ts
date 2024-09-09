@@ -14,6 +14,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ErrorManager } from 'app/errors/error-manager';
 import Swal from 'sweetalert2';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { LoginModel } from 'app/models/login-model';
 
 @Component({
   selector: 'app-control-group',
@@ -46,6 +47,9 @@ export class ControlGroupComponent implements OnInit {
   @Input()
   standardId: number;
 
+  currentLoginModel: LoginModel = new LoginModel();
+  coreConfig: any;
+  
   constructor(
     private controlGroupService: ControlGroupService,
     private loginService: LoginService,
@@ -53,11 +57,18 @@ export class ControlGroupComponent implements OnInit {
     private dialog: MatDialog,
     private route: ActivatedRoute,
   ) {
-
+    this._unsubscribeAll = new Subject();
   }
 
 
   ngOnInit() {
+
+    this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
+      this.coreConfig = config;
+    });
+
+    this.currentLoginModel = this.loginService.getCurrentUser();
+
     this.getTheme();
     this.initMenuName();
     this.pageSize = PAGE_SIZE;
@@ -70,6 +81,14 @@ export class ControlGroupComponent implements OnInit {
       this.get();
   }
 
+  expandAll(){
+    this.accordion.openAll();
+  }
+
+  collapseAll(){
+    this.accordion.closeAll();
+  }
+  
   getTheme() {
     this._unsubscribeAll = new Subject();
     this._coreConfigService
@@ -90,6 +109,7 @@ export class ControlGroupComponent implements OnInit {
 
 
   initMenuName() {
+
     this.contentHeader = {
       headerTitle: 'Controles',
       actionButton: false,
@@ -97,18 +117,14 @@ export class ControlGroupComponent implements OnInit {
         type: '',
         links: [
           {
-            name: 'Configuración',
+            name: this.currentLoginModel.cs,
             isLink: false,
             link: '#'
           },
           {
-            name: 'Normas',
+            name: 'Controles',
             isLink: false
           },
-          {
-            name: 'ISO 27001',
-            isLink: false
-          }
         ]
       }
     }

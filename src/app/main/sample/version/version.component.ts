@@ -174,7 +174,8 @@ export class VersionComponent implements OnInit {
         width: '600px',
         data: {
           documentationId: this.documentationId,
-          standardId: this.standardId
+          standardId: this.standardId,
+          doocumentationName: this.name
         },
         autoFocus: false, panelClass: this.panelClass
       });

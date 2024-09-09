@@ -179,12 +179,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   goToHome() {
-    this._router.navigate(['/home']);
+    this._router.navigate(['/annual-sumary']);
   }
 
   toggleHome() {
     this._authenticationService.logout();
-    this._router.navigate(['/home']);
+    this._router.navigate(['/annual-sumary']);
   }
 
   // Lifecycle Hooks

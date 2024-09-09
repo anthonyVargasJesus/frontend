@@ -100,7 +100,7 @@ export class RequirementEvaluationComponent implements OnInit {
     this.requirementEvaluationService.getAllByStandardIdByEvaluationId(this.standardId, this.evaluationId)
       .subscribe((res: any) => {
 
-        console.log(res);
+        console.log('list',res);
 
         this.requirements = res.data;
 
@@ -117,8 +117,8 @@ export class RequirementEvaluationComponent implements OnInit {
 
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(AddRequirementEvaluationComponent, {
-        height: '750px',
-        width: '700px',
+        height: '780px',
+        width: '780px',
         autoFocus: false,
         data: {
           requirementId: requirement.requirementId,
@@ -148,8 +148,8 @@ export class RequirementEvaluationComponent implements OnInit {
 
       if (this.loginService.isAuthenticated()) {
         let dialogRef = this.dialog.open(EditRequirementEvaluationComponent, {
-          height: '750px',
-        width: '700px',
+          height: '780px',
+        width: '780px',
           data: {
             _id: requirementEvaluation.requirementEvaluationId,
             standardId: this.standardId,

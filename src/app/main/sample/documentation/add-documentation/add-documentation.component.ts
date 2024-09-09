@@ -4,11 +4,16 @@ import { ParamMap, Router } from '@angular/router';
 import { Documentation } from 'app/models/documentation';
 import { ErrorManager } from 'app/errors/error-manager';
 import { DocumentationService } from 'app/services/documentation.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { RequirementService } from 'app/services/requirement.service';
 import { Requirement } from 'app/models/requirement';
 import { DialogData } from 'app/models/dialog-data';
 import { DocumentTypeService } from 'app/services/document-type.service';
+import { LoginService } from 'app/services/login.service';
+import { Subject } from 'rxjs/internal/Subject';
+import { CoreConfigService } from '@core/services/config.service';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+import { AddDocumentTypeComponent } from '../../document-type/add-document-type/add-document-type.component';
 
 
 @Component({
@@ -19,12 +24,19 @@ import { DocumentTypeService } from 'app/services/document-type.service';
 })
 export class AddDocumentationComponent implements OnInit {
 
+  public currentSkin: string;
+  private _unsubscribeAll: Subject<any>;
+  private panelClass: string;
+  
   constructor(
     private documentationService: DocumentationService,
     private _formBuilder: FormBuilder, private dialogRef: MatDialogRef<AddDocumentationComponent>,
     private requirementService: RequirementService,
     @Inject(MAT_DIALOG_DATA) private data: DialogData,
     private documentTypeService: DocumentTypeService,
+    private loginService: LoginService,
+    private _coreConfigService: CoreConfigService,
+    private dialog: MatDialog
   ) { }
 
   documentTypes: DocumentType[] = [];
@@ -38,11 +50,30 @@ export class AddDocumentationComponent implements OnInit {
   standardId: string;
 
   ngOnInit(): void {
+    this.getTheme();
     this.initForm();
     this.standardId = this.data['standardId'];
     this.getAllDocumentTypes();
     this.getAllRequirements();
     this.initDocumentation();
+  }
+
+  getTheme() {
+    this._unsubscribeAll = new Subject();
+    this._coreConfigService
+      .getConfig()
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(config => {
+        this.currentSkin = config.layout.skin;
+        this.setDialogContainerStyle();
+      });
+  }
+
+  setDialogContainerStyle() {
+    if (this.currentSkin == 'dark')
+      this.panelClass = 'custom-dark-dialog-container';
+    else
+      this.panelClass = 'custom-default-dialog-container';
   }
 
   initForm() {
@@ -119,6 +150,26 @@ export class AddDocumentationComponent implements OnInit {
 
   close() {
     this.dialogRef.close();
+  }
+
+  addDocumentationType() {
+
+    if (this.loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(AddDocumentTypeComponent, {
+        height: '500px',
+        width: '500px',
+        autoFocus: false, panelClass: this.panelClass
+      });
+
+      dialogRef.afterClosed().subscribe(data => {
+        if (data == null)
+          return;
+
+        if (data.updated == true)
+          this.getAllDocumentTypes();
+      });
+    }
+
   }
 
 }

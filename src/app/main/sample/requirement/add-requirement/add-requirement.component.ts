@@ -48,7 +48,7 @@ export class AddRequirementComponent implements OnInit {
     this.form = this._formBuilder.group({
       numeration: ['', [Validators.required, Validators.maxLength(8),]],
       name: ['', [Validators.required, Validators.maxLength(200),]],
-      description: ['', [Validators.maxLength(500),]],
+      description: ['', [Validators.maxLength(1000),]],
       level: [Number(this.level), [Validators.required, Validators.maxLength(8),]],
       parentId: [Number(this.requirementId), []],
       isEvaluable: [false, [Validators.maxLength(5),]],
@@ -59,6 +59,7 @@ export class AddRequirementComponent implements OnInit {
     this.requirementService.getAll(Number(this.standardId))
       .subscribe((res: any) => {
         this.requirements = res.data;
+        console.log('res', res)
       }, error => {
         ErrorManager.handleError(error);
       });

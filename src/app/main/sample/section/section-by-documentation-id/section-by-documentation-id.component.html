@@ -1,89 +1,82 @@
 <div class="content-wrapper">
     <div class="content-body">
-        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+        <!-- <app-content-header [contentHeader]="contentHeader"></app-content-header> -->
         <section id="home-page">
             <section class="users-list-wrapper">
                 <div class="card">
 
-                    <hr>
+                    <div class="row mb-0" style="margin-top: -20px !important;">
 
-                    <div class="row mt-0 mb-0">
-                        <div class="col-md-6 col-12">
-                            <div class="d-flex justify-content-between align-items-center m-1">
-
-                                <label class="d-flex align-items-center">Mostrar
-                                    <select class="form-control mx-25 ng-untouched ng-pristine ng-valid"
-                                        style="margin-left: 10px !important;margin-right: 10px !important;width: 70px !important;">
-                                        <option value="10"> 10 </option>
-                                        <option value="25">25</option>
-                                        <option value="50"> 50 </option>
-                                        <option value="100">100</option>
-                                    </select> registros</label>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end">
+                        <div class="col-md-12 col-12 d-flex justify-content-start justify-content-md-end">
 
                             <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
-                                <label class="d-flex align-items-center ml-1 ml-md-0 mr-1">Buscar
+             
+                                <div class="example-action-buttons mt-1">
+                                    <button style="font-family: Montserrat, Helvetica, Arial, serif !important;" mat-button (click)="expandAll()">Expandir</button>
+                                    <button style="font-family: Montserrat, Helvetica, Arial, serif !important;" mat-button (click)="collapseAll()">Colapsar</button>
+                                </div>
 
-                                    <input #input name="searchValue" name="search" type="search"
-                                        class="form-control ml-25 ng-pristine ng-valid ng-touched"
-                                        style="margin-left: 10px !important;">
-
-                                </label>
-                                <button rippleeffect="" class="btn btn-primary waves-effect waves-float waves-light">
-                                    <i data-feather='search'></i>
+                                <button (click)="add()" rippleeffect="" title="Agregar una nueva section"
+                                    class="btn btn-primary ml-1 waves-effect waves-float waves-light"
+                                    style="float: right!important;margin-right: -10px;margin-top:0px;">
+                                    <i data-feather='plus'></i>
+                                    AGREGAR
                                 </button>
 
-                               
                             </div>
                         </div>
 
                     </div>
 
-                    <br>
                     <mat-accordion class="example-headers-align" multi
-                        style="font-family: Montserrat, Helvetica, Arial, serif !important; margin: 10px; ">
+                        style="font-family: Montserrat, Helvetica, Arial, serif !important; opacity: 0.8;">
 
-                        <mat-expansion-panel *ngFor="let requirement of requirements; let i = index">
+                        <mat-expansion-panel *ngFor="let section of sections; let i = index">
                             <mat-expansion-panel-header>
                                 <mat-panel-title
                                     style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 600 !important;">
-                                    {{requirement.numeration}}. &nbsp; {{requirement.name}}
+                                    {{section.numeration}}. &nbsp; {{section.name}}
                                 </mat-panel-title>
-
                             </mat-expansion-panel-header>
 
-                            <hr>
-                            <br>
+                            <hr style="margin-top: -10px !important;">
 
-                            <app-documentation [standardId]="standardId" [requirementId]="requirement.requirementId" ></app-documentation>
+                            <p style="font-family: Montserrat, Helvetica, Arial, serif !important; margin-left: 15px;"
+                                [style]="coreConfig.layout.skin === 'dark'
+                        ? 'color: #b4b7bd;'
+                        : 'color: #6e6b7b;'">
+                                {{section.description}}
+                            </p>
 
                             <mat-accordion class="example-headers-align" multi
                                 style="font-family: Montserrat, Helvetica, Arial, serif !important;">
 
-                                <mat-expansion-panel *ngFor="let child of requirement.children; let i = index">
+                                <mat-expansion-panel *ngFor="let child of section.children; let i = index">
                                     <mat-expansion-panel-header>
                                         <mat-panel-title
                                             style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 600 !important;">
-                                            {{requirement.numeration}}. {{child.numeration}}. &nbsp; {{child.name}}
+                                            {{section.numeration}}. {{child.numeration}}. &nbsp; {{child.name}}
                                         </mat-panel-title>
 
                                     </mat-expansion-panel-header>
 
-                                    <hr>
-                                    <br>
-                                    
+                                    <hr style="margin-top: -10px !important;">
+
+                                    <p style="font-family: Montserrat, Helvetica, Arial, serif !important; margin-left: 15px;"
+                                        [style]="coreConfig.layout.skin === 'dark'
+                                ? 'color: #b4b7bd;'
+                                : 'color: #6e6b7b;'">
+                                        {{child.description}}
+                                    </p>
 
                                     <mat-accordion class="example-headers-align" multi
-                                        style="font-family: Montserrat, Helvetica, Arial, serif !important;">
+                                    style="font-family: Montserrat, Helvetica, Arial, serif !important; opacity: 1; margin: 15px;margin-top: 5px !important;">
 
                                         <mat-expansion-panel *ngFor="let child2 of child.children; let i = index">
                                             <mat-expansion-panel-header>
                                                 <mat-panel-title
-                                                    style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 600 !important;">
-                                                    {{requirement.numeration}}. {{child.numeration}}.
+                                                    style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 500 !important;">
+                                                    {{section.numeration}}. {{child.numeration}}.
                                                     {{child2.numeration}}. &nbsp; {{child2.name}}
                                                 </mat-panel-title>
 
@@ -99,22 +92,25 @@
                                                     <a container="body" placement="top" class="mr-1" title="Eliminar"
                                                         (click)="delete(child2)">
                                                         <div class="icon-wrapper">
-                                                            <i class="feather font-medium-4" data-feather='trash-2'></i>
+                                                            <i class="feather font-medium-4"
+                                                                data-feather='trash-2'></i>
                                                         </div>
                                                     </a>
 
                                                     <a container="body" placement="top" class="mr-1"
                                                         title="Agregar requerimiento"
-                                                        (click)="addChild(child2.requirementId, child2.level+1)">
+                                                        (click)="addChild(child2.sectionId, child2.level+1)">
                                                         <div class="icon-wrapper">
-                                                            <i class="feather font-medium-4" data-feather='plus'></i>
+                                                            <i class="feather font-medium-4"
+                                                                data-feather='plus'></i>
                                                         </div>
                                                     </a>
 
                                                     <a container="body" placement="top" title="Editar requerimiento"
-                                                        (click)="edit(child2.requirementId)" class="mr-1">
+                                                        (click)="edit(child2.sectionId)" class="mr-1">
                                                         <div class="icon-wrapper">
-                                                            <i class="feather font-medium-3 icon-edit-2"></i>
+                                                            <i
+                                                                class="feather font-medium-3 icon-edit-2"></i>
                                                         </div>
                                                     </a>
 
@@ -143,20 +139,22 @@
                                             <a container="body" placement="top" class="mr-1" title="Eliminar"
                                                 (click)="delete(child)">
                                                 <div class="icon-wrapper">
-                                                    <i class="feather font-medium-4" data-feather='trash-2'></i>
+                                                    <i class="feather font-medium-4"
+                                                        data-feather='trash-2'></i>
                                                 </div>
                                             </a>
 
                                             <a container="body" placement="top" class="mr-1"
                                                 title="Agregar requerimiento"
-                                                (click)="addChild(child.requirementId, child.level+1)">
+                                                (click)="addChild(child.sectionId, child.level+1)">
                                                 <div class="icon-wrapper">
-                                                    <i class="feather font-medium-4" data-feather='plus'></i>
+                                                    <i class="feather font-medium-4"
+                                                        data-feather='plus'></i>
                                                 </div>
                                             </a>
 
                                             <a container="body" placement="top" title="Editar requerimiento"
-                                                (click)="edit(child.requirementId)" class="mr-1">
+                                                (click)="edit(child.sectionId)" class="mr-1">
                                                 <div class="icon-wrapper">
                                                     <i class="feather font-medium-3 icon-edit-2"></i>
                                                 </div>
@@ -173,21 +171,31 @@
 
                             </mat-accordion>
 
-
-
                             <br>
                             <br>
                             <hr>
 
-
                             <div class="text-right">
                                 <div style="display: flex; flex-direction: row-reverse;margin-right: -10px;">
 
+                                    <a container="body" placement="top" class="mr-1" title="Eliminar"
+                                        (click)="delete(section)">
+                                        <div class="icon-wrapper">
+                                            <i class="feather font-medium-4" data-feather='trash-2'></i>
+                                        </div>
+                                    </a>
 
-                                    <a container="body" placement="top" class="mr-1" title="Agregar documento"
-                                        (click)="addDocumentation(requirement.requirementId)">
+                                    <a container="body" placement="top" class="mr-1" title="Agregar requerimiento"
+                                        (click)="addChild(section.sectionId, section.level+1)">
                                         <div class="icon-wrapper">
                                             <i class="feather font-medium-4" data-feather='plus'></i>
+                                        </div>
+                                    </a>
+
+                                    <a container="body" placement="top" title="Editar requerimiento"
+                                        (click)="edit(section.sectionId)" class="mr-1">
+                                        <div class="icon-wrapper">
+                                            <i class="feather font-medium-3 icon-edit-2"></i>
                                         </div>
                                     </a>
 
@@ -201,6 +209,7 @@
 
 
                     </mat-accordion>
+
 
                 </div>
             </section>

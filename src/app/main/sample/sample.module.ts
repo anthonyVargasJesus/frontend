@@ -199,6 +199,12 @@ import { AddRiskComponent } from './risk/add-risk/add-risk.component';
 import { EditCompanyComponent } from './company/edit-company/edit-company.component';
 import { CurrentRequirementEvaluationComponent } from './current-requirement-evaluation/current-requirement-evaluation.component';
 import { CurrentControlEvaluationComponent } from './current-control-evaluation/current-control-evaluation.component';
+import { SectionByDocumentationIdComponent } from './section/section-by-documentation-id/section-by-documentation-id.component';
+import { CurrentPendingDocumentationComponent } from './current-pending-documentation/current-pending-documentation.component';
+import { PendingDocumentationComponent } from './pending-documentation/pending-documentation.component';
+import { LineChartComponent } from './line-chart/line-chart.component';
+import { AnnualSummaryComponent } from './annual-summary/annual-summary.component';
+
 
 FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]);
 //FullCalendarModule.registerPlugins([timeGridPlugin, listPlugin, interactionPlugin]);
@@ -275,7 +281,7 @@ const routes = [
     data: { animation: 'document-manager' }
   },
   {
-    path: 'edit-document-manager/:id',
+    path: 'edit-document-manager/:id/:id2',
     component: EditDocumentationManagerComponent,
     data: { animation: 'edit-document-manager' }
   },
@@ -430,6 +436,11 @@ const routes = [
     data: { animation: 'risk' }
   },
   {
+    path: 'annual-sumary',
+    component: AnnualSummaryComponent,
+    data: { animation: 'annual-sumary' }
+  },
+  {
     path: 'edit-company',
     component: EditCompanyComponent,
     data: { animation: 'edit-company' }
@@ -463,6 +474,16 @@ const routes = [
     path: 'control-evaluation',
     component: CurrentControlEvaluationComponent,
     data: { animation: 'control-evaluation' }
+  },
+  {
+    path: 'pending-documentation',
+    component: CurrentPendingDocumentationComponent,
+    data: { animation: 'pending-documentation' }
+  },
+  {
+    path: 'edit-documentation/:id',
+    component: EditDocumentationComponent,
+    data: { animation: 'edit-documentation' }
   },
 ];
 
@@ -507,7 +528,7 @@ const routes = [
     ControlTypeComponent, AddControlTypeComponent, EditControlTypeComponent,
     RiskLevelComponent, AddRiskLevelComponent, EditRiskLevelComponent,
     RiskComponent, AddRiskComponent,//, EditRiskComponent
-    EditCompanyComponent, CurrentRequirementEvaluationComponent, CurrentControlEvaluationComponent
+    EditCompanyComponent, CurrentRequirementEvaluationComponent, CurrentControlEvaluationComponent,SectionByDocumentationIdComponent, CurrentPendingDocumentationComponent, PendingDocumentationComponent, LineChartComponent, AnnualSummaryComponent
   ],
   imports: [
     RouterModule.forChild(routes),

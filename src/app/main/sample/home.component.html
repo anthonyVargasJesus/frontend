@@ -8,14 +8,10 @@
           <div class="card-body">
             <div class="row">
               <div class="col-md-12">
-
-
                 <div class="text-center">
-                  <h1>{{evaluation.description}}</h1>
+                  <h1 class="text-center" style="margin-top: 5px;margin-bottom: 5px;"> {{evaluation.description}}  ({{evaluation.startDate | date: 'dd/MM/yyyy'}})</h1>
                 </div>
-
-                <hr>
-                
+                <hr> 
                 <div class="text-center">
 
                   <button *ngIf="!loadingExcel" type="button" (click)="downloadExcel()" rippleeffect=""
@@ -32,7 +28,6 @@
                   </button>
 
                 </div>
-
               </div>
             </div>
           </div>

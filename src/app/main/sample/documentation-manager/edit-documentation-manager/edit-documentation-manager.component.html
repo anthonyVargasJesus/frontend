@@ -18,7 +18,7 @@
 
                                             <a container="body" placement="top" title="Ir al listado"
                                                 (click)="navigateToBack()" class="mr-1"
-                                                style="margin-top:0px;font-size: 50px;">
+                                                style="margin-top:-13px;font-size: 50px;">
                                                 <div class="icon-wrapper">
                                                     <i class="feather font-medium-5 icon-arrow-left"></i>
                                                 </div>
@@ -28,19 +28,16 @@
                                                 <div style="margin-top: 15px;">
                                                     <h1 style="margin-bottom: 5px;">
                                                         {{title}} </h1>
-                                                    <span class="card-text" style="margin-bottom: 15px;">
-                                                        {{subtitle}}
-                                                    </span>
-                                                    <br>
+                                                  
 
 
                                                 </div>
 
                                             </div>
                                         </div>
-                                        <div class="d-flex align-items-center mt-1">
+                                        <!-- <div class="d-flex align-items-center mt-1">
 
-                                        </div>
+                                        </div> -->
                                     </div>
 
                                 </div>
@@ -78,11 +75,12 @@
                                                     <div class="form-group">
                                     
                                                         <div style="display:flex; margin-bottom:-10px;">
-                                                            <label class="form-label">name</label>
+                                                            <label class="form-label">Nombre</label>
                                                             <label style="margin-left: 5px;">(</label>
                                                             <label style="font-size: 22px; margin-top:-1px;">*</label>
                                                             <label>)</label>
                                                         </div>
+                                
                                                         <input type="text" formControlName="name" [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
                                                             maxlength="100" class="form-control" aria-describedby="" autofocus="" tabindex="1">
                                                         <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
@@ -90,16 +88,42 @@
                                                             <div *ngIf="f.name.errors.maxlength">El name no puede tener mas de 100 caracteres </div>
                                                         </div>
                                                     </div>
+                                    
                                                     <div class="form-group">
                                     
                                                         <div style="display:flex; margin-bottom:2px;">
-                                                            <label class="form-label">description</label>
+                                                            <label class="form-label">Tipo de documento</label>
+                                                        </div>
+                                
+                                                        <div style="display: flex;">
+                                
+                                                            <select formControlName="documentType"
+                                                                [ngClass]="{ 'is-invalid': submitted && f.documentType.errors }" class="form-control">
+                                                                <option value=""> Seleccione </option>
+                                                                <option *ngFor="let documentType of documentTypes" [value]="documentType.documentTypeId">{{
+                                                                    documentType.name}} </option>
+                                                            </select>
+                                    
+                                                            <button *ngIf="!loading" type="button" title="Agregar un nuevo tipo de documento"
+                                                                (click)="addDocumentationType()" rippleeffect=""
+                                                                class="btn btn-danger waves-effect waves-float waves-light" style="margin-left: 5px;">
+                                                                <i data-feather='plus'></i>
+                                    
+                                                            </button>
+                                    
+                                                        </div>
+                                                        
+                                                    </div>
+                                    
+                                                    <div class="form-group">
+                                    
+                                                        <div style="display:flex; margin-bottom:2px;">
+                                                            <label class="form-label">Descripción</label>
                                                         </div>
                                                         <textarea rows="3" formControlName="description"
                                                             [ngClass]="{ 'is-invalid': submitted && f.description.errors }" maxlength="500"
                                                             class="form-control" aria-describedby="" autofocus="" tabindex="1"></textarea>
                                                     </div>
-                                    
                                     
                                                     <!-- <div class="form-group">
                                     
@@ -116,9 +140,6 @@
                                     
                                                     </div> -->
                                     
-                                                    <input type="text" formControlName="template"
-                                                        [ngClass]="{ 'is-invalid': submitted && f.template.errors }" maxlength="100" class="form-control"
-                                                        aria-describedby="" autofocus="" tabindex="1">
                                     
                                                     <div class="col-md-12 text-center mt-3">
                                                         <button *ngIf="!loading2" type="submit" rippleeffect="" class="btn btn-primary mr-1 waves-effect"

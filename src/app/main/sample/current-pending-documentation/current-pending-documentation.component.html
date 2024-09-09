@@ -11,7 +11,7 @@
                         <h1 class="text-center" style="margin-top: 5px;margin-bottom: 5px;"> {{title}}  ({{evaluation.startDate | date: 'dd/MM/yyyy'}})</h1>
     
                         <!-- <span>{{evaluation.startDate | date: 'dd/MM/yyyy'}} </span> -->
-                        <hr>
+                      
 
                         <!-- <hr>
     
@@ -27,9 +27,11 @@
                         </div> -->
     
                         <div class="table-responsive">
-                            <app-requirement-evaluation *ngIf="standardId > 0 && evaluationId > 0" [standardId]="standardId"
-                                [evaluationId]="evaluationId"></app-requirement-evaluation>
+                            <app-pending-documentation *ngIf="standardId > 0 && evaluationId > 0" [standardId]="standardId"
+                                [evaluationId]="evaluationId"></app-pending-documentation>
                         </div>
+
+
                     </div>
                   
 

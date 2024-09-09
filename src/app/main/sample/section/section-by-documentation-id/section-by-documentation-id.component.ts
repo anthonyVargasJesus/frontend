@@ -1,73 +1,60 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AddRequirementComponent } from './add-requirement/add-requirement.component';
-import { EditRequirementComponent } from './edit-requirement/edit-requirement.component';
-import { Requirement } from 'app/models/requirement';
-import { MatAccordion } from '@angular/material/expansion';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { RequirementService } from 'app/services/requirement.service';
-import { LoginService } from 'app/services/login.service';
 import { CoreConfigService } from '@core/services/config.service';
-import { takeUntil } from 'rxjs/operators';
+import { LoginService } from 'app/services/login.service';
+import { PAGE_SIZE, getResults } from 'app/config/config';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { ErrorManager } from 'app/errors/error-manager';
 import Swal from 'sweetalert2';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { LoginModel } from 'app/models/login-model';
+import { Section } from 'app/models/section';
+import { SectionService } from 'app/services/section.service';
+import { AddSectionComponent } from '../add-section/add-section.component';
+import { EditSectionComponent } from '../edit-section/edit-section.component';
+import { MatAccordion } from '@angular/material/expansion';
+
 
 @Component({
-  selector: 'app-requirement',
-  templateUrl: './requirement.component.html',
+  selector: 'app-section-by-documentation-id',
+  templateUrl: './section-by-documentation-id.component.html',
   styles: [
   ]
 })
-export class RequirementComponent implements OnInit {
+export class SectionByDocumentationIdComponent implements OnInit {
 
   @ViewChild(MatAccordion) accordion: MatAccordion;
-
-
-  requirements: Requirement[] = [];
+  
+  sections: Section[] = [];
   loading = false;
   public contentHeader: object;
   public currentSkin: string;
   private _unsubscribeAll: Subject<any>;
   private panelClass: string;
-
-  @Input()
-  standardId: number;
-
-  currentLoginModel: LoginModel = new LoginModel();
   coreConfig: any;
+  
+  @Input()
+  documentationId: number;
 
   constructor(
-    private requirementService: RequirementService,
+    private sectionService: SectionService,
+    private router: Router,
     private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
-    private dialog: MatDialog,
-    private route: ActivatedRoute,
+    private dialog: MatDialog
   ) {
     this._unsubscribeAll = new Subject();
   }
 
   ngOnInit() {
-
+  
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       this.coreConfig = config;
     });
 
-    this.currentLoginModel = this.loginService.getCurrentUser();
-
-
     this.getTheme();
     this.initMenuName();
-
-    if (this.standardId == undefined) {
-      this.route.paramMap.subscribe((params: ParamMap) => {
-        this.standardId = Number(params.get('id').toString());
-        this.get();
-      });
-    } else 
-      this.get();
-    
+    this.get();
   }
 
   expandAll(){
@@ -98,22 +85,21 @@ export class RequirementComponent implements OnInit {
 
 
   initMenuName() {
-
     this.contentHeader = {
-      headerTitle: 'Requisitos',
+      headerTitle: 'Secciones',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: this.currentLoginModel.cs,
+            name: 'Documentación',
             isLink: false,
             link: '#'
           },
           {
-            name: 'Requisitos',
+            name: 'Versionamiento',
             isLink: false
-          },
+          }
         ]
       }
     }
@@ -121,11 +107,12 @@ export class RequirementComponent implements OnInit {
 
 
   get() {
+
     this.loading = true;
-    this.requirementService.get(this.standardId)
+    this.sectionService.getByDocumentationId(this.documentationId)
       .subscribe((res: any) => {
         this.asignObjects(res);
-        console.log('res', res);
+        console.log(res);
         this.loading = false;
       }, error => {
         this.loading = false;
@@ -133,12 +120,67 @@ export class RequirementComponent implements OnInit {
       });
   }
 
+
+  add() {
+
+    if (this.loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(AddSectionComponent, {
+        height: '550px',
+        width: '550px',
+        data: {
+          documentationId: this.documentationId,
+          sectionId: 0,
+          level: 1,
+        },
+        autoFocus: false, panelClass: this.panelClass
+      });
+
+      dialogRef.afterClosed().subscribe(data => {
+        if (data == null)
+          return;
+
+        if (data.updated == true)
+          this.get();
+      });
+    }
+
+  }
+
+
+  addChild(sectionId: number, level: number) {
+
+    if (this.loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(AddSectionComponent, {
+        height: '700px',
+        width: '800px',
+        autoFocus: false,
+        data: {
+          sectionId: sectionId,
+          level: level,
+          documentationId: this.documentationId,
+        },
+        panelClass: this.panelClass
+      });
+
+      dialogRef.afterClosed().subscribe(data => {
+        if (data == null)
+          return;
+
+        if (data.updated == true)
+          this.get();
+      });
+    }
+
+
+  }
+
+
   edit(id: number) {
 
     if (this.loginService.isAuthenticated()) {
-      let dialogRef = this.dialog.open(EditRequirementComponent, {
-        height: '600px',
-        width: '600px',
+      let dialogRef = this.dialog.open(EditSectionComponent, {
+        height: '700px',
+        width: '700px',
         data: {
           _id: id,
         },
@@ -154,13 +196,12 @@ export class RequirementComponent implements OnInit {
           this.get();
       });
     }
-
   }
 
-  delete(requirement: Requirement) {
+  delete(section: Section) {
 
     let text: string;
-    text = '¿Esta seguro de eliminar el requisito: ' + requirement.name + '?';
+    text = '¿Esta seguro de eliminar la sección?';
 
     Swal.fire({
       title: 'Confirmación',
@@ -174,7 +215,7 @@ export class RequirementComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.requirementService.delete(requirement.requirementId.toString())
+        this.sectionService.delete(section.sectionId.toString())
           .subscribe(deleted => {
             this.get();
           });
@@ -186,33 +227,9 @@ export class RequirementComponent implements OnInit {
 
 
 
+
   asignObjects(res) {
-    this.requirements = res.data;
+    this.sections = res.data;
   }
 
-  addChild(requirementId: number, level: number) {
-    if (this.loginService.isAuthenticated()) {
-      let dialogRef = this.dialog.open(AddRequirementComponent, {
-        height: '600px',
-        width: '600px',
-        autoFocus: false,
-        data: {
-          requirementId: requirementId,
-          level: level,
-          standardId: this.standardId
-        },
-        panelClass: this.panelClass
-      });
-
-      dialogRef.afterClosed().subscribe(data => {
-        if (data == null)
-          return;
-
-        if (data.updated == true)
-          this.get();
-      });
-    }
-
-
-  }
 }

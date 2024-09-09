@@ -117,8 +117,8 @@ export class ControlEvaluationComponent implements OnInit {
 
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(AddControlEvaluationComponent, {
-        height: '700px',
-        width: '670px',
+        height: '780px',
+        width: '780px',
         autoFocus: false,
         data: {
           controlId: control.controlId,
@@ -148,8 +148,8 @@ export class ControlEvaluationComponent implements OnInit {
 
       if (this.loginService.isAuthenticated()) {
         let dialogRef = this.dialog.open(EditControlEvaluationComponent, {
-          height: '700px',
-          width: '670px',
+          height: '780px',
+          width: '780px',
           data: {
             _id: controlEvaluation.controlEvaluationId,
             standardId: this.standardId,

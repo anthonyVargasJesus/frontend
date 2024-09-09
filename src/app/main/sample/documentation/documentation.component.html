@@ -64,8 +64,6 @@
                                 <tr>
                                     <th> NOMBRE</th>
                                     <th> DESCRIPCIÓN</th>
-                                    <th> PLANTILLA</th>
-
                                     <th class="text-right">ACCIÓN</th>
                                 </tr>
                             </thead>
@@ -75,7 +73,7 @@
 
                                 <ng-container *ngIf="loading">
                                     <tr>
-                                        <td colspan="4">
+                                        <td colspan="3">
                                             <div class="container text-center mt-5">
 
                                                 <div class="spinner-grow text-primary" role="status">
@@ -96,7 +94,7 @@
 
                                     <ng-container *ngIf="documentations.length == 0">
                                         <tr>
-                                            <td colspan="4">
+                                            <td colspan="3">
                                                 <div class="text-center mt-2 mb-2">
                                                     <div class="empty-row ng-star-inserted">No hay resultados para
                                                         mostrar</div>
@@ -108,7 +106,6 @@
                                     <tr *ngFor="let documentation of documentations; let i = index">
                                         <td> {{documentation.name}} </td>
                                         <td> {{documentation.description}} </td>
-                                        <td> {{documentation.template}} </td>
 
                                         <td class="text-right">
                                             <div
@@ -116,15 +113,15 @@
 
                                                 <a *ngIf="!documentation.isDeleted" (click)="delete(documentation,true)"
                                                     container="body" placement="top" class="mr-1"
-                                                    title="Eliminar a {{documentation.name}}">
+                                                    title="Eliminar documentación">
                                                     <div class="icon-wrapper">
-                                                        <i class="feather font-medium-4 text-primary" data-feather='trash-2'></i>
+                                                        <i class="feather font-medium-4" data-feather='trash-2'></i>
                                                     </div>
                                                 </a>
-                                                <a container="body" placement="top" title="Abrir {{documentation.name}}"
+                                                <a container="body" placement="top" title="Editar documentación"
                                                     (click)="edit(documentation.documentationId)" class="mr-1">
                                                     <div class="icon-wrapper">
-                                                        <i class="feather font-medium-3 icon-edit-2 text-primary"></i>
+                                                        <i class="feather font-medium-3 icon-edit-2"></i>
                                                     </div>
                                                 </a>
 

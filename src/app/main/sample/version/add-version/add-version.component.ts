@@ -40,12 +40,16 @@ export class AddVersionComponent implements OnInit {
   public submitted = false;
 
   documentationId: number;
+  doocumentationName: string;
   standardId: number;
+  versions: Version[] = [];
 
   ngOnInit(): void {
     this.documentationId = this.data['documentationId'];
     this.standardId = this.data['standardId'];
+    this.doocumentationName = this.data['doocumentationName'];
     this.initForm();
+    this.getAllVersions();
     this.getAllConfidentialityLevels();
     //this.getAllDocumentations();
     this.initVersion();
@@ -62,7 +66,21 @@ export class AddVersionComponent implements OnInit {
       isCurrent: [false],
       //fileName: ['', [Validators.maxLength(500),]],
       description: ['', [Validators.maxLength(500),]],
+      versionReferenceId: ['', []],
     });
+
+    this.form.patchValue({
+      name: this.doocumentationName,
+    })
+  }
+
+  getAllVersions() {
+    this.versionService.getAllBydocumentationId(this.documentationId)
+      .subscribe((res: any) => {
+        this.versions = res.data;
+      }, error => {
+        ErrorManager.handleError(error);
+      });
   }
 
   initVersion() {
@@ -105,26 +123,24 @@ export class AddVersionComponent implements OnInit {
     this.version.number = this.form.value.number;
     this.version.code = this.form.value.code;
     this.version.name = this.form.value.name;
-     if (this.form.value.confidentialityLevel)
-    this.version.confidentialityLevelId = this.form.value.confidentialityLevel;
+    if (this.form.value.confidentialityLevel)
+      this.version.confidentialityLevelId = this.form.value.confidentialityLevel;
     this.version.date = this.form.value.date;
     this.version.isCurrent = this.form.value.isCurrent;
     //this.version.fileName = this.form.value.fileName;
     this.version.description = this.form.value.description;
+
+    this.version.versionReferenceId = this.form.value.versionReferenceId;
+    if (this.form.value.versionReferenceId == "")
+      this.version.versionReferenceId = null;
+
   }
-
-
-
-
-
 
   get f() {
     return this.form.controls;
   }
 
   save() {
-
-    console.log(this.form);
 
     this.submitted = true;
     if (this.form.invalid)

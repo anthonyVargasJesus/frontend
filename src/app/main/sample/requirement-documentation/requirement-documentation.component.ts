@@ -24,16 +24,9 @@ export class RequirementDocumentationComponent implements OnInit {
 
   requirements: Requirement[] = [];
   selectedRow = 0;
-  page = 1;
-  skip = 0;
-  pageSize;
   total = 0;
-  totalPages = 0;
   loading = false;
-  searchText: string = '';
   results: string;
-  previous = true;
-  next = true;
   public contentHeader: object;
   public currentSkin: string;
   private _unsubscribeAll: Subject<any>;
@@ -51,11 +44,9 @@ export class RequirementDocumentationComponent implements OnInit {
 
   }
 
-
   ngOnInit() {
     this.getTheme();
     this.initMenuName();
-    this.pageSize = PAGE_SIZE;
     this.get();
   }
 
@@ -104,58 +95,22 @@ export class RequirementDocumentationComponent implements OnInit {
   }
 
 
-
-  search(text: string) {
-    this.searchText = text;
-    this.skip = 0;
-
-    this.get();
-  }
-
   get() {
 
     this.loading = true;
-    this.requirementService.get(this.skip, this.pageSize, this.searchText, this.standardId)
+    this.requirementService.get(this.standardId)
       .subscribe((res: any) => {
         this.asignObjects(res);
-          this.page = (this.skip / this.pageSize) + 1;
-        this.results = getResults(this.total, this.totalPages);
+        this.results = getResults(this.total, 0);
         this.loading = false;
-        this.disabledPagination();
       }, error => {
         this.loading = false;
         ErrorManager.handleError(error);
       });
   }
 
-  changePageSize(value) {
-    this.pageSize = value;
-    this.get();
-  }
 
-  changePage(value: number) {
-    const desde = this.skip + value;
-    if (desde >= this.total)
-      return;
 
-    if (desde < 0)
-      return;
-
-    this.skip += value;
-    this.get();
-  }
-
-  disabledPagination() {
-
-    this.previous = true;
-    this.next = true;
-
-    if (this.page > 1)
-      this.previous = false;
-
-    if (this.page < this.totalPages)
-      this.next = false;
-  }
 
 
 
@@ -174,18 +129,10 @@ export class RequirementDocumentationComponent implements OnInit {
   }
 
 
-  onKeydown(event, text: string) {
-
-    this.searchText = text;
-    if (event.key === 'Enter')
-      this.search(this.searchText);
-
-  }
-
   asignObjects(res) {
     this.requirements = res.data;
     this.total = res.pagination.totalRows;
-    this.totalPages = res.pagination.totalPages;
+
   }
 
   addChild(requirementId: number, level: number) {

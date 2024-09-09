@@ -6,7 +6,7 @@
                 <div class="card">
 
                     <div class="row mt-0 mb-0">
-                      
+
                         <div class="col-md-12 col-12 d-flex justify-content-start justify-content-md-end">
 
                             <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
@@ -54,8 +54,11 @@
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
 
-                            <hr>
-                            <br>
+                            <hr style="margin-top: -10px !important;">
+
+                                    <p style="font-family: Montserrat, Helvetica, Arial, serif !important; margin-left: 15px;">
+                                        {{section.description}}
+                                    </p>
 
                             <mat-accordion class="example-headers-align" multi
                                 style="font-family: Montserrat, Helvetica, Arial, serif !important;">
@@ -69,8 +72,11 @@
 
                                     </mat-expansion-panel-header>
 
-                                    <hr>
-                                    <br>
+                                    <hr style="margin-top: -10px !important;">
+
+                                    <p style="font-family: Montserrat, Helvetica, Arial, serif !important; margin-left: 15px;">
+                                        {{child.description}}
+                                    </p>
 
 
                                     <mat-accordion class="example-headers-align" multi
@@ -86,9 +92,11 @@
 
                                             </mat-expansion-panel-header>
 
-                                            <hr>
-                                            <br>
+                                            <hr style="margin-top: -10px !important;">
 
+                                            <p style="font-family: Montserrat, Helvetica, Arial, serif !important; margin-left: 15px;">
+                                                {{chil2.description}}
+                                            </p>
                                             <div class="text-right">
                                                 <div
                                                     style="display: flex; flex-direction: row-reverse;margin-right: -10px;">
