@@ -232,22 +232,5 @@ export class SubprocessComponent implements OnInit {
   }
 
 
-}  //{
-//path: 'subprocess',
-//component: SubprocessComponent,
-//data: { animation: 'subprocess' }
-//},
-
-//SubprocessComponent, AddSubprocessComponent, EditSubprocessComponent
-//{
-//id: 'subprocess',
-//title: '',
-//translate: 'MENU.SUBPROCESS',
-//type: 'item',
-//icon: 'file',
-//url: 'subprocess'
-//},
-
-//   SUBPROCESS: 'Subprocess'
-
+}
 

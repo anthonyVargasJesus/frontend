@@ -234,22 +234,6 @@ export class UserStateComponent implements OnInit {
   }
 
 
-}  //{
-//path: 'user-state',
-//component: UserStateComponent,
-//data: { animation: 'user-state' }
-//},
-
-//UserStateComponent, AddUserStateComponent, EditUserStateComponent
-//{
-//id: 'userState',
-//title: '',
-//translate: 'MENU.USERSTATE',
-//type: 'item',
-//icon: 'file',
-//url: 'userState'
-//},
-
-//   USERSTATE: 'UserState'
+}
 
 

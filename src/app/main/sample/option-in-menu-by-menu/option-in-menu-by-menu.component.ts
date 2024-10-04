@@ -234,22 +234,5 @@ export class OptionInMenuByMenuComponent implements OnInit {
   }
 
 
-}  //{
-//path: 'option-in-menu',
-//component: OptionInMenuComponent,
-//data: { animation: 'option-in-menu' }
-//},
-
-//OptionInMenuComponent, AddOptionInMenuComponent, EditOptionInMenuComponent
-//{
-//id: 'optionInMenu',
-//title: '',
-//translate: 'MENU.OPTIONINMENU',
-//type: 'item',
-//icon: 'file',
-//url: 'optionInMenu'
-//},
-
-//   OPTIONINMENU: 'OptionInMenu'
-
+}
 

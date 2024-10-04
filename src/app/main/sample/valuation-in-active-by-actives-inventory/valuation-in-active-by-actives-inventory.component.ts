@@ -223,22 +223,4 @@ export class ValuationInActiveByActivesInventoryComponent implements OnInit {
   }
 
 
-}  //{
-//path: 'valuation-in-active',
-//component: ValuationInActiveComponent,
-//data: { animation: 'valuation-in-active' }
-//},
-
-//ValuationInActiveComponent, AddValuationInActiveComponent, EditValuationInActiveComponent
-//{
-//id: 'valuationInActive',
-//title: '',
-//translate: 'MENU.VALUATIONINACTIVE',
-//type: 'item',
-//icon: 'file',
-//url: 'valuationInActive'
-//},
-
-//   VALUATIONINACTIVE: 'ValuationInActive'
-
-
+}

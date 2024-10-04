@@ -232,22 +232,4 @@ export class OwnerComponent implements OnInit {
   }
 
 
-}  //{
-//path: 'owner',
-//component: OwnerComponent,
-//data: { animation: 'owner' }
-//},
-
-//OwnerComponent, AddOwnerComponent, EditOwnerComponent
-//{
-//id: 'owner',
-//title: '',
-//translate: 'MENU.OWNER',
-//type: 'item',
-//icon: 'file',
-//url: 'owner'
-//},
-
-//   OWNER: 'Owner'
-
-
+}

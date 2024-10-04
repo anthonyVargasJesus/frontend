@@ -235,22 +235,4 @@ export class RiskLevelComponent implements OnInit {
   }
 
 
-}  //{
-//path: 'risk-level',
-//component: RiskLevelComponent,
-//data: { animation: 'risk-level' }
-//},
-
-//RiskLevelComponent, AddRiskLevelComponent, EditRiskLevelComponent
-//{
-//id: 'riskLevel',
-//title: '',
-//translate: 'MENU.RISKLEVEL',
-//type: 'item',
-//icon: 'file',
-//url: 'riskLevel'
-//},
-
-//   RISKLEVEL: 'RiskLevel'
-
-
+}

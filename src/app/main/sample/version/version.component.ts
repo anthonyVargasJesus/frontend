@@ -20,6 +20,8 @@ import { EditVersionComponent } from './edit-version/edit-version.component';
   styles: [
   ]
 })
+
+
 export class VersionComponent implements OnInit {
 
   versions: Version[] = [];

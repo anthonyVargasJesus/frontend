@@ -232,22 +232,5 @@ export class OptionComponent implements OnInit {
   }
 
 
-}  //{
-//path: 'option',
-//component: OptionComponent,
-//data: { animation: 'option' }
-//},
-
-//OptionComponent, AddOptionComponent, EditOptionComponent
-//{
-//id: 'option',
-//title: '',
-//translate: 'MENU.OPTION',
-//type: 'item',
-//icon: 'file',
-//url: 'option'
-//},
-
-//   OPTION: 'Option'
-
+} 
 

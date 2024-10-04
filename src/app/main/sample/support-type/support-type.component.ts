@@ -232,22 +232,5 @@ export class SupportTypeComponent implements OnInit {
   }
 
 
-}  //{
-//path: 'support-type',
-//component: SupportTypeComponent,
-//data: { animation: 'support-type' }
-//},
-
-//SupportTypeComponent, AddSupportTypeComponent, EditSupportTypeComponent
-//{
-//id: 'supportType',
-//title: '',
-//translate: 'MENU.SUPPORTTYPE',
-//type: 'item',
-//icon: 'file',
-//url: 'supportType'
-//},
-
-//   SUPPORTTYPE: 'SupportType'
-
+} 
 

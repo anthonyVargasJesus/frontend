@@ -234,22 +234,4 @@ export class RoleInUserByUserComponent implements OnInit {
   }
 
 
-}  //{
-//path: 'role-in-user',
-//component: RoleInUserComponent,
-//data: { animation: 'role-in-user' }
-//},
-
-//RoleInUserComponent, AddRoleInUserComponent, EditRoleInUserComponent
-//{
-//id: 'roleInUser',
-//title: '',
-//translate: 'MENU.ROLEINUSER',
-//type: 'item',
-//icon: 'file',
-//url: 'roleInUser'
-//},
-
-//   ROLEINUSER: 'RoleInUser'
-
-
+}

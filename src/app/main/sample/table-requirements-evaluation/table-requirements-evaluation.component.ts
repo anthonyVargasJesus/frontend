@@ -14,7 +14,7 @@ export class TableRequirementsEvaluationComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log('r', this.requirementEvaluations);
+
   }
 
   edit(requirementEvaluation: RequirementEvaluation){

@@ -233,22 +233,5 @@ export class RiskComponent implements OnInit {
   }
 
 
-}  //{
-//path: 'risk',
-//component: RiskComponent,
-//data: { animation: 'risk' }
-//},
-
-//RiskComponent, AddRiskComponent, EditRiskComponent
-//{
-//id: 'risk',
-//title: '',
-//translate: 'MENU.RISK',
-//type: 'item',
-//icon: 'file',
-//url: 'risk'
-//},
-
-//   RISK: 'Risk'
-
+}
 
