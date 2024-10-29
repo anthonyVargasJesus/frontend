@@ -114,7 +114,6 @@ export class ConfidentialityLevelComponent implements OnInit {
       .subscribe((res: any) => {
         this.asignObjects(res);
         this.page = (this.skip / this.pageSize) + 1;
-        console.log('page:', this.page);
         this.results = getResults(this.total, this.totalPages);
         this.loading = false;
         this.disabledPagination();

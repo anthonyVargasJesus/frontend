@@ -85,8 +85,6 @@ export class AddControlComponent implements OnInit {
       .subscribe((res: any) => {
         this.controlGroups = res.data;
 
-        console.log(res);
-
         this.initControl();
       }, error => {
         ErrorManager.handleError(error);

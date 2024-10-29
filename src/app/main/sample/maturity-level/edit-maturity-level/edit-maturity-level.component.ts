@@ -57,7 +57,6 @@ export class EditMaturityLevelComponent implements OnInit {
   }
 
   obtain(id: string) {
-    console.log('idddd', id),
     this.loading = true;
     this.maturityLevelService.obtain(id)
       .subscribe((res: any) => {
@@ -115,7 +114,6 @@ export class EditMaturityLevelComponent implements OnInit {
     this.maturityLevelService.update(this.maturityLevel)
       .subscribe(res => {
         this.maturityLevel = res.data;
-        console.log(res);
         this.setNullValues();
         this.dialogRef.close({ updated: true }); 
         this.loading2 = false;

@@ -100,8 +100,6 @@ export class ControlEvaluationComponent implements OnInit {
     this.controlEvaluationService.getAllByStandardIdByEvaluationId(this.standardId, this.evaluationId)
       .subscribe((res: any) => {
 
-        console.log(res);
-
         this.controlGroups = res.data;
 
         this.loading = false;

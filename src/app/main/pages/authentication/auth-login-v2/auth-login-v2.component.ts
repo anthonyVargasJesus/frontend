@@ -93,7 +93,6 @@ export class AuthLoginV2Component implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
-    console.log('every night');
     // Login
     this.loading = true;
 
@@ -145,8 +144,6 @@ export class AuthLoginV2Component implements OnInit {
     this.loginService.login(f.value.email, f.value.password)
       .subscribe(res => {
         this.loading = false;
-
-        console.log('res',res);
 
       }, err => {
         this.loading = false;

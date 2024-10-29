@@ -65,8 +65,6 @@ export class EditDocumentationSupportComponent implements OnInit {
     this.documentationService.obtain(id)
       .subscribe((res: any) => {
         this.documentation = res.data;
-
-        console.log(res);
         
         this.title = this.documentation.name;
         this.subtitle = this.documentation.description;

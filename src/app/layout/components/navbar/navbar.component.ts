@@ -202,8 +202,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.currentLoginModel = this._loginService.getCurrentUser();
     this.color = getRandomColor();
 
-    console.log('currentLoginModel', this.currentLoginModel);
-
     // Subscribe to the config changes
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       this.coreConfig = config;

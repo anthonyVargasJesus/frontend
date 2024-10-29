@@ -80,7 +80,6 @@ export class EditCreatorComponent implements OnInit {
       responsible: ((creator.responsibleId == 0) ? 0 : creator.responsibleId),
     });
 
-    console.log('creator', this.form.value);
   }
 
   getFormValue() {

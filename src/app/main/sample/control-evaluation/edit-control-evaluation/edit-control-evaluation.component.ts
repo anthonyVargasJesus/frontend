@@ -139,7 +139,6 @@ export class EditControlEvaluationComponent implements OnInit {
     this.controlEvaluationService.obtain(id)
       .subscribe((res: any) => {
         this.controlEvaluation = res.data;
-        console.log(res);
         this.setFormValue(this.controlEvaluation);
         this.changeMaturityLevel(this.controlEvaluation.maturityLevelId.toString());
         this.loading = false;

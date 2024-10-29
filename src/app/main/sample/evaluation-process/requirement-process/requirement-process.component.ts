@@ -49,7 +49,6 @@ export class RequirementProcessComponent implements OnInit {
 
   ngOnInit() {
     this.currentLoginModel = this.loginService.getCurrentUser();
-    console.log('currentLoginModel', this.currentLoginModel);
     this.getTheme();
     this.get();
   }

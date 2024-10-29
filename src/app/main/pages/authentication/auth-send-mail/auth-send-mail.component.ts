@@ -116,25 +116,7 @@ export class AuthSendMailComponent implements OnInit {
 
   async onReset(email) {
 
-    // try {
 
-    //   this.loading = true;
-
-    //   if (!email) {
-    //     Swal.fire('Validación de correo', 'Debes ingresar el correo', 'error');
-    //     this.loading = false;
-    //     return;
-    //   }
-
-    //   this.authSvc.sendVerificationEmail();
-    //    this.loading = false;
-    //  Swal.fire('Correo enviado', 'Se envió un correo de verificación a ' + email , 'success');
-
-    //   // this.router.navigate(['/login']);
-    // } catch (error) {
-    //   this.loading = false;
-    //   console.log(error);
-    // }
   }
 
 

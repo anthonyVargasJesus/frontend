@@ -51,8 +51,6 @@ export class ControlDashboardComponent implements OnInit {
          this.pieControlDashboardControlGroup = res.pieControlDashboardControlGroup;
         this.bartVerticalDashboardControlGroupDto = res.bartVerticalDashboardControlGroupDto;
 
-        console.log(res);
-        
         this.colorScheme = {
           domain: res.colors
         };

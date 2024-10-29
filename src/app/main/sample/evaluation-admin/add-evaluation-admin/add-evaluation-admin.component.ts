@@ -105,7 +105,6 @@ export class AddEvaluationAdminComponent implements OnInit {
   }
 
   save() {
-    //console.log(this.form);
     this.submitted = true;
     if (this.form.invalid)
       return;
@@ -129,7 +128,6 @@ export class AddEvaluationAdminComponent implements OnInit {
   }
 
   initDateChanged(event: any, ) {
-    console.log(event.value);
     this.minDate = event.value;
   }
 

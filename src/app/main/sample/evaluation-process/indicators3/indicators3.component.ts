@@ -21,7 +21,7 @@ export class Indicators3Component implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('take', this.colorScheme)
+
   }
 
   // options

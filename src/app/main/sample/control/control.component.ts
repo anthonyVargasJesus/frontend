@@ -58,7 +58,6 @@ export class ControlComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('this.controlGroupId', this.controlGroupId);
     this.getTheme();
     this.initMenuName();
     this.pageSize = PAGE_SIZE;
@@ -120,7 +119,6 @@ export class ControlComponent implements OnInit {
     this.controlService.get(this.skip, this.pageSize, this.searchText, this.controlGroupId)
       .subscribe((res: any) => {
         this.asignObjects(res);
-        console.log(res);
         this.page = (this.skip / this.pageSize) + 1;
         this.results = getResults(this.total, this.totalPages);
         this.loading = false;

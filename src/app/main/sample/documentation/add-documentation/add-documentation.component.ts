@@ -105,7 +105,6 @@ export class AddDocumentationComponent implements OnInit {
     this.requirementService.getAll(Number(this.standardId))
       .subscribe((res: any) => {
         this.requirements = res.data;
-        console.log('res', res);
         this.initDocumentation();
       }, error => {
         ErrorManager.handleError(error);

@@ -30,7 +30,6 @@ export class CurrentControlEvaluationComponent implements OnInit {
     this.evaluationService.getCurrent()
       .subscribe((res: any) => {
         this.evaluation = res.data;
-        //console.log(res);
         this.standardId = this.evaluation.standardId;
         this.evaluationId =  this.evaluation.evaluationId;
         this.title = this.evaluation.description;

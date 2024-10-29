@@ -5,8 +5,6 @@ export class ErrorManager {
 
   public static handleError(err) {
 
-    console.log('error', err);
-
     if (err.status === 500) {
       Swal.fire(err.statusText, 'Hubo un error en el servidor', 'error');
       return;

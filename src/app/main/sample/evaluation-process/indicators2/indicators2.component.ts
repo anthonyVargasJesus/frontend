@@ -38,7 +38,7 @@ export class Indicators2Component implements OnInit {
   }
 
   onSelect(event) {
-    console.log(event);
+
   }
 
 }

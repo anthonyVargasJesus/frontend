@@ -277,7 +277,6 @@ export class ControlGroupComponent implements OnInit {
 
   addControlFromGroup(controlGroupId: number){
 
-    console.log(controlGroupId);
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(AddControlComponent, {
         height: '600px',

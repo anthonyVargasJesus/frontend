@@ -100,12 +100,10 @@ export class MenuInRoleComponent implements OnInit {
         optionId: option.optionId,
         order: option.order,
       }
-      console.log('checked', body)
       this.insert(body, option);
     
     } else{
 
-      console.log('unchecked',option);
       this.delete(option);
       
     }

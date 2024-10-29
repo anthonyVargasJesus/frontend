@@ -119,7 +119,6 @@ export class DefaultSectionComponent implements OnInit {
       .subscribe((res: any) => {
         this.asignObjects(res);
         this.page = (this.skip / this.pageSize) + 1;
-        console.log('res:', res);
         this.results = getResults(this.total, this.totalPages);
         this.loading = false;
         this.disabledPagination();

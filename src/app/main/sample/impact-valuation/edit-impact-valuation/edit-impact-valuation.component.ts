@@ -118,8 +118,6 @@ export class EditImpactValuationComponent implements OnInit {
     this.loading2 = true;
     this.getFormValue();
 
-    console.log(this.impactValuation);
-
     this.impactValuationService.update(this.impactValuation)
       .subscribe(res => {
         this.impactValuation = res.data;

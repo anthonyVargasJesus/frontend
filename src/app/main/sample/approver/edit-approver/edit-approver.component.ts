@@ -81,7 +81,6 @@ export class EditApproverComponent implements OnInit {
       responsible: ((approver.responsibleId == 0) ? 0 : approver.responsibleId),
     });
 
-    console.log('approver', this.form.value);
   }
 
   getFormValue() {

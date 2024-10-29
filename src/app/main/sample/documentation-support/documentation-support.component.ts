@@ -109,7 +109,6 @@ export class DocumentationSupportComponent implements OnInit {
     this.documentationService.getManager(this.skip, this.pageSize, this.searchText)
       .subscribe((res: any) => {
         this.asignObjects(res);
-        console.log('resss:', res);
         this.page = (this.skip / this.pageSize) + 1;
         this.results = getResults(this.total, this.totalPages);
         this.loading = false;
