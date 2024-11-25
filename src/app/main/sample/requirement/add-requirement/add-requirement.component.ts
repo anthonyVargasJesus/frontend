@@ -59,7 +59,6 @@ export class AddRequirementComponent implements OnInit {
     this.requirementService.getAll(Number(this.standardId))
       .subscribe((res: any) => {
         this.requirements = res.data;
-        console.log('res', res)
       }, error => {
         ErrorManager.handleError(error);
       });
@@ -67,7 +66,6 @@ export class AddRequirementComponent implements OnInit {
 
 
   getFormValue() {
-    console.log(this.form.value);
     this.requirement.numeration = this.form.value.numeration;
     this.requirement.name = this.form.value.name;
     this.requirement.description = this.form.value.description;
@@ -91,8 +89,6 @@ export class AddRequirementComponent implements OnInit {
     this.getFormValue();
 
     this.requirement.standardId = Number(this.standardId);
-
-    console.log(this.requirement);
 
     this.requirementService.insert(this.requirement)
       .subscribe(res => {

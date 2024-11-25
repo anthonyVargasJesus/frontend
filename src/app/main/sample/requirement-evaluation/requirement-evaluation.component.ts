@@ -99,9 +99,6 @@ export class RequirementEvaluationComponent implements OnInit {
     this.loading = true;
     this.requirementEvaluationService.getAllByStandardIdByEvaluationId(this.standardId, this.evaluationId)
       .subscribe((res: any) => {
-
-        console.log('list',res);
-
         this.requirements = res.data;
 
         this.loading = false;

@@ -112,7 +112,6 @@ export class SectionByDocumentationIdComponent implements OnInit {
     this.sectionService.getByDocumentationId(this.documentationId)
       .subscribe((res: any) => {
         this.asignObjects(res);
-        console.log(res);
         this.loading = false;
       }, error => {
         this.loading = false;

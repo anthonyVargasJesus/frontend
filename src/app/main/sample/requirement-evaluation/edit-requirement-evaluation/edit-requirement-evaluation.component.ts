@@ -128,7 +128,6 @@ export class EditRequirementEvaluationComponent implements OnInit {
     this.requirementEvaluationService.obtain(id)
       .subscribe((res: any) => {
         this.requirementEvaluation = res.data;
-        console.log(res);
         this.setFormValue(this.requirementEvaluation);
         this.changeMaturityLevel(this.requirementEvaluation.maturityLevelId.toString());
         this.loading = false;

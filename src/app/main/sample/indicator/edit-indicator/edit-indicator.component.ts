@@ -61,7 +61,6 @@ export class EditIndicatorComponent implements OnInit {
     this.loading = true;
     this.indicatorService.obtain(id)
       .subscribe((res: any) => {
-        console.log(res);
         this.indicator = res.data;
         this.setFormValue(this.indicator);
         this.loading = false;

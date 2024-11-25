@@ -82,7 +82,6 @@ export class EditSupportForControlComponent implements OnInit {
   }
 
   getTitle(controlId: number) {
-    console.log(this.controls)
     let name = '';
     this.controls.forEach(item => {
     

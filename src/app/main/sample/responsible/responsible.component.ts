@@ -146,7 +146,6 @@ export class ResponsibleComponent implements OnInit {
     this.responsibleService.get(this.skip, this.pageSize, this.searchText, this.standardId)
       .subscribe((res: any) => {
         this.asignObjects(res);
-        console.log(res),
           this.page = (this.skip / this.pageSize) + 1;
         this.results = getResults(this.total, this.totalPages);
         this.loading = false;

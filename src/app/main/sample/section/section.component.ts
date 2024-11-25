@@ -118,7 +118,6 @@ export class SectionComponent implements OnInit {
       .subscribe((res: any) => {
         this.asignObjects(res);
         this.page = (this.skip / this.pageSize) + 1;
-        console.log('res:', res);
         this.results = getResults(this.total, this.totalPages);
         this.loading = false;
         this.disabledPagination();
@@ -187,8 +186,6 @@ export class SectionComponent implements OnInit {
 
 
   addChild(sectionId: number, level: number) {
-
-    console.log(this.documentationId);
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(AddSectionComponent, {
         height: '700px',

@@ -136,7 +136,6 @@ export class EditValuationInActiveByActivesInventoryComponent implements OnInit 
   }
 
   change(value){
-    console.log(value);
     this.impactValuations.forEach(item =>{
       if (item.impactValuationId.toString() == value.toString()){
         this.form.patchValue({

@@ -55,7 +55,7 @@ export class EvaluationService {
         const url = environment.apiUrl + '/api/evaluation';
         return this.http.post(url, evaluation)
             .pipe(map((resp: any) => {
-                Swal.fire('Evaluation registrado', 'El Evaluation se registró satisfactoriamente', 'success');
+                Swal.fire('Evaluación registrado', 'La evaluación se registró satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -69,7 +69,7 @@ export class EvaluationService {
         const url = environment.apiUrl + '/api/evaluation/' + evaluation.evaluationId;
         return this.http.put(url, evaluation)
             .pipe(map((resp: any) => {
-                Swal.fire('Evaluación actualizada', 'El Evaluation se actualizó satisfactoriamente', 'success');
+                Swal.fire('Evaluación actualizada', 'La evaluación se actualizó satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -83,7 +83,7 @@ export class EvaluationService {
         const url = environment.apiUrl + '/api/evaluation/' + id;
         return this.http.delete(url)
             .pipe(map((resp: any) => {
-                Swal.fire('Evaluación eliminada', 'El Evaluation se eliminó satisfactoriamente', 'success');
+                Swal.fire('Evaluación eliminada', 'La evaluación se eliminó satisfactoriamente', 'success');
                 return resp;
             }
             ))

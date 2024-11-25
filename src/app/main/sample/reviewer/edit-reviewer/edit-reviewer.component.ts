@@ -78,8 +78,6 @@ export class EditReviewerComponent implements OnInit {
       personal: ((reviewer.personalId == 0) ? 0 : reviewer.personalId),
       responsible: ((reviewer.responsibleId == 0) ? 0 : reviewer.responsibleId),
     });
-
-    console.log('reviewer', this.form.value);
   }
 
   getFormValue() {

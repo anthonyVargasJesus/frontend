@@ -44,7 +44,7 @@ export class SectionService {
         const url = environment.apiUrl + '/api/section';
         return this.http.post(url, section)
             .pipe(map((resp: any) => {
-                Swal.fire('Section registrado', 'El Section se registró satisfactoriamente', 'success');
+                Swal.fire('Sección registrada', 'La sección se registró satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -58,7 +58,7 @@ export class SectionService {
         const url = environment.apiUrl + '/api/section/' + section.sectionId;
         return this.http.put(url, section)
             .pipe(map((resp: any) => {
-                Swal.fire('Section actualizado', 'El Section se actualizó satisfactoriamente', 'success');
+                Swal.fire('Sección actualizada', 'La sección se actualizó satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -72,7 +72,7 @@ export class SectionService {
         const url = environment.apiUrl + '/api/section/' + id;
         return this.http.delete(url)
             .pipe(map((resp: any) => {
-                Swal.fire('Section eliminado', 'El Section se eliminó satisfactoriamente', 'success');
+                Swal.fire('Sección eliminada', 'La sección se eliminó satisfactoriamente', 'success');
                 return resp;
             }
             ))

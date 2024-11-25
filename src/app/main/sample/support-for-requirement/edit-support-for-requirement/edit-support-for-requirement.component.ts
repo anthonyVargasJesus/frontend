@@ -82,7 +82,6 @@ export class EditSupportForRequirementComponent implements OnInit {
   }
 
   getTitle(requirementId: number) {
-    console.log(this.requirements)
     let name = '';
     this.requirements.forEach(item => {
     

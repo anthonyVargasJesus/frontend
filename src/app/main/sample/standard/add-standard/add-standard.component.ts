@@ -61,7 +61,6 @@ export class AddStandardComponent implements OnInit {
     this.standardService.getAll()
       .subscribe((res: any) => {
         this.standards = res.data;
-        console.log(res);
         this.initStandard();
       }, error => {
         ErrorManager.handleError(error);

@@ -42,9 +42,6 @@ export class AddSectionComponent implements OnInit {
   ngOnInit(): void {
     this.documentationId = this.data['documentationId'];
     this.versionId = this.data['versionId'];
-
-    console.log('versionId', this.versionId);
-
     this.sectionId = this.data['sectionId'];
     this.level = this.data['level'];
     this.initForm();
@@ -88,7 +85,6 @@ export class AddSectionComponent implements OnInit {
     this.sectionService.getAllByDocumentationId(this.documentationId)
       .subscribe((res: any) => {
         this.sections = res.data;
-        console.log(res);
         this.initSection();
       }, error => {
         ErrorManager.handleError(error);

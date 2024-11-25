@@ -20,7 +20,6 @@ export class DefaultSectionService {
   }
 
   get(skip: number, pageSize: number, search: string, documentTypeId: number) {
-    console.log('dtt', documentTypeId)
     const url = environment.apiUrl + '/api/defaultSection' + '?skip=' + skip + '&pageSize=' + pageSize + '&documentTypeId=' + documentTypeId + '&search=' + search;
     return this.http.get(url);
   }

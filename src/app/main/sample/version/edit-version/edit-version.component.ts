@@ -85,9 +85,6 @@ export class EditVersionComponent implements OnInit {
     this.versionService.obtain(id)
       .subscribe((res: any) => {
         this.version = res.data;
-
-        console.log(res);
-
         this.standardId = this.version.standardId;
         this.title = this.version.name + ' v' + this.version.number.toFixed(2);
         this.setNullValues();

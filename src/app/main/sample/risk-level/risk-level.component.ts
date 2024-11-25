@@ -103,9 +103,6 @@ export class RiskLevelComponent implements OnInit {
     this.loading = true;
     this.riskLevelService.get(this.skip, this.pageSize, this.searchText)
       .subscribe((res: any) => {
-
-        console.log(res);
-        
         this.asignObjects(res);
         this.page = (this.skip / this.pageSize) + 1;
         this.results = getResults(this.total, this.totalPages);
