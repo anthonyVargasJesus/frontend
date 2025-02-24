@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
   hmr: false,
-  apiUrl: 'http://localhost:5049',
+  apiUrl: 'https://qualifier-services-930633bfde3e.herokuapp.com',
 };
