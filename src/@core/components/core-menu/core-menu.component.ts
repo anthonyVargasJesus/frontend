@@ -61,12 +61,11 @@ export class CoreMenuComponent implements OnInit {
       .subscribe((res: any) => {
         let menus = [];
         menus = res.data;
-
+   
         vuexyMenus = [];
         menus.forEach(menu => {
           vuexyMenus.push(mapperVuexyToCustom(menu));
         });
-
 
         this.menu = vuexyMenus;
         this._coreMenuService.onMenuChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => {
@@ -83,108 +82,6 @@ export class CoreMenuComponent implements OnInit {
   }
 
 
-  createFakeMenus() {
 
-    let vuexyMenus = [];
-
-
-
-    let child11 = {
-      id: 'child1',
-      title: 'Mantenimiento',
-      translate: 'Mantenimiento',
-      type: 'item',
-      icon: 'circle',
-      url: 'evaluation-admin'
-    };
-
-    let child22 = {
-      id: 'child2',
-      title: 'Proceso',
-      translate: 'Proceso',
-      type: 'item',
-      icon: 'circle',
-      url: 'evaluation-process-list'
-    };
-
-    // let menuVuexy = {
-    //   icon: 'archive',
-    //   id: '1',
-    //   title: 'NORMAS ISO',
-    //   translate: "MENU.SECURITY",
-    //   type: "collapsible",
-    //   children: children
-    // }
-
-
-
-
-    // vuexyMenus.push(menuVuexy);
-
-    let child1 = {
-      id: 'child1',
-      title: 'Normas',
-      translate: 'Normas',
-      type: 'item',
-      icon: 'circle',
-      url: 'standard'
-    };
-
-    let child2 = {
-      id: 'child2',
-      title: 'Niveles de Madurez',
-      translate: 'Niveles de Madurez',
-      type: 'item',
-      icon: 'circle',
-      url: 'maturity-level'
-    };
-
-    let child3 = {
-      id: 'child3',
-      title: 'Indicadores',
-      translate: 'Indicadores',
-      type: 'item',
-      icon: 'circle',
-      url: 'indicator'
-    };
-
-    let children = [];
-    children.push(child1);
-    children.push(child2);
-    children.push(child3);
-
-
-    let children2 = [];
-    children2.push(child11);
-    children2.push(child22);
-
-    let menuVuexy2 = {
-      icon: 'home',
-      id: '1',
-      title: 'EVALUACIONES',
-      translate: "MENU.SECURITY",
-      type: "collapsible",
-      children: children2
-    }
-
-    let menuVuexy3 = {
-      icon: 'settings',
-      id: '1',
-      title: 'CONFIGURACIÓN',
-      translate: "MENU.SECURITY",
-      type: "collapsible",
-      children: children
-    }
-
-    vuexyMenus.push(menuVuexy2);
-    vuexyMenus.push(menuVuexy3);
-
-    this.menu = vuexyMenus;
-    this._coreMenuService.onMenuChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => {
-      this.currentUser = this._coreMenuService.currentUser;
-      this._changeDetectorRef.markForCheck();
-    });
-
-  }
 
 }

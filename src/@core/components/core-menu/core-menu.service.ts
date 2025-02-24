@@ -5,9 +5,6 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { AuthenticationService } from 'app/auth/service';
 import { User } from 'app/auth/models';
-import { UserService } from 'app/services/user.service';
-import { mapperVuexyToCustom } from 'app/config/config';
-import { ErrorManager } from 'app/errors/error-manager';
 
 @Injectable({
   providedIn: 'root'
@@ -30,8 +27,7 @@ export class CoreMenuService {
    * @param {Router} _router
    * @param {AuthenticationService} _authenticationService
    */
-  constructor(private _router: Router, private _authenticationService: AuthenticationService,
-    private _userService: UserService) {
+  constructor(private _router: Router, private _authenticationService: AuthenticationService) {
     this._authenticationService.currentUser.subscribe(x => (this.currentUser = x));
 
     // Set defaults
@@ -131,7 +127,6 @@ export class CoreMenuService {
       return;
     }
 
-    
     // Return sidebar
     return this._registry[key];
   }
@@ -144,12 +139,12 @@ export class CoreMenuService {
   getCurrentMenu(): any {
     if (!this._currentMenuKey) {
       console.warn(`The current menu is not set.`);
+
       return;
     }
 
     return this.getMenu(this._currentMenuKey);
   }
-
 
   /**
    * Set menu with the key as the current menu

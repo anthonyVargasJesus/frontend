@@ -2,10 +2,13 @@ import { Router } from "@angular/router";
 import { ErrorManager } from "app/errors/error-manager";
 import { Menu } from "app/models/menu";
 import { Option } from "app/models/option";
+import { UserService } from "app/services/user.service";
 
 export const PAGE_SIZE = 10;
 export const DEFAULT_USER_URL = 'assets/images/no-image.png';
 export const INIT_PAGE = 1;
+
+export const DEFAULT_WIDTH = 70;
 
 export function redirectToLogin(router: Router) {
   router.navigate(['/pages/authentication/login-v2']);

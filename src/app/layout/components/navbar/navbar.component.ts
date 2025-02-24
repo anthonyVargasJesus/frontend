@@ -15,9 +15,8 @@ import { User } from 'app/auth/models';
 import { coreConfig } from 'app/app-config';
 import { Router } from '@angular/router';
 import { LoginModel } from 'app/models/login-model';
-//import { LoginService } from 'app/services/login.service';
-import { getRandomColor } from 'app/config/config';
 import { LoginService } from 'app/services/login.service';
+import { getRandomColor } from 'app/config/config';
 
 @Component({
   selector: 'app-navbar',
@@ -174,17 +173,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   editUser() {
-    //let currentUser = this._loginService.getCurrentUser();
-    //this._router.navigate(['/profile-user', currentUser._id]);
+    let currentUser = this._loginService.getCurrentUser();
+    this._router.navigate(['/profile-user', currentUser._id]);
   }
 
   goToHome() {
-    this._router.navigate(['/annual-sumary']);
+    this._router.navigate(['/home']);
   }
 
   toggleHome() {
     this._authenticationService.logout();
-    this._router.navigate(['/annual-sumary']);
+    this._router.navigate(['/home']);
   }
 
   // Lifecycle Hooks
@@ -196,10 +195,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // get the currentUser details from localStorage
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
-   
-
     this.currentLoginModel = this._loginService.getCurrentUser();
+
+    
     this.color = getRandomColor();
 
     // Subscribe to the config changes

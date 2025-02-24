@@ -16,8 +16,8 @@ import { CoreConfig } from '@core/types';
 // prettier-ignore
 export const coreConfig: CoreConfig = {
   app: {
-    appName     : 'Vuexy',                                        // App Name
-    appTitle    : 'ISO - Administradors', // App Title
+    appName     : 'Pangolin',                                        // App Name
+    appTitle    : 'Pangolin - Administrador de redes', // App Title
     appLogoImage: 'assets/images/logo/logo.svg',                  // App Logo
   },
   layout: {

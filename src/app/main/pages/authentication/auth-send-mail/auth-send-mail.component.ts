@@ -5,8 +5,10 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { CoreConfigService } from '@core/services/config.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { LoginService } from 'app/services/login.service';
 import Swal from 'sweetalert2';
 import { ErrorManager } from 'app/errors/error-manager';
+import { User } from 'app/models/user';
 import { redirectToLogin } from 'app/config/config';
 
 
@@ -39,7 +41,7 @@ export class AuthSendMailComponent implements OnInit {
   loading = false;
 
   constructor(private _coreConfigService: CoreConfigService, private _formBuilder: FormBuilder, private _route: ActivatedRoute,
-     public router: Router, private route: ActivatedRoute) {
+    private loginService: LoginService, public router: Router, private route: ActivatedRoute) {
     this._unsubscribeAll = new Subject();
 
     // Configure the layout
@@ -116,8 +118,24 @@ export class AuthSendMailComponent implements OnInit {
 
   async onReset(email) {
 
+    try {
 
+      this.loading = true;
+
+      if (!email) {
+        Swal.fire('Validación de correo', 'Debes ingresar el correo', 'error');
+        this.loading = false;
+        return;
+      }
+
+      //this.authSvc.sendVerificationEmail();
+       this.loading = false;
+     Swal.fire('Correo enviado', 'Se envió un correo de verificación a ' + email , 'success');
+
+      // this.router.navigate(['/login']);
+    } catch (error) {
+      this.loading = false;
+      console.log(error);
+    }
   }
-
-
 }

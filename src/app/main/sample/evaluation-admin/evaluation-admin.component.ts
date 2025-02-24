@@ -149,8 +149,8 @@ export class EvaluationAdminComponent implements OnInit {
 
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(AddEvaluationAdminComponent, {
-        height: '600px',
-        width: '600px',
+        height: '720px',
+        width: '650px',
         autoFocus: false, panelClass: this.panelClass
       });
 
@@ -170,8 +170,8 @@ export class EvaluationAdminComponent implements OnInit {
 
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(EditEvaluationAdminComponent, {
-        height: '600px',
-        width: '600px',
+        height: '720px',
+        width: '650px',
         data: {
           _id: id,
         },

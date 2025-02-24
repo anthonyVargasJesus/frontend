@@ -6,32 +6,28 @@ import { CoreCommonModule } from '@core/common.module';
 
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 
-import { SampleComponent } from './sample.component';
-import { HomeComponent } from './home.component';
-
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-
 import { CoreSidebarModule } from '@core/components';
-import { FullCalendarModule } from '@fullcalendar/angular';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import listPlugin from '@fullcalendar/list';
-import timeGridPlugin from '@fullcalendar/timegrid';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatListModule } from '@angular/material/list';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
-import { MatIconModule } from '@angular/material/icon';
-import { MatExpansionModule } from '@angular/material/expansion';
-
-import { MatMenuModule } from '@angular/material/menu';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { StandardComponent } from './standard/standard.component';
-import { AddStandardComponent } from './standard/add-standard/add-standard.component';
-import { EditStandardComponent } from './standard/edit-standard/edit-standard.component';
+ import { StandardComponent } from './standard/standard.component';
+ import { AddStandardComponent } from './standard/add-standard/add-standard.component';
+ import { EditStandardComponent } from './standard/edit-standard/edit-standard.component';
 import { RequirementComponent } from './requirement/requirement.component';
 import { AddRequirementComponent } from './requirement/add-requirement/add-requirement.component';
 import { EditRequirementComponent } from './requirement/edit-requirement/edit-requirement.component';
@@ -40,11 +36,8 @@ import { AddDocumentationComponent } from './documentation/add-documentation/add
 import { EditDocumentationComponent } from './documentation/edit-documentation/edit-documentation.component';
 import { ControlComponent } from './control/control.component';
 import { ControlGroupComponent } from './control-group/control-group.component';
-
 import { EditControlComponent } from './control/edit-control/edit-control.component';
 import { AddControlComponent } from './control/add-control/add-control.component';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { ResponsibleComponent } from './responsible/responsible.component';
 import { AddResponsibleComponent } from './responsible/add-responsible/add-responsible.component';
 import { EditResponsibleComponent } from './responsible/edit-responsible/edit-responsible.component';
@@ -60,17 +53,16 @@ import { EditEvaluationAdminComponent } from './evaluation-admin/edit-evaluation
 import { EvaluationProcessListComponent } from './evaluation-process-list/evaluation-process-list.component';
 import { EvaluationProcessComponent } from './evaluation-process/evaluation-process.component';
 import { RequirementProcessComponent } from './evaluation-process/requirement-process/requirement-process.component';
-import { MatListModule } from '@angular/material/list';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ControlProcessComponent } from './evaluation-process/control-process/control-process.component';
+
 import { IndicatorsComponent } from './evaluation-process/indicators/indicators.component';
 import { Indicators2Component } from './evaluation-process/indicators2/indicators2.component';
 import { Indicators3Component } from './evaluation-process/indicators3/indicators3.component';
 import { Indicators4Component } from './evaluation-process/indicators4/indicators4.component';
-import { DemoComponent } from './demo/demo.component';
-import { DemoDetalleComponent } from './demo-detalle/demo-detalle.component';
-import { DemoDetalleRepairsComponent } from './demo-detalle-repairs/demo-detalle-repairs.component';
+
+// import { DemoComponent } from './demo/demo.component';
+// import { DemoDetalleComponent } from './demo-detalle/demo-detalle.component';
+// import { DemoDetalleRepairsComponent } from './demo-detalle-repairs/demo-detalle-repairs.component';
 import { RequirementDocumentationComponent } from './requirement-documentation/requirement-documentation.component';
 import { RequirementEvaluationComponent } from './requirement-evaluation/requirement-evaluation.component';
 import { AddRequirementEvaluationComponent } from './requirement-evaluation/add-requirement-evaluation/add-requirement-evaluation.component';
@@ -127,6 +119,7 @@ import { EditSubprocessComponent } from './subprocess/edit-subprocess/edit-subpr
 import { ActiveTypeComponent } from './active-type/active-type.component';
 import { AddActiveTypeComponent } from './active-type/add-active-type/add-active-type.component';
 import { EditActiveTypeComponent } from './active-type/edit-active-type/edit-active-type.component';
+
 import { OwnerComponent } from './owner/owner.component';
 import { AddOwnerComponent } from './owner/add-owner/add-owner.component';
 import { EditOwnerComponent } from './owner/edit-owner/edit-owner.component';
@@ -186,8 +179,12 @@ import { EditVulnerabilityTypeComponent } from './vulnerability-type/edit-vulner
 import { VulnerabilityComponent } from './vulnerability/vulnerability.component';
 import { AddVulnerabilityComponent } from './vulnerability/add-vulnerability/add-vulnerability.component';
 import { EditVulnerabilityComponent } from './vulnerability/edit-vulnerability/edit-vulnerability.component';
+
+
 import { AddControlGroupComponent } from './control-group/add-control-group/add-control-group.component';
 import { EditControlGroupComponent } from './control-group/edit-control-group/edit-control-group.component';
+
+
 import { ControlTypeComponent } from './control-type/control-type.component';
 import { AddControlTypeComponent } from './control-type/add-control-type/add-control-type.component';
 import { EditControlTypeComponent } from './control-type/edit-control-type/edit-control-type.component';
@@ -205,16 +202,11 @@ import { PendingDocumentationComponent } from './pending-documentation/pending-d
 import { LineChartComponent } from './line-chart/line-chart.component';
 import { AnnualSummaryComponent } from './annual-summary/annual-summary.component';
 
+import { HomeComponent } from './home.component';
 
-FullCalendarModule.registerPlugins([dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin]);
-//FullCalendarModule.registerPlugins([timeGridPlugin, listPlugin, interactionPlugin]);
 
 const routes = [
-  {
-    path: 'sample',
-    component: SampleComponent,
-    data: { animation: 'sample' }
-  },
+
   {
     path: 'home',
     component: HomeComponent,
@@ -255,16 +247,16 @@ const routes = [
     component: EvaluationProcessComponent,
     data: { animation: 'evaluation-process' }
   },
-  {
-    path: 'demo',
-    component: DemoComponent,
-    data: { animation: 'demo' }
-  },
-  {
-    path: 'demo-detalle',
-    component: DemoDetalleComponent,
-    data: { animation: 'demo-detalle' }
-  },
+  // {
+  //   path: 'demo',
+  //   component: DemoComponent,
+  //   data: { animation: 'demo' }
+  // },
+  // {
+  //   path: 'demo-detalle',
+  //   component: DemoDetalleComponent,
+  //   data: { animation: 'demo-detalle' }
+  // },
   {
     path: 'document-type',
     component: DocumentTypeComponent,
@@ -488,13 +480,18 @@ const routes = [
 ];
 
 @NgModule({
-  declarations: [SampleComponent, HomeComponent, StandardComponent, AddStandardComponent, EditStandardComponent, RequirementComponent, AddRequirementComponent,
+  declarations: [
+    HomeComponent, 
+    StandardComponent, AddStandardComponent, EditStandardComponent, 
+    RequirementComponent, AddRequirementComponent,
     EditRequirementComponent, DocumentationComponent, AddDocumentationComponent, EditDocumentationComponent, ControlComponent, ControlGroupComponent,
     AddControlGroupComponent, EditControlGroupComponent, EditControlComponent, AddControlComponent, ResponsibleComponent, AddResponsibleComponent,
     EditResponsibleComponent, MaturityLevelComponent, AddMaturityLevelComponent, EditMaturityLevelComponent, IndicatorComponent, AddIndicatorComponent,
     EditIndicatorComponent, EvaluationAdminComponent, AddEvaluationAdminComponent, EditEvaluationAdminComponent, EvaluationProcessListComponent,
-    EvaluationProcessComponent, RequirementProcessComponent, ControlProcessComponent, IndicatorsComponent, Indicators2Component, Indicators3Component,
-    Indicators4Component, DemoComponent, DemoDetalleComponent, DemoDetalleRepairsComponent, RequirementDocumentationComponent, RequirementEvaluationComponent,
+    EvaluationProcessComponent, RequirementProcessComponent, ControlProcessComponent, 
+    IndicatorsComponent, Indicators2Component, Indicators3Component,Indicators4Component, 
+    //DemoComponent, DemoDetalleComponent, DemoDetalleRepairsComponent, 
+    RequirementDocumentationComponent, RequirementEvaluationComponent,
     AddRequirementEvaluationComponent, TableRequirementsEvaluationComponent, EditRequirementEvaluationComponent, ControlEvaluationComponent,
     AddControlEvaluationComponent, EditControlEvaluationComponent, DashboardComponent, ControlDashboardComponent, DocumentTypeComponent,
     AddDocumentTypeComponent, EditDocumentTypeComponent, DefaultSectionComponent, AddDefaultSectionComponent, EditDefaultSectionComponent,
@@ -527,8 +524,9 @@ const routes = [
     VulnerabilityComponent, AddVulnerabilityComponent, EditVulnerabilityComponent,
     ControlTypeComponent, AddControlTypeComponent, EditControlTypeComponent,
     RiskLevelComponent, AddRiskLevelComponent, EditRiskLevelComponent,
-    RiskComponent, AddRiskComponent,//, EditRiskComponent
-    EditCompanyComponent, CurrentRequirementEvaluationComponent, CurrentControlEvaluationComponent,SectionByDocumentationIdComponent, CurrentPendingDocumentationComponent, PendingDocumentationComponent, LineChartComponent, AnnualSummaryComponent
+    RiskComponent, AddRiskComponent,
+    EditCompanyComponent, CurrentRequirementEvaluationComponent, CurrentControlEvaluationComponent,SectionByDocumentationIdComponent, 
+    CurrentPendingDocumentationComponent, PendingDocumentationComponent, LineChartComponent, AnnualSummaryComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -541,7 +539,6 @@ const routes = [
     MatInputModule,
     MatNativeDateModule,
     MatSlideToggleModule,
-    FullCalendarModule,
     CoreSidebarModule,
     NgbModule,
     NgxChartsModule,
@@ -555,7 +552,7 @@ const routes = [
     MatChipsModule,
     MatAutocompleteModule
   ],
-  exports: [SampleComponent, HomeComponent],
+  exports: [],
 
 })
 export class SampleModule { }

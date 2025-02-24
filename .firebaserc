@@ -1,14 +1,11 @@
 {
   "targets": {
-    "armadillo-5f25c": {
+    "pangolin-b3f7b": {
       "hosting": {
         "vuexy": [
-          "armadillo-5f25c"
+          "pangolin-b3f7b"
         ]
       }
     }
-  },
-  "projects": {
-    "default": "armadillo-5f25c"
   }
 }
