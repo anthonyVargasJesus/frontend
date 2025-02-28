@@ -5,7 +5,7 @@
       <section class="users-list-wrapper">
 
 
-        <!-- <div class="row">
+        <div class="row">
 
           <div class="col-md-6">
 
@@ -18,7 +18,7 @@
               </div>
 
               <div class="card-body">
-                <div class="card-text"> Alcance del sistema de gestión del seguridad de la información</div>
+                <div *ngIf="currentPolicy" class="card-text"> {{currentScope.name}}</div>
               </div>
 
             </div>
@@ -37,14 +37,14 @@
               </div>
               
               <div class="card-body">
-                <div class="card-text"> Política general del sistema de gestión del seguridad de la información</div>
+                <div *ngIf="currentPolicy" class="card-text"> {{currentPolicy.name}}</div>
               </div>
 
             </div>
 
           </div>
 
-        </div> -->
+        </div>
 
 
         <div *ngIf="evaluation" class="card">

@@ -218,7 +218,39 @@
               </ng-template>
             </li>
 
-         
+            <li ngbNavItem [ngbNavItem]="7">
+
+              <a ngbNavLink class="d-flex align-items-center"><i data-feather="layers" class="mr-sm-50"></i><span
+                  class="d-none d-sm-block">ALCANCE</span></a>
+              <ng-template ngbNavContent>
+                <div class="tab-pane" id="scope" aria-labelledby="scope-tab" role="tabpanel">
+
+                  <div class="card border" style="margin-top: -10px !important;">
+                    <div class="card-body">
+                      <app-scope-by-standard [standardId]="id"></app-scope-by-standard>
+                    </div>
+                  </div>
+
+                </div>
+              </ng-template>
+            </li>
+
+            <li ngbNavItem [ngbNavItem]="8">
+
+              <a ngbNavLink class="d-flex align-items-center"><i data-feather="layers" class="mr-sm-50"></i><span
+                  class="d-none d-sm-block">POLÍTICA</span></a>
+              <ng-template ngbNavContent>
+                <div class="tab-pane" id="scope" aria-labelledby="scope-tab" role="tabpanel">
+
+                  <div class="card border" style="margin-top: -10px !important;">
+                    <div class="card-body">
+                      <app-policy-by-standard [standardId]="id"></app-policy-by-standard>
+                    </div>
+                  </div>
+
+                </div>
+              </ng-template>
+            </li>
 
           </ul>
           <div [ngbNavOutlet]="nav" class="mt-2"></div>

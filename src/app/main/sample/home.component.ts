@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { EvaluationService } from 'app/services/evaluation.service';
 import { Evaluation } from 'app/models/evaluation';
 import { saveAs } from 'file-saver';
+import { Scope } from 'app/models/scope';
+import { Policy } from 'app/models/policy';
 
 
 @Component({
@@ -33,6 +35,9 @@ export class HomeComponent implements OnInit {
   evaluationId: string;
   standardId: string = '';
   standardName: string = '';
+
+  currentScope: Scope = new Scope();
+  currentPolicy: Policy = new Policy();
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -61,10 +66,17 @@ export class HomeComponent implements OnInit {
     this.loading = true;
     this.evaluationService.getCurrent()
       .subscribe((res: any) => {
+
+        console.log(res);
+
         this.evaluation = res.data;
         this.standardId = this.evaluation.standardId.toString();
         this.evaluationId =  this.evaluation.evaluationId.toString();
         this.standardName = this.evaluation.standard.name;
+       
+        this.currentScope = res.data.currentScope;
+        this.currentPolicy = res.data.currentPolicy;
+
         this.loading = false;
         this.initMenuName();
       }, error => {

@@ -25,9 +25,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
- import { StandardComponent } from './standard/standard.component';
- import { AddStandardComponent } from './standard/add-standard/add-standard.component';
- import { EditStandardComponent } from './standard/edit-standard/edit-standard.component';
+import { StandardComponent } from './standard/standard.component';
+import { AddStandardComponent } from './standard/add-standard/add-standard.component';
+import { EditStandardComponent } from './standard/edit-standard/edit-standard.component';
 import { RequirementComponent } from './requirement/requirement.component';
 import { AddRequirementComponent } from './requirement/add-requirement/add-requirement.component';
 import { EditRequirementComponent } from './requirement/edit-requirement/edit-requirement.component';
@@ -203,6 +203,12 @@ import { LineChartComponent } from './line-chart/line-chart.component';
 import { AnnualSummaryComponent } from './annual-summary/annual-summary.component';
 
 import { HomeComponent } from './home.component';
+import { ScopeByStandardComponent } from './scope-by-standard/scope-by-standard.component';
+import { AddScopeByStandardComponent } from './scope-by-standard/add-scope-by-standard/add-scope-by-standard.component';
+import { EditScopeByStandardComponent } from './scope-by-standard/edit-scope-by-standard/edit-scope-by-standard.component';
+import { PolicyByStandardComponent } from './policy-by-standard/policy-by-standard.component';
+import { AddPolicyByStandardComponent } from './policy-by-standard/add-policy-by-standard/add-policy-by-standard.component';
+import { EditPolicyComponent } from './policy/edit-policy/edit-policy.component';
 
 
 const routes = [
@@ -477,19 +483,29 @@ const routes = [
     component: EditDocumentationComponent,
     data: { animation: 'edit-documentation' }
   },
+  {
+    path: 'scope/:id',
+    component: ScopeByStandardComponent,
+    data: { animation: 'scope' }
+  },
+  {
+    path: 'policy/:id',
+    component: PolicyByStandardComponent,
+    data: { animation: 'policy' }
+  },
 ];
 
 @NgModule({
   declarations: [
-    HomeComponent, 
-    StandardComponent, AddStandardComponent, EditStandardComponent, 
+    HomeComponent,
+    StandardComponent, AddStandardComponent, EditStandardComponent,
     RequirementComponent, AddRequirementComponent,
     EditRequirementComponent, DocumentationComponent, AddDocumentationComponent, EditDocumentationComponent, ControlComponent, ControlGroupComponent,
     AddControlGroupComponent, EditControlGroupComponent, EditControlComponent, AddControlComponent, ResponsibleComponent, AddResponsibleComponent,
     EditResponsibleComponent, MaturityLevelComponent, AddMaturityLevelComponent, EditMaturityLevelComponent, IndicatorComponent, AddIndicatorComponent,
     EditIndicatorComponent, EvaluationAdminComponent, AddEvaluationAdminComponent, EditEvaluationAdminComponent, EvaluationProcessListComponent,
-    EvaluationProcessComponent, RequirementProcessComponent, ControlProcessComponent, 
-    IndicatorsComponent, Indicators2Component, Indicators3Component,Indicators4Component, 
+    EvaluationProcessComponent, RequirementProcessComponent, ControlProcessComponent,
+    IndicatorsComponent, Indicators2Component, Indicators3Component, Indicators4Component,
     //DemoComponent, DemoDetalleComponent, DemoDetalleRepairsComponent, 
     RequirementDocumentationComponent, RequirementEvaluationComponent,
     AddRequirementEvaluationComponent, TableRequirementsEvaluationComponent, EditRequirementEvaluationComponent, ControlEvaluationComponent,
@@ -525,8 +541,10 @@ const routes = [
     ControlTypeComponent, AddControlTypeComponent, EditControlTypeComponent,
     RiskLevelComponent, AddRiskLevelComponent, EditRiskLevelComponent,
     RiskComponent, AddRiskComponent,
-    EditCompanyComponent, CurrentRequirementEvaluationComponent, CurrentControlEvaluationComponent,SectionByDocumentationIdComponent, 
-    CurrentPendingDocumentationComponent, PendingDocumentationComponent, LineChartComponent, AnnualSummaryComponent
+    EditCompanyComponent, CurrentRequirementEvaluationComponent, CurrentControlEvaluationComponent, SectionByDocumentationIdComponent,
+    CurrentPendingDocumentationComponent, PendingDocumentationComponent, LineChartComponent, AnnualSummaryComponent,
+    ScopeByStandardComponent, AddScopeByStandardComponent, EditScopeByStandardComponent,
+    PolicyByStandardComponent, AddPolicyByStandardComponent,EditPolicyComponent
   ],
   imports: [
     RouterModule.forChild(routes),
