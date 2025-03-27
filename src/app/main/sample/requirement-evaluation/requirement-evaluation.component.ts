@@ -37,16 +37,22 @@ export class RequirementEvaluationComponent implements OnInit {
   @Input()
   evaluationId: number;
 
+  coreConfig: any;
+
   constructor(
     private requirementEvaluationService: RequirementEvaluationService,
     private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
     private dialog: MatDialog
   ) {
-
+    this._unsubscribeAll = new Subject();
   }
 
   ngOnInit() {
+
+    this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
+      this.coreConfig = config;
+    });
 
     this.getTheme();
     this.initMenuName();
@@ -100,7 +106,7 @@ export class RequirementEvaluationComponent implements OnInit {
     this.requirementEvaluationService.getAllByStandardIdByEvaluationId(this.standardId, this.evaluationId)
       .subscribe((res: any) => {
         this.requirements = res.data;
-
+        console.log(res);
         this.loading = false;
       }, error => {
         this.loading = false;
@@ -200,6 +206,8 @@ export class RequirementEvaluationComponent implements OnInit {
   }
 
 
-
+  updateEvent() {
+    this.get();
+  }
 
 }

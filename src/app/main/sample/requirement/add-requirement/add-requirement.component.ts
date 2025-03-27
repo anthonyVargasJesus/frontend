@@ -47,6 +47,7 @@ export class AddRequirementComponent implements OnInit {
   initForm() {
     this.form = this._formBuilder.group({
       numeration: ['', [Validators.required, Validators.maxLength(8),]],
+      letter: ['', [ Validators.maxLength(10),]],
       name: ['', [Validators.required, Validators.maxLength(200),]],
       description: ['', [Validators.maxLength(1000),]],
       level: [Number(this.level), [Validators.required, Validators.maxLength(8),]],
@@ -72,6 +73,7 @@ export class AddRequirementComponent implements OnInit {
     this.requirement.level = this.form.value.level;
     this.requirement.parentId = this.form.value.parentId;
     this.requirement.isEvaluable = this.form.value.isEvaluable;
+    this.requirement.letter = this.form.value.letter;
   }
 
 

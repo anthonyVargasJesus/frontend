@@ -65,7 +65,7 @@
             <form [formGroup]="form" (ngSubmit)="save()" class="auth-login-form mt-0" autocomplete="off">
 
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
 
                             <div style="display:flex; margin-bottom:-10px;">
@@ -85,7 +85,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-2">
+                        <div class="form-group">
+
+                            <div style="display:flex; margin-bottom:5px;">
+                                <label class="form-label">Letra</label>
+                            </div>
+                            <input type="text" formControlName="letter"
+                                [ngClass]="{ 'is-invalid': submitted && f.letter.errors }" maxlength="10"
+                                class="form-control" aria-describedby="" autofocus="" tabindex="1">
+                          
+                        </div>
+                    </div>
+                    <div class="col-md-8">
                         <div class="form-group">
 
                             <div style="display:flex; margin-bottom:-10px;">
@@ -107,7 +119,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
 
                             <div style="display:flex; margin-bottom:-10px;">
@@ -126,7 +138,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-10">
                         <div class="form-group">
 
                             <div style="display:flex; margin-bottom:2px;">
@@ -148,7 +160,7 @@
                     <div style="display:flex; margin-bottom:2px;">
                         <label class="form-label">Descripción</label>
                     </div>
-                    <textarea rows="5" formControlName="description"
+                    <textarea rows="8" formControlName="description"
                         [ngClass]="{ 'is-invalid': submitted && f.description.errors }" maxlength="1000"
                         class="form-control" aria-describedby="" autofocus="" tabindex="1"></textarea>
                 </div>

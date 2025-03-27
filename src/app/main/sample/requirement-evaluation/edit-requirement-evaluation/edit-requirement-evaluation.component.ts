@@ -108,8 +108,8 @@ export class EditRequirementEvaluationComponent implements OnInit {
       maturityLevel: ['', [Validators.required,]],
       value: ['', [Validators.required, Validators.maxLength(8),]],
       responsible: ['', [Validators.required,]],
-      justification: ['', [Validators.required, Validators.maxLength(500),]],
-      improvementActions: ['', [Validators.required, Validators.maxLength(500),]],
+      //justification: ['', [Validators.required, Validators.maxLength(500),]],
+      improvementActions: ['', [Validators.maxLength(500),]],
       documentation: ['', [Validators.required,]],
     });
   }
@@ -142,7 +142,7 @@ export class EditRequirementEvaluationComponent implements OnInit {
       maturityLevel: ((requirementEvaluation.maturityLevelId == null) ? '' : requirementEvaluation.maturityLevelId),
       value: ((requirementEvaluation.value == null) ? '' : requirementEvaluation.value),
       responsible: ((requirementEvaluation.responsibleId == null) ? '' : requirementEvaluation.responsibleId),
-      justification: ((requirementEvaluation.justification == null) ? '' : requirementEvaluation.justification),
+      //justification: ((requirementEvaluation.justification == null) ? '' : requirementEvaluation.justification),
       improvementActions: ((requirementEvaluation.improvementActions == null) ? '' : requirementEvaluation.improvementActions),
       documentation: requirementEvaluation.arrayReferenceDocumentations
     });
@@ -157,7 +157,7 @@ export class EditRequirementEvaluationComponent implements OnInit {
       this.requirementEvaluation.maturityLevelId = this.form.value.maturityLevel;
     if (this.form.value.responsible)
       this.requirementEvaluation.responsibleId = this.form.value.responsible;
-    this.requirementEvaluation.justification = this.form.value.justification;
+    //this.requirementEvaluation.justification = this.form.value.justification;
     this.requirementEvaluation.improvementActions = this.form.value.improvementActions;
   }
 

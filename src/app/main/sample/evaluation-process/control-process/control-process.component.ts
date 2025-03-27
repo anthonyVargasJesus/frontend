@@ -31,7 +31,7 @@ export class ControlProcessComponent implements OnInit {
     'Documento de Definición del Alcance',
     'Politica General del SGSI',
     'Politicas Especidicas del SGSI',
-    'Requerimientos de la Partes Interesadas'];
+    'Requisitos de la Partes Interesadas'];
 
   selectedResponsibles: ChipModel[] = [];
 

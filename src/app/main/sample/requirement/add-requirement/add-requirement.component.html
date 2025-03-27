@@ -64,7 +64,7 @@
             <form [formGroup]="form" (ngSubmit)="save()" class="auth-login-form mt-0" autocomplete="off">
 
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
 
                             <div style="display:flex; margin-bottom:-10px;">
@@ -84,7 +84,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-2">
+                        <div class="form-group">
+
+                            <div style="display:flex; margin-bottom:5px;">
+                                <label class="form-label">Letra</label>
+                            </div>
+                            <input type="text" formControlName="letter"
+                                [ngClass]="{ 'is-invalid': submitted && f.letter.errors }" maxlength="10"
+                                class="form-control" aria-describedby="" autofocus="" tabindex="1">
+                          
+                        </div>
+                    </div>
+                    <div class="col-md-8">
                         <div class="form-group">
 
                             <div style="display:flex; margin-bottom:-10px;">

@@ -13,6 +13,7 @@ export class Evaluation {
         public referenceEvaluationId?: number,
         public isGapAnalysis?: boolean,
         public isCurrent?: boolean,
-        public evaluationState?: EvaluationState
+        public evaluationState?: EvaluationState,
+        public loadingExcel?: boolean,
     ) { }
 }

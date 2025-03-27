@@ -103,8 +103,8 @@ export class AddRequirementEvaluationComponent implements OnInit {
     this.form = this._formBuilder.group({
       maturityLevel: ['', [Validators.required,]],
       responsible: ['', [Validators.required,]],
-      justification: ['', [Validators.required, Validators.maxLength(500),]],
-      improvementActions: ['', [Validators.required, Validators.maxLength(500),]],
+      //justification: ['', [Validators.required, Validators.maxLength(500),]],
+      improvementActions: ['', [Validators.maxLength(500),]],
       documentation: ['', [Validators.required,]],
     });
   }
@@ -144,20 +144,14 @@ export class AddRequirementEvaluationComponent implements OnInit {
       });
   }
 
-
-
   getFormValue() {
     if (this.form.value.maturityLevel)
       this.requirementEvaluation.maturityLevelId = this.form.value.maturityLevel;
     if (this.form.value.responsible)
       this.requirementEvaluation.responsibleId = this.form.value.responsible;
-    this.requirementEvaluation.justification = this.form.value.justification;
+    //this.requirementEvaluation.justification = this.form.value.justification;
     this.requirementEvaluation.improvementActions = this.form.value.improvementActions;
   }
-
-
-
-
 
 
   get f() {
@@ -176,9 +170,8 @@ export class AddRequirementEvaluationComponent implements OnInit {
     this.requirementEvaluation.evaluationId = Number(this.evaluationId);
     this.requirementEvaluation.standardId = Number(this.standardId);
     this.requirementEvaluation.requirementId = Number(this.requirementId);
-
     this.requirementEvaluation.value = this.selectedMaturityLevel.value;
-
+    
     let array = [];
     array = this.form.value.documentation;
 

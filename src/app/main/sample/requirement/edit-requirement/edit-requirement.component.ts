@@ -53,6 +53,7 @@ export class EditRequirementComponent implements OnInit {
   initForm() {
     this.form = this._formBuilder.group({
       numeration: ['', [Validators.required, Validators.maxLength(8),]],
+      letter: ['', [ Validators.maxLength(10),]],
       name: ['', [Validators.required, Validators.maxLength(200),]],
       description: ['', [Validators.maxLength(1000),]],
       level: ['', [Validators.required, Validators.maxLength(8),]],
@@ -78,6 +79,7 @@ export class EditRequirementComponent implements OnInit {
   setFormValue(requirement: Requirement) {
     this.form.setValue({
       numeration: ((requirement.numeration == null) ? '' : requirement.numeration),
+      letter: ((requirement.letter == null) ? '' : requirement.letter),
       name: ((requirement.name == null) ? '' : requirement.name),
       description: ((requirement.description == null) ? '' : requirement.description),
       level: ((requirement.level == null) ? '' : requirement.level),
@@ -94,6 +96,7 @@ export class EditRequirementComponent implements OnInit {
     this.requirement.level = this.form.value.level;
     this.requirement.parentId = this.form.value.parentId;
     this.requirement.isEvaluable = this.form.value.isEvaluable;
+    this.requirement.letter = this.form.value.letter;
   }
 
   getAllRequirements(standardId: number) {

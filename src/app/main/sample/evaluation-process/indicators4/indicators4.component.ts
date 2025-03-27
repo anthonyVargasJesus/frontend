@@ -22,7 +22,7 @@ export class Indicators4Component implements OnInit {
   gradient: boolean = false;
   showLegend: boolean = true;
   showXAxisLabel: boolean = true;
-  xAxisLabel: string = 'Requerimientos';
+  xAxisLabel: string = 'Requisitos';
   showYAxisLabel: boolean = true;
   yAxisLabel: string = '';
   animations: boolean = true;

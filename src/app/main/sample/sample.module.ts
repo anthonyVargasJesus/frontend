@@ -209,6 +209,8 @@ import { EditScopeByStandardComponent } from './scope-by-standard/edit-scope-by-
 import { PolicyByStandardComponent } from './policy-by-standard/policy-by-standard.component';
 import { AddPolicyByStandardComponent } from './policy-by-standard/add-policy-by-standard/add-policy-by-standard.component';
 import { EditPolicyComponent } from './policy/edit-policy/edit-policy.component';
+import { ChildRequirementComponent } from './child-requirement/child-requirement.component';
+import { ChildRequirementEvaluationComponent } from './child-requirement-evaluation/child-requirement-evaluation.component';
 
 
 const routes = [
@@ -544,7 +546,7 @@ const routes = [
     EditCompanyComponent, CurrentRequirementEvaluationComponent, CurrentControlEvaluationComponent, SectionByDocumentationIdComponent,
     CurrentPendingDocumentationComponent, PendingDocumentationComponent, LineChartComponent, AnnualSummaryComponent,
     ScopeByStandardComponent, AddScopeByStandardComponent, EditScopeByStandardComponent,
-    PolicyByStandardComponent, AddPolicyByStandardComponent,EditPolicyComponent
+    PolicyByStandardComponent, AddPolicyByStandardComponent,EditPolicyComponent, ChildRequirementComponent, ChildRequirementEvaluationComponent
   ],
   imports: [
     RouterModule.forChild(routes),

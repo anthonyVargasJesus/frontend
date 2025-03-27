@@ -136,8 +136,8 @@ export class RequirementComponent implements OnInit {
 
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(EditRequirementComponent, {
-        height: '600px',
-        width: '600px',
+        height: '700px',
+        width: '700px',
         data: {
           _id: id,
         },
@@ -192,8 +192,8 @@ export class RequirementComponent implements OnInit {
   addChild(requirementId: number, level: number) {
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(AddRequirementComponent, {
-        height: '600px',
-        width: '600px',
+        height: '700px',
+        width: '700px',
         autoFocus: false,
         data: {
           requirementId: requirementId,

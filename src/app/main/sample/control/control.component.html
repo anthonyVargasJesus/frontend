@@ -5,8 +5,8 @@
             <section class="users-list-wrapper">
                 <div class="card"  style="font-family: Montserrat, Helvetica, Arial, serif !important;">
 
+                    <br>
 
-                    <hr>
                     <div class="row mt-0 mb-0">
                         <div class="col-md-6 col-12">
                             <div class="d-flex justify-content-between align-items-center m-1">
@@ -63,7 +63,7 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th class="td-header-number text-center"> N°</th>
+                                    <th class="td-header-date text-center"> N°</th>
                                     <th> CONTROL</th>
                                     <th class="text-right">ACCIÓN</th>
                                 </tr>
@@ -105,7 +105,7 @@
                                     </ng-container>
 
                                     <tr *ngFor="let control of controls; let i = index">
-                                        <td> {{controlGroupNumber}} . {{control.number}} </td>
+                                        <td> A  {{controlGroupNumber}} . {{control.number}} </td>
                                         <td> {{control.name}} </td>
                                         <td class="text-right">
                                             <div

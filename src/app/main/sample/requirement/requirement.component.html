@@ -17,8 +17,10 @@
                             <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
 
                                 <div class="example-action-buttons mt-1">
-                                    <button style="font-family: Montserrat, Helvetica, Arial, serif !important;" mat-button (click)="expandAll()">Expandir</button>
-                                    <button style="font-family: Montserrat, Helvetica, Arial, serif !important;" mat-button (click)="collapseAll()">Colapsar</button>
+                                    <button style="font-family: Montserrat, Helvetica, Arial, serif !important;"
+                                        mat-button (click)="expandAll()">Expandir</button>
+                                    <button style="font-family: Montserrat, Helvetica, Arial, serif !important;"
+                                        mat-button (click)="collapseAll()">Colapsar</button>
                                 </div>
 
                                 <button (click)="addChild(0,1)" rippleeffect="" title="Agregar una nuevo requisito"
@@ -44,11 +46,21 @@
                             <mat-expansion-panel-header>
                                 <mat-panel-title
                                     style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 800 !important;">
-                                    <h5> {{requirement.numeration}}. &nbsp; {{requirement.name}}</h5>
+                                    <h5>
+
+                                        <ng-container *ngIf="requirement.letter">
+                                            {{requirement.letter}}
+                                        </ng-container>
+
+                                        <ng-container *ngIf="!requirement.letter">
+                                            {{requirement.numeration}}
+                                        </ng-container>
+                                        . &nbsp; {{requirement.name}}
+                                    </h5>
                                 </mat-panel-title>
 
                             </mat-expansion-panel-header>
-                          
+
                             <hr style="margin-top: -10px !important;">
 
                             <p style="font-family: Montserrat, Helvetica, Arial, serif !important; margin-left: 15px;"
@@ -61,12 +73,20 @@
                             <mat-accordion class="example-headers-align" multi
                                 style="font-family: Montserrat, Helvetica, Arial, serif !important;margin-top: -10px !important;">
 
-                                <mat-expansion-panel class="border" *ngFor="let child of requirement.children; let i = index"
+                                <mat-expansion-panel class="border"
+                                    *ngFor="let child of requirement.children; let i = index"
                                     style="background-color: transparent !important;">
                                     <mat-expansion-panel-header>
                                         <mat-panel-title
                                             style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 600 !important;">
-                                            <h5>{{requirement.numeration}}.{{child.numeration}}. &nbsp; {{child.name}}
+                                            <h5>
+                                                <ng-container *ngIf="child.letter">
+                                                    {{child.letter}}
+                                                </ng-container>
+                                                <ng-container *ngIf="!child.letter">
+                                                    {{requirement.numeration}}.{{child.numeration}}
+                                                </ng-container>
+                                                . &nbsp; {{child.name}}
                                             </h5>
                                         </mat-panel-title>
 
@@ -79,7 +99,6 @@
                                         {{child.description}}
                                     </p>
 
-
                                     <mat-accordion class="example-headers-align" multi
                                         style="font-family: Montserrat, Helvetica, Arial, serif !important;margin-top: -10px !important;">
 
@@ -90,8 +109,16 @@
                                                     style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 500 !important;">
 
                                                     <h5>
-                                                        {{requirement.numeration}}.{{child.numeration}}.
-                                                        {{child2.numeration}}. &nbsp; {{child2.name}}
+                                                        <ng-container *ngIf="child2.letter">
+                                                            {{child2.letter}}
+                                                        </ng-container>
+
+                                                        <ng-container *ngIf="!child2.letter">
+                                                            {{requirement.numeration}}.{{child.numeration}}.
+                                                            {{child2.numeration}}
+                                                        </ng-container>
+                                                        . &nbsp; {{child2.name}}
+
                                                     </h5>
 
                                                 </mat-panel-title>
@@ -101,11 +128,160 @@
                                             <hr style="margin-top: -10px !important;">
 
                                             <p style="font-family: Montserrat, Helvetica, Arial, serif !important; margin-left: 15px;"
-                                            [style]="coreConfig.layout.skin === 'dark'
+                                                [style]="coreConfig.layout.skin === 'dark'
                                         ? 'color: #b4b7bd;'
                                         : 'color: #6e6b7b;'">
                                                 {{child2.description}}
                                             </p>
+
+                                            <mat-accordion class="example-headers-align" multi
+                                                style="font-family: Montserrat, Helvetica, Arial, serif !important;margin-top: -10px !important;">
+
+
+                                                <mat-expansion-panel
+                                                    *ngFor="let child3 of child2.children; let i = index"
+                                                    style="background-color: transparent !important;">
+
+                                                    <mat-expansion-panel-header>
+                                                        <mat-panel-title
+                                                            style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 500 !important;">
+
+                                                            <h5>
+                                                                <ng-container *ngIf="child3.letter">
+                                                                    {{child3.letter}}
+                                                                </ng-container>
+
+                                                                <ng-container *ngIf="!child3.letter">
+                                                                    {{requirement.numeration}}.{{child.numeration}}.{{child2.numeration}}.
+                                                                    {{child3.numeration}}
+                                                                </ng-container>
+                                                                . &nbsp; {{child3.name}}
+
+                                                            </h5>
+
+                                                        </mat-panel-title>
+
+                                                    </mat-expansion-panel-header>
+
+                                                    <hr style="margin-top: -10px !important;">
+
+                                                    <p style="font-family: Montserrat, Helvetica, Arial, serif !important; margin-left: 15px;"
+                                                        [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'">
+                                                        {{child3.description}}
+                                                    </p>
+
+                                                    <mat-accordion class="example-headers-align" multi
+                                                        style="font-family: Montserrat, Helvetica, Arial, serif !important;margin-top: -10px !important;">
+
+                                                        <mat-expansion-panel
+                                                            *ngFor="let child4 of child3.children; let i = index"
+                                                            style="background-color: transparent !important;">
+
+
+                                                            <mat-expansion-panel-header>
+                                                                <mat-panel-title
+                                                                    style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 500 !important;">
+        
+                                                                    <h5>
+                                                                        <ng-container *ngIf="child4.letter">
+                                                                            {{child4.letter}}
+                                                                        </ng-container>
+        
+                                                                        <ng-container *ngIf="!child4.letter">
+                                                                            {{requirement.numeration}}.{{child.numeration}}.{{child2.numeration}}.{{child3.numeration}}.
+                                                                            {{child4.numeration}}
+                                                                        </ng-container>
+                                                                        . &nbsp; {{child4.name}}
+        
+                                                                    </h5>
+        
+                                                                </mat-panel-title>
+        
+                                                            </mat-expansion-panel-header>
+
+                                                            <hr style="margin-top: -10px !important;">
+
+                                                            <p style="font-family: Montserrat, Helvetica, Arial, serif !important; margin-left: 15px;"
+                                                                [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'">
+                                                                {{child4.description}}
+                                                            </p>
+
+                                                            <br>
+                                                            <hr>
+                                
+                                                            <div class="text-right">
+                                                                <div style="display: flex; flex-direction: row-reverse;margin-right: -10px;">
+                                
+                                                                    <a container="body" placement="top" class="mr-1" title="Eliminar"
+                                                                        (click)="delete(child4)">
+                                                                        <div class="icon-wrapper"
+                                                                            [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'">
+                                                                            <i class="feather font-medium-4" data-feather='trash-2'></i>
+                                                                        </div>
+                                                                    </a>
+                  
+                                                                    <a container="body" placement="top" title="Editar requisito"
+                                                                        (click)="edit(child4.requirementId)" class="mr-1">
+                                                                        <div class="icon-wrapper">
+                                                                            <i class="feather font-medium-3 icon-edit-2"
+                                                                                [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'"></i>
+                                                                        </div>
+                                                                    </a>
+                                
+                                
+                                
+                                                                </div>
+                                                            </div>
+
+
+                                                        </mat-expansion-panel>
+
+                                                    </mat-accordion>
+
+                                                    <br>
+
+                                                    <div class="text-right">
+                                                        <div
+                                                            style="display: flex; flex-direction: row-reverse;margin-right: -10px;">
+
+                                                            <a container="body" placement="top" class="mr-1"
+                                                                title="Eliminar" (click)="delete(child3)">
+                                                                <div class="icon-wrapper"
+                                                                    [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'">
+                                                                    <i class="feather font-medium-4"
+                                                                        data-feather='trash-2'></i>
+                                                                </div>
+                                                            </a>
+
+                                                            <a container="body" placement="top" class="mr-1"
+                                                                title="Agregar requisito"
+                                                                (click)="addChild(child3.requirementId, child3.level+1)">
+                                                                <div class="icon-wrapper"
+                                                                    [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'">
+                                                                    <i class="feather font-medium-4"
+                                                                        data-feather='plus'></i>
+                                                                </div>
+                                                            </a>
+
+                                                            <a container="body" placement="top" title="Editar requisito"
+                                                                (click)="edit(child3.requirementId)" class="mr-1">
+                                                                <div class="icon-wrapper">
+                                                                    <i class="feather font-medium-3 icon-edit-2"
+                                                                        [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'"></i>
+                                                                </div>
+                                                            </a>
+
+
+
+                                                        </div>
+                                                    </div>
+
+
+                                                </mat-expansion-panel>
+
+                                            </mat-accordion>
+
+                                            <br>
 
                                             <div class="text-right">
                                                 <div
@@ -113,7 +289,8 @@
 
                                                     <a container="body" placement="top" class="mr-1" title="Eliminar"
                                                         (click)="delete(child2)">
-                                                        <div class="icon-wrapper" [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'">
+                                                        <div class="icon-wrapper"
+                                                            [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'">
                                                             <i class="feather font-medium-4" data-feather='trash-2'></i>
                                                         </div>
                                                     </a>
@@ -121,7 +298,8 @@
                                                     <a container="body" placement="top" class="mr-1"
                                                         title="Agregar requisito"
                                                         (click)="addChild(child2.requirementId, child2.level+1)">
-                                                        <div class="icon-wrapper" [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'">
+                                                        <div class="icon-wrapper"
+                                                            [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'">
                                                             <i class="feather font-medium-4" data-feather='plus'></i>
                                                         </div>
                                                     </a>
@@ -129,7 +307,8 @@
                                                     <a container="body" placement="top" title="Editar requisito"
                                                         (click)="edit(child2.requirementId)" class="mr-1">
                                                         <div class="icon-wrapper">
-                                                            <i class="feather font-medium-3 icon-edit-2" [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'"></i>
+                                                            <i class="feather font-medium-3 icon-edit-2"
+                                                                [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'"></i>
                                                         </div>
                                                     </a>
 
@@ -156,7 +335,8 @@
 
                                             <a container="body" placement="top" class="mr-1" title="Eliminar"
                                                 (click)="delete(child)">
-                                                <div class="icon-wrapper" [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'">
+                                                <div class="icon-wrapper"
+                                                    [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'">
                                                     <i class="feather font-medium-4" style="opacity: 1;"
                                                         data-feather='trash-2'></i>
                                                 </div>
@@ -164,7 +344,8 @@
 
                                             <a container="body" placement="top" class="mr-1" title="Agregar requisito"
                                                 (click)="addChild(child.requirementId, child.level+1)">
-                                                <div class="icon-wrapper" [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'">
+                                                <div class="icon-wrapper"
+                                                    [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'">
                                                     <i class="feather font-medium-4" data-feather='plus'></i>
                                                 </div>
                                             </a>
@@ -172,7 +353,8 @@
                                             <a container="body" placement="top" title="Editar requisito"
                                                 (click)="edit(child.requirementId)" class="mr-1">
                                                 <div class="icon-wrapper">
-                                                    <i class="feather font-medium-3 icon-edit-2" [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'"></i>
+                                                    <i class="feather font-medium-3 icon-edit-2"
+                                                        [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'"></i>
                                                 </div>
                                             </a>
 
@@ -195,22 +377,25 @@
 
                                     <a container="body" placement="top" class="mr-1" title="Eliminar"
                                         (click)="delete(requirement)">
-                                        <div class="icon-wrapper" [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'">
+                                        <div class="icon-wrapper"
+                                            [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'">
                                             <i class="feather font-medium-4" data-feather='trash-2'></i>
                                         </div>
                                     </a>
 
                                     <a container="body" placement="top" class="mr-1" title="Agregar requisito"
                                         (click)="addChild(requirement.requirementId, requirement.level+1)">
-                                        <div class="icon-wrapper" [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'">
-                                            <i class="feather font-medium-4 plus"  data-feather='plus'></i>
+                                        <div class="icon-wrapper"
+                                            [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'">
+                                            <i class="feather font-medium-4 plus" data-feather='plus'></i>
                                         </div>
                                     </a>
 
                                     <a container="body" placement="top" title="Editar requisito"
                                         (click)="edit(requirement.requirementId)" class="mr-1">
                                         <div class="icon-wrapper">
-                                            <i class="feather font-medium-3 icon-edit-2" [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'"></i>
+                                            <i class="feather font-medium-3 icon-edit-2"
+                                                [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'"></i>
                                         </div>
                                     </a>
 

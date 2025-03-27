@@ -14,7 +14,6 @@ import { DialogData } from 'app/models/dialog-data';
   ]
 })
 
-
 export class AddScopeByStandardComponent implements OnInit {
 
   constructor(
@@ -53,9 +52,6 @@ export class AddScopeByStandardComponent implements OnInit {
     this.scope = new Scope();
   }
 
-
-
-
   getFormValue() {
     this.scope.isCurrent = this.form.value.isCurrent;
     this.scope.date = this.form.value.date;
@@ -64,11 +60,6 @@ export class AddScopeByStandardComponent implements OnInit {
     if (this.form.value.description == "")
       this.scope.description = null;
   }
-
-
-
-
-
 
   get f() {
     return this.form.controls;

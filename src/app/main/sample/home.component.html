@@ -13,12 +13,13 @@
 
               <div class="card-header">
                 <div class="card-title">
-                  ALCANCE
+                  {{currentScope.name}}
                 </div>
               </div>
 
               <div class="card-body">
-                <div *ngIf="currentPolicy" class="card-text"> {{currentScope.name}}</div>
+                <!-- <div *ngIf="currentPolicy" class="card-text"> {{currentScope.name}}</div> -->
+                <div *ngIf="currentPolicy" class="card-text"> {{currentScope.description}}</div>
               </div>
 
             </div>
@@ -32,12 +33,13 @@
 
               <div class="card-header">
                 <div class="card-title">
-                  POLÍTICA
+                  {{currentPolicy.name}}
                 </div>
               </div>
               
               <div class="card-body">
-                <div *ngIf="currentPolicy" class="card-text"> {{currentPolicy.name}}</div>
+                <!-- <div *ngIf="currentPolicy" class="card-text"> {{currentPolicy.name}}</div> -->
+                <div *ngIf="currentPolicy" class="card-text"> {{currentPolicy.description}}</div>
               </div>
 
             </div>

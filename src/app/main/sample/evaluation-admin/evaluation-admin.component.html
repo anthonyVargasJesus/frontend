@@ -111,25 +111,53 @@
                                         <td> {{evaluation.startDate | date: 'dd/MM/yyyy'}} </td>
                                         <td> {{evaluation.endDate | date: 'dd/MM/yyyy'}} </td>
                                         <td> {{evaluation.description}} </td>
-                                        <td> 
-                                            <mat-slide-toggle style="margin-top:7px;"  disabled [(ngModel)]="evaluation.isCurrent" ></mat-slide-toggle> 
+                                        <td>
+                                            <mat-slide-toggle style="margin-top:7px;" disabled
+                                                [(ngModel)]="evaluation.isCurrent"></mat-slide-toggle>
                                         </td>
                                         <td>
                                             <ng-container *ngIf="evaluation.evaluationState">
-                                                <span [style.color]="evaluation.evaluationState.color" style="font-weight: 700;">
+                                                <span [style.color]="evaluation.evaluationState.color"
+                                                    style="font-weight: 700;">
                                                     {{ evaluation.evaluationState.name}}
                                                 </span>
                                             </ng-container>
-                                            </td>
+                                        </td>
                                         <td class="text-right">
                                             <div
                                                 style="display: flex; flex-direction: row-reverse;margin-right: -10px;">
 
-                                                <a *ngIf="!evaluation.isDeleted" (click)="delete(evaluation,true)"
+                                                <div class="text-center">
+
+                                                    <button *ngIf="!evaluation.loadingExcel" type="button" (click)="downloadExcel(evaluation)" rippleeffect=""
+                                                      class="btn btn-success waves-effect"
+                                                      style="width:60px;height: 40px;">
+                                                      <i data-feather='download'></i>
+                                                    </button>
+                                  
+                                                    <button *ngIf="evaluation.loadingExcel" type="button" disabled="" rippleeffect=""
+                                                      class="btn btn-outline-primary waves-effect"
+                                                      style="width:60px;height: 40px;">
+                                                      <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span>
+                                                    </button>
+                                  
+                                                  </div>
+
+                                                <!-- <a *ngIf="!evaluation.loadingExcel" (click)="downloadExcel(evaluation)" style="width: 50px !important;"
                                                     container="body" placement="top" class="mr-1"
-                                                    title="Eliminar">
+                                                    title="Descargar excel">
                                                     <div class="icon-wrapper">
-                                                        <i class="feather font-medium-4 text-primary" data-feather='trash-2'></i>
+                                                        <i data-feather='download' class="text-primary"></i>
+                                                    </div>
+                                                </a>
+
+                                                <span *ngIf="evaluation.loadingExcel" role="status" aria-hidden="true" class="spinner-border spinner-border-sm" style="margin-right: 10px !important;"></span> -->
+
+                                                <a *ngIf="!evaluation.isDeleted" (click)="delete(evaluation,true)"
+                                                    container="body" placement="top" class="mr-1" title="Eliminar">
+                                                    <div class="icon-wrapper">
+                                                        <i class="feather font-medium-4 text-primary"
+                                                            data-feather='trash-2'></i>
                                                     </div>
                                                 </a>
                                                 <a container="body" placement="top"

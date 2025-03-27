@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { EvaluationService } from 'app/services/evaluation.service';
 import { AddEvaluationAdminComponent } from './add-evaluation-admin/add-evaluation-admin.component';
 import { EditEvaluationAdminComponent } from './edit-evaluation-admin/edit-evaluation-admin.component';
-
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-evaluation-admin',
@@ -237,6 +237,27 @@ export class EvaluationAdminComponent implements OnInit {
     this.total = res.pagination.totalRows;
     this.totalPages = res.pagination.totalPages;
   }
+
+
+    public downloadExcel(evaluation: Evaluation): any {
+  
+      evaluation.loadingExcel = true;
+      var fileName = 'dashboard.xlsx';
+      var mediaType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+      this.evaluationService.getExcelDashboard(evaluation.standardId.toString(), evaluation.evaluationId.toString())
+        .subscribe(res => {
+          evaluation.loadingExcel = false;
+  
+          var blob = new Blob([res], { type: mediaType });
+          saveAs(blob, fileName);
+  
+        }, error => {
+          evaluation.loadingExcel = false;
+          ErrorManager.handleError(error);
+        });
+  
+    }
+
 
 
 }

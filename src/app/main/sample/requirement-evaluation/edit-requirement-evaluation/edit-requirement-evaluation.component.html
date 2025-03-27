@@ -205,9 +205,7 @@
 
                 </div>
 
-
-
-                <div class="form-group">
+                <!-- <div class="form-group">
 
                     <div style="display:flex; margin-bottom:-10px;">
                         <label class="form-label">Justificación de la aplicabilidad o de la no aplicabilidad</label>
@@ -223,23 +221,18 @@
                         <div *ngIf="f.justification.errors.maxlength">La Jjustificación no puede tener mas de 500
                             caracteres </div>
                     </div>
-                </div>
+                </div> -->
+
+
                 <div class="form-group">
 
-                    <div style="display:flex; margin-bottom:-10px;">
+                    <div style="display:flex; margin-bottom:0px;">
                         <label class="form-label">Acciones de mejora</label>
-                        <label style="margin-left: 5px;">(</label>
-                        <label style="font-size: 22px; margin-top:-1px;">*</label>
-                        <label>)</label>
                     </div>
                     <textarea rows="3" formControlName="improvementActions"
-                        [ngClass]="{ 'is-invalid': submitted && f.improvementActions.errors }" maxlength="500"
+                         maxlength="500"
                         class="form-control" aria-describedby="" autofocus="" tabindex="1"></textarea>
-                    <div *ngIf="submitted && f.improvementActions.errors" class="invalid-feedback">
-                        <div *ngIf="f.improvementActions.errors.required">Las acciones de mejora son obligatorias</div>
-                        <div *ngIf="f.improvementActions.errors.maxlength">Las acciones de mejora no pueden tener mas de
-                            500 caracteres </div>
-                    </div>
+                 
                 </div>
 
 

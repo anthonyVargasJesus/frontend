@@ -36,6 +36,8 @@
 
                     <hr style="margin-top: -5px !important;">
 
+                            
+
                     <mat-accordion class="example-headers-align" multi
                     style="font-family: Montserrat, Helvetica, Arial, serif !important;margin: 15px;margin-top: 5px !important;">
 
@@ -52,6 +54,17 @@
                             </mat-panel-description>
 
                         </mat-expansion-panel-header>
+
+                        <hr style="margin-top: -5px !important;">
+
+                        <br>
+                        
+                        <p style="font-family: Montserrat, Helvetica, Arial, serif !important; margin-left: 15px;"
+                                [style]="coreConfig.layout.skin === 'dark'
+                        ? 'color: #b4b7bd;'
+                        : 'color: #6e6b7b;'">
+                                {{controlGroup.description}}
+                            </p>
 
                         <ng-container *ngIf="controlGroups.length>0">
                             <app-control [standardId]="standardId" [controlGroupId]="controlGroup.controlGroupId" [controlGroupNumber]="controlGroup.number"></app-control>

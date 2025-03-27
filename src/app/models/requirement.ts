@@ -15,5 +15,6 @@ export class Requirement {
         public requirementEvaluations?: RequirementEvaluation[],
         public numerationToShow?: string,
         public value?: number,
+        public letter?: string,
     ) { }
 }
