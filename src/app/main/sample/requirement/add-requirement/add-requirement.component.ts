@@ -48,7 +48,7 @@ export class AddRequirementComponent implements OnInit {
     this.form = this._formBuilder.group({
       numeration: ['', [Validators.required, Validators.maxLength(8),]],
       letter: ['', [ Validators.maxLength(10),]],
-      name: ['', [Validators.required, Validators.maxLength(200),]],
+      name: ['', [Validators.required, Validators.maxLength(500),]],
       description: ['', [Validators.maxLength(1000),]],
       level: [Number(this.level), [Validators.required, Validators.maxLength(8),]],
       parentId: [Number(this.requirementId), []],

@@ -65,6 +65,7 @@
                                 <tr>
                                     <th class="td-header-date text-center"> N°</th>
                                     <th> CONTROL</th>
+                                    <th> DESCRIPCIÓN</th>
                                     <th class="text-right">ACCIÓN</th>
                                 </tr>
                             </thead>
@@ -74,7 +75,7 @@
 
                                 <ng-container *ngIf="loading">
                                     <tr>
-                                        <td colspan="3">
+                                        <td colspan="4">
                                             <div class="container text-center mt-5">
 
                                                 <div class="spinner-grow text-primary" role="status">
@@ -95,7 +96,7 @@
 
                                     <ng-container *ngIf="controls.length == 0">
                                         <tr>
-                                            <td colspan="3">
+                                            <td colspan="4">
                                                 <div class="text-center mt-2 mb-2">
                                                     <div class="empty-row ng-star-inserted">No hay resultados para
                                                         mostrar</div>
@@ -107,6 +108,7 @@
                                     <tr *ngFor="let control of controls; let i = index">
                                         <td> A  {{controlGroupNumber}} . {{control.number}} </td>
                                         <td> {{control.name}} </td>
+                                        <td> {{control.description}} </td>
                                         <td class="text-right">
                                             <div
                                                 style="display: flex; flex-direction: row-reverse;margin-right: -10px;">

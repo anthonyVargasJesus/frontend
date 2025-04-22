@@ -25,7 +25,7 @@
     <div class="row">
       <!-- <div class="col-md-12 p-1" style="border-radius: 5px;">
         <h2 class="text-center" style="text-decoration: underline;margin-top: -10px !important;">RESUMEN RESULTADOS DEL
-          ESTADO DE LOS REQUERIMIENTOS DE LA {{standardName}}
+          ESTADO DE LOS REQUISITOS DE LA {{standardName}}
         </h2>
         <br>
       </div> -->
@@ -63,7 +63,7 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th style="color: white; background-color: black;"> REQUERIMIENTOS</th>
+                <th style="color: white; background-color: black;"> REQUISITOS</th>
                 <th *ngFor="let maturityLevel of maturityLevels; let i = index" class="td-header-number-2 text-center"
                   [style.background-color]="maturityLevel.color">
 
@@ -83,7 +83,7 @@
 
                 <tr *ngFor="let requirement of requirements;">
 
-                  <td><span style="font-weight: 600;">Claúsula {{requirement.numeration}}</span> - {{requirement.name}}
+                  <td><span style="font-weight: 600;">Cláusula {{requirement.numeration}}</span> - {{requirement.name}}
                   </td>
 
                   <td *ngFor="let item of requirement.maturityLevels;" class="td-humber-2 text-center">
