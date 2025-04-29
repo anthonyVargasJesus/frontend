@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ErrorManager } from 'app/errors/error-manager';
-import { ActivesInventory } from 'app/models/actives-inventory';
+import { RiskTreatmentMethod } from 'app/models/risk-treatment-method';
 import { environment } from 'environments/environment';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -11,31 +11,30 @@ import Swal from 'sweetalert2'
     providedIn: 'root'
 })
 
-export class ActivesInventoryService {
+export class RiskTreatmentMethodService {
 
     constructor(public http: HttpClient) { }
 
     getAll() {
-        const url = environment.apiUrl + '/api/activesInventory/all';
+        const url = environment.apiUrl + '/api/riskTreatmentMethod/all';
         return this.http.get(url);
     }
 
     get(skip: number, pageSize: number, search: string) {
-        const url = environment.apiUrl + '/api/activesInventory' + '?skip=' + skip + '&pageSize=' + 
-        pageSize + '&search=' + search;
+        const url = environment.apiUrl + '/api/riskTreatmentMethod' + '?skip=' + skip + '&pageSize=' + pageSize + '&search=' + search;
         return this.http.get(url);
     }
 
     obtain(id: string) {
-        const url = environment.apiUrl + '/api/activesInventory/' + id;
+        const url = environment.apiUrl + '/api/riskTreatmentMethod/' + id;
         return this.http.get(url);
     }
 
-    insert(activesInventory: ActivesInventory) {
-        const url = environment.apiUrl + '/api/activesInventory';
-        return this.http.post(url, activesInventory)
+    insert(riskTreatmentMethod: RiskTreatmentMethod) {
+        const url = environment.apiUrl + '/api/riskTreatmentMethod';
+        return this.http.post(url, riskTreatmentMethod)
             .pipe(map((resp: any) => {
-                Swal.fire('Activo registrado', 'El activo se registró satisfactoriamente', 'success');
+                Swal.fire('RiskTreatmentMethod registrado', 'El RiskTreatmentMethod se registró satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -45,11 +44,11 @@ export class ActivesInventoryService {
             }));
     }
 
-    update(activesInventory: ActivesInventory) {
-        const url = environment.apiUrl + '/api/activesInventory/' + activesInventory.activesInventoryId;
-        return this.http.put(url, activesInventory)
+    update(riskTreatmentMethod: RiskTreatmentMethod) {
+        const url = environment.apiUrl + '/api/riskTreatmentMethod/' + riskTreatmentMethod.riskTreatmentMethodId;
+        return this.http.put(url, riskTreatmentMethod)
             .pipe(map((resp: any) => {
-                Swal.fire('Activo actualizado', 'El activo se actualizó satisfactoriamente', 'success');
+                Swal.fire('RiskTreatmentMethod actualizado', 'El RiskTreatmentMethod se actualizó satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -60,10 +59,10 @@ export class ActivesInventoryService {
     }
 
     delete(id: number) {
-        const url = environment.apiUrl + '/api/activesInventory/' + id;
+        const url = environment.apiUrl + '/api/riskTreatmentMethod/' + id;
         return this.http.delete(url)
             .pipe(map((resp: any) => {
-                Swal.fire('Activo eliminado', 'El activo se eliminó satisfactoriamente', 'success');
+                Swal.fire('RiskTreatmentMethod eliminado', 'El RiskTreatmentMethod se eliminó satisfactoriamente', 'success');
                 return resp;
             }
             ))

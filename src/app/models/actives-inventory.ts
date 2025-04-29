@@ -30,6 +30,7 @@ export class ActivesInventory {
         public usageClassification?: UsageClassification,
         public supportType?: SupportType,
         public location?: Location,
+        public standardId?: number,
     ) { }
 }
 

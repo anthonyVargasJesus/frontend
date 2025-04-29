@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { getResults, getSearchResults, INIT_PAGE, PAGE_SIZE } from 'app/config/config';
 import { LoginService } from 'app/services/login.service';
 import { ErrorManager } from 'app/errors/error-manager';
-import { ActivesInventory } from 'app/models/actives-inventory';
-import { ActivesInventoryService } from 'app/services/actives-inventory.service';
+import { Risk } from 'app/models/risk';
+import { RiskService } from 'app/services/risk.service';
 import Swal from 'sweetalert2';
 import { Subject } from 'rxjs/internal/Subject';
 import { CoreConfigService } from '@core/services/config.service';
@@ -14,16 +15,15 @@ import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
-  selector: 'app-actives-inventory',
-  templateUrl: './actives-inventory.component.html',
+  selector: 'app-risk-by-evaluation',
+  templateUrl: './risk-by-evaluation.component.html',
   styles: [
   ]
 })
+export class RiskByEvaluationComponent implements OnInit {
 
-export class ActivesInventoryComponent implements OnInit {
 
-
-  activesInventories: ActivesInventory[] = [];
+  risks: Risk[] = [];
   selectedRow = 0;
   page = 1;
   skip = 0;
@@ -39,9 +39,11 @@ export class ActivesInventoryComponent implements OnInit {
   public currentSkin: string;
   private _unsubscribeAll: Subject<any>;
   private panelClass: string;
+  @Input()
+  evaluationId: number;
 
 
-  constructor(private activesInventoryService: ActivesInventoryService, private router: Router, private loginService: LoginService,
+  constructor(private riskService: RiskService, private router: Router, private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
     private dialog: MatDialog
   ) {
@@ -78,18 +80,18 @@ export class ActivesInventoryComponent implements OnInit {
 
   initMenuName() {
     this.contentHeader = {
-      headerTitle: 'Inventario de activos',
+      headerTitle: 'Risk',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'Activos',
+            name: 'Risk',
             isLink: false,
             link: '#'
           },
           {
-            name: 'Inventario',
+            name: 'Risk',
             isLink: false
           }
         ]
@@ -101,7 +103,7 @@ export class ActivesInventoryComponent implements OnInit {
 
   get() {
     this.loading = true;
-    this.activesInventoryService.get(this.skip, this.pageSize, this.searchText)
+    this.riskService.getByevaluationId(this.skip, this.pageSize, this.evaluationId, this.searchText)
       .subscribe((res: any) => {
         this.asignObjects(res);
         this.page = (this.skip / this.pageSize) + 1;
@@ -142,18 +144,19 @@ export class ActivesInventoryComponent implements OnInit {
     if (this.page < this.totalPages)
       this.next = false;
   }
+
   add() {
-    this.router.navigate(['/add-actives-inventory']);
+    this.router.navigate(['/add-risk', this.evaluationId]);
   }
 
   edit(id: String) {
-    this.router.navigate(['/edit-actives-inventory', id]);
+    this.router.navigate(['/edit-risk', id]);
   }
 
-  delete(activesInventory: ActivesInventory) {
+  delete(risk: Risk) {
 
     let text: string;
-    text = '¿Esta seguro de eliminar la activesInventory ' + activesInventory.name + '?';
+    text = '¿Está seguro de eliminar el registro ' + risk.activesInventoryName + '?';
 
     Swal.fire({
       title: 'Confirmación',
@@ -167,7 +170,7 @@ export class ActivesInventoryComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.activesInventoryService.delete(activesInventory.activesInventoryId)
+        this.riskService.delete(risk.riskId)
           .subscribe(deleted => {
             this.get();
           });
@@ -190,10 +193,27 @@ export class ActivesInventoryComponent implements OnInit {
   }
 
   asignObjects(res) {
-    this.activesInventories = res.data;
+    this.risks = res.data;
     this.total = res.pagination.totalRows;
     this.totalPages = res.pagination.totalPages;
   }
 
 
-} 
+}  //{
+//path: 'risk',
+//component: RiskComponent,
+//data: { animation: 'risk' }
+//},
+
+//RiskComponent, AddRiskComponent, EditRiskComponent
+//{
+//id: 'risk',
+//title: '',
+//translate: 'MENU.RISK',
+//type: 'item',
+//icon: 'file',
+//url: 'risk'
+//},
+
+//   RISK: 'Risk'
+

@@ -3,27 +3,27 @@ import { Component, OnInit } from '@angular/core';
 import { getResults, getSearchResults, INIT_PAGE, PAGE_SIZE } from 'app/config/config';
 import { LoginService } from 'app/services/login.service';
 import { ErrorManager } from 'app/errors/error-manager';
-import { Risk } from 'app/models/risk';
-import { RiskService } from 'app/services/risk.service';
+import { RiskTreatmentMethod } from 'app/models/risk-treatment-method';
+import { RiskTreatmentMethodService } from 'app/services/risk-treatment-method.service';
 import Swal from 'sweetalert2';
 import { Subject } from 'rxjs/internal/Subject';
 import { CoreConfigService } from '@core/services/config.service';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
-//import { EditRiskComponent } from './edit-risk/edit-risk.component';
-import { AddRiskComponent } from './add-risk/add-risk.component';
+import { EditRiskTreatmentMethodComponent } from './edit-risk-treatment-method/edit-risk-treatment-method.component';
+import { AddRiskTreatmentMethodComponent } from './add-risk-treatment-method/add-risk-treatment-method.component';
 import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
-  selector: 'app-risk',
-  templateUrl: './risk.component.html',
+  selector: 'app-risk-treatment-method',
+  templateUrl: './risk-treatment-method.component.html',
   styles: [
   ]
 })
-export class RiskComponent implements OnInit {
+export class RiskTreatmentMethodComponent implements OnInit {
 
 
-  risks: Risk[] = [];
+  riskTreatmentMethods: RiskTreatmentMethod[] = [];
   selectedRow = 0;
   page = 1;
   skip = 0;
@@ -41,7 +41,7 @@ export class RiskComponent implements OnInit {
   private panelClass: string;
 
 
-  constructor(private riskService: RiskService, private loginService: LoginService,
+  constructor(private riskTreatmentMethodService: RiskTreatmentMethodService, private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
     private dialog: MatDialog
   ) {
@@ -78,18 +78,18 @@ export class RiskComponent implements OnInit {
 
   initMenuName() {
     this.contentHeader = {
-      headerTitle: 'Risk',
+      headerTitle: 'Métodos de Tratamiento de riesgos',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'Risk',
+            name: 'RIESGOS',
             isLink: false,
             link: '#'
           },
           {
-            name: 'Risk',
+            name: 'Métodos de Tratamiento',
             isLink: false
           }
         ]
@@ -101,7 +101,7 @@ export class RiskComponent implements OnInit {
 
   get() {
     this.loading = true;
-    this.riskService.get(this.skip, this.pageSize, this.searchText)
+    this.riskTreatmentMethodService.get(this.skip, this.pageSize, this.searchText)
       .subscribe((res: any) => {
         this.asignObjects(res);
         this.page = (this.skip / this.pageSize) + 1;
@@ -146,7 +146,7 @@ export class RiskComponent implements OnInit {
   add() {
 
     if (this.loginService.isAuthenticated()) {
-      let dialogRef = this.dialog.open(AddRiskComponent, {
+      let dialogRef = this.dialog.open(AddRiskTreatmentMethodComponent, {
         height: '600px',
         width: '600px',
         autoFocus: false, panelClass: this.panelClass
@@ -165,32 +165,31 @@ export class RiskComponent implements OnInit {
 
   edit(id: String) {
 
-    // if (this.loginService.isAuthenticated()) {
-    //   let dialogRef = this.dialog.open(EditRiskComponent, {
-    //     height: '600px',
-    //     width: '600px',
-    //     data: {
-    //       _id: id,
-    //     },
-    //     autoFocus: false,
-    //     panelClass: this.panelClass
-    //   });
+    if (this.loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(EditRiskTreatmentMethodComponent, {
+        height: '600px',
+        width: '600px',
+        data: {
+          _id: id,
+        },
+        autoFocus: false,
+        panelClass: this.panelClass
+      });
 
-    //   dialogRef.afterClosed().subscribe(data => {
-    //     if (data == null)
-    //       return;
+      dialogRef.afterClosed().subscribe(data => {
+        if (data == null)
+          return;
 
-    //     if (data.updated == true)
-    //       this.get();
-    //   });
-    // }
-
+        if (data.updated == true)
+          this.get();
+      });
+    }
   }
 
-  delete(risk: Risk) {
+  delete(riskTreatmentMethod: RiskTreatmentMethod) {
 
     let text: string;
-    text = '¿Esta seguro de eliminar la risk ' + risk.activesInventoryName + '?';
+    text = '¿Está seguro de eliminar el registro ' + riskTreatmentMethod.name + '?';
 
     Swal.fire({
       title: 'Confirmación',
@@ -204,7 +203,7 @@ export class RiskComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.riskService.delete(risk.riskId)
+        this.riskTreatmentMethodService.delete(riskTreatmentMethod.riskTreatmentMethodId)
           .subscribe(deleted => {
             this.get();
           });
@@ -227,11 +226,28 @@ export class RiskComponent implements OnInit {
   }
 
   asignObjects(res) {
-    this.risks = res.data;
+    this.riskTreatmentMethods = res.data;
     this.total = res.pagination.totalRows;
     this.totalPages = res.pagination.totalPages;
   }
 
 
-}
+}  //{
+//path: 'risk-treatment-method',
+//component: RiskTreatmentMethodComponent,
+//data: { animation: 'risk-treatment-method' }
+//},
+
+//RiskTreatmentMethodComponent, AddRiskTreatmentMethodComponent, EditRiskTreatmentMethodComponent
+//{
+//id: 'riskTreatmentMethod',
+//title: '',
+//translate: 'MENU.RISKTREATMENTMETHOD',
+//type: 'item',
+//icon: 'file',
+//url: 'riskTreatmentMethod'
+//},
+
+//   RISKTREATMENTMETHOD: 'RiskTreatmentMethod'
+
 

@@ -1,0 +1,181 @@
+<div Class="content-wrapper">
+  <div Class="content-body">
+
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <section class="app-user-edit">
+      <div class="card">
+        <div class="card-body">
+
+          <ng-container *ngIf="loading">
+
+            <div class="container text-center mt-5">
+
+              <div class="spinner-grow text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+              <div class="spinner-grow text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+              <div class="spinner-grow text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+
+            </div>
+
+          </ng-container>
+
+          <ng-container *ngIf="!loading">
+
+            <div style="display: flex; ">
+              <a container="body" placement="top" (click)="navigateToBack()" class="" style="margin-top:7px;">
+                <div class="icon-wrapper">
+                  <i class="feather font-medium-3 icon-arrow-left"></i>
+                </div>
+              </a>
+              <h1 class="ml-1"> NUEVO RIESGO </h1>
+            </div>
+
+            <br>
+
+
+            <ul ngbNav #nav="ngbNav" class="nav nav-pills">
+              <li ngbNavItem>
+
+                <a ngbNavLink class="d-flex align-items-center"><i data-feather="user" class="mr-sm-50"></i><span
+                    class="d-none d-sm-block">DATOS DEL
+                    RIESGO</span></a>
+                <ng-template ngbNavContent>
+                  <div class="tab-pane active" id="account" aria-labelledby="account-tab" role="tabpanel">
+
+
+                    <div class="card border" style="margin-top: -15px !important;">
+                      <div class="card-body">
+                        <small class="form-text text-muted mb-2 text-center" style="margin-top: -10px;">Los campos
+                          con(*)
+                          son obligatorios</small>
+                        <form [formGroup]="form" (ngSubmit)="save()" class="auth-login-form mt-0" autocomplete="off">
+                          <div class="form-group">
+
+                            <div style="display:flex; margin-bottom:-10px;">
+                              <label class="form-label">activesInventoryId</label>
+                              <label style="margin-left: 5px;">(</label>
+                              <label style="font-size: 22px; margin-top:-1px;">*</label>
+                              <label>)</label>
+                            </div>
+                            <select formControlName="activesInventoryId"
+                              [ngClass]="{ 'is-invalid': submitted && f.activesInventoryId.errors }"
+                              class="form-control" tabindex="1">
+                              <option value=""> Seleccione </option>
+                              <option *ngFor="let activesInventory of activesInventories"
+                                [value]="activesInventory.activesInventoryId">
+                                {{activesInventory.name}}
+                              </option>
+                            </select>
+                            <div *ngIf="submitted && f.activesInventoryId.errors" class="invalid-feedback">
+                              <div *ngIf="f.activesInventoryId.errors.required">El activesInventoryId es obligatorio
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-md-4">
+                              <div class="form-group">
+
+                                <div style="display:flex; margin-bottom:2px;">
+                                  <label class="form-label">activesInventoryNumber</label>
+                                </div>
+                                <input type="text" formControlName="activesInventoryNumber"
+                                  [ngClass]="{ 'is-invalid': submitted && f.activesInventoryNumber.errors }" maxlength="20"
+                                  class="form-control" aria-describedby="" autofocus="" tabindex="1">
+                              </div>
+                            </div>
+                            <div class="col-md-8">
+                              <div class="form-group">
+
+                                <div style="display:flex; margin-bottom:2px;">
+                                  <label class="form-label">activesInventoryName</label>
+                                </div>
+                                <input type="text" formControlName="activesInventoryName"
+                                  [ngClass]="{ 'is-invalid': submitted && f.activesInventoryName.errors }" maxlength="100"
+                                  class="form-control" aria-describedby="" autofocus="" tabindex="1">
+                              </div>
+                            </div>
+                          </div>
+
+
+            
+                
+                          <div class="form-group">
+
+                            <div style="display:flex; margin-bottom:-10px;">
+                              <label class="form-label">menaceId</label>
+                              <label style="margin-left: 5px;">(</label>
+                              <label style="font-size: 22px; margin-top:-1px;">*</label>
+                              <label>)</label>
+                            </div>
+                            <select formControlName="menaceId"
+                              [ngClass]="{ 'is-invalid': submitted && f.menaceId.errors }" class="form-control"
+                              tabindex="1">
+                              <option value=""> Seleccione </option>
+                              <option *ngFor="let menace of menaces" [value]="menace.menaceId">{{ menace.name}}
+                              </option>
+                            </select>
+                            <div *ngIf="submitted && f.menaceId.errors" class="invalid-feedback">
+                              <div *ngIf="f.menaceId.errors.required">El menaceId es obligatorio</div>
+                            </div>
+                          </div>
+                          <div class="form-group">
+
+                            <div style="display:flex; margin-bottom:-10px;">
+                              <label class="form-label">vulnerabilityId</label>
+                              <label style="margin-left: 5px;">(</label>
+                              <label style="font-size: 22px; margin-top:-1px;">*</label>
+                              <label>)</label>
+                            </div>
+                            <select formControlName="vulnerabilityId"
+                              [ngClass]="{ 'is-invalid': submitted && f.vulnerabilityId.errors }" class="form-control"
+                              tabindex="1">
+                              <option value=""> Seleccione </option>
+                              <option *ngFor="let vulnerability of vulnerabilities"
+                                [value]="vulnerability.vulnerabilityId">{{ vulnerability.name}} </option>
+                            </select>
+                            <div *ngIf="submitted && f.vulnerabilityId.errors" class="invalid-feedback">
+                              <div *ngIf="f.vulnerabilityId.errors.required">El vulnerabilityId es obligatorio</div>
+                            </div>
+                          </div>
+
+
+                          <div class="col-md-12 text-center mt-3">
+                            <button *ngIf="!loading2" type="submit" rippleeffect=""
+                              class="btn btn-primary mr-1 waves-effect" style="width:180px;height: 40px;"
+                              tabindex="1">GUARDAR</button>
+                            <button *ngIf="loading2" type="button" disabled="" rippleeffect=""
+                              class="btn btn-outline-primary waves-effect mr-1" style="width:180px;height: 40px;">
+                              <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span>
+                              <span class="ml-25 align-middle">Guardando...</span>
+                            </button>
+                            <button type="reset" rippleeffect="" class="btn btn-outline-secondary waves-effect"
+                              (click)="close()" tabindex="1">CANCELAR</button>
+                          </div>
+
+
+                        </form>
+                      </div>
+                    </div>
+
+                  </div>
+                </ng-template>
+              </li>
+            </ul>
+            <div [ngbNavOutlet]="nav" class="mt - 2"></div>
+
+          </ng-container>
+
+
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>

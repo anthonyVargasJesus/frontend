@@ -191,8 +191,6 @@ import { EditControlTypeComponent } from './control-type/edit-control-type/edit-
 import { RiskLevelComponent } from './risk-level/risk-level.component';
 import { AddRiskLevelComponent } from './risk-level/add-risk-level/add-risk-level.component';
 import { EditRiskLevelComponent } from './risk-level/edit-risk-level/edit-risk-level.component';
-import { RiskComponent } from './risk/risk.component';
-import { AddRiskComponent } from './risk/add-risk/add-risk.component';
 import { EditCompanyComponent } from './company/edit-company/edit-company.component';
 import { CurrentRequirementEvaluationComponent } from './current-requirement-evaluation/current-requirement-evaluation.component';
 import { CurrentControlEvaluationComponent } from './current-control-evaluation/current-control-evaluation.component';
@@ -211,6 +209,12 @@ import { AddPolicyByStandardComponent } from './policy-by-standard/add-policy-by
 import { EditPolicyComponent } from './policy/edit-policy/edit-policy.component';
 import { ChildRequirementComponent } from './child-requirement/child-requirement.component';
 import { ChildRequirementEvaluationComponent } from './child-requirement-evaluation/child-requirement-evaluation.component';
+import { RiskTreatmentMethodComponent } from './risk-treatment-method/risk-treatment-method.component';
+import { AddRiskTreatmentMethodComponent } from './risk-treatment-method/add-risk-treatment-method/add-risk-treatment-method.component';
+import { EditRiskTreatmentMethodComponent } from './risk-treatment-method/edit-risk-treatment-method/edit-risk-treatment-method.component';
+import { CurrentRiskEvaluationComponent } from './current-risk-evaluation/current-risk-evaluation.component';
+import { RiskByEvaluationComponent } from './risk-by-evaluation/risk-by-evaluation.component';
+import { AddRiskByEvaluationComponent } from './risk-by-evaluation/add-risk-by-evaluation/add-risk-by-evaluation.component';
 
 
 const routes = [
@@ -431,11 +435,6 @@ const routes = [
     data: { animation: 'risk-level' }
   },
   {
-    path: 'risk',
-    component: RiskComponent,
-    data: { animation: 'risk' }
-  },
-  {
     path: 'annual-sumary',
     component: AnnualSummaryComponent,
     data: { animation: 'annual-sumary' }
@@ -495,6 +494,26 @@ const routes = [
     component: PolicyByStandardComponent,
     data: { animation: 'policy' }
   },
+  {
+    path: 'risk-treatment-method',
+    component: RiskTreatmentMethodComponent,
+    data: { animation: 'risk-treatment-method' }
+  },
+  {
+    path: 'current-risks',
+    component: CurrentRiskEvaluationComponent,
+    data: { animation: 'current-risks' }
+  },
+  {
+    path: 'risk',
+    component: RiskByEvaluationComponent,
+    data: { animation: 'risk' }
+  },
+  {
+    path: 'add-risk/:id',
+    component: AddRiskByEvaluationComponent,
+    data: { animation: 'add-risk' }
+  },
 ];
 
 @NgModule({
@@ -542,11 +561,12 @@ const routes = [
     VulnerabilityComponent, AddVulnerabilityComponent, EditVulnerabilityComponent,
     ControlTypeComponent, AddControlTypeComponent, EditControlTypeComponent,
     RiskLevelComponent, AddRiskLevelComponent, EditRiskLevelComponent,
-    RiskComponent, AddRiskComponent,
+    RiskByEvaluationComponent, AddRiskByEvaluationComponent,
     EditCompanyComponent, CurrentRequirementEvaluationComponent, CurrentControlEvaluationComponent, SectionByDocumentationIdComponent,
     CurrentPendingDocumentationComponent, PendingDocumentationComponent, LineChartComponent, AnnualSummaryComponent,
     ScopeByStandardComponent, AddScopeByStandardComponent, EditScopeByStandardComponent,
-    PolicyByStandardComponent, AddPolicyByStandardComponent,EditPolicyComponent, ChildRequirementComponent, ChildRequirementEvaluationComponent
+    PolicyByStandardComponent, AddPolicyByStandardComponent, EditPolicyComponent, ChildRequirementComponent, ChildRequirementEvaluationComponent,
+    RiskTreatmentMethodComponent, AddRiskTreatmentMethodComponent, EditRiskTreatmentMethodComponent, CurrentRiskEvaluationComponent
   ],
   imports: [
     RouterModule.forChild(routes),

@@ -15,8 +15,13 @@ export class RiskService {
 
     constructor(public http: HttpClient) { }
 
-    get(skip: number, pageSize: number, search: string) {
-        const url = environment.apiUrl + '/api/risk' + '?skip=' + skip + '&pageSize=' + pageSize + '&search=' + search;
+    getAllByevaluationId(evaluationId: number,) {
+        const url = environment.apiUrl + '/api/risk/all/evaluation?' + '&evaluationId=' + evaluationId;
+        return this.http.get(url);
+    }
+
+    getByevaluationId(skip: number, pageSize: number, evaluationId: number, search: string) {
+        const url = environment.apiUrl + '/api/risk' + '?skip=' + skip + '&pageSize=' + pageSize + '&evaluationId=' + evaluationId + '&search=' + search;
         return this.http.get(url);
     }
 
@@ -67,5 +72,5 @@ export class RiskService {
             }));
     }
 
-}
 
+}
