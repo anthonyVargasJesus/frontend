@@ -1,0 +1,185 @@
+<ng-container *ngIf="loading">
+
+  <div class="container text-center mt-5">
+
+    <div class="spinner-grow text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+
+  </div>
+
+</ng-container>
+
+<ng-container *ngIf="!loading">
+
+  <small class="form-text text-muted mb-2 text-center" style="margin-top: -10px;">Los campos
+    con(*)
+    son obligatorios</small>
+  <form [formGroup]="form" (ngSubmit)="save()" class="auth-login-form mt-0" autocomplete="off">
+
+    <div class="row">
+
+      <div class="col-md-4">
+
+        <div class="form-group">
+
+          <div style="display:flex; margin-bottom:-10px;">
+            <label class="form-label">CID</label>
+            <label style="margin-left: 5px;">(</label>
+            <label style="font-size: 22px; margin-top:-1px;">*</label>
+            <label>)</label>
+          </div>
+          <input type="number" formControlName="valuationCID"
+            [ngClass]="{ 'is-invalid': submitted && f.valuationCID.errors }" maxlength="5" class="form-control"
+            aria-describedby="" autofocus="" tabindex="1">
+          <div *ngIf="submitted && f.valuationCID.errors" class="invalid-feedback">
+            <div *ngIf="f.valuationCID.errors.required">El CID es obligatorio</div>
+            <div *ngIf="f.valuationCID.errors.maxlength">El CID no puede tener mas de 5
+              caracteres </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+
+          <div style="display:flex; margin-bottom:-10px;">
+            <label class="form-label">Nivel de amenaza</label>
+            <label style="margin-left: 5px;">(</label>
+            <label style="font-size: 22px; margin-top:-1px;">*</label>
+            <label>)</label>
+          </div>
+          <input type="number" formControlName="menaceLevelValue" (blur)="onInputBlurWithEventMenaceLevelValue($event)"
+            [ngClass]="{ 'is-invalid': submitted && f.menaceLevelValue.errors }" maxlength="5" class="form-control"
+            aria-describedby="" autofocus="" tabindex="1">
+          <div *ngIf="submitted && f.menaceLevelValue.errors" class="invalid-feedback">
+            <div *ngIf="f.menaceLevelValue.errors.required">El nivel de amenaza es obligatorio</div>
+            <div *ngIf="f.menaceLevelValue.errors.maxlength">El nivel de amenaza no puede tener mas de
+              5 caracteres </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+
+          <div style="display:flex; margin-bottom:-10px;">
+            <label class="form-label">Nivel de vulnerabilidad</label>
+            <label style="margin-left: 5px;">(</label>
+            <label style="font-size: 22px; margin-top:-1px;">*</label>
+            <label>)</label>
+          </div>
+          <input type="number" formControlName="vulnerabilityLevelValue"
+            (blur)="onInputBlurWithEventVulnerabilityLevelValue($event)"
+            [ngClass]="{ 'is-invalid': submitted && f.vulnerabilityLevelValue.errors }" maxlength="5"
+            class="form-control" aria-describedby="" autofocus="" tabindex="1">
+          <div *ngIf="submitted && f.vulnerabilityLevelValue.errors" class="invalid-feedback">
+            <div *ngIf="f.vulnerabilityLevelValue.errors.required">El nivel de vulnerabilidad es
+              obligatorio</div>
+            <div *ngIf="f.vulnerabilityLevelValue.errors.maxlength">El nivel de vulnerabilidad no
+              puede tener mas de 5 caracteres </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-group">
+
+      <div style="display:flex; margin-bottom:-10px;">
+        <label class="form-label">Controles implementados existentes</label>
+        <label style="margin-left: 5px;">(</label>
+        <label style="font-size: 22px; margin-top:-1px;">*</label>
+        <label>)</label>
+      </div>
+      <textarea rows="3" formControlName="existingImplementedControls"
+        [ngClass]="{ 'is-invalid': submitted && f.existingImplementedControls.errors }" maxlength="500"
+        class="form-control" aria-describedby="" autofocus="" tabindex="1"></textarea>
+      <div *ngIf="submitted && f.existingImplementedControls.errors" class="invalid-feedback">
+        <div *ngIf="f.existingImplementedControls.errors.required">El existingImplementedControls
+          es obligatorio</div>
+        <div *ngIf="f.existingImplementedControls.errors.maxlength">El existingImplementedControls
+          no puede tener mas de 500 caracteres </div>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-4">
+        <div class="form-group">
+
+          <div style="display:flex; margin-bottom:-10px;">
+            <label class="form-label">Cálculo de evaluación de riesgo</label>
+            <label style="margin-left: 5px;">(</label>
+            <label style="font-size: 22px; margin-top:-1px;">*</label>
+            <label>)</label>
+          </div>
+          <input type="number" formControlName="riskAssessmentValue"
+            [ngClass]="{ 'is-invalid': submitted && f.riskAssessmentValue.errors }" maxlength="5" class="form-control"
+            aria-describedby="" autofocus="" tabindex="1">
+          <div *ngIf="submitted && f.riskAssessmentValue.errors" class="invalid-feedback">
+            <div *ngIf="f.riskAssessmentValue.errors.required">El valor es obligatorio
+            </div>
+            <div *ngIf="f.riskAssessmentValue.errors.maxlength">El valor no puede tener
+              mas de 5 caracteres </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group">
+
+          <div style="display:flex; margin-bottom:-10px;">
+            <label class="form-label">Nivel de riesgo</label>
+            <label style="margin-left: 5px;">(</label>
+            <label style="font-size: 22px; margin-top:-1px;">*</label>
+            <label>)</label>
+          </div>
+          <select formControlName="riskLevelId" (change)="changeRiskLevel($event.target.value)" [ngClass]="{ 'is-invalid': submitted && f.riskLevelId.errors }"
+            class="form-control" tabindex="1">
+            <option value=""> Seleccione </option>
+            <option *ngFor="let riskLevel of riskLevels" [value]="riskLevel.riskLevelId">{{ riskLevel.name}} </option>
+          </select>
+          <div *ngIf="submitted && f.riskLevelId.errors" class="invalid-feedback">
+            <div *ngIf="f.riskLevelId.errors.required">El nivel de riesgo es obligatorio</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div style="display:flex; margin-bottom:2px;">
+          <label class="form-label" style="text-align: right !important;">-</label>
+        </div>
+        <div style="height: 40px; margin-left: 0px; border: 0.5px solid lightgray !important; border-radius: 5px;"
+          [style.background-color]="color">
+
+        </div>
+      </div>
+
+    </div>
+
+
+
+    <div class="col-md-12 text-center mt-3">
+      <button *ngIf="!loading2" type="submit" rippleeffect="" class="btn btn-primary mr-1 waves-effect"
+        style="width:180px;height: 40px;" tabindex="1">GUARDAR</button>
+      <button *ngIf="loading2" type="button" disabled="" rippleeffect=""
+        class="btn btn-outline-primary waves-effect mr-1" style="width:180px;height: 40px;">
+        <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span>
+        <span class="ml-25 align-middle">Guardando...</span>
+      </button>
+
+    </div>
+
+
+  </form>
+
+</ng-container>

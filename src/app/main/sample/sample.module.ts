@@ -215,6 +215,16 @@ import { EditRiskTreatmentMethodComponent } from './risk-treatment-method/edit-r
 import { CurrentRiskEvaluationComponent } from './current-risk-evaluation/current-risk-evaluation.component';
 import { RiskByEvaluationComponent } from './risk-by-evaluation/risk-by-evaluation.component';
 import { AddRiskByEvaluationComponent } from './risk-by-evaluation/add-risk-by-evaluation/add-risk-by-evaluation.component';
+import { EditRiskByEvaluationComponent } from './risk-by-evaluation/edit-risk-by-evaluation/edit-risk-by-evaluation.component';
+import { AddRiskAssessmentByRiskComponent } from './risk-assessment-by-risk/add-risk-assessment-by-risk/add-risk-assessment-by-risk.component';
+import { EditRiskAssessmentByRiskComponent } from './risk-assessment-by-risk/edit-risk-assessment-by-risk/edit-risk-assessment-by-risk.component';
+import { AddRiskTreatmentByRiskComponent } from './risk-treatment-by-risk/add-risk-treatment-by-risk/add-risk-treatment-by-risk.component';
+import { ResidualRiskComponent } from './residual-risk/residual-risk.component';
+import { AddResidualRiskComponent } from './residual-risk/add-residual-risk/add-residual-risk.component';
+import { EditResidualRiskComponent } from './residual-risk/edit-residual-risk/edit-residual-risk.component';
+import { EditRiskTreatmentByRiskComponent } from './risk-treatment-by-risk/edit-risk-treatment-by-risk/edit-risk-treatment-by-risk.component';
+import { AddControlImplementationByRiskComponent } from './control-implementation-by-risk/add-control-implementation-by-risk/add-control-implementation-by-risk.component';
+import { EditControlImplementationByRiskComponent } from './control-implementation-by-risk/edit-control-implementation-by-risk/edit-control-implementation-by-risk.component';
 
 
 const routes = [
@@ -514,6 +524,17 @@ const routes = [
     component: AddRiskByEvaluationComponent,
     data: { animation: 'add-risk' }
   },
+  {
+    path: 'edit-risk/:id',
+    component: EditRiskByEvaluationComponent,
+    data: { animation: 'edit-risk' }
+  },
+  {
+    path: 'residual-risk',
+    component: ResidualRiskComponent,
+    data: { animation: 'residual-risk' }
+  },
+
 ];
 
 @NgModule({
@@ -561,7 +582,11 @@ const routes = [
     VulnerabilityComponent, AddVulnerabilityComponent, EditVulnerabilityComponent,
     ControlTypeComponent, AddControlTypeComponent, EditControlTypeComponent,
     RiskLevelComponent, AddRiskLevelComponent, EditRiskLevelComponent,
-    RiskByEvaluationComponent, AddRiskByEvaluationComponent,
+    RiskByEvaluationComponent, AddRiskByEvaluationComponent, EditRiskByEvaluationComponent,
+    AddRiskAssessmentByRiskComponent, EditRiskAssessmentByRiskComponent,
+    AddRiskTreatmentByRiskComponent, EditRiskTreatmentByRiskComponent,
+    ResidualRiskComponent, AddResidualRiskComponent, EditResidualRiskComponent,
+    AddControlImplementationByRiskComponent, EditControlImplementationByRiskComponent,
     EditCompanyComponent, CurrentRequirementEvaluationComponent, CurrentControlEvaluationComponent, SectionByDocumentationIdComponent,
     CurrentPendingDocumentationComponent, PendingDocumentationComponent, LineChartComponent, AnnualSummaryComponent,
     ScopeByStandardComponent, AddScopeByStandardComponent, EditScopeByStandardComponent,

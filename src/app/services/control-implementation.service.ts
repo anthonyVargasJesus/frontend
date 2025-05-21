@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ErrorManager } from 'app/errors/error-manager';
-import { RiskTreatmentMethod } from 'app/models/risk-treatment-method';
+import { ControlImplementation } from 'app/models/control-implementation';
 import { environment } from 'environments/environment';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -11,31 +11,30 @@ import Swal from 'sweetalert2'
     providedIn: 'root'
 })
 
-export class RiskTreatmentMethodService {
+export class ControlImplementationService {
 
     constructor(public http: HttpClient) { }
 
     getAll() {
-        const url = environment.apiUrl + '/api/riskTreatmentMethod/all';
+        const url = environment.apiUrl + '/api/controlImplementation/all';
         return this.http.get(url);
     }
 
     get(skip: number, pageSize: number, search: string) {
-        const url = environment.apiUrl + '/api/riskTreatmentMethod' + '?skip=' + skip + '&pageSize=' 
-        + pageSize + '&search=' + search;
+        const url = environment.apiUrl + '/api/controlImplementation' + '?skip=' + skip + '&pageSize=' + pageSize + '&search=' + search;
         return this.http.get(url);
     }
 
     obtain(id: string) {
-        const url = environment.apiUrl + '/api/riskTreatmentMethod/' + id;
+        const url = environment.apiUrl + '/api/controlImplementation/' + id;
         return this.http.get(url);
     }
 
-    insert(riskTreatmentMethod: RiskTreatmentMethod) {
-        const url = environment.apiUrl + '/api/riskTreatmentMethod';
-        return this.http.post(url, riskTreatmentMethod)
+    insert(controlImplementation: ControlImplementation) {
+        const url = environment.apiUrl + '/api/controlImplementation';
+        return this.http.post(url, controlImplementation)
             .pipe(map((resp: any) => {
-                Swal.fire('RiskTreatmentMethod registrado', 'El RiskTreatmentMethod se registró satisfactoriamente', 'success');
+                Swal.fire('ControlImplementation registrado', 'El ControlImplementation se registró satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -45,11 +44,11 @@ export class RiskTreatmentMethodService {
             }));
     }
 
-    update(riskTreatmentMethod: RiskTreatmentMethod) {
-        const url = environment.apiUrl + '/api/riskTreatmentMethod/' + riskTreatmentMethod.riskTreatmentMethodId;
-        return this.http.put(url, riskTreatmentMethod)
+    update(controlImplementation: ControlImplementation) {
+        const url = environment.apiUrl + '/api/controlImplementation/' + controlImplementation.controlImplementationId;
+        return this.http.put(url, controlImplementation)
             .pipe(map((resp: any) => {
-                Swal.fire('RiskTreatmentMethod actualizado', 'El RiskTreatmentMethod se actualizó satisfactoriamente', 'success');
+                Swal.fire('ControlImplementation actualizado', 'El ControlImplementation se actualizó satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -60,10 +59,10 @@ export class RiskTreatmentMethodService {
     }
 
     delete(id: number) {
-        const url = environment.apiUrl + '/api/riskTreatmentMethod/' + id;
+        const url = environment.apiUrl + '/api/controlImplementation/' + id;
         return this.http.delete(url)
             .pipe(map((resp: any) => {
-                Swal.fire('RiskTreatmentMethod eliminado', 'El RiskTreatmentMethod se eliminó satisfactoriamente', 'success');
+                Swal.fire('ControlImplementation eliminado', 'El ControlImplementation se eliminó satisfactoriamente', 'success');
                 return resp;
             }
             ))

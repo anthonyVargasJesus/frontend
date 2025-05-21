@@ -7,20 +7,20 @@
 
                     <div class="card-body">
                     
-                        <h1 class="text-center" style="margin-top: 5px;margin-bottom: 5px;"> {{title}}  ({{evaluation.startDate | date: 'dd/MM/yyyy'}})</h1>
+                        <h1 class="text-center" style="margin-top: 5px;margin-bottom: 5px;">
+                             {{title}}  ({{evaluation.startDate | date: 'dd/MM/yyyy'}})
+                            </h1>
     
                         <hr>
 
-
                         <div class="table-responsive">
-                            <app-risk-by-evaluation *ngIf="standardId > 0 && evaluationId > 0" [standardId]="standardId"
+                            <app-risk-by-evaluation *ngIf="standardId > 0 && evaluationId > 0"
+                                 [standardId]="standardId"
                                 [evaluationId]="evaluationId"></app-risk-by-evaluation>
                         </div>
                         
                     </div>
-                  
-
-
+ 
                 </div>
             </section>
         </section>

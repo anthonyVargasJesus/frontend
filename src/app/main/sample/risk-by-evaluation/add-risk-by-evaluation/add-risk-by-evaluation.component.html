@@ -38,7 +38,6 @@
 
             <br>
 
-
             <ul ngbNav #nav="ngbNav" class="nav nav-pills">
               <li ngbNavItem>
 
@@ -58,12 +57,12 @@
                           <div class="form-group">
 
                             <div style="display:flex; margin-bottom:-10px;">
-                              <label class="form-label">activesInventoryId</label>
+                              <label class="form-label">Activo</label>
                               <label style="margin-left: 5px;">(</label>
                               <label style="font-size: 22px; margin-top:-1px;">*</label>
                               <label>)</label>
                             </div>
-                            <select formControlName="activesInventoryId"
+                            <select formControlName="activesInventoryId" (change)="changeActiveInventory($event.target.value)"
                               [ngClass]="{ 'is-invalid': submitted && f.activesInventoryId.errors }"
                               class="form-control" tabindex="1">
                               <option value=""> Seleccione </option>
@@ -73,7 +72,7 @@
                               </option>
                             </select>
                             <div *ngIf="submitted && f.activesInventoryId.errors" class="invalid-feedback">
-                              <div *ngIf="f.activesInventoryId.errors.required">El activesInventoryId es obligatorio
+                              <div *ngIf="f.activesInventoryId.errors.required">El activo es obligatorio
                               </div>
                             </div>
                           </div>
@@ -83,33 +82,30 @@
                               <div class="form-group">
 
                                 <div style="display:flex; margin-bottom:2px;">
-                                  <label class="form-label">activesInventoryNumber</label>
+                                  <label class="form-label">Número</label>
                                 </div>
                                 <input type="text" formControlName="activesInventoryNumber"
-                                  [ngClass]="{ 'is-invalid': submitted && f.activesInventoryNumber.errors }" maxlength="20"
-                                  class="form-control" aria-describedby="" autofocus="" tabindex="1">
+                                  [ngClass]="{ 'is-invalid': submitted && f.activesInventoryNumber.errors }"
+                                  maxlength="20" class="form-control" aria-describedby="" autofocus="" tabindex="1">
                               </div>
                             </div>
                             <div class="col-md-8">
                               <div class="form-group">
 
                                 <div style="display:flex; margin-bottom:2px;">
-                                  <label class="form-label">activesInventoryName</label>
+                                  <label class="form-label">Nombre del activo</label>
                                 </div>
                                 <input type="text" formControlName="activesInventoryName"
-                                  [ngClass]="{ 'is-invalid': submitted && f.activesInventoryName.errors }" maxlength="100"
-                                  class="form-control" aria-describedby="" autofocus="" tabindex="1">
+                                  [ngClass]="{ 'is-invalid': submitted && f.activesInventoryName.errors }"
+                                  maxlength="100" class="form-control" aria-describedby="" autofocus="" tabindex="1">
                               </div>
                             </div>
                           </div>
 
-
-            
-                
                           <div class="form-group">
 
                             <div style="display:flex; margin-bottom:-10px;">
-                              <label class="form-label">menaceId</label>
+                              <label class="form-label">Amenaza</label>
                               <label style="margin-left: 5px;">(</label>
                               <label style="font-size: 22px; margin-top:-1px;">*</label>
                               <label>)</label>
@@ -122,13 +118,14 @@
                               </option>
                             </select>
                             <div *ngIf="submitted && f.menaceId.errors" class="invalid-feedback">
-                              <div *ngIf="f.menaceId.errors.required">El menaceId es obligatorio</div>
+                              <div *ngIf="f.menaceId.errors.required">La amenaza es obligatoria</div>
                             </div>
                           </div>
+
                           <div class="form-group">
 
                             <div style="display:flex; margin-bottom:-10px;">
-                              <label class="form-label">vulnerabilityId</label>
+                              <label class="form-label">Vulnerabilidad</label>
                               <label style="margin-left: 5px;">(</label>
                               <label style="font-size: 22px; margin-top:-1px;">*</label>
                               <label>)</label>
@@ -138,13 +135,12 @@
                               tabindex="1">
                               <option value=""> Seleccione </option>
                               <option *ngFor="let vulnerability of vulnerabilities"
-                                [value]="vulnerability.vulnerabilityId">{{ vulnerability.name}} </option>
+                                [value]="vulnerability.vulnerabilityId">{{vulnerability.name}} </option>
                             </select>
                             <div *ngIf="submitted && f.vulnerabilityId.errors" class="invalid-feedback">
-                              <div *ngIf="f.vulnerabilityId.errors.required">El vulnerabilityId es obligatorio</div>
+                              <div *ngIf="f.vulnerabilityId.errors.required">La vulnerabilidad es obligatoria</div>
                             </div>
                           </div>
-
 
                           <div class="col-md-12 text-center mt-3">
                             <button *ngIf="!loading2" type="submit" rippleeffect=""
@@ -158,7 +154,6 @@
                             <button type="reset" rippleeffect="" class="btn btn-outline-secondary waves-effect"
                               (click)="close()" tabindex="1">CANCELAR</button>
                           </div>
-
 
                         </form>
                       </div>

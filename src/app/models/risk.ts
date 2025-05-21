@@ -16,6 +16,10 @@ export class Risk {
         public activesInventory?: ActivesInventory,
         public menace?: Menace,
         public vulnerability?: Vulnerability,
+        public riskAssessmentId?: number,
+        public valuationCID?: number,
+        public riskTreatmentId?: number,
+        public controlImplementationId?: number,
     ) { }
 }
 

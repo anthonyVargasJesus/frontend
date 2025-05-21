@@ -1,29 +1,29 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { getResults, PAGE_SIZE } from 'app/config/config';
+import { Component, OnInit } from '@angular/core';
+
+import { getResults, getSearchResults, INIT_PAGE, PAGE_SIZE } from 'app/config/config';
 import { LoginService } from 'app/services/login.service';
 import { ErrorManager } from 'app/errors/error-manager';
-import { Risk } from 'app/models/risk';
-import { RiskService } from 'app/services/risk.service';
+import { ResidualRisk } from 'app/models/residual-risk';
+import { ResidualRiskService } from 'app/services/residual-risk.service';
 import Swal from 'sweetalert2';
 import { Subject } from 'rxjs/internal/Subject';
 import { CoreConfigService } from '@core/services/config.service';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
-
+import { EditResidualRiskComponent } from './edit-residual-risk/edit-residual-risk.component';
+import { AddResidualRiskComponent } from './add-residual-risk/add-residual-risk.component';
 import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
-  selector: 'app-risk-by-evaluation',
-  templateUrl: './risk-by-evaluation.component.html',
+  selector: 'app-residual-risk',
+  templateUrl: './residual-risk.component.html',
   styles: [
   ]
 })
+export class ResidualRiskComponent implements OnInit {
 
-export class RiskByEvaluationComponent implements OnInit {
 
-
-  risks: Risk[] = [];
+  residualRisks: ResidualRisk[] = [];
   selectedRow = 0;
   page = 1;
   skip = 0;
@@ -39,11 +39,9 @@ export class RiskByEvaluationComponent implements OnInit {
   public currentSkin: string;
   private _unsubscribeAll: Subject<any>;
   private panelClass: string;
-  @Input()
-  evaluationId: number;
 
 
-  constructor(private riskService: RiskService, private router: Router, private loginService: LoginService,
+  constructor(private residualRiskService: ResidualRiskService, private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
     private dialog: MatDialog
   ) {
@@ -80,18 +78,18 @@ export class RiskByEvaluationComponent implements OnInit {
 
   initMenuName() {
     this.contentHeader = {
-      headerTitle: 'Risk',
+      headerTitle: 'ResidualRisk',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'Risk',
+            name: 'ResidualRisk',
             isLink: false,
             link: '#'
           },
           {
-            name: 'Risk',
+            name: 'ResidualRisk',
             isLink: false
           }
         ]
@@ -103,8 +101,7 @@ export class RiskByEvaluationComponent implements OnInit {
 
   get() {
     this.loading = true;
-    this.riskService.getByevaluationId(this.skip, this.pageSize, 
-      this.evaluationId, this.searchText)
+    this.residualRiskService.get(this.skip, this.pageSize, this.searchText)
       .subscribe((res: any) => {
         this.asignObjects(res);
         this.page = (this.skip / this.pageSize) + 1;
@@ -147,17 +144,52 @@ export class RiskByEvaluationComponent implements OnInit {
   }
 
   add() {
-    this.router.navigate(['/add-risk', this.evaluationId]);
+
+    if (this.loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(AddResidualRiskComponent, {
+        height: '600px',
+        width: '600px',
+        autoFocus: false, panelClass: this.panelClass
+      });
+
+      dialogRef.afterClosed().subscribe(data => {
+        if (data == null)
+          return;
+
+        if (data.updated == true)
+          this.get();
+      });
+    }
+
   }
 
   edit(id: String) {
-    this.router.navigate(['/edit-risk', id]);
+
+    if (this.loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(EditResidualRiskComponent, {
+        height: '600px',
+        width: '600px',
+        data: {
+          _id: id,
+        },
+        autoFocus: false,
+        panelClass: this.panelClass
+      });
+
+      dialogRef.afterClosed().subscribe(data => {
+        if (data == null)
+          return;
+
+        if (data.updated == true)
+          this.get();
+      });
+    }
   }
 
-  delete(risk: Risk) {
+  delete(residualRisk: ResidualRisk) {
 
     let text: string;
-    text = '¿Está seguro de eliminar el registro ' + risk.activesInventoryName + '?';
+    text = '¿Está seguro de eliminar el registro ' + residualRisk.name + '?';
 
     Swal.fire({
       title: 'Confirmación',
@@ -171,7 +203,7 @@ export class RiskByEvaluationComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.riskService.delete(risk.riskId)
+        this.residualRiskService.delete(residualRisk.residualRiskId)
           .subscribe(deleted => {
             this.get();
           });
@@ -194,11 +226,28 @@ export class RiskByEvaluationComponent implements OnInit {
   }
 
   asignObjects(res) {
-    this.risks = res.data;
+    this.residualRisks = res.data;
     this.total = res.pagination.totalRows;
     this.totalPages = res.pagination.totalPages;
   }
 
 
-}  
+}  //{
+//path: 'residual-risk',
+//component: ResidualRiskComponent,
+//data: { animation: 'residual-risk' }
+//},
+
+//ResidualRiskComponent, AddResidualRiskComponent, EditResidualRiskComponent
+//{
+//id: 'residualRisk',
+//title: '',
+//translate: 'MENU.RESIDUALRISK',
+//type: 'item',
+//icon: 'file',
+//url: 'residualRisk'
+//},
+
+//   RESIDUALRISK: 'ResidualRisk'
+
 

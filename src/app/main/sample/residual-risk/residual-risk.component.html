@@ -1,12 +1,12 @@
 <div class="content-wrapper">
     <div class="content-body">
-        <!-- <app-content-header [contentHeader]="contentHeader"></app-content-header> -->
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
         <section id="home-page">
             <section class="users-list-wrapper">
                 <div class="card">
 
 
-                    <!-- <hr> -->
+                    <hr>
                     <div class="row mt-0 mb-0">
                         <div class="col-md-6 col-12">
                             <div class="d-flex justify-content-between align-items-center m-1">
@@ -47,7 +47,7 @@
                                     </span><span data-v-aa799a9e="" class="sr-only">Loading...</span>
                                 </button>
 
-                                <button (click)="add()" rippleeffect="" title="Agregar un nuevo riesgo"
+                                <button (click)="add()" rippleeffect="" title="Agregar un nuevo residualRisk"
                                     class="btn btn-primary ml-1 waves-effect waves-float waves-light"
                                     style="float: right!important;margin-right: 10px;margin-top:0px;">
                                     <i data-feather='plus'></i>
@@ -60,13 +60,17 @@
 
                     <div class="table-responsive">
 
-                        <table class="table table-bordered">
+                        <table class="table">
                             <thead>
                                 <tr>
-                                    <th>NRO. ACTIVO</th>
-                                    <th>NOMBRE DE ACTIVO</th>
-                                    <th>AMENAZA</th>
-                                    <th>VULNERABILIDAD</th>
+                                    <th>NAME</th>
+                                    <th>DESCRIPTION</th>
+                                    <th>ABBREVIATION</th>
+                                    <th class="td-header-number"> FACTOR</th>
+                                    <th class="td-header-number"> MINIMUM</th>
+                                    <th class="td-header-number"> MAXIMUM</th>
+                                    <th>COLOR</th>
+
                                     <th class="text-right">ACCIÓN</th>
                                 </tr>
                             </thead>
@@ -76,7 +80,7 @@
 
                                 <ng-container *ngIf="loading">
                                     <tr>
-                                        <td colspan="5">
+                                        <td colspan="8">
                                             <div class="container text-center mt-5">
 
                                                 <div class="spinner-grow text-primary" role="status">
@@ -95,9 +99,9 @@
                                 </ng-container>
                                 <ng-container *ngIf="!loading">
 
-                                    <ng-container *ngIf="risks.length == 0">
+                                    <ng-container *ngIf="residualRisks.length == 0">
                                         <tr>
-                                            <td colspan="5">
+                                            <td colspan="8">
                                                 <div class="text-center mt-2 mb-2">
                                                     <div class="empty-row ng-star-inserted">No hay resultados para
                                                         mostrar</div>
@@ -106,34 +110,28 @@
                                         </tr>
                                     </ng-container>
 
-                                    <tr *ngFor="let risk of risks; let i = index">
-                                        <td> {{risk.activesInventoryNumber}} </td>
-                                        <td> {{risk.activesInventoryName}} </td>
-                                        <td>
-                                            <ng-container *ngIf="risk.menace">
-                                                {{ risk.menace.name}}
-                                            </ng-container>
-                                        </td>
-                                        <td>
-                                            <ng-container *ngIf="risk.vulnerability">
-                                                {{ risk.vulnerability.name}}
-                                            </ng-container>
-                                        </td>
+                                    <tr *ngFor="let residualRisk of residualRisks; let i = index">
+                                        <td> {{residualRisk.name}} </td>
+                                        <td> {{residualRisk.description}} </td>
+                                        <td> {{residualRisk.abbreviation}} </td>
+                                        <td> {{residualRisk.factor | number}} </td>
+                                        <td> {{residualRisk.minimum | number}} </td>
+                                        <td> {{residualRisk.maximum | number}} </td>
+                                        <td> {{residualRisk.color}} </td>
 
                                         <td class="text-right">
                                             <div
                                                 style="display: flex; flex-direction: row-reverse;margin-right: -10px;">
 
-                                                <a *ngIf="!risk.isDeleted" (click)="delete(risk)" container="body"
-                                                    placement="top" class="mr-1"
-                                                    title="Eliminar a {{risk.activesInventoryName}}">
+                                                <a *ngIf="!residualRisk.isDeleted" (click)="delete(residualRisk)"
+                                                    container="body" placement="top" class="mr-1"
+                                                    title="Eliminar a {{residualRisk.name}}">
                                                     <div class="icon-wrapper">
                                                         <i class="feather font-medium-4" data-feather='trash-2'></i>
                                                     </div>
                                                 </a>
-                                                <a container="body" placement="top"
-                                                    title="Abrir {{risk.activesInventoryName}}"
-                                                    (click)="edit(risk.riskId)" class="mr-1">
+                                                <a container="body" placement="top" title="Abrir {{residualRisk.name}}"
+                                                    (click)="edit(residualRisk.residualRiskId)" class="mr-1">
                                                     <div class="icon-wrapper">
                                                         <i class="feather font-medium-3 icon-edit-2"></i>
                                                     </div>
@@ -150,13 +148,13 @@
                     </div>
 
                     <br>
-            
+                    <hr>
                     <br>
                     <div class="row">
                         <div class="col-md-4">
                         </div>
                         <div class="col-md-4">
-                            <div *ngIf="risks.length > 0" class="d-flex justify-content-center">
+                            <div *ngIf="residualRisks.length > 0" class="d-flex justify-content-center">
                                 <ul class="pagination text-center">
                                     <li class="page-item ng-star-inserted">
                                         <button [disabled]="previous" (click)="changePage(-pageSize)" class="page-link">

@@ -67,6 +67,7 @@ export class CurrentRiskEvaluationComponent implements OnInit {
         ]
       }
     }
+    
   }
 
 }

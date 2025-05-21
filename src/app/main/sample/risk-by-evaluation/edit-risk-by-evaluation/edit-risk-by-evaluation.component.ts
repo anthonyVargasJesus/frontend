@@ -20,6 +20,7 @@ import { DialogData } from 'app/models/dialog-data'; import { Evaluation } from 
   styles: [
   ]
 })
+
 export class EditRiskByEvaluationComponent implements OnInit {
 
   constructor(
@@ -29,7 +30,7 @@ export class EditRiskByEvaluationComponent implements OnInit {
     public router: Router, private activesInventoryService: ActivesInventoryService,
     private menaceService: MenaceService,
     private vulnerabilityService: VulnerabilityService,
-    @Inject(MAT_DIALOG_DATA) private data: DialogData, private dialogRef: MatDialogRef<EditRiskByEvaluationComponent>,
+
 
   ) { }
 
@@ -37,27 +38,29 @@ export class EditRiskByEvaluationComponent implements OnInit {
   menaces: Menace[] = [];
   vulnerabilities: Vulnerability[] = [];
 
-
   risk: Risk;
   loading = false;
   id: string;
-  loading2 = false; 
+  loading2 = false;
+  public contentHeader: object;
   public form: FormGroup;
   public submitted = false;
-  public title: string = 'EDITAR RISK';;
+
+  public title: string = 'EDITAR RIESGO';
+
+
+  riskAssessmentId: number = 0;
+  valuationCID: number = 0;
+
+  riskTreatmentId: number = 0;
+  controlImplementationId: number = 0;
+
 
   ngOnInit(): void {
     this.initForm();
-
+    this.initMenuName(); 
     this.getAllMenaces();
-    this.getAllVulnerabilities();
-
     this.initRisk();
-
-    this.id = this.data['_id'];
-    this.obtain(this.id);
-
-
   }
 
 
@@ -94,13 +97,47 @@ export class EditRiskByEvaluationComponent implements OnInit {
     });
   }
 
+  initMenuName() {
+    this.contentHeader = {
+      headerTitle: 'Evaluación de riesgos',
+      actionButton: false,
+      breadcrumb: {
+        type: '',
+        links: [
+          {
+            name: 'EVALUACIÓN',
+            isLink: false,
+            link: '#'
+          },
+          {
+            name: 'Riesgos',
+            isLink: false
+          },
+        ]
+      }
+    }
+
+  }
+
   obtain(id: string) {
     this.loading = true;
     this.riskService.obtain(id)
       .subscribe((res: any) => {
         this.risk = res.data;
-        this.setFormValue(this.risk); 
-        this.title = this.risk.activesInventoryName.toUpperCase();
+        console.log(res);
+
+        this.riskAssessmentId = this.risk.riskAssessmentId;
+        this.valuationCID = this.risk.valuationCID;
+
+        this.riskTreatmentId = this.risk.riskTreatmentId;
+        this.controlImplementationId = this.risk.controlImplementationId;
+
+        this.setFormValue(this.risk);
+
+        if (this.risk)
+          if (this.risk.activesInventoryName)
+            this.title = this.risk.activesInventoryNumber + ' - ' + this.risk.activesInventoryName.toUpperCase();
+
         this.loading = false;
       }, error => {
         this.loading = false;
@@ -136,17 +173,19 @@ export class EditRiskByEvaluationComponent implements OnInit {
     this.activesInventoryService.getAll()
       .subscribe((res: any) => {
         this.activesInventories = res.data;
-        this.initRisk();
+        this.route.paramMap.subscribe((params: ParamMap) => {
+          this.id = params.get('id').toString();
+          this.obtain(this.id);
+        });
       }, error => {
         ErrorManager.handleError(error);
       });
   }
-  
   getAllMenaces() {
     this.menaceService.getAll()
       .subscribe((res: any) => {
         this.menaces = res.data;
-        this.initRisk();
+        this.getAllVulnerabilities();
       }, error => {
         ErrorManager.handleError(error);
       });
@@ -155,7 +194,7 @@ export class EditRiskByEvaluationComponent implements OnInit {
     this.vulnerabilityService.getAll()
       .subscribe((res: any) => {
         this.vulnerabilities = res.data;
-        this.initRisk();
+        this.getAllActivesInventories();
       }, error => {
         ErrorManager.handleError(error);
       });
@@ -175,15 +214,11 @@ export class EditRiskByEvaluationComponent implements OnInit {
     this.loading2 = true;
     this.getFormValue();
 
-    // let evaluation = new Evaluation();
-    // evaluation._id = this.evaluationId;
-    // this.risk.evaluation = evaluation;
+
 
     this.riskService.update(this.risk)
       .subscribe(res => {
-        this.risk = res.data;
-        this.dialogRef.close({ updated: true });
-        this.loading2 = false;
+        this.risk = res.data; this.loading2 = false;
 
 
       }, error => {
@@ -193,8 +228,24 @@ export class EditRiskByEvaluationComponent implements OnInit {
 
   }
 
-  close() {
-    this.dialogRef.close();
+  navigateToBack() {
+    this.router.navigate(['/current-risks']);
+  }
+
+  childEvent(riskAssessmentId: number) {
+    console.log(riskAssessmentId);
+    this.riskAssessmentId = riskAssessmentId;
+
+  }
+
+  childEvent2(riskTreatmentId: number) {
+    console.log(riskTreatmentId);
+    this.riskTreatmentId = riskTreatmentId;
+  }
+
+  childEvent3(controlImplementationId: number) {
+    console.log(controlImplementationId);
+    this.controlImplementationId = controlImplementationId;
   }
 
 }

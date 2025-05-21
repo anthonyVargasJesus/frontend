@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Risk } from 'app/models/risk';
@@ -27,13 +27,16 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export class AddRiskByEvaluationComponent implements OnInit {
 
+
+
+  
   constructor(
     private riskService: RiskService,
     public router: Router,
     private _formBuilder: FormBuilder, private activesInventoryService: ActivesInventoryService,
     private menaceService: MenaceService,
     private vulnerabilityService: VulnerabilityService,
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
   ) { }
 
   activesInventories: ActivesInventory[] = [];
@@ -45,8 +48,8 @@ export class AddRiskByEvaluationComponent implements OnInit {
   loading2 = false;
   public form: FormGroup;
   public submitted = false;
-  public contentHeader: object; 
-  
+  public contentHeader: object;
+
   evaluationId: string;
 
   ngOnInit(): void {
@@ -55,37 +58,39 @@ export class AddRiskByEvaluationComponent implements OnInit {
       this.evaluationId = params.get('id').toString();
     });
 
-    this.initForm(); 
+    this.initForm();
     this.initMenuName();
     this.getAllActivesInventories();
     this.getAllMenaces();
     this.getAllVulnerabilities();
 
- 
+
 
     this.initRisk();
 
-  } 
-  
+  }
+
   initMenuName() {
+    
     this.contentHeader = {
-      headerTitle: 'Product',
+      headerTitle: 'Evaluación de riesgos',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'Product',
+            name: 'EVALUACIÓN',
             isLink: false,
             link: '#'
           },
           {
-            name: 'Product',
+            name: 'Riesgos',
             isLink: false
-          }
+          },
         ]
       }
     }
+
   }
 
   initForm() {
@@ -102,13 +107,10 @@ export class AddRiskByEvaluationComponent implements OnInit {
     this.risk = new Risk();
   }
 
-
-
   getAllActivesInventories() {
     this.activesInventoryService.getAll()
       .subscribe((res: any) => {
         this.activesInventories = res.data;
-        this.initRisk();
       }, error => {
         ErrorManager.handleError(error);
       });
@@ -119,7 +121,6 @@ export class AddRiskByEvaluationComponent implements OnInit {
     this.menaceService.getAll()
       .subscribe((res: any) => {
         this.menaces = res.data;
-        this.initRisk();
       }, error => {
         ErrorManager.handleError(error);
       });
@@ -130,12 +131,10 @@ export class AddRiskByEvaluationComponent implements OnInit {
     this.vulnerabilityService.getAll()
       .subscribe((res: any) => {
         this.vulnerabilities = res.data;
-        this.initRisk();
       }, error => {
         ErrorManager.handleError(error);
       });
   }
-
 
 
   getFormValue() {
@@ -149,10 +148,6 @@ export class AddRiskByEvaluationComponent implements OnInit {
     this.risk.menaceId = this.form.value.menaceId;
     this.risk.vulnerabilityId = this.form.value.vulnerabilityId;
   }
-
-
-
-
 
 
   get f() {
@@ -173,14 +168,36 @@ export class AddRiskByEvaluationComponent implements OnInit {
     this.riskService.insert(this.risk)
       .subscribe(res => {
         this.risk = res.data;
-        this.loading2 = false; 
+        this.loading2 = false;
         this.router.navigate(['/edit-risk', this.risk.riskId]);
       }, error => {
         this.loading2 = false;
         ErrorManager.handleError(error);
       });
 
-  } navigateToBack() {
-    this.router.navigate(['/risk']);
   }
+
+  changeActiveInventory(value: number) {
+
+    let activesInventoryNumber = '';
+    let activesInventoryName = '';
+
+    this.activesInventories.forEach((activesInventory) => {
+      if (activesInventory.activesInventoryId == value) {
+        activesInventoryNumber = activesInventory.number;
+        activesInventoryName = activesInventory.name;
+      }
+    }); 
+
+    this.form.patchValue({
+      activesInventoryNumber: activesInventoryNumber,
+      activesInventoryName: activesInventoryName,
+    });
+
+  }
+
+  navigateToBack() {
+    this.router.navigate(['/current-risks']);
+  }
+
 }
