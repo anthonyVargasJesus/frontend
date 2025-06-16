@@ -5,14 +5,13 @@ import Swal from 'sweetalert2';
 import { RiskTreatment } from 'app/models/risk-treatment';
 import { ErrorManager } from 'app/errors/error-manager';
 import { RiskTreatmentService } from 'app/services/risk-treatment.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RiskTreatmentMethodService } from 'app/services/risk-treatment-method.service';
 import { RiskTreatmentMethod } from 'app/models/risk-treatment-method';
 import { RiskLevelService } from 'app/services/risk-level.service';
 import { RiskLevel } from 'app/models/risk-level';
 import { ResidualRiskService } from 'app/services/residual-risk.service';
 import { ResidualRisk } from 'app/models/residual-risk';
-import { DialogData } from 'app/models/dialog-data'; import { Risk } from 'app/models/risk';
+
 
 @Component({
   selector: 'app-edit-risk-treatment-by-risk',
@@ -196,9 +195,6 @@ export class EditRiskTreatmentByRiskComponent implements OnInit {
 
 
   calculateRiskAssessmentValue(menaceLevelValue: any, vulnerabilityLevelValue: any) {
-
-    console.log('menaceLevelValue', menaceLevelValue);
-    console.log('vulnerabilityLevelValue', vulnerabilityLevelValue);
 
     let riskAssessmentValue: any = '';
 

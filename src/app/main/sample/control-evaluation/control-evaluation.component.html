@@ -77,89 +77,88 @@
                                             <ng-container *ngIf="group.controls.length > 0">
 
                                                 <ng-container *ngFor="let control of group.controls; let i = index">
-                  
-                                                                  <!-- init table child2         -->
-                                                            <ng-container *ngIf="control.controlEvaluations">
-                                                                <ng-container
-                                                                    *ngIf="control.controlEvaluations.length>0">
-            
-                                                                    <tr
-                                                                        *ngFor="let controlEvaluation of control.controlEvaluations; let i = index">
-                                                                        <td class="td-number-3">
-                                                                            <h5 style="font-size: 14px;margin-top: 3px;">
-                                                                                {{control.numerationToShow}}
-                                                                            </h5>
-                                                                        </td>
-                                                                        <td class="td-description">
-                                                                            <ng-container
-                                                                                *ngIf="controlEvaluation.control">
-                                                                                {{controlEvaluation.control.name}}
-                                                                            </ng-container>
-                                                                        </td>
-            
-                                                                        <td class="text-center">
-            
-            
-                                                                            <a container="body" placement="top"
-                                                                                title="Editar"
-                                                                                (click)="edit(controlEvaluation, control)"
-                                                                                class="mr-1">
-                                                                                <div class="icon-wrapper">
-                                                                                    <i
-                                                                                        class="feather font-medium-3 icon-edit-2"></i>
-                                                                                </div>
-                                                                            </a>
-            
-            
-                                                                        </td>
-            
-                                                                        <td class="td-state text-center">
-                                                                            <ng-container
-                                                                                *ngIf="controlEvaluation.maturityLevel">
-            
-            
-                                                                                <div class="text-center"
-                                                                                    style=" margin-left: 15px !important;width: 80px !important; height: 40px !important; padding-top: 8px !important;"
-                                                                                    [style.background-color]="controlEvaluation.maturityLevel.color">
-                                                                                    <h3 class="text-center"
-                                                                                        style=" opacity: 0.8; font-weight: 700;color: white;">
-                                                                                        {{controlEvaluation.maturityLevel.abbreviation}}
-                                                                                    </h3>
-                                                                                </div>
-            
-            
-                                                                            </ng-container>
-            
-                                                                        </td>
-            
-                                                                        <td class="td-little-description">
-                                                                            <ng-container
-                                                                                *ngIf="controlEvaluation.responsible">
-                                                                                {{controlEvaluation.responsible.name}}
-                                                                            </ng-container>
-                                                                        </td>
 
-                                                                        <td class="td-little-description">
-                                                                            <ng-container *ngIf="controlEvaluation.referenceDocumentations">
-                                                                                <ul style="margin-left: -20px !important;margin-right: -5px !important;">
-                                                                                    <li *ngFor="let doc of controlEvaluation.referenceDocumentations">
-                                                                                        {{doc.name}}
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </ng-container>
-                                                                        </td>
-    
-            
-                                                                        <td class="td-big-description">
-                                                                            {{controlEvaluation.justification}} </td>
-            
-            
-                                                                    </tr>
-            
-                                                                </ng-container>
-                                                            </ng-container>
-                                                            <!-- ending table child2         -->
-                                                         
+                                                    <!-- init table child2         -->
+                                                    <ng-container *ngIf="control.controlEvaluations">
+                                                        <ng-container *ngIf="control.controlEvaluations.length>0">
+
+                                                            <tr
+                                                                *ngFor="let controlEvaluation of control.controlEvaluations; let i = index">
+                                                                <td class="td-number-3">
+                                                                    <h5 style="font-size: 14px;margin-top: 3px;">
+                                                                        {{control.numerationToShow}}
+                                                                    </h5>
+                                                                </td>
+                                                                <td class="td-description">
+                                                                    <ng-container *ngIf="controlEvaluation.control">
+                                                                        {{controlEvaluation.control.name}}
+                                                                    </ng-container>
+                                                                </td>
+
+                                                                <td class="text-center">
+
+
+                                                                    <a container="body" placement="top" title="Editar"
+                                                                        (click)="edit(controlEvaluation, control)"
+                                                                        class="mr-1">
+                                                                        <div class="icon-wrapper">
+                                                                            <i
+                                                                                class="feather font-medium-3 icon-edit-2"></i>
+                                                                        </div>
+                                                                    </a>
+
+
+                                                                </td>
+
+                                                                <td class="td-state text-center">
+                                                                    <ng-container
+                                                                        *ngIf="controlEvaluation.maturityLevel">
+
+
+                                                                        <div class="text-center"
+                                                                            style=" margin-left: 15px !important;width: 80px !important; height: 40px !important; padding-top: 8px !important;"
+                                                                            [style.background-color]="controlEvaluation.maturityLevel.color">
+                                                                            <h3 class="text-center"
+                                                                                style=" opacity: 0.8; font-weight: 700;color: white;">
+                                                                                {{controlEvaluation.maturityLevel.abbreviation}}
+                                                                            </h3>
+                                                                        </div>
+
+
+                                                                    </ng-container>
+
+                                                                </td>
+
+                                                                <td class="td-little-description">
+                                                                    <ng-container *ngIf="controlEvaluation.responsible">
+                                                                        {{controlEvaluation.responsible.name}}
+                                                                    </ng-container>
+                                                                </td>
+
+                                                                <td class="td-little-description">
+                                                                    <ng-container
+                                                                        *ngIf="controlEvaluation.referenceDocumentations">
+                                                                        <ul
+                                                                            style="margin-left: -20px !important;margin-right: -5px !important;">
+                                                                            <li
+                                                                                *ngFor="let doc of controlEvaluation.referenceDocumentations">
+                                                                                {{doc.name}}
+                                                                            </li>
+                                                                        </ul>
+                                                                    </ng-container>
+                                                                </td>
+
+
+                                                                <td class="td-big-description">
+                                                                    {{controlEvaluation.justification}} </td>
+
+
+                                                            </tr>
+
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <!-- ending table child2         -->
+
 
                                                 </ng-container>
 

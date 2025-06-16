@@ -34,7 +34,7 @@ export class CoreMediaService {
    */
   private _init(): void {
     this._mediaObserver.media$.pipe(debounceTime(500), distinctUntilChanged()).subscribe((change: MediaChange) => {
-      // console.log('subscription: ', change);
+
       if (this.currentMediaQuery !== change.mqAlias) {
         this.currentMediaQuery = change.mqAlias;
         this.onMediaUpdate.next(change.mqAlias);

@@ -5,7 +5,8 @@ import { Location } from 'app/models/location';
 import { environment } from 'environments/environment';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import Swal from 'sweetalert2'
+import { NotificationService } from './notification.service';
+
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,7 @@ import Swal from 'sweetalert2'
 
 export class LocationService {
 
-    constructor(public http: HttpClient) { }
+    constructor(public http: HttpClient, private notificationService: NotificationService) { }
 
     getAll() {
         const url = environment.apiUrl + '/api/location/all';
@@ -34,7 +35,7 @@ export class LocationService {
         const url = environment.apiUrl + '/api/location';
         return this.http.post(url, location)
             .pipe(map((resp: any) => {
-                Swal.fire('Location registrado', 'El Location se registró satisfactoriamente', 'success');
+                 this.notificationService.showSuccess('¡Éxito!', 'El Location se registró satisfactoriamente');
                 return resp;
             }
             ))
@@ -48,7 +49,7 @@ export class LocationService {
         const url = environment.apiUrl + '/api/location/' + location.locationId;
         return this.http.put(url, location)
             .pipe(map((resp: any) => {
-                Swal.fire('Location actualizado', 'El Location se actualizó satisfactoriamente', 'success');
+                 this.notificationService.showSuccess('¡Éxito!', 'El Location se actualizó satisfactoriamente.');
                 return resp;
             }
             ))
@@ -62,7 +63,7 @@ export class LocationService {
         const url = environment.apiUrl + '/api/location/' + id;
         return this.http.delete(url)
             .pipe(map((resp: any) => {
-                Swal.fire('Location eliminado', 'El Location se eliminó satisfactoriamente', 'success');
+                 this.notificationService.showSuccess('¡Éxito!', 'El Location se eliminó satisfactoriamente.');
                 return resp;
             }
             ))

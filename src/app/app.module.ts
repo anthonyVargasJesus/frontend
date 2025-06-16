@@ -24,6 +24,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { SampleModule } from './main/sample/sample.module';
 
+
 const appRoutes: Routes = [
   {
     path: 'pages',

@@ -21,7 +21,8 @@ export class ControlImplementationService {
     }
 
     get(skip: number, pageSize: number, search: string) {
-        const url = environment.apiUrl + '/api/controlImplementation' + '?skip=' + skip + '&pageSize=' + pageSize + '&search=' + search;
+        const url = environment.apiUrl + '/api/controlImplementation' + '?skip=' + skip 
+        + '&pageSize=' + pageSize + '&search=' + search;
         return this.http.get(url);
     }
 

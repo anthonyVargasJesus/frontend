@@ -124,7 +124,6 @@ export class EditRiskByEvaluationComponent implements OnInit {
     this.riskService.obtain(id)
       .subscribe((res: any) => {
         this.risk = res.data;
-        console.log(res);
 
         this.riskAssessmentId = this.risk.riskAssessmentId;
         this.valuationCID = this.risk.valuationCID;
@@ -233,18 +232,15 @@ export class EditRiskByEvaluationComponent implements OnInit {
   }
 
   childEvent(riskAssessmentId: number) {
-    console.log(riskAssessmentId);
     this.riskAssessmentId = riskAssessmentId;
 
   }
 
   childEvent2(riskTreatmentId: number) {
-    console.log(riskTreatmentId);
     this.riskTreatmentId = riskTreatmentId;
   }
 
   childEvent3(controlImplementationId: number) {
-    console.log(controlImplementationId);
     this.controlImplementationId = controlImplementationId;
   }
 

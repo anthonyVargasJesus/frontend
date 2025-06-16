@@ -225,7 +225,8 @@ import { EditResidualRiskComponent } from './residual-risk/edit-residual-risk/ed
 import { EditRiskTreatmentByRiskComponent } from './risk-treatment-by-risk/edit-risk-treatment-by-risk/edit-risk-treatment-by-risk.component';
 import { AddControlImplementationByRiskComponent } from './control-implementation-by-risk/add-control-implementation-by-risk/add-control-implementation-by-risk.component';
 import { EditControlImplementationByRiskComponent } from './control-implementation-by-risk/edit-control-implementation-by-risk/edit-control-implementation-by-risk.component';
-
+import { ToastContentComponent } from './components/toast-content/toast-content.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 const routes = [
 
@@ -591,7 +592,7 @@ const routes = [
     CurrentPendingDocumentationComponent, PendingDocumentationComponent, LineChartComponent, AnnualSummaryComponent,
     ScopeByStandardComponent, AddScopeByStandardComponent, EditScopeByStandardComponent,
     PolicyByStandardComponent, AddPolicyByStandardComponent, EditPolicyComponent, ChildRequirementComponent, ChildRequirementEvaluationComponent,
-    RiskTreatmentMethodComponent, AddRiskTreatmentMethodComponent, EditRiskTreatmentMethodComponent, CurrentRiskEvaluationComponent
+    RiskTreatmentMethodComponent, AddRiskTreatmentMethodComponent, EditRiskTreatmentMethodComponent, CurrentRiskEvaluationComponent, ToastContentComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -615,7 +616,8 @@ const routes = [
     MatSelectModule,
     MatListModule,
     MatChipsModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSnackBarModule
   ],
   exports: [],
 

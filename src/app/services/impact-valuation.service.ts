@@ -5,7 +5,7 @@ import { ImpactValuation } from 'app/models/impact-valuation';
 import { environment } from 'environments/environment';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import Swal from 'sweetalert2'
+import { NotificationService } from './notification.service';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +13,7 @@ import Swal from 'sweetalert2'
 
 export class ImpactValuationService {
 
-    constructor(public http: HttpClient) { }
+    constructor(public http: HttpClient, private notificationService: NotificationService) { }
 
     getAll() {
         const url = environment.apiUrl + '/api/impactValuation/all';
@@ -34,7 +34,7 @@ export class ImpactValuationService {
         const url = environment.apiUrl + '/api/impactValuation';
         return this.http.post(url, impactValuation)
             .pipe(map((resp: any) => {
-                Swal.fire('Valoración registrada', 'La valoración se registró satisfactoriamente', 'success');
+                this.notificationService.showSuccess('¡Éxito!', 'La valoración se registró satisfactoriamente');
                 return resp;
             }
             ))
@@ -48,7 +48,7 @@ export class ImpactValuationService {
         const url = environment.apiUrl + '/api/impactValuation/' + impactValuation.impactValuationId;
         return this.http.put(url, impactValuation)
             .pipe(map((resp: any) => {
-                Swal.fire('Valoración actualizado', 'La valoración se actualizó satisfactoriamente', 'success');
+                this.notificationService.showSuccess('¡Éxito!', 'La valoración se actualizó satisfactoriamente');
                 return resp;
             }
             ))
@@ -62,7 +62,7 @@ export class ImpactValuationService {
         const url = environment.apiUrl + '/api/impactValuation/' + id;
         return this.http.delete(url)
             .pipe(map((resp: any) => {
-                Swal.fire('Valoración eliminado', 'La valoración se eliminó satisfactoriamente', 'success');
+                this.notificationService.showSuccess('¡Éxito!', 'La valoración se eliminó satisfactoriamente');
                 return resp;
             }
             ))

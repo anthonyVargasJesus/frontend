@@ -193,9 +193,6 @@ export class EditRiskAssessmentByRiskComponent implements OnInit {
 
   calculateRiskAssessmentValue(menaceLevelValue:any, vulnerabilityLevelValue:any) {
 
-    console.log('menaceLevelValue',menaceLevelValue);
-    console.log('vulnerabilityLevelValue',vulnerabilityLevelValue); 
-
     let riskAssessmentValue:any = '';
 
     if (!menaceLevelValue){
@@ -250,8 +247,7 @@ export class EditRiskAssessmentByRiskComponent implements OnInit {
   }
 
   setRiskLevelColor(riskLevelId: number) {
-    console.log('setRiskLevelColor',riskLevelId);
-
+ 
     this.color = '';
     this.riskLevels.forEach((item: RiskLevel) =>{
       if (item.riskLevelId == riskLevelId)

@@ -212,8 +212,6 @@ export class AddRiskTreatmentByRiskComponent implements OnInit {
 
   calculateRiskAssessmentValue(menaceLevelValue: any, vulnerabilityLevelValue: any) {
 
-    console.log('menaceLevelValue', menaceLevelValue);
-    console.log('vulnerabilityLevelValue', vulnerabilityLevelValue);
 
     let riskAssessmentValue: any = '';
 

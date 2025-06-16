@@ -8,8 +8,7 @@ export class BodyProvider {
                 selectedBodies.push(body.bodyId);
 
         });
-        console.log('p', plan)
-        return selectedBodies;
+
     }
 
     public static getTotalSelectedBodies(plan) {
