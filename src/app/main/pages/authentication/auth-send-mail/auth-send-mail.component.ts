@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { ErrorManager } from 'app/errors/error-manager';
 import { User } from 'app/models/user';
 import { redirectToLogin } from 'app/config/config';
+import { AuthService } from 'app/services/auth.service';
 
 
 @Component({
@@ -41,7 +42,8 @@ export class AuthSendMailComponent implements OnInit {
   loading = false;
 
   constructor(private _coreConfigService: CoreConfigService, private _formBuilder: FormBuilder, private _route: ActivatedRoute,
-    private loginService: LoginService, public router: Router, private route: ActivatedRoute) {
+    private loginService: LoginService, public router: Router, private route: ActivatedRoute,
+    private authSvc: AuthService,) {
     this._unsubscribeAll = new Subject();
 
     // Configure the layout
@@ -129,13 +131,13 @@ export class AuthSendMailComponent implements OnInit {
       }
 
       //this.authSvc.sendVerificationEmail();
-       this.loading = false;
-     Swal.fire('Correo enviado', 'Se envió un correo de verificación a ' + email , 'success');
+      this.loading = false;
+      Swal.fire('Correo enviado', 'Se envió un correo de verificación a ' + email, 'success');
 
-      // this.router.navigate(['/login']);
+      this.router.navigate(['/pages/authentication/login-v2']);
     } catch (error) {
       this.loading = false;
-      console.log(error);
+
     }
   }
 }

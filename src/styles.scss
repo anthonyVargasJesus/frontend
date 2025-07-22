@@ -294,3 +294,49 @@
 .example-headers-align .mat-mdc-form-field + .mat-mdc-form-field {
   margin-left: 8px;
 }
+
+.div-table {
+  width: 100%;
+  font-size: 14px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.div-row {
+  display: flex;
+  border-bottom: 1px solid #dee2e6;
+  min-height: 40px;
+  align-items: center;
+}
+
+.div-cell {
+  padding: 8px 12px;
+  border-right: 1px solid #dee2e6;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+}
+
+.div-cell:last-child {
+  border-right: none;
+}
+
+.table-header {
+  font-weight: bold;
+  background-color: #f8f9fa;
+  color: #343a40;
+}
+
+.table-striped .div-row:nth-child(even):not(.table-header) {
+  background-color: #f8f9fa;
+}
+
+/* Column widths */
+.col-1 { flex: 0 0 10%; }
+.col-2 { flex: 0 0 25%; }
+.col-3 { flex: 0 0 10%; }
+.col-4 { flex: 0 0 5%; }
+.col-5 { flex: 0 0 10%; }
+.col-6 { flex: 0 0 15%; }
+.col-7 { flex: 0 0 15%; }
+.col-8 { flex: 0 0 10%; }

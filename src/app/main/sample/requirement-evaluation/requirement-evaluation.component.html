@@ -5,193 +5,89 @@
             <section class="users-list-wrapper">
                 <div class="card">
 
-                
+                    <div class="row mt-1 mb-0">
+                        <div class="col-md-6 col-12">
+                            <div class="d-flex justify-content-between align-items-center m-1">
+                                <h1 class="ml-2">xx</h1>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12 d-flex justify-content-start justify-content-md-end">
+
+                            <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pb-md-0">
+
+                                <div class="example-action-buttons mt-1">
+                                    <button style="font-family: Montserrat, Helvetica, Arial, serif !important;"
+                                        mat-button (click)="expandAll()">Expandir</button>
+                                    <button style="font-family: Montserrat, Helvetica, Arial, serif !important;"
+                                        mat-button (click)="collapseAll()">Colapsar</button>
+
+                                    <button style="font-family: Montserrat, Helvetica, Arial, serif !important;"
+                                        mat-button (click)="edit()">Edit</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr style="margin-top: -5px !important;">
+
+                    <div class="table-responsive"
+                        style="  font-family: 'Montserrat', Helvetica, Arial, serif !important;">
+
+                        <table class="table table-bordered" style="opacity: 1.0;width: auto; table-layout: fixed;">
+
+                            <thead>
+                                <tr>
+                                    <th class="text-center"
+                                        style="width: 130px !important;max-width: 130px !important;min-width: 130px !important;">CLÁUSULA</th>
+                                    <th style="width: 500px !important;max-width: 500px !important;min-width: 500px !important;">REQUISITO</th>
+                                    <th class="text-center" style="width: 70px !important;max-width: 70px !important;">
+                                    </th>
+                                    <th class="text-center"
+                                        style="width: 150px !important;max-width: 150px !important; padding-left: 0px; padding-right: 0px;">SITUACIÓN</th>
+                                    <th class="text-center"
+                                        style="width: 110px !important;max-width: 110px !important;padding-left: 0px; padding-right:0px ;">
+                                        AVANCE</th>
+                                    <th class="text-center"
+                                        style="padding-left: 4px !important; padding-right: 4px !important;width: 130px !important;max-width: 130px !important;">
+                                        CALIFICACIÓN</th>
+                                    <th style="width: 250px !important;max-width: 250px !important;">RESPONSABLE</th>
+                                    <th style="width: 350px !important;max-width: 350px !important;">DOCUMENTACIÓN DE
+                                        REFERENCIA</th>
+                                    <!--<th class="text-right"> ACCIONES</th>  -->
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <ng-container *ngFor="let requirement of requirements">
+                        <app-custom-requirement [standardId]="standardId" [evaluationId]="evaluationId"
+                            [requirement]="requirement"></app-custom-requirement>
+                    </ng-container>
+
+
+
+                    <!-- <div class="border" style="border-radius: 5px; padding-top: 20px;padding-left: -20px !important;">
+
                         <mat-accordion class="example-headers-align" multi
-                            style="font-family: Montserrat, Helvetica, Arial, serif !important; opacity: 0.8; margin: 15px;margin-top: 5px !important;">
+                            style="font-family: Montserrat, Helvetica, Arial, serif !important;; margin-left: 0px;">
 
-                            <mat-expansion-panel *ngFor="let requirement of requirements; let i = index"
-                                style="background-color: transparent !important;">
-                                <mat-expansion-panel-header>
-                                    <mat-panel-title
-                                        style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 800 !important;">
-                                        <h5>
-                                            {{requirement.numerationToShow}}. {{requirement.name}}
-
-                                        </h5>
-                                    </mat-panel-title>
-
-                                </mat-expansion-panel-header>
-
-                                <app-child-requirement-evaluation
-                                    [requirementEvaluations]="requirement.requirementEvaluations" (updateEvent)="updateEvent($event)" [standardId]="standardId" [evaluationId]="evaluationId" [panelClass]="panelClass"></app-child-requirement-evaluation>
-
-
-                                <mat-accordion class="example-headers-align" multi
-                                    style="font-family: Montserrat, Helvetica, Arial, serif !important;margin-top: -10px !important;">
-
-                                    <mat-expansion-panel class="border"
-                                        *ngFor="let child of requirement.children; let i = index"
-                                        style="background-color: transparent !important;">
-                                        <mat-expansion-panel-header>
-                                            <mat-panel-title
-                                                style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 600 !important;">
-                                                <h5>
-                                                    {{child.numerationToShow}}. {{child.name}}
-                                                </h5>
-                                            </mat-panel-title>
-
-                                        </mat-expansion-panel-header>
-
-                                        <app-child-requirement-evaluation
-                                        [requirementEvaluations]="child.requirementEvaluations" (updateEvent)="updateEvent($event)" [standardId]="standardId" [evaluationId]="evaluationId" [panelClass]="panelClass"></app-child-requirement-evaluation>
-    
-
-                                        <mat-accordion class="example-headers-align" multi
-                                            style="font-family: Montserrat, Helvetica, Arial, serif !important;margin-top: -10px !important;">
-
-                                            <mat-expansion-panel *ngFor="let child2 of child.children; let i = index"
-                                                style="background-color: transparent !important;">
-                                                <mat-expansion-panel-header>
-                                                    <mat-panel-title
-                                                        style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 500 !important;">
-
-                                                        <h5>
-                                                            {{child2.numerationToShow}}. {{child2.name}}
-
-                                                        </h5>
-
-                                                    </mat-panel-title>
-
-                                                </mat-expansion-panel-header>
-
-
-                                                <app-child-requirement-evaluation
-                                                [requirementEvaluations]="child2.requirementEvaluations" (updateEvent)="updateEvent($event)" [standardId]="standardId" [evaluationId]="evaluationId" [panelClass]="panelClass"></app-child-requirement-evaluation>
-
-                                                
-                                                <mat-accordion class="example-headers-align" multi
-                                                    style="font-family: Montserrat, Helvetica, Arial, serif !important;margin-top: -10px !important;">
-
-
-                                                    <mat-expansion-panel
-                                                        *ngFor="let child3 of child2.children; let i = index"
-                                                        style="background-color: transparent !important;">
-
-                                                        <mat-expansion-panel-header>
-                                                            <mat-panel-title
-                                                                style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 500 !important;">
-
-                                                                <h5>
-                                                                    {{child3.numerationToShow}}. {{child3.name}}
-
-                                                                </h5>
-
-                                                            </mat-panel-title>
-
-                                                        </mat-expansion-panel-header>
-
-                                                        <app-child-requirement-evaluation
-                                                        [requirementEvaluations]="child3.requirementEvaluations" (updateEvent)="updateEvent($event)" [standardId]="standardId" [evaluationId]="evaluationId" [panelClass]="panelClass"></app-child-requirement-evaluation>
-
-                                                        
-                                                        <mat-accordion class="example-headers-align" multi
-                                                            style="font-family: Montserrat, Helvetica, Arial, serif !important;margin-top: -10px !important;">
-
-                                                            <mat-expansion-panel
-                                                                *ngFor="let child4 of child3.children; let i = index"
-                                                                style="background-color: transparent !important;">
-
-                                                                <mat-expansion-panel-header>
-                                                                    <mat-panel-title
-                                                                        style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 500 !important;">
-
-                                                                        <h5>
-                                                                            {{child4.numerationToShow}}. {{child4.name}}
-
-                                                                        </h5>
-
-                                                                    </mat-panel-title>
-
-                                                                </mat-expansion-panel-header>
-
-                                                                <app-child-requirement-evaluation
-                                                                [requirementEvaluations]="child4.requirementEvaluations" (updateEvent)="updateEvent($event)" [standardId]="standardId" [evaluationId]="evaluationId" [panelClass]="panelClass"></app-child-requirement-evaluation>
-
-                                                                
-                                                                <br>
-
-                                                            </mat-expansion-panel>
-
-                                                        </mat-accordion>
-
-                                                        <br>
-
-                                                        <div class="text-right">
-                                                            <div
-                                                                style="display: flex; flex-direction: row-reverse;margin-right: -10px;">
-
-                                                                <a container="body" placement="top" class="mr-1"
-                                                                    title="Eliminar" (click)="delete(child3)">
-                                                                    <div class="icon-wrapper"
-                                                                        [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'">
-                                                                        <i class="feather font-medium-4"
-                                                                            data-feather='trash-2'></i>
-                                                                    </div>
-                                                                </a>
-
-                                                                <a container="body" placement="top" class="mr-1"
-                                                                    title="Agregar requisito"
-                                                                    (click)="addChild(child3.requirementId, child3.level+1)">
-                                                                    <div class="icon-wrapper"
-                                                                        [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'">
-                                                                        <i class="feather font-medium-4"
-                                                                            data-feather='plus'></i>
-                                                                    </div>
-                                                                </a>
-
-                                                                <a container="body" placement="top"
-                                                                    title="Editar requisito"
-                                                                    (click)="edit(child3.requirementId)" class="mr-1">
-                                                                    <div class="icon-wrapper">
-                                                                        <i class="feather font-medium-3 icon-edit-2"
-                                                                            [style]="coreConfig.layout.skin === 'dark'? 'color: #b4b7bd;': 'color: #6e6b7b;'"></i>
-                                                                    </div>
-                                                                </a>
-
-
-
-                                                            </div>
-                                                        </div>
-
-
-                                                    </mat-expansion-panel>
-
-                                                </mat-accordion>
-
-                                                <br>
-
-                                            </mat-expansion-panel>
-
-
-                                        </mat-accordion>
-
-                                        <!--  -->
-
-                                        <br>
-
-                                    </mat-expansion-panel>
-
-
-                                </mat-accordion>
-
-                                <br>
-
-                            </mat-expansion-panel>
-
+                            <app-custom-requirement [standardId]="standardId" [requirement]="requirement"
+                                [forceExpand]="forceExpand"
+                                *ngFor="let requirement of requirements; let i = index"></app-custom-requirement>
 
                         </mat-accordion>
-                
 
+                    </div> -->
 
                 </div>
             </section>

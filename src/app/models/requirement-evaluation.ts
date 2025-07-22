@@ -21,7 +21,11 @@ export class RequirementEvaluation {
         public maturityLevel?: MaturityLevel,
         public responsible?: Responsible,
         public referenceDocumentations?: ReferenceDocumentation[],
-        public arrayReferenceDocumentations?: Number[]
+        public arrayReferenceDocumentations?: Number[],
+        public state?: string,
+        public percentage?: number,
+        public auditorStatus?: number, // 1: Pendiente, 2: Aceptado, 3: Rechazado
+        public auditorStatusText?: string, // 1: Pendiente, 2: Aceptado, 3: Rechazado
     ) { }
 }
 

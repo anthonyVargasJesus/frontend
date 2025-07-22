@@ -1,0 +1,125 @@
+<div class="table-responsive" style="font-family: 'Montserrat', Helvetica, Arial, serif !important;">
+
+    <table class="table table-bordered" style="opacity: 1.0;width: auto; table-layout: fixed;">
+
+        <tbody>
+
+            <tr>
+                <td class="text-center" style="width: 130px !important;max-width: 130px !important;min-width: 130px !important;">
+                    {{ requirementEvaluation.requirement.numerationToShow }}
+                </td>
+
+                <td style="width: 500px !important;max-width: 500px !important;min-width: 500px !important;">
+                    {{requirementEvaluation.requirement.name}}
+                </td>
+
+                <td class="text-center" style="width: 70px !important;max-width: 70px !important;">
+
+                    <a container="body" placement="top" title="Evaluar requisito" (click)="edit(requirementEvaluation)">
+                        <div class="icon-wrapper">
+                            <mat-icon style="font-size: 25px;">edit_note</mat-icon>
+                        </div>
+                    </a>
+
+                </td>
+
+                <td class="text-center"
+                    style="width: 150px !important;max-width: 150px !important;padding-left: 0px; padding-right: 0px;">
+
+                    <!-- <div style="display: flex; flex-direction: column; align-items: center;">
+
+                        <mat-icon *ngIf="requirementEvaluation.state == 'Cumplido'" class="icon success"
+                            style="font-size: 25px;">check_circle</mat-icon>
+                        <mat-icon *ngIf="requirementEvaluation.state == 'No cumplido'" class="icon error"
+                            style="font-size: 25px;">cancel</mat-icon>
+                        <mat-icon *ngIf="requirementEvaluation.state == 'Pendiente'" class="icon warning"
+                            style="font-size: 25px;">lens</mat-icon>
+
+                        <span class="bold" style="white-space: nowrap; margin-top: 5px;"
+                            [class.success]="requirementEvaluation.state == 'Cumplido'"
+                            [class.error]="requirementEvaluation.state == 'No cumplido'"
+                            [class.warning]="requirementEvaluation.state == 'Pendiente'">
+                            {{requirementEvaluation.state}}
+                        </span>
+
+                    </div> -->
+
+
+                    <div class="status-badge" [ngStyle]="{
+       'color': getBadgeColor(requirementEvaluation.state),
+       'border-color': getBadgeColor(requirementEvaluation.state)
+     }">{{requirementEvaluation.state.toUpperCase()}}</div>
+
+
+                </td>
+
+
+                <td class="text-center"
+                    style="width: 110px !important;max-width: 110px !important;padding-left: 0px; padding-right:0px ;">
+                    <span *ngIf="requirementEvaluation.percentage>0" class="font-weight-bolder">
+                        {{requirementEvaluation.percentage}}%
+                    </span>
+                </td>
+
+                <td class="text-center" style="width: 130px !important;max-width: 130px !important;">
+                    <ng-container *ngIf="requirementEvaluation.maturityLevel">
+
+                        <div class="text-center"
+                            style="margin-left: -5px;width: 80px !important; height: 40px !important; padding-top: 8px !important;"
+                            [style.background-color]="requirementEvaluation.maturityLevel.color">
+                            <h3 class="text-center" style=" opacity: 0.8; font-weight: 700;color: white;">
+                                {{requirementEvaluation.maturityLevel.abbreviation}}
+                            </h3>
+                        </div>
+
+
+                    </ng-container>
+
+                </td>
+
+                <td style="width: 250px !important;max-width: 250px !important;">
+                    <ng-container *ngIf="requirementEvaluation.responsible">
+                        <span> {{requirementEvaluation.responsible.name}}</span>
+                    </ng-container>
+                </td>
+
+                <td style="width: 350px !important; max-width: 350px !important; vertical-align: middle;">
+                    <div style="display: table; height: 100%; width: 100%;">
+                        <div style="display: table-cell; vertical-align: middle;">
+                            <ul style="margin: 0;">
+                                <li *ngFor="let doc of requirementEvaluation.referenceDocumentations">
+                                    {{ doc.name }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+
+                <!--
+                <td class="text-right">
+
+                    <div style="display: flex; float: right !important;">
+
+                        <a container="body" placement="top" title="Evaluar requisito"
+                            (click)="edit(requirementEvaluation)" class="mr-1">
+                            <div class="icon-wrapper">
+                                <mat-icon style="font-size: 25px;">edit_note</mat-icon>
+                            </div>
+                        </a>
+                        <a container="body" placement="top" title="Adjuntar evidencia"
+                            (click)="edit(requirementEvaluation)" class="mr-1">
+                            <div class="icon-wrapper">
+                                <mat-icon (click)="edit(requirementEvaluation)"
+                                    style="font-size: 25px;">attach_file</mat-icon>
+                            </div>
+                        </a>
+
+                    </div>
+
+                </td> -->
+
+            </tr>
+
+        </tbody>
+    </table>
+</div>

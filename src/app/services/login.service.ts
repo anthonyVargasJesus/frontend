@@ -89,7 +89,33 @@ export class LoginService {
 
   }
 
+  loginFirebase(user: User) {
 
+    const url = environment.apiUrl + '/api/login';
+
+    let payload = {
+      "tokenFirebase": user.token,
+      "email": user.email,
+      "uid": user.uid,
+      // "user": {
+      //   "email": user.email,
+      // }
+    };
+
+    return this.http.post(url, payload)
+      .pipe(map((resp: any) => {
+
+        localStorage.setItem('tk', resp.data.token);
+        this.router.navigate(['/home']);
+        return true;
+      }
+
+      ))
+      .pipe(catchError((error) => {
+        return throwError(error);
+      }));
+
+  }
 
 
   logout() {

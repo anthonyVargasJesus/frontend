@@ -8,6 +8,8 @@ import { UserStateService } from 'app/services/user-state.service';
 import { UserState } from 'app/models/user-state';
 import { Standard } from 'app/models/standard';
 import { StandardService } from 'app/services/standard.service';
+import { AuthService } from 'app/services/auth.service';
+
 
 @Component({
   selector: 'app-add-user',
@@ -23,7 +25,8 @@ export class AddUserComponent implements OnInit {
     public router: Router,
     private _formBuilder: FormBuilder, 
     private userStateService: UserStateService,
-    private standardService: StandardService
+    private standardService: StandardService,
+    public authService: AuthService,
   ) { }
 
   userStates: UserState[] = [];
@@ -125,17 +128,45 @@ export class AddUserComponent implements OnInit {
     return this.form.controls;
   }
 
-  save() {
-
+  async save() {
+  
     this.submitted = true;
-    if (this.form.invalid)
+    if (this.form.invalid) 
       return;
-
+    
     this.loading2 = true;
     this.getFormValue();
 
+    this.loading2 = true;
+
+    try {
+
+      const teacher = await this.authService.register(this.user.email, this.user.email);
+   
+      if (teacher)
+        {
+          this.user.uid = teacher.uid;
+          this.insert();
+  
+        this.loading2 = false;
+        }
+        else {
+          this.loading2 = false;
+        }
+
+    } catch (error) {
+      this.loading2 = false;
+      ErrorManager.handleError(error);
+    }
+
+  }
+
+
+  insert() {
+      
     this.userService.insert(this.user)
       .subscribe(res => {
+        this.user = res.data;
         this.loading2 = false; 
         this.router.navigate(['/edit-user', res.data]);
       }, error => {
@@ -143,8 +174,13 @@ export class AddUserComponent implements OnInit {
         ErrorManager.handleError(error);
       });
 
-  } navigateToBack() {
+  }
+
+
+  
+  navigateToBack() {
     this.router.navigate(['/user']);
   }
+
 }
 

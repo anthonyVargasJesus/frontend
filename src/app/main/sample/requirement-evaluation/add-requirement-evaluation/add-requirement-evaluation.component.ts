@@ -65,22 +65,33 @@ export class AddRequirementEvaluationComponent implements OnInit {
   public currentSkin: string;
   private _unsubscribeAll: Subject<any>;
   private panelClass: string;
-  
-  ngOnInit(): void {
-    this.initForm();
 
+  requirementEvaluationId: string;
+
+
+  ngOnInit(): void {
+
+    this.requirementEvaluationId = this.generateNumericId();
+    console.log('requirementEvaluationId', this.requirementEvaluationId);
+    this.initForm();
     this.evaluationId = this.data['evaluationId'];
     this.requirementId = this.data['requirementId'];
     this.requirementName = this.data['requirementName'];
     this.numeration = this.data['numeration'];
     this.standardId = this.data['standardId'];
+
     this.getAllMaturityLevels();
     this.getAllResponsibles();
     this.getAllDocumentations();
     this.initRequirementEvaluation();
   }
 
-  
+  generateNumericId(): string {
+    const timestamp = Date.now().toString(); // milisegundos
+    const random = Math.floor(Math.random() * 1000000).toString().padStart(6, '0'); // 6 dígitos aleatorios
+    return timestamp + random;
+  }
+
   getTheme() {
     this._unsubscribeAll = new Subject();
     this._coreConfigService
@@ -171,7 +182,7 @@ export class AddRequirementEvaluationComponent implements OnInit {
     this.requirementEvaluation.standardId = Number(this.standardId);
     this.requirementEvaluation.requirementId = Number(this.requirementId);
     this.requirementEvaluation.value = this.selectedMaturityLevel.value;
-    
+
     let array = [];
     array = this.form.value.documentation;
 
@@ -185,7 +196,7 @@ export class AddRequirementEvaluationComponent implements OnInit {
     });
 
     this.requirementEvaluation.referenceDocumentations = referenceDocumentations;
-    
+
     this.requirementEvaluationService.insert(this.requirementEvaluation)
       .subscribe(res => {
         this.requirementEvaluation = res.data;
@@ -239,8 +250,8 @@ export class AddRequirementEvaluationComponent implements OnInit {
         if (data == null)
           return;
 
-         if (data.updated == true)
-           this.getAllResponsibles();
+        if (data.updated == true)
+          this.getAllResponsibles();
 
       });
     }

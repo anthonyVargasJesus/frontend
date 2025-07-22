@@ -11,6 +11,7 @@ import { User } from 'app/models/user';
 import Swal from 'sweetalert2';
 import Swiper, { Autoplay } from 'swiper';
 import SwiperCore, { Pagination } from "swiper/core";
+import { AuthService } from 'app/services/auth.service';
 
 SwiperCore.use([Autoplay, Pagination]);
 
@@ -47,7 +48,8 @@ export class AuthLoginV2Component implements OnInit {
     private _route: ActivatedRoute,
     private _router: Router,
     public loginService: LoginService,
-    public router: Router
+    public router: Router,
+    private authSvc: AuthService,
   ) {
     this._unsubscribeAll = new Subject();
 
@@ -93,18 +95,19 @@ export class AuthLoginV2Component implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
+
     // Login
     this.loading = true;
 
     // redirect to home page
 
-    this.loginService.login(this.loginForm.value.email, this.loginForm.value.password)
-      .subscribe(res => {
-        this.loading = false;
-      }, err => {
-        this.loading = false;
-        ErrorManager.handleError(err);
-      })
+
+    this.onLogin(this.loginForm.value.email, this.loginForm.value.password);
+
+    // setTimeout(() => {
+    //   this._router.navigate(['/']);
+    // }, 100);
+
 
 
   }
@@ -128,6 +131,50 @@ export class AuthLoginV2Component implements OnInit {
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       this.coreConfig = config;
     });
+  }
+
+  async onLogin(email, password) {
+
+    try {
+
+      const user: any = await this.authSvc.login(email, password);
+
+      if (user) {
+
+        if (!user.emailVerified || user.emailVerified == false) {
+          this.router.navigate(['/pages/authentication/send-mail', email]);
+        } else {
+
+          let myUser = new User();
+          myUser.email = email;
+          myUser.uid = user.uid;
+          myUser.password = password;
+          user.getIdToken().then((idToken) => {
+            myUser.token = idToken;
+            this.loginToBackEnd(myUser);
+          });
+        }
+
+      } else {
+        this.loading = false;
+      }
+
+    } catch (error) {
+      this.loading = false;
+      ErrorManager.handleError(error);
+    }
+
+  }
+
+  loginToBackEnd(myUser: User) {
+
+    this.loginService.loginFirebase(myUser)
+      .subscribe(res => {
+        this.loading = false;
+      }, err => {
+        this.loading = false;
+        ErrorManager.handleError(err);
+      })
   }
 
   ingresar(f: NgForm) {

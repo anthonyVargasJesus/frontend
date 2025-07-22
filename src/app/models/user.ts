@@ -34,6 +34,8 @@ export class User {
         public userStateId?: number,
         public documentNumber?: string,
         public standardId?: number,
+        public password?: string,
+        public ipAddress?: string,
     ) { }
 }
 

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 
 import { getResults, getSearchResults, INIT_PAGE, PAGE_SIZE } from 'app/config/config';
 import { LoginService } from 'app/services/login.service';
@@ -13,15 +13,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddRequirementEvaluationComponent } from './add-requirement-evaluation/add-requirement-evaluation.component';
 import { Requirement } from 'app/models/requirement';
 import { EditRequirementEvaluationComponent } from './edit-requirement-evaluation/edit-requirement-evaluation.component';
+import { MatAccordion } from '@angular/material/expansion';
 
 
 @Component({
   selector: 'app-requirement-evaluation',
   templateUrl: './requirement-evaluation.component.html',
-  styles: [
-  ]
+  styleUrls: ['./requirement-evaluation.component.scss']
 })
 export class RequirementEvaluationComponent implements OnInit {
+
+  @ViewChild(MatAccordion) accordion: MatAccordion;
 
   requirements: Requirement[] = [];
 
@@ -38,6 +40,9 @@ export class RequirementEvaluationComponent implements OnInit {
   evaluationId: number;
 
   coreConfig: any;
+
+   forceExpand: boolean = false;
+
 
   constructor(
     private requirementEvaluationService: RequirementEvaluationService,
@@ -144,20 +149,17 @@ export class RequirementEvaluationComponent implements OnInit {
 
   }
 
-  edit(requirementEvaluation: RequirementEvaluation) {
-    if (requirementEvaluation.requirementEvaluationId == 0)
-      this.add(requirementEvaluation.requirement);
-    else {
+  edit() {
 
       if (this.loginService.isAuthenticated()) {
         let dialogRef = this.dialog.open(EditRequirementEvaluationComponent, {
           height: '780px',
-        width: '780px',
+          width: '780px',
           data: {
-            _id: requirementEvaluation.requirementEvaluationId,
+            _id: 1,
             standardId: this.standardId,
-            requirementName: requirementEvaluation.requirement.name,
-            numeration: requirementEvaluation.requirement.numerationToShow,
+            requirementName: "requirementEvaluation.requirement.name",
+            numeration: "1",
           },
           autoFocus: false,
           panelClass: this.panelClass
@@ -172,7 +174,6 @@ export class RequirementEvaluationComponent implements OnInit {
         });
       }
 
-    }
 
 
   }
@@ -207,7 +208,18 @@ export class RequirementEvaluationComponent implements OnInit {
 
 
   updateEvent() {
-    this.get();
+    //this.get();
   }
+
+  expandAll() {
+    this.forceExpand = true;
+    this.accordion.openAll();
+  }
+
+  collapseAll() {
+    this.accordion.closeAll();
+  }
+
+  
 
 }

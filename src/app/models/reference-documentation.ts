@@ -11,5 +11,6 @@ export class ReferenceDocumentation {
         public evaluationId?: number,
         public companyId?: number,
         public documentation?: Documentation,
+        public url?: string,
     ) { }
 }

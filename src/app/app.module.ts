@@ -23,7 +23,9 @@ import { GlobalErrorHandler } from './GlobalErrorHandler';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { SampleModule } from './main/sample/sample.module';
-
+import { CustomComponentsModule } from './main/custom-components/custom-components.module';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from 'environments/environment';
 
 const appRoutes: Routes = [
   {
@@ -46,6 +48,7 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     HttpClientModule,
     RouterModule.forRoot(appRoutes, {
       scrollPositionRestoration: 'enabled', // Add options right here
@@ -67,6 +70,7 @@ const appRoutes: Routes = [
     // App modules
     LayoutModule,
     SampleModule,
+    CustomComponentsModule,
     //SecurityModule,
 
 
@@ -82,14 +86,14 @@ const appRoutes: Routes = [
     //   useClass: CacheInterceptor,
     //   multi: true,
     // },
-    {provide: LocationStrategy, useClass: HashLocationStrategy},
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: MAT_DATE_LOCALE, useValue: 'es-PE' },
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler
     }
-    
+
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

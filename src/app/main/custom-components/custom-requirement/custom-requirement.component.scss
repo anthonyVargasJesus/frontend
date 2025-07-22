@@ -1,0 +1,62 @@
+// .requirement-panel {
+//   background-color: transparent !important;
+//   //margin-top: 10px !important;
+//   margin-bottom: 0px;
+// }
+
+// .requirement-title {
+//   font-family: 'Montserrat', Helvetica, Arial, serif !important;
+// }
+
+// .requirement-divider {
+//   margin-top: -10px !important;
+// }
+
+// .desc-dark {
+//   color: #b4b7bd;
+// }
+
+// .desc-light {
+//   color: #6e6b7b;
+// }
+
+
+
+// ::ng-deep mat-expansion-panel {
+//   box-shadow: none !important; // Quitar sombra
+//   border: 1px solid #ddd !important; // Borde claro
+//   border-radius: 6px;
+// }
+
+// ::ng-deep mat-expansion-panel.mat-elevation-z1 {
+//   box-shadow: none !important; // Quitar sombra por clase
+// }
+
+// ::ng-deep .mat-expansion-panel {
+//   box-shadow: none !important; // Reforzar
+// }
+
+// ::ng-deep .mat-expansion-panel:not([class*='mat-elevation-z']) {
+//   border: 0px solid #ddd !important;
+// }
+
+// .mat-expansion-panel::after,
+// .mat-expansion-panel.mat-expanded::after,
+// .mat-expansion-panel:not(.mat-expanded)::after {
+//   height: 0 !important;
+//   display: none !important;
+//   content: none !important;
+//   border: none !important;
+// }
+
+// .mat-expansion-indicator {
+//   display: none !important;
+// }
+
+// ::ng-deep .mat-expansion-indicator {
+//   display: none !important;
+// }
+
+.bg-transparent {
+  background-color: transparent;
+}

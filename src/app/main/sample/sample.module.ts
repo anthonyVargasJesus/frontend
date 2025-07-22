@@ -227,6 +227,10 @@ import { AddControlImplementationByRiskComponent } from './control-implementatio
 import { EditControlImplementationByRiskComponent } from './control-implementation-by-risk/edit-control-implementation-by-risk/edit-control-implementation-by-risk.component';
 import { ToastContentComponent } from './components/toast-content/toast-content.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { CustomComponentsModule } from '../custom-components/custom-components.module';
+import { ReferenceDocumentationInStorageComponent } from './reference-documentation-in-storage/reference-documentation-in-storage.component';
+import { AddReferenceDocumentationInStorageComponent } from './reference-documentation-in-storage/add-reference-documentation-in-storage/add-reference-documentation-in-storage.component';
+import { AddFileToFirebaseComponent } from './reference-documentation-in-storage/add-file-to-firebase/add-file-to-firebase.component';
 
 const routes = [
 
@@ -592,7 +596,7 @@ const routes = [
     CurrentPendingDocumentationComponent, PendingDocumentationComponent, LineChartComponent, AnnualSummaryComponent,
     ScopeByStandardComponent, AddScopeByStandardComponent, EditScopeByStandardComponent,
     PolicyByStandardComponent, AddPolicyByStandardComponent, EditPolicyComponent, ChildRequirementComponent, ChildRequirementEvaluationComponent,
-    RiskTreatmentMethodComponent, AddRiskTreatmentMethodComponent, EditRiskTreatmentMethodComponent, CurrentRiskEvaluationComponent, ToastContentComponent
+    RiskTreatmentMethodComponent, AddRiskTreatmentMethodComponent, EditRiskTreatmentMethodComponent, CurrentRiskEvaluationComponent, ToastContentComponent, ReferenceDocumentationInStorageComponent, AddReferenceDocumentationInStorageComponent, AddFileToFirebaseComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -617,7 +621,8 @@ const routes = [
     MatListModule,
     MatChipsModule,
     MatAutocompleteModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    CustomComponentsModule
   ],
   exports: [],
 

@@ -6,7 +6,18 @@ export const environment = {
   production: false,
   hmr: false,
   apiUrl: 'http://localhost:5049',
+  firebaseConfig: {
+    apiKey: "AIzaSyAcUGgxppLoFbpmIOnnKDICqJzKoepSEP8",
+    authDomain: "qualifier-a9a5c.firebaseapp.com",
+    projectId: "qualifier-a9a5c",
+    storageBucket: "qualifier-a9a5c.firebasestorage.app",
+    messagingSenderId: "962029148163",
+    appId: "1:962029148163:web:75e65f7e694f95bb951636"
+  },
 };
+
+
+
 
 /*
  * For easier debugging in development mode, you can import the following file

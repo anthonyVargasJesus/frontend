@@ -1,0 +1,104 @@
+<div class="card" style="margin-top: -25px;margin-left: -25px;margin-right: -24px;margin-bottom: -25px;height:565px;">
+
+
+    <div class="card-body">
+
+        <ng-container *ngIf="loading">
+
+            <div mat-dialog-title class="d-flex align-items-center mb-3" style="margin-top:-5px;">
+                <h4>...</h4>
+                <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto"
+                    style="margin-right: -16px;">
+
+                    <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
+                        <div class="icon-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-x">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </div>
+                    </button>
+
+                </div>
+            </div>
+
+            <div class="container text-center mt-5">
+
+                <div class="spinner-grow text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+
+            </div>
+
+        </ng-container>
+
+        <ng-container *ngIf="!loading">
+            <div mat-dialog-title class="d-flex align-items-center mb-3" style="margin-top:-5px;">
+                <h4>AGREGAR ARCHIVO</h4>
+                <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto"
+                    style="margin-right: -16px;">
+
+                    <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
+                        <div class="icon-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-x">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12 ">
+
+                    <div align="center"
+                        style="border: 1px solid #404656;border-radius: 5px;background-color: transparent;margin-top: -20px;">
+                        <img *ngIf="!imagenTemp" [src]="fake | imagen" class="w150 text-center">
+                        <img *ngIf="imagenTemp" [src]="imagenTemp" class="w150 text-center">
+                    </div>
+                    <br>
+                    <input #inputFile class="form-control text-center" (change)="seleccionImage($event.target.files[0])"
+                        type="file">
+
+                    <br>
+                    <br>
+                    <div class="col-md-12 text-center">
+                        <button *ngIf="!loading2" (click)="subirImagen()" [disabled]="!imagenTemp" rippleeffect=""
+                            class="btn btn-primary waves-effect waves-float waves-light mr-1" style="width: 180px;">
+
+                            SUBIR IMAGEN
+                        </button>
+                        <button *ngIf="loading2" data-v-aa799a9e="" type="button" disabled="disabled"
+                            class="btn btn-outline-primary disabled mr-1" style="width: 180px;">
+                            <span data-v-aa799a9e="" aria-hidden="true" class="spinner-border spinner-border-sm">
+                                <!---->
+                            </span> Subiendo...
+                        </button>
+
+                        <!-- <button type="submit" rippleeffect="" (click)="subirImagen()"  [disabled]="!imagenTemp" class="btn btn-primary mr-1 waves-effect waves-float waves-light" >SUBIR IMAGEN</button> -->
+                        <button type="reset" rippleeffect="" class="btn btn-outline-secondary waves-effect"
+                            (click)="close()">CANCELAR</button>
+                    </div>
+                    <br>
+
+                </div>
+
+
+
+            </div>
+        </ng-container>
+    </div>
+
+</div>
