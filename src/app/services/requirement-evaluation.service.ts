@@ -16,8 +16,8 @@ export class RequirementEvaluationService {
     constructor(public http: HttpClient) { }
 
     
-    getAllByStandardIdByEvaluationId(standardId: number, evaluationId: number) {
-        const url = environment.apiUrl + '/api/requirementEvaluation/all?' + 'standardId=' + standardId + '&evaluationId=' + evaluationId;
+    getAllByStandardIdByEvaluationId(standardId: number, evaluationId: number, search: string) {
+        const url = environment.apiUrl + '/api/requirementEvaluation/all?' + 'standardId=' + standardId + '&evaluationId=' + evaluationId+ '&search=' + search;
         return this.http.get(url);
     }
 

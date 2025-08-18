@@ -9,7 +9,7 @@ import { User } from '../models/user';
 import Swal from 'sweetalert2'
 import { LoginModel } from 'app/models/login-model';
 import { environment } from 'environments/environment';
-import { redirectToLogin } from 'app/config/config';
+import { CODE_CURRENT_STANDARD_MODULE, CODE_GAP_MODULE, CODE_SECURITY_MODULE, redirectToLogin } from 'app/config/config';
 
 
 @Injectable({
@@ -77,7 +77,7 @@ export class LoginService {
 
         localStorage.setItem('tk', resp.data.token);
 
-          this.router.navigate(['/evaluation-process-list']);
+        this.router.navigate(['/evaluation-process-list']);
 
         return true;
       }
@@ -106,7 +106,7 @@ export class LoginService {
       .pipe(map((resp: any) => {
 
         localStorage.setItem('tk', resp.data.token);
-        this.router.navigate(['/home']);
+        this.redirectByRole();
         return true;
       }
 
@@ -115,6 +115,34 @@ export class LoginService {
         return throwError(error);
       }));
 
+  }
+
+  redirectByRole(): void {
+
+    // 2. Decodifica token
+    const user = this.getCurrentUser();
+    console.log(user);
+
+    if (!user || typeof user.rls !== 'string')
+      this.router.navigate(['/pages/miscellaneous/not-authorized']);
+
+    let roles: string[] = [];
+
+    try {
+      roles = JSON.parse(user.rls);
+    } catch (e) {
+      this.router.navigate(['/pages/miscellaneous/not-authorized']);
+    }
+
+    // Orden de prioridad
+    if (roles.includes(CODE_CURRENT_STANDARD_MODULE))
+      this.router.navigate(['/current-standard/home']);
+    else if (roles.includes(CODE_SECURITY_MODULE))
+      this.router.navigate(['/security/security-home']);
+        else if (roles.includes(CODE_GAP_MODULE))
+      this.router.navigate(['/gap/gap-home']);
+    else
+      this.router.navigate(['/pages/miscellaneous/not-authorized']);
   }
 
 

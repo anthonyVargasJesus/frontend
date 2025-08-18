@@ -23,7 +23,6 @@ export class UserComponent implements OnInit {
 
 
   users: User[] = [];
-  selectedRow = 0;
   page = 1;
   skip = 0;
   pageSize;
@@ -142,11 +141,11 @@ export class UserComponent implements OnInit {
       this.next = false;
   }
   add() {
-    this.router.navigate(['/add-user']);
+    this.router.navigate(['/mantto/add-user']);
   }
 
   edit(id: String) {
-    this.router.navigate(['/edit-user', id]);
+    this.router.navigate(['/mantto/edit-user', id]);
   }
 
   delete(user: User) {

@@ -1,0 +1,140 @@
+  <div class="row mt-0 mb-0 pt-1 pb-1">
+                       
+                        <div class="col-md-12 col-12 d-flex justify-content-start justify-content-md-end">
+
+                            <div class="d-flex align-items-center justify-content-end pb-1 pb-md-0">
+                                <label class="d-flex align-items-center ml-1 ml-md-0 mr-1">Buscar
+
+                                    <input #input name="searchValue" (keydown)="onKeydown($event, input.value)"
+                                        [(ngModel)]="searchText" name="search" type="search"
+                                        class="form-control ml-25 ng-pristine ng-valid ng-touched"
+                                        style="margin-left: 10px !important;">
+
+                                </label>
+                                <button *ngIf="!loading" (click)="search(input.value)" rippleeffect=""
+                                    class="btn btn-primary waves-effect waves-float waves-light">
+                                    <i data-feather='search'></i>
+                                </button>
+
+                                <button *ngIf="loading" data-v-aa799a9e="" type="button" disabled="disabled"
+                                    class="btn btn-primary disabled">
+                                    <span data-v-aa799a9e="" aria-hidden="True"
+                                        class="spinner-border spinner-border-sm">
+                                        <!---->
+                                    </span><span data-v-aa799a9e="" class="sr-only">Loading...</span>
+                                </button>
+
+                                <button (click)="add()" rippleeffect="" title="Agregar un nuevo archivo"
+                                    class="btn btn-danger ml-1 waves-effect waves-float waves-light"
+                                    style="float: right!important;margin-right: 0px;margin-top:0px;">
+                                    <i data-feather='plus'></i>
+                                </button>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+<div class="content-wrapper">
+    <div class="content-body">
+
+        <section id="home-page">
+            <section class="users-list-wrapper">
+
+                <div class="table-responsive">
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ARCHIVO</th>
+                                <th>TIPO DE DOCUMENTO</th>
+                                <th class="td-header-date text-center">
+
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+
+                            <ng-container *ngIf="loading">
+                                <tr>
+                                    <td colspan="3">
+                                        <div class="container text-center mt-5">
+
+                                            <div class="spinner-grow text-primary" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                            <div class="spinner-grow text-primary" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                            <div class="spinner-grow text-primary" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+
+                                        </div>
+                                    </td>
+
+                            </ng-container>
+                            <ng-container *ngIf="!loading">
+
+                                <ng-container *ngIf="referenceDocumentations.length == 0">
+                                    <tr>
+                                        <td colspan="3">
+                                            <div class="text-center mt-2 mb-2">
+                                                <div class="empty-row ng-star-inserted">No hay evidencias registradas
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+
+                                <tr *ngFor="let referenceDocumentation of referenceDocumentations; let i = index">
+
+                                    <td>
+                                        <a [href]="referenceDocumentation.url" target="_blank" rel="noopener" download
+                                             title="Descargar el archivo">
+                                            {{ referenceDocumentation.name }}
+                                        </a>
+
+
+                                    </td>
+                                    <td>
+                                        <ng-container *ngIf="referenceDocumentation.documentation">
+                                            {{ referenceDocumentation.documentation.name}}
+                                        </ng-container>
+                                    </td>
+
+                                    <td class="td-date text-center">
+                                        <div style="display: flex; flex-direction: row-reverse;">
+
+
+                                            <a *ngIf="!referenceDocumentation.isDeleted"
+                                                (click)="delete(referenceDocumentation)" container="body"
+                                                placement="top" class="mr-1" title="Eliminar el archivo">
+                                                <div class="icon-wrapper">
+                                                    <i class="feather font-medium-4" data-feather='trash-2'></i>
+                                                </div>
+                                            </a>
+                                            <a container="body" placement="top" title="Editar el archivo"
+                                                (click)="edit(referenceDocumentation)" class="mr-1">
+                                                <div class="icon-wrapper">
+                                                    <i class="feather font-medium-3 icon-edit-2"></i>
+                                                </div>
+                                            </a>
+
+
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+        </section>
+
+    </div>
+</div>

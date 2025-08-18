@@ -2,10 +2,10 @@
   <div class="auth-inner row m-0">
     <!-- Brand logo-->
    
-    <a class="brand-logo" href="javascript:void(0);">
+    <!-- <a class="brand-logo" href="javascript:void(0);">
       <img src="{{ coreConfig.app.appLogoImage }}" alt="brand-logo" height="28" />
       <h2 class="brand-text text-primary ml-1">Vuexy</h2>
-    </a>
+    </a> -->
 
     <!-- /Brand logo-->
     <!-- Left Text-->
@@ -33,7 +33,11 @@
 
         <div style="width: 100%;">
           
-        <img src="assets/images/logo/isologo.svg"  alt="brand-logo"  style="height:100%;width: 80%;  display: block;margin-left: auto;
+        <img [src]="
+            coreConfig.layout.skin === 'dark'
+              ? 'assets/images/logo/logo-eagle-sgsi-dark.png'
+              : 'assets/images/logo/logo-eagle-sgsi.png'"
+               alt="brand-logo"  style="height:100%;width: 100%;  display: block;margin-left: auto;
          margin-right: auto;"/>
 
         
@@ -42,7 +46,7 @@
         <br>
         <br>
 
-        <h2 class="card-title font-weight-bold mb-1">¡Bienvenido a ISO - Manager! 👋</h2>
+        <h2 class="card-title font-weight-bold mb-1">¡Bienvenido a Eagle SGSI! 👋</h2>
         <p class="card-text mb-2">Inicia sesión en tu cuenta</p>
      
         <ngb-alert [type]="'danger'" [dismissible]="false" *ngIf="error">

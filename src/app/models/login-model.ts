@@ -15,7 +15,7 @@ export class LoginModel {
         public tk?: string,
         public tr?: number,
         public pst?: string,
-        public rls?: Role[],
+        public rls?: string,
         public isd?: boolean,
         public cr?: string,
         public cmy?: string,

@@ -16,5 +16,6 @@ export class Requirement {
         public numerationToShow?: string,
         public value?: number,
         public letter?: string,
+        public breadcrumbToShow?: string,
     ) { }
 }

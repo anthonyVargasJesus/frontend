@@ -37,7 +37,7 @@ export class HeaderUserComponent implements OnInit {
   }
 
   navigateToBack() {
-    this.router.navigate(['/user']);
+    this.router.navigate(['/mantto/user']);
   }
   
 }

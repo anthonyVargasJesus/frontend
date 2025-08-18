@@ -77,7 +77,7 @@ export class ControlTypeComponent implements OnInit {
 
   initMenuName() {
     this.contentHeader = {
-      headerTitle: 'ControlType',
+      headerTitle: 'Tipos de control',
       actionButton: false,
       breadcrumb: {
         type: '',
@@ -88,7 +88,7 @@ export class ControlTypeComponent implements OnInit {
             link: '#'
           },
           {
-            name: 'ControlType',
+            name: 'Tipos de control',
             isLink: false
           }
         ]
@@ -188,7 +188,7 @@ export class ControlTypeComponent implements OnInit {
   delete(controlType: ControlType) {
 
     let text: string;
-    text = '¿Esta seguro de eliminar la controlType ' + controlType.name + '?';
+    text = '¿Esta seguro de eliminar el tipo de control ' + controlType.name + '?';
 
     Swal.fire({
       title: 'Confirmación',

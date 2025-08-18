@@ -179,7 +179,7 @@ export class AddUserComponent implements OnInit {
 
   
   navigateToBack() {
-    this.router.navigate(['/user']);
+    this.router.navigate(['/mantto/user']);
   }
 
 }

@@ -15,10 +15,8 @@ export class ReferenceDocumentationService {
 
     constructor(public http: HttpClient) { }
 
-
-
     getByrequirementEvaluationId(skip: number, pageSize: number, requirementEvaluationId: number, search: string) {
-        const url = environment.apiUrl + '/api/referenceDocumentation/requirementEvaluation' + '?skip=' + skip + '&pageSize=' + pageSize + '&requirementEvaluationId=' + requirementEvaluationId + '&search=' + search;
+        const url = environment.apiUrl + '/api/referenceDocumentation' + '?skip=' + skip + '&pageSize=' + pageSize + '&requirementEvaluationId=' + requirementEvaluationId + '&search=' + search;
         return this.http.get(url);
     }
 

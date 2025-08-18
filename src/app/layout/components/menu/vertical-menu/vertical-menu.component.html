@@ -3,33 +3,35 @@
   <ul class="nav navbar-nav flex-row">
     <li class="nav-item mr-auto">
       <!-- App Branding -->
-      <a class="navbar-brand" [routerLink]="['/']">
+   <a class="navbar-brand" [routerLink]="['/']">
         <span class="brand-logo">
-          <!-- <img src="assets/images/logo/CERSI-Logo Vertical-left.png" alt="brand-logo" /> -->
+          <img [src]="
+            coreConfig.layout.skin === 'dark'
+              ? 'assets/images/logo/logo-eagle-sgsi-dark.png'
+              : 'assets/images/logo/logo-eagle-sgsi.png'" alt="brand-logo" style="margin-left: 1px;"/>
         </span>
-        <!-- <h2 class="brand-text mb-0">fdsfdsfds</h2> -->
-        <!-- <img src="assets/images/logo/logo.png" alt="brand-logo" height="40" /> -->
+        <h2 class="brand-text" [ngClass]="coreConfig.layout.skin === 'dark' ? 'text-secondary' : 'text-primary'" >Eagle SGSI</h2>
      
-          <img src="assets/images/logo/logo.png" alt="brand-logo" height="45" style="margin-left: 30px;" />
-        
       </a>
     </li>
 
     <!-- Menu Toggler -->
-    <li class="nav-item nav-toggle">
+        <li class="nav-item nav-toggle">
       <a class="nav-link modern-nav-toggle d-none d-xl-block pr-0" (click)="toggleSidebarCollapsible()">
-        <i
-          [ngClass]="isCollapsed === true ? 'icon-circle' : 'icon-disc'"
-          class="toggle-icon feather font-medium-4 collapse-toggle-icon text-primary"
-        ></i>
+        <i [ngClass]="isCollapsed === true ? 'icon-arrow-right' : 'icon-menu'" style="font-size: 30px !important;"
+          class="toggle-icon feather font-medium-4 collapse-toggle-icon text-primary">
+        </i>
+
       </a>
       <a class="nav-link modern-nav-toggle d-block d-xl-none pr-0" (click)="toggleSidebar()">
-        <i data-feather="x" class="font-medium-4 text-primary toggle-icon"></i>
+        <i data-feather="x" class="font-medium-4 toggle-icon text-primary" style="color: whitesmoke !important; font-size: 30px !important;"></i>
       </a>
     </li>
   </ul>
 </div>
 <!--/ Menu header -->
+
+<hr>
 
 <!-- Navbar shadow -->
 <div class="shadow-bottom" [ngClass]="{ 'd-block': isScrolled }"></div>

@@ -173,7 +173,7 @@ export class DocumentTypeComponent implements OnInit {
 
 
   edit(id: number) {
-    this.router.navigate(['/edit-document-type',id]);
+    this.router.navigate(['/current-standard/edit-document-type',id]);
   }
 
   delete(documentType: DocumentType) {

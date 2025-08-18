@@ -10,6 +10,11 @@ export const INIT_PAGE = 1;
 
 export const DEFAULT_WIDTH = 70;
 
+export const CODE_SECURITY_MODULE = 'SECURITY';
+export const CODE_CURRENT_STANDARD_MODULE = 'CURRENT_STANDARD';
+export const CODE_MANTTO_MODULE = 'MANTTO';
+export const CODE_GAP_MODULE = 'GAP';
+
 export function redirectToLogin(router: Router) {
   router.navigate(['/pages/authentication/login-v2']);
 }
