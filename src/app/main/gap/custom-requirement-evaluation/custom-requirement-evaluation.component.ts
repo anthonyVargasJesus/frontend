@@ -43,13 +43,11 @@ export class CustomRequirementEvaluationComponent implements OnInit {
     //console.log(this.isSearch)
   }
 
-
-
   add(requirement: Requirement) {
 
     if (this._loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(AddRequirementEvaluationComponent, {
-        height: '780px',
+        height: '790px',
         width: '780px',
         autoFocus: false,
         data: {
@@ -74,7 +72,6 @@ export class CustomRequirementEvaluationComponent implements OnInit {
 
   }
 
-
   edit(requirementEvaluation: RequirementEvaluation) {
 
     if (requirementEvaluation.requirementEvaluationId == 0)
@@ -83,7 +80,7 @@ export class CustomRequirementEvaluationComponent implements OnInit {
 
       if (this._loginService.isAuthenticated()) {
         let dialogRef = this.dialog.open(EditRequirementEvaluationComponent, {
-          height: '780px',
+          height: '790px',
           width: '780px',
           data: {
             _id: requirementEvaluation.requirementEvaluationId,
@@ -99,10 +96,10 @@ export class CustomRequirementEvaluationComponent implements OnInit {
           if (data == null)
             return;
 
-          // if (data.updated == true)
-          //   this.updateEvent.emit();
-
+          if (data.updated == true)
+            this.updateEvent.emit();
         });
+
       }
 
     }

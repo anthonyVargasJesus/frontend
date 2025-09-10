@@ -1,0 +1,68 @@
+<ng-container *ngIf="loading">
+
+
+    <div mat-dialog-title class="d-flex align-items-center" style="margin-top:-5px;">
+        <h4>...</h4>
+        <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto"
+            style="margin-top:-10px; margin-right:-16px;">
+
+            <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
+                <div class="icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-x">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+            </button>
+
+        </div>
+    </div>
+
+    <div class="container text-center mt-5">
+
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+
+    </div>
+
+</ng-container>
+
+<ng-container *ngIf="!loading">
+
+
+    <div mat-dialog-title class="d-flex align-items-center" style="margin-top:-5px;">
+        <h4>SELECCIONAR REQUERIMIENTO</h4>
+        <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto" style="margin-right: -16px;">
+
+            <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
+                <div class="icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-x">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+            </button>
+
+        </div>
+    </div>
+
+    <div class="card border" style="margin-top: -15px !important;">
+        <div class="card-body">
+           
+            <app-requirement-node [requirements]="requirements" (selectEvent)="select($event)" ></app-requirement-node>
+
+        </div>
+    </div>
+
+</ng-container>

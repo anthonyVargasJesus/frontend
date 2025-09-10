@@ -1,0 +1,138 @@
+<div class="content-wrapper">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <section id="home-page">
+      <section class="users-list-wrapper">
+
+
+        <div class="row">
+
+          <div class="col-md-6">
+
+            <div class="card">
+
+              <div class="card-header">
+                <div class="card-title">
+                  {{currentScope.name}}
+                </div>
+              </div>
+
+              <div class="card-body">
+                <!-- <div *ngIf="currentPolicy" class="card-text"> {{currentScope.name}}</div> -->
+                <div *ngIf="currentPolicy" class="card-text"> {{currentScope.description}}</div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="col-md-6">
+
+            
+            <div class="card">
+
+              <div class="card-header">
+                <div class="card-title">
+                  {{currentPolicy.name}}
+                </div>
+              </div>
+              
+              <div class="card-body">
+                <!-- <div *ngIf="currentPolicy" class="card-text"> {{currentPolicy.name}}</div> -->
+                <div *ngIf="currentPolicy" class="card-text"> {{currentPolicy.description}}</div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div *ngIf="evaluation" class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="text-center">
+                  <h1 class="text-center" style="margin-top: 5px;margin-bottom: 5px;"> {{evaluation.description}}  ({{evaluation.startDate | date: 'dd/MM/yyyy'}})</h1>
+                </div>
+                <hr> 
+                <div class="text-center">
+
+                  <button *ngIf="!loadingExcel" type="button" (click)="downloadExcel()" rippleeffect=""
+                    class="btn btn-success mr-1 waves-effect"
+                    style="width:220px;height: 40px; margin-left: 10px;">DESCARGAR
+                    EXCEL
+                  </button>
+
+                  <button *ngIf="loadingExcel" type="button" disabled="" rippleeffect=""
+                    class="btn btn-outline-primary waves-effect mr-1"
+                    style="width:220px;height: 40px; margin-left: 10px;">
+                    <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span>
+                    <span class="ml-25 align-middle">Descargando...</span>
+                  </button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+
+            <ul ngbNav #nav="ngbNav" style="margin-top: -10px !important;" class="nav nav-pills">
+
+
+              <li ngbNavItem [ngbNavItem]="3">
+
+                <a ngbNavLink class="d-flex align-items-center">
+                  <!-- <i data-feather="list" class="mr-sm-50"></i> -->
+                  <i data-feather='list' class="mr-sm-50"></i>
+                  <span class="d-none d-sm-block">REQUISITOS
+                  </span>
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="tab-pane active" id="account" aria-labelledby="account-tab" role="tabpanel">
+
+
+                    <app-dashboard *ngIf="standardId != ''" [standardId]="standardId" [evaluationId]="evaluationId"
+                      [standardName]="standardName"></app-dashboard>
+
+
+
+                  </div>
+                </ng-template>
+              </li>
+
+              <li ngbNavItem [ngbNavItem]="4">
+
+                <a ngbNavLink class="d-flex align-items-center"><i data-feather="users" class="mr-sm-50"></i><span
+                    class="d-none d-sm-block">CONTROLES</span></a>
+                <ng-template ngbNavContent>
+                  <div class="tab-pane active" id="account" aria-labelledby="account-tab" role="tabpanel">
+
+                    <app-control-dashboard *ngIf="standardId != ''" [standardId]="standardId"
+                      [evaluationId]="evaluationId" [standardName]="standardName"></app-control-dashboard>
+
+
+                  </div>
+                </ng-template>
+              </li>
+
+
+
+            </ul>
+
+            <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+
+          </div>
+        </div>
+
+
+      </section>
+    </section>
+
+  </div>
+</div>

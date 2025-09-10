@@ -49,13 +49,13 @@ export class CurrentRequirementEvaluationComponent implements OnInit {
       title = this.evaluation.description;
 
     this.contentHeader = {
-      headerTitle: 'Evaluación de requisito',
+      headerTitle: 'Evaluación de requisitos',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'EVALUACIÓN',
+            name: 'BRECHAS',
             isLink: false,
             link: '#'
           },

@@ -24,11 +24,15 @@ export class RequirementEvaluationComponent implements OnInit {
 
   requirements: Requirement[] = [];
 
+  legend = [];
+  maturityLegend = [];
+
   loading = false;
   public contentHeader: object;
   public currentSkin: string;
   private _unsubscribeAll: Subject<any>;
   private panelClass: string;
+
 
   @Input()
   standardId: number;
@@ -112,13 +116,12 @@ export class RequirementEvaluationComponent implements OnInit {
     else
       this.isSearch = false;
 
-    console.log('this.isSearch',this.isSearch);
-
     this.loading = true;
     this.requirementEvaluationService.getAllByStandardIdByEvaluationId(this.standardId, this.evaluationId, this.searchText)
       .subscribe((res: any) => {
-        this.requirements = res.data;
-        console.log(res);
+        this.requirements = res.requirements;
+        this.legend = res.legend;
+        this.maturityLegend = res.maturityLegend;
         this.results = getResults(this.requirements.length, 1);
         this.loading = false;
       }, error => {
@@ -154,5 +157,8 @@ export class RequirementEvaluationComponent implements OnInit {
   }
 
 
+  updateList(event: string) {
+      this.get();
+  }
 
 }

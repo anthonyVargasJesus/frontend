@@ -30,19 +30,43 @@ import { EditReferenceDocumentationInStorageComponent } from './reference-docume
 import { ReferenceDocumentationByRequirementEvaluationComponent } from './reference-documentation-by-requirement-evaluation/reference-documentation-by-requirement-evaluation.component';
 import { AddReferenceDocumentationComponent } from './reference-documentation-by-requirement-evaluation/add-reference-documentation/add-reference-documentation.component';
 import { AddFileToFirebaseComponent } from './reference-documentation-in-storage/add-file-to-firebase/add-file-to-firebase.component';
-import { EditFileToFirebaseComponent } from './reference-documentation-in-storage/edit-file-to-firebase/edit-file-to-firebase.component';
 import { EditReferenceDocumentationComponent } from './reference-documentation-by-requirement-evaluation/edit-reference-documentation/edit-reference-documentation.component';
+import { IndicatorsComponent } from './evaluation-process/indicators/indicators.component';
+import { Indicators2Component } from './evaluation-process/indicators2/indicators2.component';
+import { Indicators3Component } from './evaluation-process/indicators3/indicators3.component';
+import { Indicators4Component } from './evaluation-process/indicators4/indicators4.component';
+import { DashboardComponent } from './evaluation-process/dashboard/dashboard.component';
+import { ControlDashboardComponent } from './evaluation-process/control-dashboard/control-dashboard.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { HomeComponent } from './evaluation-process/resumen/home.component';
+import { RadarChartComponent } from './evaluation-process/radar-chart/radar-chart.component';
+import { HeaderChartComponent } from './evaluation-process/header-chart/header-chart.component';
+import { BreachByEvaluationComponent } from './breach-by-evaluation/breach-by-evaluation.component';
+import { AddBreachByEvaluationComponent } from './breach-by-evaluation/add-breach-by-evaluation/add-breach-by-evaluation.component';
+import { EditBreachByEvaluationComponent } from './breach-by-evaluation/edit-breach-by-evaluation/edit-breach-by-evaluation.component';
+import { CurrentBreachsComponent } from './current-breachs/current-breachs.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { RequirementNodeComponent } from './requirement-node/requirement-node.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { PopupRequirementsComponent } from './popup-requirements/popup-requirements.component';
+import { PopupControlsComponent } from './popup-controls/popup-controls.component';
+import { ControlNodeComponent } from './control-node/control-node.component';
 
 @NgModule({
   declarations: [
-        ControlEvaluationComponent, CurrentRequirementEvaluationComponent, CurrentControlEvaluationComponent,CustomRequirementEvaluationComponent, CustomRequirementComponent,
-        RequirementEvaluationComponent, AddRequirementEvaluationComponent,AddControlEvaluationComponent, EditControlEvaluationComponent,EditRequirementEvaluationComponent, GapHomeComponent,
+        ControlEvaluationComponent, CurrentRequirementEvaluationComponent, CurrentControlEvaluationComponent,
+        CustomRequirementEvaluationComponent, CustomRequirementComponent,
+        RequirementEvaluationComponent, AddRequirementEvaluationComponent,AddControlEvaluationComponent, 
+        EditControlEvaluationComponent,EditRequirementEvaluationComponent, GapHomeComponent,
         ReferenceDocumentationInStorageComponent,
-        AddReferenceDocumentationInStorageComponent, AddFileToFirebaseComponent, EditFileToFirebaseComponent, 
-        EditReferenceDocumentationInStorageComponent,
-        ReferenceDocumentationByRequirementEvaluationComponent,
-        AddReferenceDocumentationComponent,
-        EditReferenceDocumentationComponent,
+        AddReferenceDocumentationInStorageComponent, AddFileToFirebaseComponent, 
+        EditReferenceDocumentationInStorageComponent, ReferenceDocumentationByRequirementEvaluationComponent,
+        AddReferenceDocumentationComponent,EditReferenceDocumentationComponent,
+        IndicatorsComponent, Indicators2Component, Indicators3Component, 
+        Indicators4Component,DashboardComponent, ControlDashboardComponent,
+        HomeComponent,
+        RadarChartComponent,
+        HeaderChartComponent, BreachByEvaluationComponent,AddBreachByEvaluationComponent, EditBreachByEvaluationComponent, CurrentBreachsComponent, RequirementNodeComponent, PopupRequirementsComponent, PopupControlsComponent, ControlNodeComponent
   ],
   imports: [
     CommonModule,
@@ -59,6 +83,9 @@ import { EditReferenceDocumentationComponent } from './reference-documentation-b
     MatSlideToggleModule,
     MatIconModule,
     NgbModule,
+    NgxChartsModule,
+    MatRadioModule,
+    MatExpansionModule
   ]
 })
 

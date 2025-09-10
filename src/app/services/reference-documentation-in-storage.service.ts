@@ -80,7 +80,7 @@ export class ReferenceDocumentationInStorageService {
       collection.push(referenceDocumentation);
       this.save(collection);
 
-      Swal.fire('ReferenceDocumentation registrado', 'El ReferenceDocumentation se registró satisfactoriamente', 'success');
+      Swal.fire('Evidencia registrada', 'La evidencia se registró satisfactoriamente', 'success');
       return of(referenceDocumentation);
     } catch (error) {
       ErrorManager.handleError(error);
@@ -103,7 +103,7 @@ export class ReferenceDocumentationInStorageService {
       collection[index] = referenceDocumentation;
       this.save(collection);
 
-      Swal.fire('ReferenceDocumentation actualizado', 'El ReferenceDocumentation se actualizó satisfactoriamente', 'success');
+      Swal.fire('Evidencia actualizada', 'La evidencia se actualizó satisfactoriamente', 'success');
       return of(referenceDocumentation);
     } catch (error) {
       ErrorManager.handleError(error);
@@ -124,7 +124,7 @@ export class ReferenceDocumentationInStorageService {
       }
 
       this.save(newCollection);
-      Swal.fire('ReferenceDocumentation eliminado', 'El ReferenceDocumentation se eliminó satisfactoriamente', 'success');
+      Swal.fire('Evidencia eliminada', 'La evidencia se eliminó satisfactoriamente', 'success');
       return of(true);
     } catch (error) {
       ErrorManager.handleError(error);

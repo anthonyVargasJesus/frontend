@@ -1,12 +1,12 @@
 <div class="content-wrapper">
     <div class="content-body">
-      
+
         <section id="home-page">
             <section class="users-list-wrapper">
                 <div class="card">
 
                     <div class="row mt-0 mb-0 pt-1 pb-1">
-                       
+
                         <div class="col-md-12 col-12 d-flex justify-content-start justify-content-md-end">
 
                             <div class="d-flex align-items-center justify-content-end pb-1 pb-md-0">
@@ -97,12 +97,17 @@
                                             *ngFor="let referenceDocumentation of referenceDocumentations; let i = index">
 
                                             <td>
-                                                <a [href]="referenceDocumentation.url" target="_blank" rel="noopener"
-                                                    download title="Descargar el archivo">
+
+                                                <ng-container *ngIf="referenceDocumentation.url && referenceDocumentation.url.trim() !== ''; else plainText">
+                                                    <a [href]="referenceDocumentation.url" download target="_blank" rel="noopener"
+                                                        title="Descargar evidencia">
+                                                        {{ referenceDocumentation.name }}
+                                                    </a>
+                                                </ng-container>
+                                                <ng-template #plainText>
                                                     {{ referenceDocumentation.name }}
-                                                </a>
-
-
+                                                </ng-template>
+                                              
                                             </td>
                                             <td>
                                                 <ng-container *ngIf="referenceDocumentation.documentation">
@@ -171,7 +176,7 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                           
+
                         </div>
                     </div>
                 </div>

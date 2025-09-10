@@ -8,6 +8,7 @@ import { Documentation } from 'app/models/documentation';
 import { DialogData } from 'app/models/dialog-data';
 import { AddFileToFirebaseComponent } from '../add-file-to-firebase/add-file-to-firebase.component';
 import { LoginService } from 'app/services/login.service';
+import { getReferenceDocsKey } from 'app/config/config';
 
 
 @Component({
@@ -36,12 +37,16 @@ export class EditReferenceDocumentationInStorageComponent implements OnInit {
   referenceDocumentationId: number;
   panelClass: string;
 
+  requirementEvaluationId: number;
+  controlEvaluationId: number;
+
   ngOnInit(): void {
     this.referenceDocumentationId = this.data['referenceDocumentationId'];
-    console.log('referenceDocumentation', this.referenceDocumentationId);
     this.initForm();
     this.standardId = this.data['standardId'];
     this.panelClass = this.data['panelClass'];
+    this.requirementEvaluationId = this.data['requirementEvaluationId'];
+    this.controlEvaluationId = this.data['controlEvaluationId'];
     this.getAllDocumentations();
 
     this.referenceDocumentation = this.obtain();
@@ -49,16 +54,14 @@ export class EditReferenceDocumentationInStorageComponent implements OnInit {
   }
 
   obtain(): ReferenceDocumentation | undefined {
-    const LS_KEY = 'referenceDocs';
+
+    let LS_KEY = getReferenceDocsKey(this.controlEvaluationId, this.requirementEvaluationId);
 
     // Obtener el array del localStorage
     const stored = localStorage.getItem(LS_KEY);
     const references: ReferenceDocumentation[] = stored
       ? JSON.parse(stored)
       : [];
-
-
-
 
     // Buscar y devolver el objeto con el ID indicado
     return references.find(ref => ref.referenceDocumentationId == this.referenceDocumentationId);
@@ -126,15 +129,10 @@ export class EditReferenceDocumentationInStorageComponent implements OnInit {
           this.form.patchValue({ url: data.url }, { emitEvent: true, onlySelf: false });
         }
 
-
       });
     }
 
-
-
   }
-
-
 
   get f() {
     return this.form.controls;
@@ -155,15 +153,14 @@ export class EditReferenceDocumentationInStorageComponent implements OnInit {
   }
 
   updateReferenceDocumentation(updatedDoc: ReferenceDocumentation) {
-    const LS_KEY = 'referenceDocs';
+
+    let LS_KEY = getReferenceDocsKey(this.controlEvaluationId, this.requirementEvaluationId);
 
     // 1. Obtener el array actual
     const stored = localStorage.getItem(LS_KEY);
     const references: ReferenceDocumentation[] = stored
       ? JSON.parse(stored)
       : [];
-
-    console.log('references', references);
 
     // 2. Buscar el índice del objeto a actualizar
     const index = references.findIndex(ref => ref.referenceDocumentationId == updatedDoc.referenceDocumentationId);
@@ -178,7 +175,6 @@ export class EditReferenceDocumentationInStorageComponent implements OnInit {
       console.warn('Documento no encontrado en localStorage para actualizar.');
     }
   }
-
 
   close() {
     this.dialogRef.close();

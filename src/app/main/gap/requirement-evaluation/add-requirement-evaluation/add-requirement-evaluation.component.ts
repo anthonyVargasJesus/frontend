@@ -13,6 +13,7 @@ import { DocumentationService } from 'app/services/documentation.service';
 import { Documentation } from 'app/models/documentation';
 import { ReferenceDocumentation } from 'app/models/reference-documentation';
 import { LoginService } from 'app/services/login.service';
+import { generateNumericId, getReferenceDocsKey } from 'app/config/config';
 // import { AddResponsibleComponent } from '../../responsible/add-responsible/add-responsible.component';
 // import { AddDocumentationComponent } from '../../documentation/add-documentation/add-documentation.component';
 
@@ -38,9 +39,8 @@ export class AddRequirementEvaluationComponent implements OnInit {
 
   maturityLevels: MaturityLevel[] = [];
   responsibles: Responsible[] = [];
-  documentations: Documentation[] = [];
 
-  requirementEvaluation: RequirementEvaluation;
+  requirementEvaluation: RequirementEvaluation = new RequirementEvaluation();
   loading = false;
   loading2 = false;
   public form: FormGroup;
@@ -53,12 +53,12 @@ export class AddRequirementEvaluationComponent implements OnInit {
   color: string;
   selectedMaturityLevel: MaturityLevel = new MaturityLevel();
   private panelClass: string;
-  requirementEvaluationId: string;
-
+  requirementEvaluationId: number;
+  evidencesIsUpdated: boolean = false;
 
   ngOnInit(): void {
 
-    this.requirementEvaluationId = this.generateNumericId();
+    this.requirementEvaluationId = generateNumericId();
     this.initForm();
     this.evaluationId = this.data['evaluationId'];
     this.requirementId = this.data['requirementId'];
@@ -66,24 +66,16 @@ export class AddRequirementEvaluationComponent implements OnInit {
     this.numeration = this.data['numeration'];
     this.standardId = this.data['standardId'];
     this.panelClass = this.data['panelClass'];
-    this.getAllMaturityLevels();
     this.getAllResponsibles();
-    this.getAllDocumentations();
-    this.initRequirementEvaluation();
   }
 
-  generateNumericId(): string {
-    const timestamp = Date.now().toString(); // milisegundos
-    const random = Math.floor(Math.random() * 1000000).toString().padStart(6, '0'); // 6 dígitos aleatorios
-    return timestamp + random;
-  }
 
   initForm() {
     this.form = this._formBuilder.group({
       maturityLevel: ['', [Validators.required,]],
       responsible: ['', [Validators.required,]],
       justification: ['', [Validators.required, Validators.maxLength(500),]],
-      improvementActions: ['', [Validators.maxLength(500),]],
+      improvementActions: ['', [Validators.maxLength(1000),]],
     });
   }
 
@@ -91,31 +83,27 @@ export class AddRequirementEvaluationComponent implements OnInit {
     this.requirementEvaluation = new RequirementEvaluation();
   }
 
-  getAllDocumentations() {
-    this.documentationService.getAll(Number(this.standardId))
-      .subscribe((res: any) => {
-        this.documentations = res.data;
-      }, error => {
-        ErrorManager.handleError(error);
-      });
-  }
-
   getAllMaturityLevels() {
+    this.loading = true;
     this.maturityLevelService.getAll()
       .subscribe((res: any) => {
         this.maturityLevels = res.data;
-        this.initRequirementEvaluation();
+        this.loading = false;
       }, error => {
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }
 
   getAllResponsibles() {
+    this.loading = true;
     this.responsibleService.getAll(Number(this.standardId))
       .subscribe((res: any) => {
         this.responsibles = res.data;
-        //this.initRequirementEvaluation();
+        this.loading = false;
+        this.getAllMaturityLevels();
       }, error => {
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }
@@ -135,8 +123,6 @@ export class AddRequirementEvaluationComponent implements OnInit {
 
   save() {
 
-    console.log('form', this.form);
-
     this.submitted = true;
     if (this.form.invalid)
       return;
@@ -153,7 +139,7 @@ export class AddRequirementEvaluationComponent implements OnInit {
     this.requirementEvaluationService.insert(this.requirementEvaluation)
       .subscribe(res => {
         this.requirementEvaluation = res.data;
-        const LS_KEY = 'referenceDocs';
+         let LS_KEY = getReferenceDocsKey(0, this.requirementEvaluationId);
         localStorage.removeItem(LS_KEY);
 
         this.loading2 = false;
@@ -167,7 +153,7 @@ export class AddRequirementEvaluationComponent implements OnInit {
 
   getReferenceDocumentationsFromLocalStorage() {
 
-    const LS_KEY = 'referenceDocs';
+    let LS_KEY = getReferenceDocsKey(0, this.requirementEvaluationId);
     const stored = localStorage.getItem(LS_KEY);
 
     const references: ReferenceDocumentation[] = stored
@@ -175,15 +161,6 @@ export class AddRequirementEvaluationComponent implements OnInit {
       : [];
 
     return references;
-  }
-
-  getDocumentationName(id: number) {
-    let name = '';
-    this.documentations.forEach(item => {
-      if (item.documentationId == id)
-        name = item.name;
-    });
-    return name;
   }
 
 
@@ -252,8 +229,12 @@ export class AddRequirementEvaluationComponent implements OnInit {
   }
 
 
+  updateList(event: any) {
+    this.evidencesIsUpdated = true;
+  }
+
   close() {
-    this.dialogRef.close();
+    this.dialogRef.close({ updated: this.evidencesIsUpdated });
   }
 
 }

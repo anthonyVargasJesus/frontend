@@ -15,6 +15,23 @@ export const CODE_CURRENT_STANDARD_MODULE = 'CURRENT_STANDARD';
 export const CODE_MANTTO_MODULE = 'MANTTO';
 export const CODE_GAP_MODULE = 'GAP';
 
+export function generateNumericId(): number {
+  const timestamp = Math.floor(Date.now() / 1000); // segundos (10 dígitos)
+  const random = Math.floor(Math.random() * 1000); // 0–999 → 3 dígitos
+  return timestamp * 1000 + random; // máx. 13 dígitos
+}
+
+export function getReferenceDocsKey(controlEvaluationId: number, requirementEvaluationId: number) {
+
+  let key = 'referenceDocs';
+  if (controlEvaluationId != null && controlEvaluationId > 0)
+    key = key + '_control_' + controlEvaluationId;
+  else
+    key = key + '_requirement_' + requirementEvaluationId;
+
+  return key;
+}
+
 export function redirectToLogin(router: Router) {
   router.navigate(['/pages/authentication/login-v2']);
 }
@@ -58,7 +75,7 @@ export function mapperVuexyToCustom(menu: Menu) {
 
 
   let children = [];
-  menu.options.forEach( option => {
+  menu.options.forEach(option => {
     children.push(mapperVuexyToCustomChildren(option));
   });
 
@@ -76,7 +93,7 @@ export function mapperVuexyToCustom(menu: Menu) {
 
 export function mapperVuexyToCustomChildren(option: Option) {
 
- let optionVuexy = {
+  let optionVuexy = {
     id: 'user',
     title: option.name,
     translate: 'MENU.USER',

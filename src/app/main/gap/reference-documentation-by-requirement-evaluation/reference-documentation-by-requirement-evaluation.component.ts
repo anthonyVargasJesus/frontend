@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { getResults, getSearchResults, INIT_PAGE, PAGE_SIZE } from 'app/config/config';
 import { LoginService } from 'app/services/login.service';
@@ -49,11 +49,15 @@ export class ReferenceDocumentationByRequirementEvaluationComponent implements O
   requirementEvaluationId: number;
 
   @Input()
+  controlEvaluationId: number;
+
+  @Input()
   standardId: number;
 
   @Input()
   evaluationId: number;
 
+  @Output() updateEvent = new EventEmitter<string>();
 
   constructor(private referenceDocumentationService: ReferenceDocumentationService, private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
@@ -63,11 +67,18 @@ export class ReferenceDocumentationByRequirementEvaluationComponent implements O
   }
 
   ngOnInit() {
-
     this.getTheme();
     this.initMenuName();
     this.pageSize = PAGE_SIZE;
-    this.get();
+    this.callData();
+  }
+
+
+  callData() {
+    if (this.controlEvaluationId != null && this.controlEvaluationId > 0)
+      this.getByControl();
+    else
+      this.get();
   }
 
   getTheme() {
@@ -112,8 +123,6 @@ export class ReferenceDocumentationByRequirementEvaluationComponent implements O
     }
   }
 
-
-
   get() {
     this.loading = true;
     this.referenceDocumentationService.getByrequirementEvaluationId(this.skip, this.pageSize, this.requirementEvaluationId, this.searchText)
@@ -129,9 +138,24 @@ export class ReferenceDocumentationByRequirementEvaluationComponent implements O
       });
   }
 
+  getByControl() {
+    this.loading = true;
+    this.referenceDocumentationService.getByControlEvaluationId(this.skip, this.pageSize, this.controlEvaluationId, this.searchText)
+      .subscribe((res: any) => {
+        this.asignObjects(res);
+        this.page = (this.skip / this.pageSize) + 1;
+        this.results = getResults(this.total, this.totalPages);
+        this.loading = false;
+        this.disabledPagination();
+      }, error => {
+        this.loading = false;
+        ErrorManager.handleError(error);
+      });
+  }
+
   changePageSize(value) {
     this.pageSize = value;
-    this.get();
+    this.callData();
   }
 
   changePage(value: number) {
@@ -143,7 +167,7 @@ export class ReferenceDocumentationByRequirementEvaluationComponent implements O
       return;
 
     this.skip += value;
-    this.get();
+    this.callData();
   }
 
   disabledPagination() {
@@ -159,7 +183,7 @@ export class ReferenceDocumentationByRequirementEvaluationComponent implements O
   }
 
   add() {
- 
+
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(AddReferenceDocumentationComponent, {
         height: '600px',
@@ -167,6 +191,7 @@ export class ReferenceDocumentationByRequirementEvaluationComponent implements O
         autoFocus: false,
         data: {
           requirementEvaluationId: this.requirementEvaluationId,
+          controlEvaluationId: this.controlEvaluationId,
           evaluationId: this.evaluationId,
           standardId: this.standardId,
           panelClass: this.panelClass
@@ -178,8 +203,11 @@ export class ReferenceDocumentationByRequirementEvaluationComponent implements O
         if (data == null)
           return;
 
-        if (data.updated == true)
-          this.get();
+        if (data.updated == true) {
+          this.callData();
+          this.updateEvent.emit();
+        }
+
       });
     }
 
@@ -192,8 +220,9 @@ export class ReferenceDocumentationByRequirementEvaluationComponent implements O
         height: '600px',
         width: '600px',
         data: {
-          _id: referenceDocumentation.referenceDocumentationId, 
+          _id: referenceDocumentation.referenceDocumentationId,
           requirementEvaluationId: this.requirementEvaluationId,
+          controlEvaluationId: this.controlEvaluationId,
           evaluationId: this.evaluationId,
           standardId: this.standardId,
           panelClass: this.panelClass
@@ -206,8 +235,11 @@ export class ReferenceDocumentationByRequirementEvaluationComponent implements O
         if (data == null)
           return;
 
-        if (data.updated == true)
-          this.get();
+        if (data.updated == true) {
+          this.callData();
+          this.updateEvent.emit();
+        }
+
       });
     }
 
@@ -232,7 +264,8 @@ export class ReferenceDocumentationByRequirementEvaluationComponent implements O
 
         this.referenceDocumentationService.delete(referenceDocumentation.referenceDocumentationId)
           .subscribe(deleted => {
-            this.get();
+            this.callData();
+            this.updateEvent.emit();
           });
 
       }
@@ -243,7 +276,7 @@ export class ReferenceDocumentationByRequirementEvaluationComponent implements O
   search(text: string) {
     this.searchText = text;
     this.skip = 0;
-    this.get();
+    this.callData();
   }
 
   onKeydown(event, text: string) {

@@ -1,186 +1,237 @@
-<div class="content-wrapper" style="font-family: Montserrat, Helvetica, Arial, serif !important;">
-    <div class="content-body">
+<ng-container *ngIf="loading">
+    <tr>
+        <td colspan="6">
+            <div class="container text-center mt-5">
 
-        <section id="home-page">
-            <section class="users-list-wrapper">
-                <div class="card">
+                <div class="spinner-grow text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
 
+            </div>
+        </td>
 
-                    <div class="table-responsive">
+</ng-container>
 
-                        <table class="table table-bordered" style="table-layout: fixed;
+<ng-container *ngIf="!loading">
+    <div class="content-wrapper" style="font-family: Montserrat, Helvetica, Arial, serif !important;">
+        <div class="content-body">
+
+            <section id="home-page">
+                <section class="users-list-wrapper">
+                    <div class="card">
+
+                        <div style="display: flex; margin-bottom: 12px;">
+
+                            <div class="border" style="display: flex;padding: 10px; border-radius: 5px;">
+
+                                <div *ngFor="let item of legend" class="status-badge mr-1" [ngStyle]="{
+                        'color': item.color,'border-color': item.color}">{{item.name}} ({{item.value}})
+                                </div>
+
+                            </div>
+
+                            <div class="border ml-1" style="display: flex;padding: 10px; border-radius: 5px;">
+
+                                <div *ngFor="let item of maturityLegend" class="status-badge mr-1" [ngStyle]="{
+                        'color': item.color,'border-color': item.color}">{{item.abbreviation}} ({{item.total}})
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="table-responsive mb-2" *ngFor="let group of controlGroups; let i = index">
+
+                            <table class="table table-bordered" style="table-layout: fixed;
                         width: auto !important; font-size: 14px;">
 
-                            <thead>
-                                <tr>
-                                    <th class="td-header-number"> CLÁUSULA</th>
-                                    <th>Título del CONTROL</th>
-                                    <th></th>
-                                    <th class="td-header-state text-center"
-                                        style="padding-left: 4px !important; padding-right: 4px !important;">
-                                        CALIFICACIÓN</th>
-                                    <th> RESPONSABLE</th>
-                                    <th> DOCUMENTACIÓN DE REFERENCIA</th>
-                                    <th> JUSTIFICACIÓN</th>
-
-                                </tr>
-                            </thead>
-
-                            <tbody>
-
-                                <ng-container *ngIf="loading">
+                                <thead>
                                     <tr>
-                                        <td colspan="4">
-                                            <div class="container text-center mt-5">
+                                        <th class="td-header-number text-center">CLÁUSULA</th>
+                                        <th>TÍTULO DEL CONTROL</th>
+                                        <th class="text-center"
+                                            style="width: 70px !important;max-width: 70px !important;min-width: 70px !important;">
+                                        </th>
+                                        <th class="text-center"
+                                            style="width: 150px !important;max-width: 150px !important;min-width: 150px !important; padding-left: 0px; padding-right: 0px;">
+                                            SITUACIÓN</th>
+                                        <th class="td-header-state text-center"
+                                            style="padding-left: 4px !important; padding-right: 4px !important;">
+                                            CALIFICACIÓN</th>
+                                        <th> RESPONSABLE</th>
+                                        <th> DOCUMENTACIÓN DE REFERENCIA</th>
 
-                                                <div class="spinner-grow text-primary" role="status">
-                                                    <span class="sr-only">Loading...</span>
-                                                </div>
-                                                <div class="spinner-grow text-primary" role="status">
-                                                    <span class="sr-only">Loading...</span>
-                                                </div>
-                                                <div class="spinner-grow text-primary" role="status">
-                                                    <span class="sr-only">Loading...</span>
-                                                </div>
+                                    </tr>
 
-                                            </div>
-                                        </td>
+                                    <tr>
+                                        <th class="td-number text-center table-header">
+                                            <h5
+                                                style="margin-top: 8px !important;font-weight: 800; font-size: 16px !important;">
+                                                {{group.number}}.</h5>
+                                        </th>
+                                        <th colspan="6" class=" table-header">
+                                            <h5
+                                                style="margin-top: 8px !important;font-weight: 800; font-size: 16px !important;">
+                                                {{group.name.toUpperCase()}}</h5>
+                                        </th>
+                                    </tr>
 
-                                </ng-container>
-                                <ng-container *ngIf="!loading">
+                                </thead>
 
-                                    <ng-container *ngIf="controlGroups.length == 0">
-                                        <tr>
-                                            <td colspan="4">
-                                                <div class="text-center mt-2 mb-2">
-                                                    <div class="empty-row ng-star-inserted">No hay resultados para
-                                                        mostrar</div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </ng-container>
+                                <tbody>
+                                    <ng-container *ngIf="group.controls">
+                                        <ng-container *ngIf="group.controls.length > 0">
 
-                                    <ng-container *ngFor="let group of controlGroups; let i = index">
+                                            <ng-container *ngFor="let control of group.controls; let i = index">
 
-                                        <tr>
-                                            <td class="td-number-3" style="background-color: #eeece1;">
-                                                <h5 style="margin-top: 8px !important;">
-                                                    {{group.number}}.</h5>
-                                            </td>
-                                            <td colspan="6" style="background-color: #eeece1;">
-                                                <h5 style="margin-top: 8px !important;"> {{group.name}} </h5>
-                                            </td>
-                                        </tr>
+                                                <!-- init table child2         -->
+                                                <ng-container *ngIf="control.controlEvaluations">
+                                                    <ng-container *ngIf="control.controlEvaluations.length>0">
 
-
-                                        <ng-container *ngIf="group.controls">
-                                            <ng-container *ngIf="group.controls.length > 0">
-
-                                                <ng-container *ngFor="let control of group.controls; let i = index">
-
-                                                    <!-- init table child2         -->
-                                                    <ng-container *ngIf="control.controlEvaluations">
-                                                        <ng-container *ngIf="control.controlEvaluations.length>0">
-
-                                                            <tr
-                                                                *ngFor="let controlEvaluation of control.controlEvaluations; let i = index">
-                                                                <td class="td-number-3">
-                                                                    <h5 style="font-size: 14px;margin-top: 3px;">
-                                                                        {{control.numerationToShow}}
-                                                                    </h5>
-                                                                </td>
-                                                                <td class="td-description">
-                                                                    <ng-container *ngIf="controlEvaluation.control">
-                                                                        {{controlEvaluation.control.name}}
-                                                                    </ng-container>
-                                                                </td>
-
-                                                                <td class="text-center">
+                                                        <tr
+                                                            *ngFor="let controlEvaluation of control.controlEvaluations; let i = index">
+                                                            <td class="td-number text-center">
+                                                                <h5
+                                                                    style="margin-top: 3px;font-weight: 700; font-size: 13px !important;">
+                                                                    {{control.numerationToShow}}
+                                                                </h5>
+                                                            </td>
+                                                            <td>
+                                                                <ng-container *ngIf="controlEvaluation.control">
+                                                                    {{controlEvaluation.control.name}}
+                                                                </ng-container>
+                                                            </td>
 
 
-                                                                    <a container="body" placement="top" title="Editar"
+
+                                                            <td class="text-center"
+                                                                style="width: 70px !important;max-width: 70px !important;min-width: 70px !important;">
+
+
+                                                                <!-- <a container="body" placement="top" title="Editar"
                                                                         (click)="edit(controlEvaluation, control)"
                                                                         class="mr-1">
                                                                         <div class="icon-wrapper">
                                                                             <i
                                                                                 class="feather font-medium-3 icon-edit-2"></i>
                                                                         </div>
-                                                                    </a>
+                                                                    </a> -->
+                                                                <a container="body" placement="top" title="Editar"
+                                                                    (click)="edit(controlEvaluation, control)">
+                                                                    <div class="icon-wrapper">
+                                                                        <mat-icon
+                                                                            style="font-size: 25px;">edit_note</mat-icon>
+                                                                    </div>
+                                                                </a>
 
 
-                                                                </td>
+                                                            </td>
 
-                                                                <td class="td-state text-center">
-                                                                    <ng-container
-                                                                        *ngIf="controlEvaluation.maturityLevel">
+                                                            <td class="text-center"
+                                                                style="width: 150px !important;max-width: 150px !important;min-width: 150px !important; padding-left: 0px; padding-right: 0px;">
+
+                                                                <span *ngIf="controlEvaluation.percentage>0"
+                                                                    class="font-weight-bolder">
+                                                                    {{controlEvaluation.percentage}}%
+                                                                </span>
+                                                                <br>
+
+                                                                <div class="status-badge" [ngStyle]="{
+                                                                'color': getBadgeColor(controlEvaluation.state),
+                                                                'border-color': getBadgeColor(controlEvaluation.state)
+                                                                }">
+                                                                    <ng-container *ngIf="controlEvaluation.state">
+                                                                        {{controlEvaluation.state.toUpperCase()}}
+                                                                    </ng-container>
 
 
-                                                                        <div class="text-center"
-                                                                            style=" margin-left: 15px !important;width: 80px !important; height: 40px !important; padding-top: 8px !important;"
-                                                                            [style.background-color]="controlEvaluation.maturityLevel.color">
-                                                                            <h3 class="text-center"
-                                                                                style=" opacity: 0.8; font-weight: 700;color: white;">
-                                                                                {{controlEvaluation.maturityLevel.abbreviation}}
-                                                                            </h3>
+                                                                </div>
+
+                                                            </td>
+
+                                                            <td class="td-state text-center">
+                                                                <ng-container *ngIf="controlEvaluation.maturityLevel">
+
+
+                                                                    <div class="text-center"
+                                                                        style=" margin-left: 15px !important;width: 80px !important; height: 40px !important; padding-top: 8px !important;"
+                                                                        [style.background-color]="controlEvaluation.maturityLevel.color">
+                                                                        <h3 class="text-center"
+                                                                            style=" opacity: 0.8; font-weight: 700;color: white;">
+                                                                            {{controlEvaluation.maturityLevel.abbreviation}}
+                                                                        </h3>
+                                                                    </div>
+
+
+                                                                </ng-container>
+
+                                                            </td>
+
+                                                            <td class="td-little-description">
+                                                                <ng-container *ngIf="controlEvaluation.responsible">
+                                                                    {{controlEvaluation.responsible.name}}
+                                                                </ng-container>
+                                                            </td>
+
+                                                            <td>
+                                                                <ng-container
+                                                                    *ngIf="controlEvaluation.referenceDocumentations">
+
+                                                                    <div
+                                                                        style="display: table; height: 100%; width: 100%;">
+                                                                        <div
+                                                                            style="display: table-cell; vertical-align: middle;">
+                                                                            <ul style="margin: 0;">
+                                                                                <li
+                                                                                    *ngFor="let doc of controlEvaluation.referenceDocumentations">
+                                                                                    <ng-container
+                                                                                        *ngIf="doc.url && doc.url.trim() !== ''; else plainText">
+                                                                                        <a [href]="doc.url" download
+                                                                                            target="_blank"
+                                                                                            rel="noopener"
+                                                                                            title="Descargar evidencia">
+                                                                                            {{ doc.name }}
+                                                                                        </a>
+                                                                                    </ng-container>
+                                                                                    <ng-template #plainText>
+                                                                                        {{ doc.name }}
+                                                                                    </ng-template>
+                                                                                </li>
+                                                                            </ul>
                                                                         </div>
+                                                                    </div>
+
+                                                                </ng-container>
+                                                            </td>
 
 
-                                                                    </ng-container>
+                                                        </tr>
 
-                                                                </td>
-
-                                                                <td class="td-little-description">
-                                                                    <ng-container *ngIf="controlEvaluation.responsible">
-                                                                        {{controlEvaluation.responsible.name}}
-                                                                    </ng-container>
-                                                                </td>
-
-                                                                <td class="td-little-description">
-                                                                    <ng-container
-                                                                        *ngIf="controlEvaluation.referenceDocumentations">
-                                                                        <ul
-                                                                            style="margin-left: -20px !important;margin-right: -5px !important;">
-                                                                            <li
-                                                                                *ngFor="let doc of controlEvaluation.referenceDocumentations">
-                                                                                {{doc.name}}
-                                                                            </li>
-                                                                        </ul>
-                                                                    </ng-container>
-                                                                </td>
-
-
-                                                                <td class="td-big-description">
-                                                                    {{controlEvaluation.justification}} </td>
-
-
-                                                            </tr>
-
-                                                        </ng-container>
                                                     </ng-container>
-                                                    <!-- ending table child2         -->
-
-
                                                 </ng-container>
+                                                <!-- ending table child2         -->
+
 
                                             </ng-container>
+
                                         </ng-container>
-
-
-
                                     </ng-container>
+                                </tbody>
 
+                            </table>
 
+                        </div>
 
-
-                                </ng-container>
-                            </tbody>
-                        </table>
                     </div>
-
-
-                </div>
+                </section>
             </section>
-        </section>
 
+        </div>
     </div>
-</div>
+</ng-container>

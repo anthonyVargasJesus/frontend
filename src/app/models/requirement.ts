@@ -1,3 +1,4 @@
+import { MaturityLevel } from "./maturity-level";
 import { RequirementEvaluation } from "./requirement-evaluation";
 
 export class Requirement {
@@ -17,5 +18,7 @@ export class Requirement {
         public value?: number,
         public letter?: string,
         public breadcrumbToShow?: string,
+        public maturityLevels?: any[],
+        public indicator?: any,
     ) { }
 }

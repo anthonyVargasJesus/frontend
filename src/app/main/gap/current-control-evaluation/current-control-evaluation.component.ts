@@ -54,7 +54,7 @@ export class CurrentControlEvaluationComponent implements OnInit {
         type: '',
         links: [
           {
-            name: 'EVALUACIÓN',
+            name: 'BRECHAS',
             isLink: false,
             link: '#'
           },

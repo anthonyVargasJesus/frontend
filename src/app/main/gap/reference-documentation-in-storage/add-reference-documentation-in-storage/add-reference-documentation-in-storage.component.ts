@@ -12,6 +12,7 @@ import { DialogData } from 'app/models/dialog-data';
 import { ReferenceDocumentationInStorageService } from 'app/services/reference-documentation-in-storage.service';
 import { AddFileToFirebaseComponent } from '../add-file-to-firebase/add-file-to-firebase.component';
 import { LoginService } from 'app/services/login.service';
+import { getReferenceDocsKey } from 'app/config/config';
 
 
 @Component({
@@ -20,6 +21,8 @@ import { LoginService } from 'app/services/login.service';
   styles: [
   ]
 })
+
+
 export class AddReferenceDocumentationInStorageComponent implements OnInit {
 
   constructor(
@@ -35,19 +38,20 @@ export class AddReferenceDocumentationInStorageComponent implements OnInit {
   public form: FormGroup;
   public submitted = false;
   standardId: number;
-  requirementEvaluationId: string;
+  requirementEvaluationId: number;
   referenceDocumentationId: number;
+  controlEvaluationId: number;
   panelClass: string;
 
   ngOnInit(): void {
     this.referenceDocumentationId = Date.now();
     this.initForm();
     this.requirementEvaluationId = this.data['requirementEvaluationId'];
+    this.controlEvaluationId = this.data['controlEvaluationId'];
     this.standardId = this.data['standardId'];
     this.panelClass = this.data['panelClass'];
     this.getAllDocumentations();
     this.initReferenceDocumentation();
-
   }
 
 
@@ -108,11 +112,8 @@ export class AddReferenceDocumentationInStorageComponent implements OnInit {
           this.form.patchValue({ url: data.url }, { emitEvent: true, onlySelf: false });
         }
 
-
       });
     }
-
-
 
   }
 
@@ -132,6 +133,7 @@ export class AddReferenceDocumentationInStorageComponent implements OnInit {
     this.getFormValue();
 
     this.referenceDocumentation.requirementEvaluationId = Number(this.requirementEvaluationId);
+    this.referenceDocumentation.controlEvaluationId = Number(this.controlEvaluationId);
 
     this.saveReferenceDoc(this.referenceDocumentation);
     this.dialogRef.close({ updated: true });
@@ -140,7 +142,8 @@ export class AddReferenceDocumentationInStorageComponent implements OnInit {
 
   saveReferenceDoc(doc: ReferenceDocumentation): void {
 
-    const LS_KEY = 'referenceDocs';
+    let LS_KEY = getReferenceDocsKey(this.controlEvaluationId, this.requirementEvaluationId);
+
     // 1 · Lee lo que ya exista
     const stored = localStorage.getItem(LS_KEY);
     const list: ReferenceDocumentation[] = stored ? JSON.parse(stored) : [];
@@ -157,7 +160,6 @@ export class AddReferenceDocumentationInStorageComponent implements OnInit {
     // 4 · Vuelve a guardar el array completo
     localStorage.setItem(LS_KEY, JSON.stringify(list));
   }
-
 
   close() {
     this.dialogRef.close();

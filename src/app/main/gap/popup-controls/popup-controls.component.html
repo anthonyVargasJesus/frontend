@@ -1,0 +1,168 @@
+<ng-container *ngIf="loading">
+
+
+    <div mat-dialog-title class="d-flex align-items-center" style="margin-top:-5px;">
+        <h4>...</h4>
+        <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto"
+            style="margin-top:-10px; margin-right:-16px;">
+
+            <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
+                <div class="icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-x">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+            </button>
+
+        </div>
+    </div>
+
+    <div class="container text-center mt-5">
+
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+
+    </div>
+
+</ng-container>
+
+<ng-container *ngIf="!loading">
+
+
+    <div mat-dialog-title class="d-flex align-items-center" style="margin-top:-5px;">
+        <h4>SELECCIONAR CONTROL</h4>
+        <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto" style="margin-right: -16px;">
+
+            <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
+                <div class="icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-x">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+            </button>
+
+        </div>
+    </div>
+
+    <div class="card border" style="margin-top: -15px !important;">
+        <div class="card-body">
+
+            <mat-accordion class="example-headers-align" multi
+                style="font-family: Montserrat, Helvetica, Arial, serif !important;margin-top: 5px !important;">
+
+                <mat-expansion-panel *ngFor="let controlGroup of controlGroups; let i = index"
+                    style="background-color: transparent !important;margin: 10px !important;">
+                    <mat-expansion-panel-header>
+
+                        <mat-panel-title
+                            style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 600 !important; opacity: 0.8;">
+                            <h5> {{controlGroup.number}}. &nbsp; {{controlGroup.name}} </h5>
+                        </mat-panel-title>
+
+                        <mat-panel-description>
+
+                        </mat-panel-description>
+
+                    </mat-expansion-panel-header>
+
+                    <hr style="margin-top: -5px !important;">
+
+                    <br>
+
+                    <p style="font-family: Montserrat, Helvetica, Arial, serif !important; margin-left: 15px;" [style]="coreConfig.layout.skin === 'dark'
+                        ? 'color: #b4b7bd;'
+                        : 'color: #6e6b7b;'">
+                        {{controlGroup.description}}
+                    </p>
+
+                    <ng-container *ngIf="controlGroups.length>0">
+                        <app-control-node [standardId]="standardId" [controlGroupId]="controlGroup.controlGroupId"
+                            [controlGroupNumber]="controlGroup.number" (selectEvent)="select($event)"></app-control-node>
+                    </ng-container>
+
+
+                    <hr>
+
+
+                    <div class="text-right">
+                        <div style="display: flex; flex-direction: row-reverse;margin-right: -10px;">
+
+                            <a container="body" placement="top" class="mr-1" title="Eliminar grupo"
+                                (click)="delete(controlGroup)">
+                                <div class="icon-wrapper">
+                                    <i class="feather font-medium-4" data-feather='trash-2'></i>
+                                </div>
+                            </a>
+
+                            <a container="body" placement="top" title="Editar grupo"
+                                (click)="edit(controlGroup.controlGroupId)" class="mr-1">
+                                <div class="icon-wrapper">
+                                    <i class="feather font-medium-3 icon-edit-2"></i>
+                                </div>
+                            </a>
+
+
+
+                        </div>
+                    </div>
+
+
+
+                </mat-expansion-panel>
+
+
+            </mat-accordion>
+
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-4">
+                    <div *ngIf="controlGroups.length > 0" class="d-flex justify-content-center">
+                        <ul class="pagination text-center">
+                            <li class="page-item ng-star-inserted">
+                                <button [disabled]="previous" (click)="changePage(-pageSize)" class="page-link">
+                                    <div class="icon-wrapper">
+                                        <i data-feather='chevron-left'></i>
+                                    </div>
+                                </button>
+                            </li>
+                            <li class="page-item ng-star-inserted" aria-current="page">
+
+                                <label class="page-link" style="height:38px;">Pag. {{page}} de
+                                    {{totalPages}}</label>
+                            </li>
+                            <li class="page-item ng-star-inserted">
+                                <button [disabled]="Next" (click)="changePage(+pageSize)" class="page-link">
+                                    <div class="icon-wrapper">
+                                        <i data-feather='chevron-right' style="background:gray;"></i>
+                                    </div>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <span class="d-flex justify-content-right" style="float:right!important;margin-right: 15px;">
+                        {{results}}</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</ng-container>

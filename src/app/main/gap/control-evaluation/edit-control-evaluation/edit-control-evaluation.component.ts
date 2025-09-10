@@ -46,8 +46,8 @@ export class EditControlEvaluationComponent implements OnInit {
 
   maturityLevels: MaturityLevel[] = [];
   responsibles: Responsible[] = [];
-  documentations: Documentation[] = [];
   controlEvaluation: ControlEvaluation;
+
   loading = false;
   id: string;
   loading2 = false; public form: FormGroup;
@@ -62,19 +62,22 @@ export class EditControlEvaluationComponent implements OnInit {
   public currentSkin: string;
   private _unsubscribeAll: Subject<any>;
   private panelClass: string;
-  
+
+  evidencesIsUpdated: boolean = false;
+  evaluationId: number;
 
   ngOnInit(): void {
     this.getTheme();
     this.initForm();
     this.initControlEvaluation();
+
     this.id = this.data['_id'];
     this.standardId = this.data['standardId'];
     this.controlName = this.data['controlName'];
     this.numeration = this.data['numeration'];
+
     this.getAllMaturityLevels();
-    this.getAllResponsibles();
-    this.getAllDocumentations();
+
   }
 
   getTheme() {
@@ -105,13 +108,10 @@ export class EditControlEvaluationComponent implements OnInit {
       this.controlEvaluation.maturityLevel = this.maturityLevels[0];
   }
 
-
   initResponsible() {
     if (this.responsibles.length > 0)
       this.controlEvaluation.responsible = this.responsibles[0];
   }
-
-
 
   initForm() {
     this.form = this._formBuilder.group({
@@ -120,19 +120,10 @@ export class EditControlEvaluationComponent implements OnInit {
       responsible: ['', [Validators.required,]],
       justification: ['', [Validators.required, Validators.maxLength(500),]],
       improvementActions: ['', [Validators.required, Validators.maxLength(500),]],
-      documentation: ['', [Validators.required,]],
+      //documentation: ['', [Validators.required,]],
     });
   }
 
-  getAllDocumentations() {
-    this.documentationService.getAll(Number(this.standardId))
-      .subscribe((res: any) => {
-        this.documentations = res.data;
-        this.obtain(this.id);
-      }, error => {
-        ErrorManager.handleError(error);
-      });
-  }
 
   obtain(id: string) {
     this.loading = true;
@@ -141,6 +132,7 @@ export class EditControlEvaluationComponent implements OnInit {
         this.controlEvaluation = res.data;
         this.setFormValue(this.controlEvaluation);
         this.changeMaturityLevel(this.controlEvaluation.maturityLevelId.toString());
+        this.evaluationId = this.controlEvaluation.evaluationId;
         this.loading = false;
       }, error => {
         this.loading = false;
@@ -155,7 +147,7 @@ export class EditControlEvaluationComponent implements OnInit {
       responsible: ((controlEvaluation.responsibleId == null) ? '' : controlEvaluation.responsibleId),
       justification: ((controlEvaluation.justification == null) ? '' : controlEvaluation.justification),
       improvementActions: ((controlEvaluation.improvementActions == null) ? '' : controlEvaluation.improvementActions),
-      documentation: controlEvaluation.arrayReferenceDocumentations
+      //documentation: controlEvaluation.arrayReferenceDocumentations
     });
 
 
@@ -173,21 +165,27 @@ export class EditControlEvaluationComponent implements OnInit {
 
 
   getAllMaturityLevels() {
+    this.loading = true;
     this.maturityLevelService.getAll()
       .subscribe((res: any) => {
         this.maturityLevels = res.data;
-        this.initControlEvaluation();
+        this.loading = false;
+        this.getAllResponsibles();
       }, error => {
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }
 
   getAllResponsibles() {
+    this.loading = true;
     this.responsibleService.getAll(Number(this.standardId))
       .subscribe((res: any) => {
         this.responsibles = res.data;
-        this.initControlEvaluation();
+        this.loading = false;
+        this.obtain(this.id);
       }, error => {
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }
@@ -212,17 +210,17 @@ export class EditControlEvaluationComponent implements OnInit {
     let array = [];
     array = this.form.value.documentation;
 
-    let referenceDocumentations: ReferenceDocumentation[] = [];
-    array.forEach(id => {
-      let model: ReferenceDocumentation = new ReferenceDocumentation();
-      model.name = this.getDocumentationName(id);
-      model.documentationId = id;
-      model.evaluationId = Number(this.controlEvaluation.evaluationId);
-      referenceDocumentations.push(model);
-    });
+    // let referenceDocumentations: ReferenceDocumentation[] = [];
+    // array.forEach(id => {
+    //   let model: ReferenceDocumentation = new ReferenceDocumentation();
+    //   model.name = this.getDocumentationName(id);
+    //   model.documentationId = id;
+    //   model.evaluationId = Number(this.controlEvaluation.evaluationId);
+    //   referenceDocumentations.push(model);
+    // });
 
-    this.controlEvaluation.referenceDocumentations = referenceDocumentations;
-    
+    //this.controlEvaluation.referenceDocumentations = referenceDocumentations;
+
 
     this.controlEvaluationService.update(this.controlEvaluation)
       .subscribe(res => {
@@ -237,14 +235,6 @@ export class EditControlEvaluationComponent implements OnInit {
 
   }
 
-  getDocumentationName(id: number) {
-    let name = '';
-    this.documentations.forEach(item => {
-      if (item.documentationId == id)
-        name = item.name;
-    });
-    return name;
-  }
 
   changeMaturityLevel(id: string) {
 
@@ -261,7 +251,7 @@ export class EditControlEvaluationComponent implements OnInit {
   }
 
 
-  
+
   addResponsible() {
 
     // if (this.loginService.isAuthenticated()) {
@@ -311,8 +301,12 @@ export class EditControlEvaluationComponent implements OnInit {
 
   }
 
+  updateList(event: any) {
+    this.evidencesIsUpdated = true;
+  }
+
   close() {
-    this.dialogRef.close();
+    this.dialogRef.close({ updated: this.evidencesIsUpdated });
   }
 
 }

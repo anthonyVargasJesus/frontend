@@ -83,7 +83,7 @@
                             <div class="card border">
                                 <div class="card-body">
 
-                                  <form [formGroup]="form" (ngSubmit)="save()" class="auth-login-form mt-0"
+                                    <form [formGroup]="form" (ngSubmit)="save()" class="auth-login-form mt-0"
                                         autocomplete="off">
 
                                         <!-- <div class="form-group">
@@ -162,14 +162,14 @@
                                                                 responsible.name}} </option>
                                                         </select>
 
-                                                        <button *ngIf="!loading" type="button"
+                                                        <!-- <button *ngIf="!loading" type="button"
                                                             title="Agregar un nuevo responsable a la lista desplegable"
                                                             (click)="addResponsible()" rippleeffect=""
                                                             class="btn btn-danger waves-effect waves-float waves-light"
                                                             style="margin-left: 5px;">
                                                             <i data-feather='plus'></i>
 
-                                                        </button>
+                                                        </button> -->
 
                                                     </div>
 
@@ -245,7 +245,7 @@
                                                 <label style="font-size: 22px; margin-top:-1px;">*</label>
                                                 <label>)</label>
                                             </div>
-                                            <textarea rows="2" formControlName="justification"
+                                            <textarea rows="3" formControlName="justification"
                                                 [ngClass]="{ 'is-invalid': submitted && f.justification.errors }"
                                                 maxlength="500" class="form-control" aria-describedby="" autofocus=""
                                                 tabindex="1"></textarea>
@@ -264,12 +264,13 @@
                                                 <label class="form-label">Acciones de mejora</label>
                                             </div>
 
-                                            <textarea rows="2" formControlName="improvementActions" maxlength="500"
+                                            <textarea rows="3" formControlName="improvementActions" maxlength="1000"
                                                 class="form-control" aria-describedby="" autofocus=""
                                                 tabindex="1"></textarea>
 
                                         </div>
 
+                                        <br>
 
                                         <div class="col-md-12 text-center mt-2">
                                             <button *ngIf="!loading2" type="submit" rippleeffect=""
@@ -308,7 +309,7 @@
                                 <div class="card-body" style="padding-top: 5px !important;">
 
                                     <app-reference-documentation-by-requirement-evaluation [standardId]="standardId"
-                                        [panelClass]="panelClass" [evaluationId]="evaluationId"
+                                        [panelClass]="panelClass" [evaluationId]="evaluationId" (updateEvent)="updateList($event)"
                                         [requirementEvaluationId]="id"></app-reference-documentation-by-requirement-evaluation>
 
 

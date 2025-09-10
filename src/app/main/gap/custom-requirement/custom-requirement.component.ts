@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { CoreConfigService } from '@core/services/config.service';
 import { Requirement } from 'app/models/requirement';
@@ -36,6 +36,8 @@ export class CustomRequirementComponent implements OnInit, OnChanges {
 
   coreConfig: any;
 
+  @Output() updateEvent = new EventEmitter<string>();
+
   ngOnChanges() {
     this.isExpanded = true;
   }
@@ -47,7 +49,10 @@ export class CustomRequirementComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
 
-    console.log(this.isSearch)
+  }
+
+  updateList(event: string) {
+    this.updateEvent.emit(event);
   }
 
 

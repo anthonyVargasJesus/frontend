@@ -43,7 +43,25 @@
 
                     </div> -->
 
-                 
+                    <div style="display: flex; margin-bottom: 12px;">
+
+                        <div class="border" style="display: flex;padding: 10px; border-radius: 5px;">
+
+                            <div *ngFor="let item of legend" class="status-badge mr-1" [ngStyle]="{
+                        'color': item.color,'border-color': item.color}">{{item.name}} ({{item.value}})
+                            </div>
+
+                        </div>
+
+                         <div class="border ml-1" style="display: flex;padding: 10px; border-radius: 5px;">
+
+                            <div *ngFor="let item of maturityLegend" class="status-badge mr-1" [ngStyle]="{
+                        'color': item.color,'border-color': item.color}">{{item.abbreviation}} ({{item.total}})
+                            </div>
+
+                        </div>
+
+                    </div>
 
                     <div class="table-responsive border mb-2" *ngFor="let requirement of requirements"
                         style="  font-family: 'Montserrat', Helvetica, Arial, serif !important;">
@@ -53,7 +71,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center"
-                                        style="width: 130px !important;max-width: 130px !important;min-width: 130px !important;">
+                                        style="width: 70px !important;max-width: 70px !important;min-width: 70px !important; padding-left: 10px; padding-right: 10px;">
                                         CLÁUSULA</th>
                                     <th
                                         style="width: 500px !important;max-width: 500px !important;min-width: 500px !important;">
@@ -64,9 +82,9 @@
                                     <th class="text-center"
                                         style="width: 150px !important;max-width: 150px !important;min-width: 150px !important; padding-left: 0px; padding-right: 0px;">
                                         SITUACIÓN</th>
-                                    <th class="text-center"
+                                    <!-- <th class="text-center"
                                         style="width: 110px !important;max-width: 110px !important;min-width: 110px !important;padding-left: 0px; padding-right:0px ;">
-                                        AVANCE</th>
+                                        AVANCE</th> -->
                                     <th class="text-center"
                                         style="padding-left: 4px !important; padding-right: 4px !important;width: 130px !important;max-width: 130px !important;min-width: 130px !important;">
                                         CALIFICACIÓN</th>
@@ -88,20 +106,11 @@
                             </tbody>
                         </table>
 
-                         <app-custom-requirement [standardId]="standardId" [evaluationId]="evaluationId"
-                            [panelClass]="panelClass" [requirement]="requirement" [isSearch]="isSearch"></app-custom-requirement>
+                        <app-custom-requirement [standardId]="standardId" [evaluationId]="evaluationId"
+                            [panelClass]="panelClass" [requirement]="requirement" (updateEvent)="updateList($event)"
+                            [isSearch]="isSearch"></app-custom-requirement>
                     </div>
 
-
-                    <br>
-                    <hr>
-                    <br>
-                    <!-- <ng-container *ngFor="let requirement of requirements"> -->
-                        <!-- <app-custom-requirement [standardId]="standardId" [evaluationId]="evaluationId"
-                            [panelClass]="panelClass" [requirement]="requirement"></app-custom-requirement> -->
-                    <!-- </ng-container> -->
-
-              
 
                 </div>
             </section>

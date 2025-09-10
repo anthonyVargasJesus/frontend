@@ -6,9 +6,9 @@ import { Subject } from 'rxjs/internal/Subject';
 import { CoreConfigService } from '@core/services/config.service';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { MatDialog } from '@angular/material/dialog';
-import { ReferenceDocumentationInStorageService } from 'app/services/reference-documentation-in-storage.service';
 import { AddReferenceDocumentationInStorageComponent } from './add-reference-documentation-in-storage/add-reference-documentation-in-storage.component';
 import { EditReferenceDocumentationInStorageComponent } from './edit-reference-documentation-in-storage/edit-reference-documentation-in-storage.component';
+import { getReferenceDocsKey } from 'app/config/config';
 
 @Component({
   selector: 'app-reference-documentation-in-storage',
@@ -33,9 +33,12 @@ export class ReferenceDocumentationInStorageComponent implements OnInit {
   @Input()
   requirementEvaluationId: number;
 
+  @Input()
+  controlEvaluationId: number;
+
   searchText: string = '';
 
-  constructor(private referenceDocumentationService: ReferenceDocumentationInStorageService, private loginService: LoginService,
+  constructor(private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
     private dialog: MatDialog
   ) {
@@ -91,7 +94,7 @@ export class ReferenceDocumentationInStorageComponent implements OnInit {
 
   get() {
 
-    const LS_KEY = 'referenceDocs';
+    let LS_KEY = getReferenceDocsKey(this.controlEvaluationId, this.requirementEvaluationId);
     const stored = localStorage.getItem(LS_KEY);
 
     const references: ReferenceDocumentation[] = stored
@@ -113,6 +116,7 @@ export class ReferenceDocumentationInStorageComponent implements OnInit {
         data: {
           standardId: this.standardId,
           requirementEvaluationId: this.requirementEvaluationId,
+          controlEvaluationId: this.controlEvaluationId,
           panelClass: this.panelClass,
         }, panelClass: this.panelClass
       });
@@ -139,6 +143,7 @@ export class ReferenceDocumentationInStorageComponent implements OnInit {
           standardId: this.standardId,
           referenceDocumentationId: referenceDocumentation.referenceDocumentationId,
           requirementEvaluationId: this.requirementEvaluationId,
+          controlEvaluationId: this.controlEvaluationId,
           panelClass: this.panelClass,
         }, panelClass: this.panelClass
       });
@@ -184,7 +189,9 @@ export class ReferenceDocumentationInStorageComponent implements OnInit {
   }
 
   remove(referenceDocumentationId: number) {
-    const LS_KEY = 'referenceDocs';
+
+    let LS_KEY = getReferenceDocsKey(this.controlEvaluationId, this.requirementEvaluationId);
+
     const stored = localStorage.getItem(LS_KEY);
 
     let references: ReferenceDocumentation[] = stored
@@ -213,7 +220,9 @@ export class ReferenceDocumentationInStorageComponent implements OnInit {
   }
 
   searchByNameContains(namePart: string) {
-    const LS_KEY = 'referenceDocs';
+
+    let LS_KEY = getReferenceDocsKey(this.controlEvaluationId, this.requirementEvaluationId);
+
     const stored = localStorage.getItem(LS_KEY);
 
     const references: ReferenceDocumentation[] = stored

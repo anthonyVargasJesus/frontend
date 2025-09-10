@@ -38,6 +38,7 @@ export class AddReferenceDocumentationComponent implements OnInit {
 
   evaluationId: string;
   requirementEvaluationId: string;
+  controlEvaluationId: string;
   standardId: number;
 
   panelClass: string;
@@ -46,6 +47,7 @@ export class AddReferenceDocumentationComponent implements OnInit {
     this.initForm();
     this.evaluationId = this.data['evaluationId'];
     this.requirementEvaluationId = this.data['requirementEvaluationId'];
+    this.controlEvaluationId = this.data['controlEvaluationId'];
     this.standardId = this.data['standardId'];
     this.panelClass = this.data['panelClass'];
     this.getAllDocumentations();
@@ -106,8 +108,9 @@ export class AddReferenceDocumentationComponent implements OnInit {
     this.loading2 = true;
     this.getFormValue();
 
-    this.referenceDocumentation.evaluationId = Number(this.evaluationId); 
-    this.referenceDocumentation.requirementEvaluationId = Number(this.requirementEvaluationId); 
+    this.referenceDocumentation.evaluationId = Number(this.evaluationId);
+    this.referenceDocumentation.requirementEvaluationId = Number(this.requirementEvaluationId);
+    this.referenceDocumentation.controlEvaluationId = Number(this.controlEvaluationId);
 
     this.referenceDocumentationService.insert(this.referenceDocumentation)
       .subscribe(res => {
@@ -119,36 +122,36 @@ export class AddReferenceDocumentationComponent implements OnInit {
         ErrorManager.handleError(error);
       });
 
-  } 
-  
+  }
+
   uploadImage() {
-  
-      if (this._loginService.isAuthenticated()) {
-        let dialogRef = this.dialog.open(AddFileToFirebaseComponent, {
-          height: '320px',
-          width: '500px',
-          autoFocus: false,
-          data: {
-            standardId: this.standardId,
-            requirementEvaluationId: this.requirementEvaluationId,
-          },
-          panelClass: this.panelClass
-        });
-  
-        dialogRef.afterClosed().subscribe(data => {
-          if (data == null)
-            return;
-  
-          if (data.updated == true) {
-            this.form.patchValue({ url: data.url }, { emitEvent: true, onlySelf: false });
-          }
-  
-  
-        });
-      }
-  
+
+    if (this._loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(AddFileToFirebaseComponent, {
+        height: '320px',
+        width: '500px',
+        autoFocus: false,
+        data: {
+          standardId: this.standardId,
+          requirementEvaluationId: this.requirementEvaluationId,
+        },
+        panelClass: this.panelClass
+      });
+
+      dialogRef.afterClosed().subscribe(data => {
+        if (data == null)
+          return;
+
+        if (data.updated == true) {
+          this.form.patchValue({ url: data.url }, { emitEvent: true, onlySelf: false });
+        }
+
+
+      });
     }
-  
+
+  }
+
 
   close() {
     this.dialogRef.close();

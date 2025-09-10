@@ -17,12 +17,13 @@ import { ControlGroup } from 'app/models/control-group';
 @Component({
   selector: 'app-control-evaluation',
   templateUrl: './control-evaluation.component.html',
-  styles: [
-  ]
+  styleUrls: ['./control-evaluation.component.scss']
 })
 export class ControlEvaluationComponent implements OnInit {
 
   controlGroups: ControlGroup[] = [];
+  legend = [];
+  maturityLegend = [];
 
   loading = false;
   public contentHeader: object;
@@ -99,7 +100,9 @@ export class ControlEvaluationComponent implements OnInit {
     this.controlEvaluationService.getAllByStandardIdByEvaluationId(this.standardId, this.evaluationId)
       .subscribe((res: any) => {
 
-        this.controlGroups = res.data;
+        this.controlGroups = res.groups;
+        this.legend = res.legend;
+        this.maturityLegend = res.maturityLegend;
 
         this.loading = false;
       }, error => {
@@ -114,7 +117,7 @@ export class ControlEvaluationComponent implements OnInit {
 
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(AddControlEvaluationComponent, {
-        height: '780px',
+        height: '790px',
         width: '780px',
         autoFocus: false,
         data: {
@@ -139,19 +142,20 @@ export class ControlEvaluationComponent implements OnInit {
   }
 
   edit(controlEvaluation: ControlEvaluation, control: Control) {
-     if (controlEvaluation.controlEvaluationId == 0)
-       this.add(control);
-     else {
+
+    if (controlEvaluation.controlEvaluationId == 0)
+      this.add(control);
+    else {
 
       if (this.loginService.isAuthenticated()) {
         let dialogRef = this.dialog.open(EditControlEvaluationComponent, {
-          height: '780px',
+          height: '790px',
           width: '780px',
           data: {
             _id: controlEvaluation.controlEvaluationId,
             standardId: this.standardId,
             controlName: controlEvaluation.control.name,
-            numeration: controlEvaluation.control.numerationToShow,
+            numeration: control.numerationToShow,
           },
           autoFocus: false,
           panelClass: this.panelClass
@@ -166,7 +170,7 @@ export class ControlEvaluationComponent implements OnInit {
         });
       }
 
-     }
+    }
 
 
   }
@@ -197,6 +201,19 @@ export class ControlEvaluationComponent implements OnInit {
       }
     })
 
+  }
+
+  getBadgeColor(state: string): string {
+    switch (state) {
+      case 'Cumplido': return '#4CAF50'; // verde
+      case 'Pendiente': return '#FFC107'; // amarillo
+      case 'No cumplido': return '#F44336'; // rojo
+      default: return '#000000'; // negro por defecto
+    }
+  }
+
+  updateList(event: string) {
+    this.get();
   }
 
 }

@@ -65,16 +65,16 @@ export class RequirementComponent implements OnInit {
         this.standardId = Number(params.get('id').toString());
         this.get();
       });
-    } else 
+    } else
       this.get();
-    
+
   }
 
-  expandAll(){
+  expandAll() {
     this.accordion.openAll();
   }
 
-  collapseAll(){
+  collapseAll() {
     this.accordion.closeAll();
   }
 
@@ -124,6 +124,7 @@ export class RequirementComponent implements OnInit {
     this.loading = true;
     this.requirementService.get(this.standardId)
       .subscribe((res: any) => {
+        console.log(res);
         this.asignObjects(res);
         this.loading = false;
       }, error => {

@@ -340,3 +340,12 @@
 .col-6 { flex: 0 0 15%; }
 .col-7 { flex: 0 0 15%; }
 .col-8 { flex: 0 0 10%; }
+
+
+.circle {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 5px;
+}

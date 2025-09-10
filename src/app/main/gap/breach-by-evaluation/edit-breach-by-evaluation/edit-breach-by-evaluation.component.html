@@ -1,0 +1,232 @@
+<ng-container *ngIf="loading">
+
+
+  <div mat-dialog-title class="d-flex align-items-center" style="margin-top:-5px;">
+    <h4>...</h4>
+    <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto"
+      style="margin-top:-10px; margin-right:-16px;">
+
+      <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
+        <div class="icon-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="feather feather-x">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </div>
+      </button>
+
+    </div>
+  </div>
+
+  <div class="container text-center mt-5">
+
+    <div class="spinner-grow text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+
+  </div>
+
+</ng-container>
+
+<ng-container *ngIf="!loading">
+
+
+  <div mat-dialog-title class="d-flex align-items-center" style="margin-top:-5px;">
+    <h4>{{title}}</h4>
+    <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto"
+      style="margin-top:-10px; margin-right:-16px;">
+
+      <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
+        <div class="icon-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="feather feather-x">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </div>
+      </button>
+
+    </div>
+  </div>
+
+  <div class="card border" style="margin-top: -15px !important;">
+    <div class="card-body">
+
+      <form [formGroup]="form" (ngSubmit)="save()" class="auth-login-form mt-0" autocomplete="off">
+
+        <div class="form-group">
+
+          <div style="display:flex; margin-bottom: 0px;">
+            <label class="form-label">Tipo de brecha</label>
+
+            <mat-radio-group formControlName="type" aria-label="Select an option">
+              <mat-radio-button value="1" tabindex="1"
+                style="margin-top: 0px;font-family: inherit; margin-left: 20px;">Requerimiento</mat-radio-button>
+              <mat-radio-button value="2" tabindex="1"
+                style="margin-top: 0px; margin-left: 20px;font-family: inherit;">Control</mat-radio-button>
+            </mat-radio-group>
+
+            <a *ngIf="type == '1'" style="font-size: 13px;" container="body" placement="top" class="text-primary ml-2"
+              title="Seleccionar requerimiento" (click)="openRequirements()">
+              Seleccionar requerimiento
+            </a>
+
+            <a *ngIf="type == '2'" style="font-size: 13px;" container="body" placement="top" class="text-primary ml-2"
+              title="Seleccionar control" (click)="openControls()">
+              Seleccionar control
+            </a>
+
+          </div>
+
+        </div>
+
+        <div *ngIf="type == '1'">
+
+          <div class="form-group">
+
+            <input type="text" formControlName="requirement"
+              [ngClass]="{ 'is-invalid': submitted && f.requirement.errors }" class="form-control" aria-describedby=""
+              autofocus="" tabindex="1" readonly>
+
+            <div *ngIf="submitted && f.requirement.errors" class="invalid-feedback">
+              <div *ngIf="f.requirement.errors.required">El requerimiento es obligatorio</div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div *ngIf="type == '2'">
+
+          <div class="form-group">
+
+            <input type="text" formControlName="control" [ngClass]="{ 'is-invalid': submitted && f.control.errors }"
+              class="form-control" aria-describedby="" autofocus="" tabindex="1" readonly>
+
+            <div *ngIf="submitted && f.control.errors" class="invalid-feedback">
+              <div *ngIf="f.control.errors.required">El control es obligatorio</div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="form-group">
+
+          <div style="display:flex; margin-bottom:-10px;">
+            <label class="form-label">Título</label>
+            <label style="margin-left: 5px;">(</label>
+            <label style="font-size: 22px; margin-top:-1px;">*</label>
+            <label>)</label>
+          </div>
+          <input type="text" formControlName="title" [ngClass]="{ 'is-invalid': submitted && f.title.errors }"
+            maxlength="150" class="form-control" aria-describedby="" autofocus="" tabindex="1">
+          <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+            <div *ngIf="f.title.errors.required">El título es obligatorio</div>
+            <div *ngIf="f.title.errors.maxlength">El título no puede tener mas de 150 caracteres </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+
+          <div style="display:flex; margin-bottom:-10px;">
+            <label class="form-label">Descripción</label>
+            <label style="margin-left: 5px;">(</label>
+            <label style="font-size: 22px; margin-top:-1px;">*</label>
+            <label>)</label>
+          </div>
+          <textarea rows="2" formControlName="description"
+            [ngClass]="{ 'is-invalid': submitted && f.description.errors }" maxlength="500" class="form-control"
+            aria-describedby="" autofocus="" tabindex="1"></textarea>
+          <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+            <div *ngIf="f.description.errors.required">La descripción es obligatorio</div>
+            <div *ngIf="f.description.errors.maxlength">La descripción no puede tener mas de 500 caracteres </div>
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="col-md-6">
+
+            <div class="form-group">
+              <div style="display:flex; margin-bottom:-10px;">
+                <label class="form-label">Gravedad</label>
+                <label style="margin-left: 5px;">(</label>
+                <label style="font-size: 22px; margin-top:-1px;">*</label>
+                <label>)</label>
+              </div>
+              <select formControlName="breachSeverityId"
+                [ngClass]="{ 'is-invalid': submitted && f.breachSeverityId.errors }" class="form-control" tabindex="1">
+                <option value=""> Seleccione </option>
+                <option *ngFor="let breachSeverity of breachSeverities" [value]="breachSeverity.breachSeverityId">{{
+                  breachSeverity.name}} </option>
+              </select>
+              <div *ngIf="submitted && f.breachSeverityId.errors" class="invalid-feedback">
+                <div *ngIf="f.breachSeverityId.errors.required">El breachSeverityId es obligatorio</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+
+              <div style="display:flex; margin-bottom:-10px;">
+                <label class="form-label">Responsable</label>
+                <label style="margin-left: 5px;">(</label>
+                <label style="font-size: 22px; margin-top:-1px;">*</label>
+                <label>)</label>
+              </div>
+              <select formControlName="responsibleId" [ngClass]="{ 'is-invalid': submitted && f.responsibleId.errors }"
+                class="form-control" tabindex="1">
+                <option value=""> Seleccione </option>
+                <option *ngFor="let responsible of responsibles" [value]="responsible.responsibleId">{{
+                  responsible.name}}
+                </option>
+              </select>
+              <div *ngIf="submitted && f.responsibleId.errors" class="invalid-feedback">
+                <div *ngIf="f.responsibleId.errors.required">El responsable es obligatorio</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="form-group">
+
+          <div style="display:flex; margin-bottom:2px;">
+            <label class="form-label">Evidencia encontrada</label>
+          </div>
+          <textarea rows="2" formControlName="evidenceDescription"
+            [ngClass]="{ 'is-invalid': submitted && f.evidenceDescription.errors }" maxlength="300" class="form-control"
+            aria-describedby="" autofocus="" tabindex="1"></textarea>
+        </div>
+
+
+        <div class="col-md-12 text-center mt-2">
+          <button *ngIf="!loading2" type="submit" rippleeffect="" class="btn btn-primary mr-1 waves-effect"
+            style="width:180px;height: 40px;" tabindex="1">GUARDAR</button>
+          <button *ngIf="loading2" type="button" disabled="" rippleeffect=""
+            class="btn btn-outline-primary waves-effect mr-1" style="width:180px;height: 40px;">
+            <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span>
+            <span class="ml-25 align-middle">Guardando...</span>
+          </button>
+          <button type="reset" rippleeffect="" class="btn btn-outline-secondary waves-effect" (click)="close()"
+            tabindex="1">CANCELAR</button>
+        </div>
+
+
+      </form>
+
+    </div>
+  </div>
+
+</ng-container>

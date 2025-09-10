@@ -15,6 +15,11 @@ export class ReferenceDocumentationService {
 
     constructor(public http: HttpClient) { }
 
+    getByControlEvaluationId(skip: number, pageSize: number, controlEvaluationId: number, search: string) {
+        const url = environment.apiUrl + '/api/referenceDocumentation/ByControl' + '?skip=' + skip + '&pageSize=' + pageSize + '&controlEvaluationId=' + controlEvaluationId + '&search=' + search;
+        return this.http.get(url);
+    }
+    
     getByrequirementEvaluationId(skip: number, pageSize: number, requirementEvaluationId: number, search: string) {
         const url = environment.apiUrl + '/api/referenceDocumentation' + '?skip=' + skip + '&pageSize=' + pageSize + '&requirementEvaluationId=' + requirementEvaluationId + '&search=' + search;
         return this.http.get(url);
@@ -29,7 +34,7 @@ export class ReferenceDocumentationService {
         const url = environment.apiUrl + '/api/referenceDocumentation';
         return this.http.post(url, referenceDocumentation)
             .pipe(map((resp: any) => {
-                Swal.fire('ReferenceDocumentation registrado', 'El ReferenceDocumentation se registró satisfactoriamente', 'success');
+                Swal.fire('Evidencia registrada', 'La evidencia se registró satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -43,7 +48,7 @@ export class ReferenceDocumentationService {
         const url = environment.apiUrl + '/api/referenceDocumentation/' + referenceDocumentation.referenceDocumentationId;
         return this.http.put(url, referenceDocumentation)
             .pipe(map((resp: any) => {
-                Swal.fire('ReferenceDocumentation actualizado', 'El ReferenceDocumentation se actualizó satisfactoriamente', 'success');
+                Swal.fire('Evidencia actualizada', 'La evidencia se actualizó satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -57,7 +62,7 @@ export class ReferenceDocumentationService {
         const url = environment.apiUrl + '/api/referenceDocumentation/' + id;
         return this.http.delete(url)
             .pipe(map((resp: any) => {
-                Swal.fire('ReferenceDocumentation eliminado', 'El ReferenceDocumentation se eliminó satisfactoriamente', 'success');
+                Swal.fire('Evidencia eliminada', 'La evidencia se eliminó satisfactoriamente', 'success');
                 return resp;
             }
             ))

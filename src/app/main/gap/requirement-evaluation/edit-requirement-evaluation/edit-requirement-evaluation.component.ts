@@ -46,7 +46,6 @@ export class EditRequirementEvaluationComponent implements OnInit {
 
   maturityLevels: MaturityLevel[] = [];
   responsibles: Responsible[] = [];
-  documentations: Documentation[] = [];
   requirementEvaluation: RequirementEvaluation;
   loading = false;
   id: string;
@@ -56,29 +55,22 @@ export class EditRequirementEvaluationComponent implements OnInit {
   public submitted = false;
   public last: string = '';
   standardId: string;
-
   selectedMaturityLevel: MaturityLevel = new MaturityLevel();
-
-
   public currentSkin: string;
   private _unsubscribeAll: Subject<any>;
   private panelClass: string;
-
   evaluationId: number;
+  evidencesIsUpdated: boolean = false;
 
   ngOnInit(): void {
-
     this.getTheme();
     this.initForm();
-  
     this.initRequirementEvaluation();
     this.id = this.data['_id'];
     this.standardId = this.data['standardId'];
     this.requirementName = this.data['requirementName'];
     this.numeration = this.data['numeration'];
     this.getAllResponsibles();
-    this.getAllDocumentations();
-    this.getAllMaturityLevels();
   }
 
   getTheme() {
@@ -103,26 +95,15 @@ export class EditRequirementEvaluationComponent implements OnInit {
     this.requirementEvaluation = new RequirementEvaluation();
   }
 
-
-
   initForm() {
     this.form = this._formBuilder.group({
       maturityLevel: ['', [Validators.required,]],
       value: ['', [Validators.required, Validators.maxLength(8),]],
       responsible: ['', [Validators.required,]],
       justification: ['', [Validators.required, Validators.maxLength(500),]],
-      improvementActions: ['', [Validators.maxLength(500),]],
+      improvementActions: ['', [Validators.maxLength(1000),]],
       documentation: ['', [Validators.required,]],
     });
-  }
-
-  getAllDocumentations() {
-    this.documentationService.getAll(Number(this.standardId))
-      .subscribe((res: any) => {
-        this.documentations = res.data;
-      }, error => {
-        ErrorManager.handleError(error);
-      });
   }
 
   obtain(id: string) {
@@ -132,10 +113,7 @@ export class EditRequirementEvaluationComponent implements OnInit {
         this.requirementEvaluation = res.data;
         this.setFormValue(this.requirementEvaluation);
         this.changeMaturityLevel(this.requirementEvaluation.maturityLevelId.toString());
-
-        console.log(res.data);
         this.evaluationId = this.requirementEvaluation.evaluationId;
-        
         this.loading = false;
       }, error => {
         this.loading = false;
@@ -156,7 +134,6 @@ export class EditRequirementEvaluationComponent implements OnInit {
 
   }
 
-
   getFormValue() {
     this.requirementEvaluation.requirementEvaluationId = Number(this.id);
     if (this.form.value.maturityLevel)
@@ -167,24 +144,28 @@ export class EditRequirementEvaluationComponent implements OnInit {
     this.requirementEvaluation.improvementActions = this.form.value.improvementActions;
   }
 
-
   getAllMaturityLevels() {
+    this.loading = true;
     this.maturityLevelService.getAll()
       .subscribe((res: any) => {
         this.maturityLevels = res.data;
-        this.initRequirementEvaluation();
+        this.loading = false;
         this.obtain(this.id);
       }, error => {
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }
 
   getAllResponsibles() {
+    this.loading = true;
     this.responsibleService.getAll(Number(this.standardId))
       .subscribe((res: any) => {
         this.responsibles = res.data;
-        //this.initRequirementEvaluation();
+        this.loading = false;
+        this.getAllMaturityLevels();
       }, error => {
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }
@@ -219,7 +200,7 @@ export class EditRequirementEvaluationComponent implements OnInit {
     // });
 
     // this.requirementEvaluation.referenceDocumentations = referenceDocumentations;
-    
+
 
     this.requirementEvaluationService.update(this.requirementEvaluation)
       .subscribe(res => {
@@ -232,15 +213,6 @@ export class EditRequirementEvaluationComponent implements OnInit {
         ErrorManager.handleError(error);
       });
 
-  }
-
-  getDocumentationName(id: number) {
-    let name = '';
-    this.documentations.forEach(item => {
-      if (item.documentationId == id)
-        name = item.name;
-    });
-    return name;
   }
 
   changeMaturityLevel(id: string) {
@@ -307,10 +279,12 @@ export class EditRequirementEvaluationComponent implements OnInit {
 
   }
 
+  updateList(event: any) {
+    this.evidencesIsUpdated = true;
+  }
 
   close() {
-    console.log('Closing dialog');
-    this.dialogRef.close();
+    this.dialogRef.close({ updated: this.evidencesIsUpdated });
   }
 
 

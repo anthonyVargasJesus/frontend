@@ -19,6 +19,7 @@ import { LoginService } from 'app/services/login.service';
 import { CoreConfigService } from '@core/services/config.service';
 import { Subject } from 'rxjs/internal/Subject';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+import { generateNumericId, getReferenceDocsKey } from 'app/config/config';
 // import { AddResponsibleComponent } from '../../responsible/add-responsible/add-responsible.component';
 // import { AddDocumentationComponent } from '../../documentation/add-documentation/add-documentation.component';
 
@@ -65,9 +66,10 @@ export class AddControlEvaluationComponent implements OnInit {
   public currentSkin: string;
   private _unsubscribeAll: Subject<any>;
   private panelClass: string;
+  controlEvaluationId: number;
 
   ngOnInit(): void {
-
+    this.controlEvaluationId = generateNumericId();
     this.getTheme();
     this.initForm();
     this.evaluationId = this.data['evaluationId'];
@@ -80,6 +82,7 @@ export class AddControlEvaluationComponent implements OnInit {
     this.getAllDocumentations();
     this.initControlEvaluation();
   }
+
 
   getTheme() {
     this._unsubscribeAll = new Subject();
@@ -98,14 +101,13 @@ export class AddControlEvaluationComponent implements OnInit {
     else
       this.panelClass = 'custom-default-dialog-container';
   }
-  
+
   initForm() {
     this.form = this._formBuilder.group({
       maturityLevel: ['', [Validators.required,]],
       responsible: ['', [Validators.required,]],
       justification: ['', [Validators.required, Validators.maxLength(500),]],
       improvementActions: ['', [Validators.required, Validators.maxLength(500),]],
-      documentation: ['', [Validators.required,]],
     });
   }
 
@@ -156,10 +158,6 @@ export class AddControlEvaluationComponent implements OnInit {
   }
 
 
-
-
-
-
   get f() {
     return this.form.controls;
   }
@@ -179,26 +177,16 @@ export class AddControlEvaluationComponent implements OnInit {
 
     this.controlEvaluation.value = this.selectedMaturityLevel.value;
 
-    let array = [];
-    array = this.form.value.documentation;
-
-    let referenceDocumentations: ReferenceDocumentation[] = [];
-    array.forEach(id => {
-      let model: ReferenceDocumentation = new ReferenceDocumentation();
-      model.name = this.getDocumentationName(id);
-      model.documentationId = id;
-      model.evaluationId = Number(this.evaluationId);
-      referenceDocumentations.push(model);
-    });
-
-    this.controlEvaluation.referenceDocumentations = referenceDocumentations;
+    this.controlEvaluation.referenceDocumentations = this.getReferenceDocumentationsFromLocalStorage();
 
     this.controlEvaluation.controlType = '';
     this.controlEvaluation.controlDescription = '';
-    
+
     this.controlEvaluationService.insert(this.controlEvaluation)
       .subscribe(res => {
         this.controlEvaluation = res.data;
+        let LS_KEY = getReferenceDocsKey(this.controlEvaluationId, 0);
+        localStorage.removeItem(LS_KEY);
         this.loading2 = false;
         this.dialogRef.close({ updated: true });
       }, error => {
@@ -208,13 +196,16 @@ export class AddControlEvaluationComponent implements OnInit {
 
   }
 
-  getDocumentationName(id: number) {
-    let name = '';
-    this.documentations.forEach(item => {
-      if (item.documentationId == id)
-        name = item.name;
-    });
-    return name;
+  getReferenceDocumentationsFromLocalStorage() {
+
+    let LS_KEY = getReferenceDocsKey(this.controlEvaluationId, 0);
+    const stored = localStorage.getItem(LS_KEY);
+
+    const references: ReferenceDocumentation[] = stored
+      ? JSON.parse(stored)
+      : [];
+
+    return references;
   }
 
 

@@ -45,6 +45,18 @@ import { SectionComponent } from './section/section.component';
 import { AddSectionComponent } from './section/add-section/add-section.component';
 import { EditSectionComponent } from './section/edit-section/edit-section.component';
 import { SectionByDocumentationIdComponent } from './section/section-by-documentation-id/section-by-documentation-id.component';
+import { DefaultRiskComponent } from './default-risk/default-risk.component';
+import { AddDefaultRiskComponent } from './default-risk/add-default-risk/add-default-risk.component';
+import { EditDefaultRiskComponent } from './default-risk/edit-default-risk/edit-default-risk.component';
+import { RequirementInDefaultRiskByRequirementComponent } from './requirement-in-default-risk-by-requirement/requirement-in-default-risk-by-requirement.component';
+import { AddRequirementInDefaultRiskByRequirementComponent } from './requirement-in-default-risk-by-requirement/add-requirement-in-default-risk-by-requirement/add-requirement-in-default-risk-by-requirement.component';
+import { EditRequirementInDefaultRiskByRequirementComponent } from './requirement-in-default-risk-by-requirement/edit-requirement-in-default-risk-by-requirement/edit-requirement-in-default-risk-by-requirement.component';
+import { ControlInDefaultRiskByControlComponent } from './control-in-default-risk-by-control/control-in-default-risk-by-control.component';
+import { AddControlInDefaultRiskByControlComponent } from './control-in-default-risk-by-control/add-control-in-default-risk-by-control/add-control-in-default-risk-by-control.component';
+import { EditControlInDefaultRiskByControlComponent } from './control-in-default-risk-by-control/edit-control-in-default-risk-by-control/edit-control-in-default-risk-by-control.component';
+import { AddActivesInventoryInDefaultRiskByDefaultRiskComponent } from './actives-inventory-in-default-risk-by-default-risk/add-actives-inventory-in-default-risk-by-default-risk/add-actives-inventory-in-default-risk-by-default-risk.component';
+import { ActivesInventoryInDefaultRiskByDefaultRiskComponent } from './actives-inventory-in-default-risk-by-default-risk/actives-inventory-in-default-risk-by-default-risk.component';
+import { EditActivesInventoryInDefaultRiskByDefaultRiskComponent } from './actives-inventory-in-default-risk-by-default-risk/edit-actives-inventory-in-default-risk-by-default-risk/edit-actives-inventory-in-default-risk-by-default-risk.component';
 
 
 @NgModule({
@@ -56,7 +68,10 @@ import { SectionByDocumentationIdComponent } from './section/section-by-document
         AddControlGroupComponent, EditControlGroupComponent, EditControlComponent, AddControlComponent,
         PolicyByStandardComponent, AddPolicyByStandardComponent, EditPolicyComponent,
         ScopeByStandardComponent, AddScopeByStandardComponent, EditScopeByStandardComponent, HomeStandardComponent,
-        SectionComponent, AddSectionComponent,EditSectionComponent, SectionByDocumentationIdComponent, 
+        SectionComponent, AddSectionComponent,EditSectionComponent, SectionByDocumentationIdComponent, DefaultRiskComponent, AddDefaultRiskComponent, EditDefaultRiskComponent,
+        RequirementInDefaultRiskByRequirementComponent, AddRequirementInDefaultRiskByRequirementComponent, EditRequirementInDefaultRiskByRequirementComponent ,
+        ControlInDefaultRiskByControlComponent, AddControlInDefaultRiskByControlComponent, EditControlInDefaultRiskByControlComponent,
+        ActivesInventoryInDefaultRiskByDefaultRiskComponent, AddActivesInventoryInDefaultRiskByDefaultRiskComponent, EditActivesInventoryInDefaultRiskByDefaultRiskComponent
       ],
   imports: [
         CommonModule,

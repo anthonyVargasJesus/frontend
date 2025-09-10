@@ -5,10 +5,12 @@ import Swal from 'sweetalert2';
 import { ReferenceDocumentation } from 'app/models/reference-documentation';
 import { ErrorManager } from 'app/errors/error-manager';
 import { ReferenceDocumentationService } from 'app/services/reference-documentation.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { DocumentationService } from 'app/services/documentation.service';
 import { Documentation } from 'app/models/documentation';
 import { DialogData } from 'app/models/dialog-data';
+import { LoginService } from 'app/services/login.service';
+import { AddFileToFirebaseComponent } from '../../reference-documentation-in-storage/add-file-to-firebase/add-file-to-firebase.component';
 
 
 @Component({
@@ -27,7 +29,7 @@ export class EditReferenceDocumentationComponent implements OnInit {
     private _formBuilder: FormBuilder,
     public router: Router, private documentationService: DocumentationService,
     @Inject(MAT_DIALOG_DATA) private data: DialogData, private dialogRef: MatDialogRef<EditReferenceDocumentationComponent>,
-
+    private _loginService: LoginService, private dialog: MatDialog,
   ) { }
 
   documentations: Documentation[] = [];
@@ -152,6 +154,34 @@ export class EditReferenceDocumentationComponent implements OnInit {
       });
 
   }
+
+    uploadImage() {
+    
+        if (this._loginService.isAuthenticated()) {
+          let dialogRef = this.dialog.open(AddFileToFirebaseComponent, {
+            height: '320px',
+            width: '500px',
+            autoFocus: false,
+            data: {
+              standardId: this.standardId,
+              requirementEvaluationId: this.requirementEvaluationId,
+            },
+            panelClass: this.panelClass
+          });
+    
+          dialogRef.afterClosed().subscribe(data => {
+            if (data == null)
+              return;
+    
+            if (data.updated == true) {
+              this.form.patchValue({ url: data.url }, { emitEvent: true, onlySelf: false });
+            }
+    
+    
+          });
+        }
+    
+      }
 
   close() {
     this.dialogRef.close();

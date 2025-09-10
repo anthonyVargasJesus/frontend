@@ -1,0 +1,34 @@
+<mat-accordion class="example-headers-align" multi="true">
+    <mat-expansion-panel *ngFor="let req of requirements" class="border"
+        style="background-color: transparent !important;margin-bottom: 7px !important;">
+        <mat-expansion-panel-header>
+            <mat-panel-title
+                style="font-family: Montserrat, Helvetica, Arial, serif !important; font-weight: 800 !important;">
+                <h5>
+
+                    {{req.numerationToShow}}
+
+                    . &nbsp; {{req.name}}
+                </h5>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <hr style="margin-top: -10px !important;">
+
+
+        <!-- Renderiza hijos si existen -->
+        <div *ngIf="req.children && req.children.length > 0">
+            <app-requirement-node [requirements]="req.children" (selectEvent)="selectChild($event)" ></app-requirement-node>
+        </div>
+
+        <br>
+
+        <button (click)="select(req)" rippleeffect="" title="Seleccionar Requerimiento"
+            class="btn btn-primary text-center" style="float: right;">
+            <i data-feather='plus'></i>
+            SELECCIONAR REQUERIMIENTO
+        </button>
+
+
+    </mat-expansion-panel>
+</mat-accordion>

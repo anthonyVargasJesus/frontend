@@ -36,6 +36,9 @@ export class EditRequirementComponent implements OnInit {
   public submitted = false;
   public last: string = '';
 
+  requirementId: number;
+  standardId: number;
+
   ngOnInit(): void {
     this.initForm();
     this.initRequirement();
@@ -69,6 +72,12 @@ export class EditRequirementComponent implements OnInit {
         this.requirement = res.data;
         this.getAllRequirements(this.requirement.standardId);
         this.setFormValue(this.requirement);
+        this.requirementId = this.requirement.requirementId;
+        this.standardId = this.requirement.standardId;
+
+        console.log(this.standardId);
+        console.log(this.requirementId);
+        
         this.loading = false;
       }, error => {
         this.loading = false;

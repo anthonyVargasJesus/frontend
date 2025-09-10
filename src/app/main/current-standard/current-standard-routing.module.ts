@@ -10,6 +10,8 @@ import { ControlGroupComponent } from './control-group/control-group.component';
 import { PolicyByStandardComponent } from './policy-by-standard/policy-by-standard.component';
 import { ScopeByStandardComponent } from './scope-by-standard/scope-by-standard.component';
 import { HomeStandardComponent } from './home-standard/home-standard.component';
+import { DefaultRisk } from 'app/models/default-risk';
+import { DefaultRiskComponent } from './default-risk/default-risk.component';
 
 
 const routes: Routes = [
@@ -22,6 +24,7 @@ const routes: Routes = [
     { path: 'control-group/:id', component: ControlGroupComponent, },
     { path: 'policy/:id', component: PolicyByStandardComponent, },
     { path: 'scope/:id', component: ScopeByStandardComponent, },
+    { path: 'default-risk/:id', component: DefaultRiskComponent, },
     { path: 'home', component: HomeStandardComponent, },
 ];
 

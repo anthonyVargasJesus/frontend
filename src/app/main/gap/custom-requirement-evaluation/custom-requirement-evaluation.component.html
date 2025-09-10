@@ -7,7 +7,7 @@
             <tr>
 
                 <td class="text-center"
-                    style="width: 130px !important;max-width: 130px !important;min-width: 130px !important;">
+                    style="width: 70px !important;max-width: 70px !important;min-width: 70px !important;padding-left: 10px; padding-right: 10px;">
                     <!-- {{ requirementEvaluation.requirement.numerationToShow }} -->
 
                     <span style="font-weight: 700; font-size: 13px !important;">
@@ -41,24 +41,10 @@
                 <td class="text-center"
                     style="width: 150px !important;max-width: 150px !important;min-width: 150px !important;padding-left: 0px; padding-right: 0px;">
 
-                    <!-- <div style="display: flex; flex-direction: column; align-items: center;">
-
-                        <mat-icon *ngIf="requirementEvaluation.state == 'Cumplido'" class="icon success"
-                            style="font-size: 25px;">check_circle</mat-icon>
-                        <mat-icon *ngIf="requirementEvaluation.state == 'No cumplido'" class="icon error"
-                            style="font-size: 25px;">cancel</mat-icon>
-                        <mat-icon *ngIf="requirementEvaluation.state == 'Pendiente'" class="icon warning"
-                            style="font-size: 25px;">lens</mat-icon>
-
-                        <span class="bold" style="white-space: nowrap; margin-top: 5px;"
-                            [class.success]="requirementEvaluation.state == 'Cumplido'"
-                            [class.error]="requirementEvaluation.state == 'No cumplido'"
-                            [class.warning]="requirementEvaluation.state == 'Pendiente'">
-                            {{requirementEvaluation.state}}
-                        </span>
-
-                    </div> -->
-
+                    <span *ngIf="requirementEvaluation.percentage>0" class="font-weight-bolder">
+                        {{requirementEvaluation.percentage}}%
+                    </span>
+                    <br>
 
                     <div class="status-badge" [ngStyle]="{
        'color': getBadgeColor(requirementEvaluation.state),
@@ -69,12 +55,12 @@
                 </td>
 
 
-                <td class="text-center"
+                <!-- <td class="text-center"
                     style="width: 110px !important;max-width: 110px !important;min-width: 110px !important;padding-left: 0px; padding-right:0px ;">
                     <span *ngIf="requirementEvaluation.percentage>0" class="font-weight-bolder">
                         {{requirementEvaluation.percentage}}%
                     </span>
-                </td>
+                </td> -->
 
                 <td class="text-center"
                     style="width: 130px !important;max-width: 130px !important;min-width: 130px !important;">
