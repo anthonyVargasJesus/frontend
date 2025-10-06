@@ -39,9 +39,13 @@ const appRoutes: Routes = [
     path: 'mantto',
     loadChildren: () => import('./main/sample/sample.module').then(m => m.SampleModule)
   },
-    {
+  {
     path: 'gap',
     loadChildren: () => import('./main/gap/gap.module').then(m => m.GapModule)
+  },
+  {
+    path: 'risks',
+    loadChildren: () => import('./main/risks/risks.module').then(m => m.RisksModule)
   },
   {
     path: '',

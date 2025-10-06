@@ -25,6 +25,12 @@ import { EditControlTypeComponent } from './control-type/edit-control-type/edit-
 import { EditDocumentTypeComponent } from './document-type/edit-document-type/edit-document-type.component';
 import { AddDocumentTypeComponent } from './document-type/add-document-type/add-document-type.component';
 import { DocumentTypeComponent } from './document-type/document-type.component';
+import { ActionPlanStatusComponent } from './action-plan-status/action-plan-status.component';
+import { AddActionPlanStatusComponent } from './action-plan-status/add-action-plan-status/add-action-plan-status.component';
+import { EditActionPlanStatusComponent } from './action-plan-status/edit-action-plan-status/edit-action-plan-status.component';
+import { ActionPlanPriorityComponent } from './action-plan-priority/action-plan-priority.component';
+import { AddActionPlanPriorityComponent } from './action-plan-priority/add-action-plan-priority/add-action-plan-priority.component';
+import { EditActionPlanPriorityComponent } from './action-plan-priority/edit-action-plan-priority/edit-action-plan-priority.component';
 
 
 @NgModule({
@@ -33,6 +39,8 @@ import { DocumentTypeComponent } from './document-type/document-type.component';
     RoleInUserByUserComponent, AddRoleInUserByUserComponent, EditRoleInUserByUserComponent,
     ControlTypeComponent, AddControlTypeComponent, EditControlTypeComponent,
     DocumentTypeComponent, AddDocumentTypeComponent, EditDocumentTypeComponent,
+    ActionPlanStatusComponent, AddActionPlanStatusComponent, EditActionPlanStatusComponent,
+    ActionPlanPriorityComponent, AddActionPlanPriorityComponent, EditActionPlanPriorityComponent
   ],
   imports: [
         CommonModule,

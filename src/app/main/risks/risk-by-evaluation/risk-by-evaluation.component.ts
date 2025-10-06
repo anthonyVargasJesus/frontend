@@ -1,30 +1,29 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { getResults, PAGE_SIZE } from 'app/config/config';
 import { LoginService } from 'app/services/login.service';
 import { ErrorManager } from 'app/errors/error-manager';
-import { Breach } from 'app/models/breach';
-import { BreachService } from 'app/services/breach.service';
+import { Risk } from 'app/models/risk';
+import { RiskService } from 'app/services/risk.service';
 import Swal from 'sweetalert2';
 import { Subject } from 'rxjs/internal/Subject';
 import { CoreConfigService } from '@core/services/config.service';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
-import { EditBreachByEvaluationComponent } from './edit-breach-by-evaluation/edit-breach-by-evaluation.component';
-import { AddBreachByEvaluationComponent } from './add-breach-by-evaluation/add-breach-by-evaluation.component';
+
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-breach-by-evaluation',
-  templateUrl: './breach-by-evaluation.component.html',
+  selector: 'app-risk-by-evaluation',
+  templateUrl: './risk-by-evaluation.component.html',
   styles: [
   ]
 })
 
-export class BreachByEvaluationComponent implements OnInit {
+export class RiskByEvaluationComponent implements OnInit {
 
 
-  breachs: Breach[] = [];
+  risks: Risk[] = [];
   selectedRow = 0;
   page = 1;
   skip = 0;
@@ -40,15 +39,12 @@ export class BreachByEvaluationComponent implements OnInit {
   public currentSkin: string;
   private _unsubscribeAll: Subject<any>;
   private panelClass: string;
-
   @Input()
   evaluationId: number;
 
-  @Input()
-  standardId: number;
 
-  constructor(private breachService: BreachService, private loginService: LoginService,
-    private _coreConfigService: CoreConfigService, private router: Router,
+  constructor(private riskService: RiskService, private router: Router, private loginService: LoginService,
+    private _coreConfigService: CoreConfigService,
     private dialog: MatDialog
   ) {
 
@@ -80,20 +76,22 @@ export class BreachByEvaluationComponent implements OnInit {
   }
 
 
+
+
   initMenuName() {
     this.contentHeader = {
-      headerTitle: 'Breach',
+      headerTitle: 'Risk',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'Breach',
+            name: 'Risk',
             isLink: false,
             link: '#'
           },
           {
-            name: 'Breach',
+            name: 'Risk',
             isLink: false
           }
         ]
@@ -101,12 +99,14 @@ export class BreachByEvaluationComponent implements OnInit {
     }
   }
 
+
+
   get() {
     this.loading = true;
-    this.breachService.getByevaluationId(this.skip, this.pageSize, this.evaluationId, this.searchText)
+    this.riskService.getByevaluationId(this.skip, this.pageSize, 
+      this.evaluationId, this.searchText)
       .subscribe((res: any) => {
         this.asignObjects(res);
-        console.log(res)
         this.page = (this.skip / this.pageSize) + 1;
         this.results = getResults(this.total, this.totalPages);
         this.loading = false;
@@ -147,62 +147,17 @@ export class BreachByEvaluationComponent implements OnInit {
   }
 
   add() {
-
-    if (this.loginService.isAuthenticated()) {
-      let dialogRef = this.dialog.open(AddBreachByEvaluationComponent, {
-        height: '700px',
-        width: '700px',
-        autoFocus: false, data: {
-          evaluationId: this.evaluationId,
-          standardId: this.standardId,
-          panelClass: this.panelClass
-        }, 
-        panelClass: this.panelClass
-      });
-
-      dialogRef.afterClosed().subscribe(data => {
-        if (data == null)
-          return;
-
-        if (data.updated == true)
-          this.get();
-      });
-    }
-
+    this.router.navigate(['/risks/add-risk', this.evaluationId]);
   }
 
   edit(id: String) {
-
-    this.router.navigate(['/gap/edit-breach', id, this.standardId]);
-    // if (this.loginService.isAuthenticated()) {
-    //   let dialogRef = this.dialog.open(EditBreachByEvaluationComponent, {
-    //     height: '700px',
-    //     width: '700px',
-    //     data: {
-    //       _id: id, evaluationId: this.evaluationId,
-    //         standardId: this.standardId,
-    //         panelClass: this.panelClass
-    //     },
-    //     autoFocus: false,
-    //     panelClass: this.panelClass
-    //   });
-
-    //   dialogRef.afterClosed().subscribe(data => {
-    //     if (data == null)
-    //       return;
-
-    //     if (data.updated == true)
-    //       this.get();
-    //   });
-    // }
-
+    this.router.navigate(['/risks/edit-risk', id]);
   }
 
-
-  delete(breach: Breach) {
+  delete(risk: Risk) {
 
     let text: string;
-    text = '¿Está seguro de eliminar el registro ' + breach.title + '?';
+    text = '¿Está seguro de eliminar el registro ' + risk.activesInventoryName + '?';
 
     Swal.fire({
       title: 'Confirmación',
@@ -216,7 +171,7 @@ export class BreachByEvaluationComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.breachService.delete(breach.breachId)
+        this.riskService.delete(risk.riskId)
           .subscribe(deleted => {
             this.get();
           });
@@ -239,28 +194,11 @@ export class BreachByEvaluationComponent implements OnInit {
   }
 
   asignObjects(res) {
-    this.breachs = res.data;
+    this.risks = res.data;
     this.total = res.pagination.totalRows;
     this.totalPages = res.pagination.totalPages;
   }
 
 
-}  //{
-//path: 'breach',
-//component: BreachComponent,
-//data: { animation: 'breach' }
-//},
-
-//BreachComponent, AddBreachComponent, EditBreachComponent
-//{
-//id: 'breach',
-//title: '',
-//translate: 'MENU.BREACH',
-//type: 'item',
-//icon: 'file',
-//url: 'breach'
-//},
-
-//   BREACH: 'Breach'
-
+}  
 

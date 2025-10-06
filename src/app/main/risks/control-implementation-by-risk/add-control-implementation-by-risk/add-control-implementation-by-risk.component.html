@@ -1,0 +1,134 @@
+<ng-container *ngIf="loading">
+
+  <div class="container text-center mt-5">
+
+    <div class="spinner-grow text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+
+  </div>
+
+</ng-container>
+
+<ng-container *ngIf="!loading">
+
+      <small class="form-text text-muted mb-2 text-center" style="margin-top: -10px;">Los campos con(*)
+        son obligatorios</small>
+      <form [formGroup]="form" (ngSubmit)="save()" class="auth-login-form mt-0" autocomplete="off">
+        <div class="form-group">
+
+          <div style="display:flex; margin-bottom:-10px;">
+            <label class="form-label">Actividades</label>
+            <label style="margin-left: 5px;">(</label>
+            <label style="font-size: 22px; margin-top:-1px;">*</label>
+            <label>)</label>
+          </div>
+          <textarea rows="3" formControlName="activities" [ngClass]="{ 'is-invalid': submitted && f.activities.errors }"
+            maxlength="500" class="form-control" aria-describedby="" autofocus="" tabindex="1"></textarea>
+          <div *ngIf="submitted && f.activities.errors" class="invalid-feedback">
+            <div *ngIf="f.activities.errors.required">Las actividades es obligatorio</div>
+            <div *ngIf="f.activities.errors.maxlength">Las actividades no puede tener mas de 500 caracteres </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+
+              <div style="display:flex; margin-bottom:-10px;">
+                <label class="form-label">Inicio</label>
+                <label style="margin-left: 5px;">(</label>
+                <label style="font-size: 22px; margin-top:-1px;">*</label>
+                <label>)</label>
+              </div>
+              <div class="input-group date datepicker">
+                <input matInput tabindex="1" class="form-control" formControlName="startDate"
+                  [ngClass]="{ 'is-invalid': submitted && f.startDate.errors }" name="startDate"
+                  [matDatepicker]="basicDatepickerstartDate">
+                <span class="input-group-addon input-group-append border"
+                  style="margin-top: -1px !important;height: 38px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">
+                  <mat-datepicker-toggle [for]="basicDatepickerstartDate" class="text-primary"></mat-datepicker-toggle>
+                </span>
+              </div>
+              <mat-datepicker #basicDatepickerstartDate required style="z-index:99999;"></mat-datepicker>
+              <div *ngIf="submitted && f.startDate.errors" style="    width: 100%;
+                    margin-top: 5px;
+                    font-size: 0.857rem;
+                    color: #ea5455;">
+                <div *ngIf="f.startDate.errors.required">La fecha de inicio es obligatoria</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+
+              <div style="display:flex; margin-bottom:2px;">
+                <label class="form-label">Fecha de verificación</label>
+              </div>
+              <div class="input-group date datepicker">
+                <input matInput tabindex="1" class="form-control" formControlName="verificationDate"
+                  name="verificationDate" [matDatepicker]="basicDatepickerverificationDate">
+                <span class="input-group-addon input-group-append border"
+                  style="height: 37px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">
+                  <mat-datepicker-toggle class="text-primary"
+                    [for]="basicDatepickerverificationDate"></mat-datepicker-toggle>
+                </span>
+              </div>
+              <mat-datepicker #basicDatepickerverificationDate required style="z-index:99999;"></mat-datepicker>
+            </div>
+          </div>
+        </div>
+
+      
+
+       
+        <div class="form-group">
+
+          <div style="display:flex; margin-bottom:-10px;">
+            <label class="form-label">Responsable</label>
+            <label style="margin-left: 5px;">(</label>
+            <label style="font-size: 22px; margin-top:-1px;">*</label>
+            <label>)</label>
+          </div>
+          <select formControlName="responsibleId" [ngClass]="{ 'is-invalid': submitted && f.responsibleId.errors }"
+            class="form-control" tabindex="1">
+            <option value=""> Seleccione </option>
+            <option *ngFor="let responsible of responsibles" [value]="responsible.responsibleId">{{ responsible.name}}
+            </option>
+          </select>
+          <div *ngIf="submitted && f.responsibleId.errors" class="invalid-feedback">
+            <div *ngIf="f.responsibleId.errors.required">El responsable es obligatorio</div>
+          </div>
+        </div>
+        <div class="form-group">
+
+          <div style="display:flex; margin-bottom:2px;">
+            <label class="form-label">Observación</label>
+          </div>
+          <textarea rows="3" formControlName="observation"
+            [ngClass]="{ 'is-invalid': submitted && f.observation.errors }" maxlength="500" class="form-control"
+            aria-describedby="" autofocus="" tabindex="1"></textarea>
+        </div>
+
+
+        <div class="col-md-12 text-center mt-3">
+          <button *ngIf="!loading2" type="submit" rippleeffect="" class="btn btn-primary mr-1 waves-effect"
+            style="width:180px;height: 40px;" tabindex="1">GUARDAR</button>
+          <button *ngIf="loading2" type="button" disabled="" rippleeffect=""
+            class="btn btn-outline-primary waves-effect mr-1" style="width:180px;height: 40px;">
+            <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span>
+            <span class="ml-25 align-middle">Guardando...</span>
+          </button>
+       
+        </div>
+
+
+      </form>
+
+</ng-container>

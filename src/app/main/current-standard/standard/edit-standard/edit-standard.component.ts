@@ -82,6 +82,7 @@ export class EditStandardComponent implements OnInit {
     this.standardService.obtain(id)
       .subscribe((res: any) => {
         this.standard = res.data;
+        
         this.setFormValue(this.standard);
         this.loading = false;
       }, error => {

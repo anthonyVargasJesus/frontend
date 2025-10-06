@@ -1,0 +1,210 @@
+<ng-container *ngIf="loading">
+
+
+    <div mat-dialog-title class="d-flex align-items-center" style="margin-top:-5px;">
+        <h4>...</h4>
+        <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto"
+            style="margin-top:-10px; margin-right:-16px;">
+
+            <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
+                <div class="icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-x">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+            </button>
+
+        </div>
+    </div>
+
+    <div class="container text-center mt-5">
+
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+
+    </div>
+
+</ng-container>
+
+<ng-container *ngIf="!loading">
+
+
+    <div mat-dialog-title class="d-flex align-items-center" style="margin-top:-5px;">
+        <h4>NUEVO PLAN DE ACCIÓN</h4>
+        <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto" style="margin-right: -16px;">
+
+            <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
+                <div class="icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-x">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+            </button>
+
+        </div>
+    </div>
+
+    <div class="card border" style="margin-top: -15px !important;">
+        <div class="card-body">
+            <small class="form-text text-muted mb-2 text-center" style="margin-top: -10px;">Los campos con(*)
+                son obligatorios</small>
+            <form [formGroup]="form" (ngSubmit)="save()" class="auth-login-form mt-0" autocomplete="off">
+                <div class="form-group">
+
+                    <div style="display:flex; margin-bottom:-10px;">
+                        <label class="form-label">Título</label>
+                        <label style="margin-left: 5px;">(</label>
+                        <label style="font-size: 22px; margin-top:-1px;">*</label>
+                        <label>)</label>
+                    </div>
+                    <input type="text" formControlName="title" [ngClass]="{ 'is-invalid': submitted && f.title.errors }"
+                        maxlength="150" class="form-control" aria-describedby="" autofocus="" tabindex="1">
+                    <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                        <div *ngIf="f.title.errors.required">El título es obligatorio</div>
+                        <div *ngIf="f.title.errors.maxlength">El título no puede tener mas de 150 caracteres </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            <div style="display:flex; margin-bottom:-10px;">
+                                <label class="form-label">Responsable</label>
+                                <label style="margin-left: 5px;">(</label>
+                                <label style="font-size: 22px; margin-top:-1px;">*</label>
+                                <label>)</label>
+                            </div>
+                            <select formControlName="responsibleId"
+                                [ngClass]="{ 'is-invalid': submitted && f.responsibleId.errors }" class="form-control"
+                                tabindex="1">
+                                <option value=""> Seleccione </option>
+                                <option *ngFor="let responsible of responsibles" [value]="responsible.responsibleId">{{
+                                    responsible.name}} </option>
+                            </select>
+                            <div *ngIf="submitted && f.responsibleId.errors" class="invalid-feedback">
+                                <div *ngIf="f.responsibleId.errors.required">El responsable responsibleId es obligatorio
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            <div style="display:flex; margin-bottom:-10px;">
+                                <label class="form-label">Prioridad</label>
+                                <label style="margin-left: 5px;">(</label>
+                                <label style="font-size: 22px; margin-top:-1px;">*</label>
+                                <label>)</label>
+                            </div>
+                            <select formControlName="actionPlanPriorityId"
+                                [ngClass]="{ 'is-invalid': submitted && f.actionPlanPriorityId.errors }"
+                                class="form-control" tabindex="1">
+                                <option value=""> Seleccione </option>
+                                <option *ngFor="let actionPlanPriority of actionPlanPriorities"
+                                    [value]="actionPlanPriority.actionPlanPriorityId">{{ actionPlanPriority.name}}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && f.actionPlanPriorityId.errors" class="invalid-feedback">
+                                <div *ngIf="f.actionPlanPriorityId.errors.required">La prioridad es obligatoria</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            <div style="display:flex; margin-bottom:-10px;">
+                                <label class="form-label">Fecha de inicio</label>
+                                <label style="margin-left: 5px;">(</label>
+                                <label style="font-size: 22px; margin-top:-1px;">*</label>
+                                <label>)</label>
+                            </div>
+                            <div class="input-group date datepicker">
+                                <input matInput readonly tabindex="1" class="form-control" formControlName="startDate"
+                                    name="startDate" [matDatepicker]="basicDatepickerstartDate">
+                                <span class="input-group-addon input-group-append border"
+                                    style="height: 37px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">
+                                    <mat-datepicker-toggle class="text-primary"
+                                        [for]="basicDatepickerstartDate"></mat-datepicker-toggle>
+                                </span>
+                            </div>
+                            <mat-datepicker #basicDatepickerstartDate required style="z-index:99999;"></mat-datepicker>
+                            <div *ngIf="submitted && f.startDate.errors" class="invalid-feedback">
+                                <div *ngIf="f.startDate.errors.required">La fecha de inicio es obligatoria</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            <div style="display:flex; margin-bottom:-10px;">
+                                <label class="form-label">Fecha de vencimiento</label>
+                                <label style="margin-left: 5px;">(</label>
+                                <label style="font-size: 22px; margin-top:-1px;">*</label>
+                                <label>)</label>
+                            </div>
+                            <div class="input-group date datepicker">
+                                <input matInput readonly tabindex="1" class="form-control" formControlName="dueDate"
+                                    name="dueDate" [matDatepicker]="basicDatepickerdueDate">
+                                <span class="input-group-addon input-group-append border"
+                                    style="height: 37px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">
+                                    <mat-datepicker-toggle class="text-primary"
+                                        [for]="basicDatepickerdueDate"></mat-datepicker-toggle>
+                                </span>
+                            </div>
+                            <mat-datepicker #basicDatepickerdueDate required style="z-index:99999;"></mat-datepicker>
+                            <div *ngIf="submitted && f.dueDate.errors" class="invalid-feedback">
+                                <div *ngIf="f.dueDate.errors.required">La fecha de vencimiento es obligatoria</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    <div style="display:flex; margin-bottom:2px;">
+                        <label class="form-label">Descripción</label>
+                    </div>
+                    <textarea rows="3" formControlName="description"
+                        [ngClass]="{ 'is-invalid': submitted && f.description.errors }" maxlength="300"
+                        class="form-control" aria-describedby="" autofocus="" tabindex="1"></textarea>
+                </div>
+
+
+                <div class="col-md-12 text-center mt-3">
+                    <button *ngIf="!loading2" type="submit" rippleeffect="" class="btn btn-primary mr-1 waves-effect"
+                        style="width:180px;height: 40px;" tabindex="1">GUARDAR</button>
+                    <button *ngIf="loading2" type="button" disabled="" rippleeffect=""
+                        class="btn btn-outline-primary waves-effect mr-1" style="width:180px;height: 40px;">
+                        <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span>
+                        <span class="ml-25 align-middle">Guardando...</span>
+                    </button>
+                    <button type="reset" rippleeffect="" class="btn btn-outline-secondary waves-effect"
+                        (click)="close()" tabindex="1">CANCELAR</button>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+
+</ng-container>

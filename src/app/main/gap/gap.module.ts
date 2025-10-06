@@ -51,6 +51,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { PopupRequirementsComponent } from './popup-requirements/popup-requirements.component';
 import { PopupControlsComponent } from './popup-controls/popup-controls.component';
 import { ControlNodeComponent } from './control-node/control-node.component';
+import { ActionPlanByBreachIdComponent } from './action-plan-by-breach-id/action-plan-by-breach-id.component';
+import { AddActionPlanByBreachIdComponent } from './action-plan-by-breach-id/add-action-plan-by-breach-id/add-action-plan-by-breach-id.component';
+import { EditActionPlanByBreachIdComponent } from './action-plan-by-breach-id/edit-action-plan-by-breach-id/edit-action-plan-by-breach-id.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +69,9 @@ import { ControlNodeComponent } from './control-node/control-node.component';
         Indicators4Component,DashboardComponent, ControlDashboardComponent,
         HomeComponent,
         RadarChartComponent,
-        HeaderChartComponent, BreachByEvaluationComponent,AddBreachByEvaluationComponent, EditBreachByEvaluationComponent, CurrentBreachsComponent, RequirementNodeComponent, PopupRequirementsComponent, PopupControlsComponent, ControlNodeComponent
+        HeaderChartComponent, BreachByEvaluationComponent,AddBreachByEvaluationComponent, EditBreachByEvaluationComponent, CurrentBreachsComponent,
+         RequirementNodeComponent, PopupRequirementsComponent, PopupControlsComponent, ControlNodeComponent, 
+         ActionPlanByBreachIdComponent, AddActionPlanByBreachIdComponent, EditActionPlanByBreachIdComponent
   ],
   imports: [
     CommonModule,

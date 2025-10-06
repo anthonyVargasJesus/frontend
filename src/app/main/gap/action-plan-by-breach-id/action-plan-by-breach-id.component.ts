@@ -1,30 +1,30 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { getResults, PAGE_SIZE } from 'app/config/config';
+import { getResults, getSearchResults, INIT_PAGE, PAGE_SIZE } from 'app/config/config';
 import { LoginService } from 'app/services/login.service';
 import { ErrorManager } from 'app/errors/error-manager';
-import { Breach } from 'app/models/breach';
-import { BreachService } from 'app/services/breach.service';
+import { ActionPlan } from 'app/models/action-plan';
+import { ActionPlanService } from 'app/services/action-plan.service';
 import Swal from 'sweetalert2';
 import { Subject } from 'rxjs/internal/Subject';
 import { CoreConfigService } from '@core/services/config.service';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
-import { EditBreachByEvaluationComponent } from './edit-breach-by-evaluation/edit-breach-by-evaluation.component';
-import { AddBreachByEvaluationComponent } from './add-breach-by-evaluation/add-breach-by-evaluation.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { AddActionPlanByBreachIdComponent } from './add-action-plan-by-breach-id/add-action-plan-by-breach-id.component';
+import { EditActionPlanByBreachIdComponent } from './edit-action-plan-by-breach-id/edit-action-plan-by-breach-id.component';
 
 
 @Component({
-  selector: 'app-breach-by-evaluation',
-  templateUrl: './breach-by-evaluation.component.html',
+  selector: 'app-action-plan-by-breach-id',
+  templateUrl: './action-plan-by-breach-id.component.html',
   styles: [
   ]
 })
 
-export class BreachByEvaluationComponent implements OnInit {
+
+export class ActionPlanByBreachIdComponent implements OnInit {
 
 
-  breachs: Breach[] = [];
+  actionPlans: ActionPlan[] = [];
   selectedRow = 0;
   page = 1;
   skip = 0;
@@ -42,13 +42,16 @@ export class BreachByEvaluationComponent implements OnInit {
   private panelClass: string;
 
   @Input()
+  breachId: number;
+
+  @Input()
   evaluationId: number;
 
   @Input()
   standardId: number;
 
-  constructor(private breachService: BreachService, private loginService: LoginService,
-    private _coreConfigService: CoreConfigService, private router: Router,
+  constructor(private actionPlanService: ActionPlanService, private loginService: LoginService,
+    private _coreConfigService: CoreConfigService,
     private dialog: MatDialog
   ) {
 
@@ -80,20 +83,22 @@ export class BreachByEvaluationComponent implements OnInit {
   }
 
 
+
+
   initMenuName() {
     this.contentHeader = {
-      headerTitle: 'Breach',
+      headerTitle: 'ActionPlan',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'Breach',
+            name: 'ActionPlan',
             isLink: false,
             link: '#'
           },
           {
-            name: 'Breach',
+            name: 'ActionPlan',
             isLink: false
           }
         ]
@@ -101,12 +106,13 @@ export class BreachByEvaluationComponent implements OnInit {
     }
   }
 
+
+
   get() {
     this.loading = true;
-    this.breachService.getByevaluationId(this.skip, this.pageSize, this.evaluationId, this.searchText)
+    this.actionPlanService.getBybreachId(this.skip, this.pageSize, this.breachId, this.searchText)
       .subscribe((res: any) => {
         this.asignObjects(res);
-        console.log(res)
         this.page = (this.skip / this.pageSize) + 1;
         this.results = getResults(this.total, this.totalPages);
         this.loading = false;
@@ -149,14 +155,15 @@ export class BreachByEvaluationComponent implements OnInit {
   add() {
 
     if (this.loginService.isAuthenticated()) {
-      let dialogRef = this.dialog.open(AddBreachByEvaluationComponent, {
-        height: '700px',
-        width: '700px',
-        autoFocus: false, data: {
+      let dialogRef = this.dialog.open(AddActionPlanByBreachIdComponent, {
+        height: '600px',
+        width: '600px',
+        autoFocus: false,
+        data: {
+          breachId: this.breachId,
           evaluationId: this.evaluationId,
           standardId: this.standardId,
-          panelClass: this.panelClass
-        }, 
+        },
         panelClass: this.panelClass
       });
 
@@ -173,36 +180,33 @@ export class BreachByEvaluationComponent implements OnInit {
 
   edit(id: String) {
 
-    this.router.navigate(['/gap/edit-breach', id, this.standardId]);
-    // if (this.loginService.isAuthenticated()) {
-    //   let dialogRef = this.dialog.open(EditBreachByEvaluationComponent, {
-    //     height: '700px',
-    //     width: '700px',
-    //     data: {
-    //       _id: id, evaluationId: this.evaluationId,
-    //         standardId: this.standardId,
-    //         panelClass: this.panelClass
-    //     },
-    //     autoFocus: false,
-    //     panelClass: this.panelClass
-    //   });
+    if (this.loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(EditActionPlanByBreachIdComponent, {
+        height: '600px',
+        width: '600px',
+        data: {
+          _id: id, 
+         standardId: this.standardId,
+        },
+        autoFocus: false,
+        panelClass: this.panelClass
+      });
 
-    //   dialogRef.afterClosed().subscribe(data => {
-    //     if (data == null)
-    //       return;
+      dialogRef.afterClosed().subscribe(data => {
+        if (data == null)
+          return;
 
-    //     if (data.updated == true)
-    //       this.get();
-    //   });
-    // }
+        if (data.updated == true)
+          this.get();
+      });
+    }
 
   }
 
-
-  delete(breach: Breach) {
+  delete(actionPlan: ActionPlan) {
 
     let text: string;
-    text = '¿Está seguro de eliminar el registro ' + breach.title + '?';
+    text = '¿Está seguro de eliminar el registro ' + actionPlan.title + '?';
 
     Swal.fire({
       title: 'Confirmación',
@@ -216,7 +220,7 @@ export class BreachByEvaluationComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.breachService.delete(breach.breachId)
+        this.actionPlanService.delete(actionPlan.actionPlanId)
           .subscribe(deleted => {
             this.get();
           });
@@ -239,28 +243,9 @@ export class BreachByEvaluationComponent implements OnInit {
   }
 
   asignObjects(res) {
-    this.breachs = res.data;
+    this.actionPlans = res.data;
     this.total = res.pagination.totalRows;
     this.totalPages = res.pagination.totalPages;
   }
 
-
-}  //{
-//path: 'breach',
-//component: BreachComponent,
-//data: { animation: 'breach' }
-//},
-
-//BreachComponent, AddBreachComponent, EditBreachComponent
-//{
-//id: 'breach',
-//title: '',
-//translate: 'MENU.BREACH',
-//type: 'item',
-//icon: 'file',
-//url: 'breach'
-//},
-
-//   BREACH: 'Breach'
-
-
+}

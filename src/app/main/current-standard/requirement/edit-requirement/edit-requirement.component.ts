@@ -70,6 +70,7 @@ export class EditRequirementComponent implements OnInit {
     this.requirementService.obtain(id)
       .subscribe((res: any) => {
         this.requirement = res.data;
+        console.log(this.requirement);
         this.getAllRequirements(this.requirement.standardId);
         this.setFormValue(this.requirement);
         this.requirementId = this.requirement.requirementId;

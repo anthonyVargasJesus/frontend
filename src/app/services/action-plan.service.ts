@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ErrorManager } from 'app/errors/error-manager';
-import { Breach } from 'app/models/breach';
+import { ActionPlan } from 'app/models/action-plan';
 import { environment } from 'environments/environment';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -11,30 +11,25 @@ import Swal from 'sweetalert2'
     providedIn: 'root'
 })
 
-export class BreachService {
+export class ActionPlanService {
 
     constructor(public http: HttpClient) { }
 
-    getRisksIdentification(skip: number, pageSize: number, search: string) {
-        const url = environment.apiUrl + '/api/breach/RisksIdentification' + '?skip=' + skip + '&pageSize=' + pageSize + '&search=' + search;
-        return this.http.get(url);
-    }
-
-    getByevaluationId(skip: number, pageSize: number, evaluationId: number, search: string) {
-        const url = environment.apiUrl + '/api/breach' + '?skip=' + skip + '&pageSize=' + pageSize + '&evaluationId=' + evaluationId + '&search=' + search;
+    getBybreachId(skip: number, pageSize: number, breachId: number, search: string) {
+        const url = environment.apiUrl + '/api/actionPlan' + '?skip=' + skip + '&pageSize=' + pageSize + '&breachId=' + breachId + '&search=' + search;
         return this.http.get(url);
     }
 
     obtain(id: string) {
-        const url = environment.apiUrl + '/api/breach/' + id;
+        const url = environment.apiUrl + '/api/actionPlan/' + id;
         return this.http.get(url);
     }
 
-    insert(breach: Breach) {
-        const url = environment.apiUrl + '/api/breach';
-        return this.http.post(url, breach)
+    insert(actionPlan: ActionPlan) {
+        const url = environment.apiUrl + '/api/actionPlan';
+        return this.http.post(url, actionPlan)
             .pipe(map((resp: any) => {
-                Swal.fire('Brecha registrada', 'La brecha se registró satisfactoriamente', 'success');
+                Swal.fire('¡Éxito!', 'El registro se inglesó satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -44,11 +39,11 @@ export class BreachService {
             }));
     }
 
-    update(breach: Breach) {
-        const url = environment.apiUrl + '/api/breach/' + breach.breachId;
-        return this.http.put(url, breach)
+    update(actionPlan: ActionPlan) {
+        const url = environment.apiUrl + '/api/actionPlan/' + actionPlan.actionPlanId;
+        return this.http.put(url, actionPlan)
             .pipe(map((resp: any) => {
-                Swal.fire('Brecha actualizada', 'La brecha se actualizó satisfactoriamente', 'success');
+                Swal.fire('¡Éxito!', 'El registro se actualizó satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -59,10 +54,10 @@ export class BreachService {
     }
 
     delete(id: number) {
-        const url = environment.apiUrl + '/api/breach/' + id;
+        const url = environment.apiUrl + '/api/actionPlan/' + id;
         return this.http.delete(url)
             .pipe(map((resp: any) => {
-                Swal.fire('Brecha eliminada', 'La brecha se eliminó satisfactoriamente', 'success');
+                Swal.fire('¡Éxito!', 'El registro se eliminó satisfactoriamente', 'success');
                 return resp;
             }
             ))

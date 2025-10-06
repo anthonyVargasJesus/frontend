@@ -8,6 +8,7 @@ export class Risk {
         public riskId?: number,
         public evaluationId?: number,
         public activesInventoryId?: number,
+        public name?: string,
         public activesInventoryNumber?: string,
         public activesInventoryName?: string,
         public menaceId?: number,

@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Breach } from 'app/models/breach';
 import { ErrorManager } from 'app/errors/error-manager';
 import { BreachService } from 'app/services/breach.service';
@@ -15,6 +15,9 @@ import { DialogData } from 'app/models/dialog-data';
 import { LoginService } from 'app/services/login.service';
 import { PopupRequirementsComponent } from '../../popup-requirements/popup-requirements.component';
 import { PopupControlsComponent } from '../../popup-controls/popup-controls.component';
+import { Subject } from 'rxjs/internal/Subject';
+import { CoreConfigService } from '@core/services/config.service';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 
 
 @Component({
@@ -35,7 +38,8 @@ export class EditBreachByEvaluationComponent implements OnInit {
     private breachSeverityService: BreachSeverityService,
     private responsibleService: ResponsibleService,
     private dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) private data: DialogData, private dialogRef: MatDialogRef<EditBreachByEvaluationComponent>,
+    private _coreConfigService: CoreConfigService,
+    private route: ActivatedRoute,
   ) { }
 
   selectedRequirement: Requirement = new Requirement();
@@ -44,26 +48,83 @@ export class EditBreachByEvaluationComponent implements OnInit {
   breachSeverities: BreachSeverity[] = [];
   responsibles: Responsible[] = [];
 
-  standardId: number;
+
 
   breach: Breach;
   loading = false;
   id: string;
+  standardId: number;
   loading2 = false; public form: FormGroup;
   public submitted = false;
   public title: string = 'EDITAR BRECHA';
   type: string = '';
 
   popuIsOpen = false;
-  panelClass: any;
-  
+  //panelClass: any;
+
+  public contentHeader: object;
+
+  evaluationId: number;
+
+  public currentSkin: string;
+  private _unsubscribeAll: Subject<any>;
+  private panelClass: string;
+
   ngOnInit(): void {
-    this.initForm();
-    this.standardId = this.data['standardId'];
-    this.id = this.data['_id'];
-    this.panelClass = this.data['panelClass'];
     this.initBreach();
-    this.getAllBreachSeverities();
+    this.initForm();
+    this.initMenuName();
+    this.getTheme();
+    //this.standardId = this.data['standardId'];
+    //this.id = this.data['_id'];
+    //this.panelClass = this.data['panelClass'];
+
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.id = params.get('breachId').toString();
+      this.standardId = Number(params.get('standardId').toString());
+      this.getAllBreachSeverities();
+    });
+
+  }
+
+    getTheme() {
+      this._unsubscribeAll = new Subject();
+      this._coreConfigService
+        .getConfig()
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe(config => {
+          this.currentSkin = config.layout.skin;
+          this.setDialogContainerStyle();
+        });
+    }
+  
+    setDialogContainerStyle() {
+      if (this.currentSkin == 'dark')
+        this.panelClass = 'custom-dark-dialog-container';
+      else
+        this.panelClass = 'custom-default-dialog-container';
+    }
+    
+  initMenuName() {
+
+    this.contentHeader = {
+      headerTitle: 'Brechas encontradas',
+      actionButton: false,
+      breadcrumb: {
+        type: '',
+        links: [
+          {
+            name: 'BRECHAS',
+            isLink: false,
+            link: '#'
+          },
+          {
+            name: 'Requisitos',
+            isLink: false
+          },
+        ]
+      }
+    }
   }
 
   initBreach() {
@@ -117,7 +178,7 @@ export class EditBreachByEvaluationComponent implements OnInit {
     this.breachService.obtain(id)
       .subscribe((res: any) => {
         this.breach = res.data;
-        console.log(res);
+        this.evaluationId = this.breach.evaluationId;
         this.setFormValue(this.breach);
         this.type = this.breach.type;
         this.title = this.breach.title.toUpperCase();
@@ -211,7 +272,7 @@ export class EditBreachByEvaluationComponent implements OnInit {
     }
     else {
       this.breach.controlId = this.selectedControl.controlId;
-       this.breach.requirementId = 0;
+      this.breach.requirementId = 0;
       if (this.popuIsOpen)
         this.breach.numerationToShow = this.selectedControl.numerationToShow;
     }
@@ -219,10 +280,7 @@ export class EditBreachByEvaluationComponent implements OnInit {
     this.breachService.update(this.breach)
       .subscribe(res => {
         this.breach = res.data;
-        this.dialogRef.close({ updated: true });
         this.loading2 = false;
-
-
       }, error => {
         this.loading2 = false;
         ErrorManager.handleError(error);
@@ -230,8 +288,8 @@ export class EditBreachByEvaluationComponent implements OnInit {
 
   }
 
-  close() {
-    this.dialogRef.close();
+  navigateToBack() {
+    this.router.navigate(['/gap/current-breachs']);
   }
 
   openRequirements() {
