@@ -54,6 +54,11 @@ import { ControlNodeComponent } from './control-node/control-node.component';
 import { ActionPlanByBreachIdComponent } from './action-plan-by-breach-id/action-plan-by-breach-id.component';
 import { AddActionPlanByBreachIdComponent } from './action-plan-by-breach-id/add-action-plan-by-breach-id/add-action-plan-by-breach-id.component';
 import { EditActionPlanByBreachIdComponent } from './action-plan-by-breach-id/edit-action-plan-by-breach-id/edit-action-plan-by-breach-id.component';
+import { EvaluationAdminComponent } from './evaluation-admin/evaluation-admin.component';
+import { AddEvaluationAdminComponent } from './evaluation-admin/add-evaluation-admin/add-evaluation-admin.component';
+import { EditEvaluationAdminComponent } from './evaluation-admin/edit-evaluation-admin/edit-evaluation-admin.component';
+import { EvaluationProcessListComponent } from './evaluation-process-list/evaluation-process-list.component';
+
 
 @NgModule({
   declarations: [
@@ -71,7 +76,8 @@ import { EditActionPlanByBreachIdComponent } from './action-plan-by-breach-id/ed
         RadarChartComponent,
         HeaderChartComponent, BreachByEvaluationComponent,AddBreachByEvaluationComponent, EditBreachByEvaluationComponent, CurrentBreachsComponent,
          RequirementNodeComponent, PopupRequirementsComponent, PopupControlsComponent, ControlNodeComponent, 
-         ActionPlanByBreachIdComponent, AddActionPlanByBreachIdComponent, EditActionPlanByBreachIdComponent
+         ActionPlanByBreachIdComponent, AddActionPlanByBreachIdComponent, EditActionPlanByBreachIdComponent,
+         EvaluationAdminComponent, AddEvaluationAdminComponent, EditEvaluationAdminComponent, EvaluationProcessListComponent,
   ],
   imports: [
     CommonModule,

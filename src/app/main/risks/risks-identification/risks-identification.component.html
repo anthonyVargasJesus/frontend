@@ -61,10 +61,10 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Brecha encontrada</th>
-                                    <th>Gravedad</th>
-                                    <th>Riesgos sugeridos</th>
-                                    <th>Estado del riesgo</th>
+                                    <th style="width: 35% !important;">Brecha encontrada</th>
+                                    <th style="width: 10% !important;">Gravedad</th>
+                                    <th style="width: 35% !important;">Riesgos sugeridos</th>
+                                    <th style="width: 30% !important;">Estado del riesgo</th>
 
 
                                 </tr>
@@ -112,10 +112,11 @@
 
                                         <td>
                                             <ng-container *ngIf="breach.breachSeverity">
-                                                {{ breach.breachSeverity.name}}
                                                 <span class="circle"
                                                     [ngStyle]="{'background-color': breach.breachSeverity.color}"></span>
                                             </ng-container>
+                                            {{ breach.breachSeverity.name}}
+
                                         </td>
                                         <td>
 
@@ -123,22 +124,22 @@
                                                 <ul class="list-unstyled">
                                                     <li *ngFor="let risk of breach.defaultRisks">
                                                         • {{ risk.name }}
-                                                        <button class="btn btn-link p-0 text-primary"
-                                                            (click)="createRisk(risk)">
+                                                        <button class="btn btn-link p-0"
+                                                            [style.color]="coreConfig.layout.skin === 'dark' ? '#b4b7bd' : ''"
+                                                            [ngClass]="{'text-primary': coreConfig.layout.skin !== 'dark'}"
+                                                            (click)="createRisk(risk,breach.breachId)">
                                                             [+ Crear Riesgo]
                                                         </button>
+                                                   
                                                     </li>
                                                 </ul>
                                             </ng-container>
 
                                         </td>
                                         <td>
-                                            3 riesgo
-                                            (1 Pendiente, 1 En tratamiento, 1 Cerrado)
+                                            {{breach.riskSummary}}
                                         </td>
 
-
-                       
                                     </tr>
                                 </ng-container>
                             </tbody>

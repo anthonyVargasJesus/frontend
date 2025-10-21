@@ -57,37 +57,47 @@ import { EditControlInDefaultRiskByControlComponent } from './control-in-default
 import { AddActivesInventoryInDefaultRiskByDefaultRiskComponent } from './actives-inventory-in-default-risk-by-default-risk/add-actives-inventory-in-default-risk-by-default-risk/add-actives-inventory-in-default-risk-by-default-risk.component';
 import { ActivesInventoryInDefaultRiskByDefaultRiskComponent } from './actives-inventory-in-default-risk-by-default-risk/actives-inventory-in-default-risk-by-default-risk.component';
 import { EditActivesInventoryInDefaultRiskByDefaultRiskComponent } from './actives-inventory-in-default-risk-by-default-risk/edit-actives-inventory-in-default-risk-by-default-risk/edit-actives-inventory-in-default-risk-by-default-risk.component';
+import { SupportForRequirementComponent } from './support-for-requirement/support-for-requirement.component';
+import { AddSupportForRequirementComponent } from './support-for-requirement/add-support-for-requirement/add-support-for-requirement.component';
+import { EditSupportForRequirementComponent } from './support-for-requirement/edit-support-for-requirement/edit-support-for-requirement.component';
+import { DocumentationSupportComponent } from './documentation-support/documentation-support.component';
+import { EditDocumentationSupportComponent } from './documentation-support/edit-documentation-support/edit-documentation-support.component';
+import { SupportForControlComponent } from './support-for-control/support-for-control.component';
+import { AddSupportForControlComponent } from './support-for-control/add-support-for-control/add-support-for-control.component';
+import { EditSupportForControlComponent } from './support-for-control/edit-support-for-control/edit-support-for-control.component';
 
 
 @NgModule({
-  declarations: [StandardComponent, AddStandardComponent, EditStandardComponent, DocumentationComponent, 
+  declarations: [StandardComponent, AddStandardComponent, EditStandardComponent, DocumentationComponent,
     AddDocumentationComponent, EditDocumentationComponent, ResponsibleComponent, AddResponsibleComponent,
-      EditResponsibleComponent,DefaultSectionComponent, AddDefaultSectionComponent, EditDefaultSectionComponent,
-        RequirementComponent, AddRequirementComponent,
-        EditRequirementComponent, ControlComponent, ControlGroupComponent,
-        AddControlGroupComponent, EditControlGroupComponent, EditControlComponent, AddControlComponent,
-        PolicyByStandardComponent, AddPolicyByStandardComponent, EditPolicyComponent,
-        ScopeByStandardComponent, AddScopeByStandardComponent, EditScopeByStandardComponent, HomeStandardComponent,
-        SectionComponent, AddSectionComponent,EditSectionComponent, SectionByDocumentationIdComponent, DefaultRiskComponent, AddDefaultRiskComponent, EditDefaultRiskComponent,
-        RequirementInDefaultRiskByRequirementComponent, AddRequirementInDefaultRiskByRequirementComponent, EditRequirementInDefaultRiskByRequirementComponent ,
-        ControlInDefaultRiskByControlComponent, AddControlInDefaultRiskByControlComponent, EditControlInDefaultRiskByControlComponent,
-        ActivesInventoryInDefaultRiskByDefaultRiskComponent, AddActivesInventoryInDefaultRiskByDefaultRiskComponent, EditActivesInventoryInDefaultRiskByDefaultRiskComponent
-      ],
+    EditResponsibleComponent, DefaultSectionComponent, AddDefaultSectionComponent, EditDefaultSectionComponent,
+    RequirementComponent, AddRequirementComponent,
+    EditRequirementComponent, ControlComponent, ControlGroupComponent,
+    AddControlGroupComponent, EditControlGroupComponent, EditControlComponent, AddControlComponent,
+    PolicyByStandardComponent, AddPolicyByStandardComponent, EditPolicyComponent,
+    ScopeByStandardComponent, AddScopeByStandardComponent, EditScopeByStandardComponent, HomeStandardComponent,
+    SectionComponent, AddSectionComponent, EditSectionComponent, SectionByDocumentationIdComponent, DefaultRiskComponent, AddDefaultRiskComponent, EditDefaultRiskComponent,
+    RequirementInDefaultRiskByRequirementComponent, AddRequirementInDefaultRiskByRequirementComponent, EditRequirementInDefaultRiskByRequirementComponent,
+    ControlInDefaultRiskByControlComponent, AddControlInDefaultRiskByControlComponent, EditControlInDefaultRiskByControlComponent,
+    ActivesInventoryInDefaultRiskByDefaultRiskComponent, AddActivesInventoryInDefaultRiskByDefaultRiskComponent, EditActivesInventoryInDefaultRiskByDefaultRiskComponent,
+    SupportForRequirementComponent, AddSupportForRequirementComponent, EditSupportForRequirementComponent,
+    DocumentationSupportComponent,EditDocumentationSupportComponent,SupportForControlComponent, AddSupportForControlComponent, EditSupportForControlComponent,
+  ],
   imports: [
-        CommonModule,
-        NgxMaskModule.forRoot(),
-        CurrentStandardRoutingModule,
-        ContentHeaderModule,
-        TranslateModule,
-        CoreCommonModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatDatepickerModule,
-        MatInputModule,
-        MatNativeDateModule,
-        MatSlideToggleModule,
-        MatExpansionModule,
-        NgbModule,
+    CommonModule,
+    NgxMaskModule.forRoot(),
+    CurrentStandardRoutingModule,
+    ContentHeaderModule,
+    TranslateModule,
+    CoreCommonModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatSlideToggleModule,
+    MatExpansionModule,
+    NgbModule,
   ]
 })
 

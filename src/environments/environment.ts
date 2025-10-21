@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   hmr: false,
-  apiUrl: 'http://localhost:5049',
+  apiUrl: 'https://qualifier-backend-production.up.railway.app',
   firebaseConfig: {
     apiKey: "AIzaSyAcUGgxppLoFbpmIOnnKDICqJzKoepSEP8",
     authDomain: "qualifier-a9a5c.firebaseapp.com",

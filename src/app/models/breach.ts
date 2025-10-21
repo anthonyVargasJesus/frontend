@@ -25,7 +25,7 @@ export class Breach {
         public responsible?: Responsible,
         public requirement?: Requirement,
         public control?: Control,
-
+        public riskSummary?: string,
     ) { }
 }
 

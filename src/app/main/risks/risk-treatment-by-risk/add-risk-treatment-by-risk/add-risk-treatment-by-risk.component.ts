@@ -14,6 +14,8 @@ import { Risk } from 'app/models/risk';
 import { DialogData } from 'app/models/dialog-data';
 import { ResidualRiskService } from 'app/services/residual-risk.service';
 import { ResidualRisk } from 'app/models/residual-risk';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { RiskService } from 'app/services/risk.service';
 
 
 @Component({
@@ -26,27 +28,25 @@ import { ResidualRisk } from 'app/models/residual-risk';
 
 export class AddRiskTreatmentByRiskComponent implements OnInit {
 
-  @Input()
   riskId: number;
-
-  @Input()
   valuationCID: number;
-
-  @Output() childEvent2 = new EventEmitter<number>();
+  selectedRisk: Risk;
 
   constructor(
     private riskTreatmentService: RiskTreatmentService,
     public router: Router,
     private _formBuilder: FormBuilder, private riskTreatmentMethodService: RiskTreatmentMethodService,
     private riskLevelService: RiskLevelService, private residualRiskService: ResidualRiskService,
-
+    private dialogRef: MatDialogRef<AddRiskTreatmentByRiskComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: DialogData,
+    private riskService: RiskService,
 
   ) { }
 
   riskTreatmentMethods: RiskTreatmentMethod[] = [];
   riskLevels: RiskLevel[] = [];
   residualRisks: ResidualRisk[] = [];
-  
+
   riskTreatment: RiskTreatment;
   loading = false;
   loading2 = false;
@@ -58,17 +58,29 @@ export class AddRiskTreatmentByRiskComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.getAllRiskTreatmentMethods();
-
+    this.riskId = this.data['riskId'];
 
     this.initForm();
     this.initMenuName();
-
-
     this.initRiskTreatment();
+    this.obtainRisk();
 
-  } 
-  
+  }
+
+  obtainRisk() {
+    this.loading = true;
+    this.riskService.obtain(this.riskId.toString())
+      .subscribe((res: any) => {
+        this.selectedRisk = res.data;
+        this.valuationCID = this.selectedRisk.valuationCID;
+        this.getAllRiskTreatmentMethods();
+        this.loading = false;
+      }, error => {
+        this.loading = false;
+        ErrorManager.handleError(error);
+      });
+  }
+
   initMenuName() {
     this.contentHeader = {
       headerTitle: 'Product',
@@ -107,39 +119,43 @@ export class AddRiskTreatmentByRiskComponent implements OnInit {
     this.riskTreatment = new RiskTreatment();
   }
 
-
-
   getAllRiskTreatmentMethods() {
+    this.loading = true;
     this.riskTreatmentMethodService.getAll()
       .subscribe((res: any) => {
         this.riskTreatmentMethods = res.data;
+        this.loading = false;
         this.getAllRiskLevels();
       }, error => {
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }
 
   getAllResidualRisks() {
+    this.loading = true;
     this.residualRiskService.getAll()
       .subscribe((res: any) => {
         this.residualRisks = res.data;
-      this.initRiskTreatment();
-}, error => {
+        this.loading = false;
+      }, error => {
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }
 
   getAllRiskLevels() {
+    this.loading = true;
     this.riskLevelService.getAll()
       .subscribe((res: any) => {
         this.riskLevels = res.data;
+        this.loading = false;
         this.getAllResidualRisks();
       }, error => {
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }
-
-
 
   getFormValue() {
     this.riskTreatment.riskTreatmentMethodId = this.form.value.riskTreatmentMethodId;
@@ -189,7 +205,7 @@ export class AddRiskTreatmentByRiskComponent implements OnInit {
       .subscribe(res => {
         this.riskTreatment = res.data;
         this.loading2 = false;
-        this.childEvent2.emit(this.riskTreatment.riskTreatmentId);
+        this.dialogRef.close({ updated: true });
       }, error => {
         this.loading2 = false;
         ErrorManager.handleError(error);
@@ -236,7 +252,7 @@ export class AddRiskTreatmentByRiskComponent implements OnInit {
     this.riskTreatment.riskLevelId = this.getRiskLevelId(riskAssessmentValue);
     this.riskTreatment.residualRiskId = this.getResidualRiskId(riskAssessmentValue);
 
-    console.log(' this.riskTreatment.residualRisklId',  this.riskTreatment.residualRiskId)
+    console.log(' this.riskTreatment.residualRisklId', this.riskTreatment.residualRiskId)
 
     this.form.patchValue({
       riskAssessmentValue: riskAssessmentValue,
@@ -282,6 +298,11 @@ export class AddRiskTreatmentByRiskComponent implements OnInit {
     });
 
   }
+
+  close() {
+    this.dialogRef.close();
+  }
+
 
 }
 

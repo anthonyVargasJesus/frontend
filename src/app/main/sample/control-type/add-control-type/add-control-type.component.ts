@@ -104,7 +104,10 @@ export class AddControlTypeComponent implements OnInit {
         ErrorManager.handleError(error);
       });
 
-  } close() {
+  } 
+  
+  close() {
     this.dialogRef.close();
   }
+  
 }

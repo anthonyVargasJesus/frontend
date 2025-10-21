@@ -67,7 +67,7 @@
                                     <th>Gravedad</th>
                                     <th>Estado</th>
                                     <th>Responsable</th>
-
+                                    <th>Plan de acción</th>
                                     <th class="text-right">ACCIÓN</th>
                                 </tr>
                             </thead>
@@ -155,6 +155,7 @@
                                                 {{ breach.responsible.name}}
                                             </ng-container>
                                         </td>
+                                     <td [innerHTML]="sanitize(breach.actionPlanSummary)"></td>
 
 
                                         <td class="text-right">

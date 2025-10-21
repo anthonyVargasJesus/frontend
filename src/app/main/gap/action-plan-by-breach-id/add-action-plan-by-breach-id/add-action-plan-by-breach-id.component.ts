@@ -27,7 +27,8 @@ export class AddActionPlanByBreachIdComponent implements OnInit {
   constructor(
     private actionPlanService: ActionPlanService,
 
-    private _formBuilder: FormBuilder, private dialogRef: MatDialogRef<AddActionPlanByBreachIdComponent>, private responsibleService: ResponsibleService,
+    private _formBuilder: FormBuilder, private dialogRef: MatDialogRef<AddActionPlanByBreachIdComponent>, 
+    private responsibleService: ResponsibleService,
     private actionPlanStatusService: ActionPlanStatusService,
     private actionPlanPriorityService: ActionPlanPriorityService,
     @Inject(MAT_DIALOG_DATA) private data: DialogData,

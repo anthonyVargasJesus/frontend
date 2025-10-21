@@ -11,6 +11,10 @@ import { RiskLevelService } from 'app/services/risk-level.service';
 import { RiskLevel } from 'app/models/risk-level';
 import { ResidualRiskService } from 'app/services/residual-risk.service';
 import { ResidualRisk } from 'app/models/residual-risk';
+import { RiskService } from 'app/services/risk.service';
+import { Risk } from 'app/models/risk';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { DialogData } from 'app/models/dialog-data';
 
 
 @Component({
@@ -22,10 +26,7 @@ import { ResidualRisk } from 'app/models/residual-risk';
 
 export class EditRiskTreatmentByRiskComponent implements OnInit {
 
-  @Input()
   riskTreatmentId: number;
-
-  @Input()
   valuationCID: number;
 
   constructor(
@@ -35,7 +36,9 @@ export class EditRiskTreatmentByRiskComponent implements OnInit {
     public router: Router, private riskTreatmentMethodService: RiskTreatmentMethodService,
     private riskLevelService: RiskLevelService,
     private residualRiskService: ResidualRiskService,
-
+    private riskService: RiskService,
+    private dialogRef: MatDialogRef<EditRiskTreatmentByRiskComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: DialogData,
   ) { }
 
   riskTreatmentMethods: RiskTreatmentMethod[] = [];
@@ -46,20 +49,38 @@ export class EditRiskTreatmentByRiskComponent implements OnInit {
   loading2 = false; public form: FormGroup;
   public submitted = false;
   public title: string = 'EDITAR TRATAMIENTO';
-
   color: string = '';
+  selectedRisk: Risk = new Risk();
+  riskId: string;
+
 
   ngOnInit(): void {
+    this.riskTreatmentId = this.data['riskTreatmentId'];
+    this.riskId = this.data['riskId'];
     this.initForm();
-    this.getAllRiskTreatmentMethods();
     this.initRiskTreatment();
+    this.obtainRisk();
   }
 
+  obtainRisk() {
+    this.loading = true;
+    this.riskService.obtain(this.riskId.toString())
+      .subscribe((res: any) => {
+        this.selectedRisk = res.data;
+        this.valuationCID = this.selectedRisk.valuationCID;
+        this.initForm();
+        this.getAllRiskTreatmentMethods();
+
+        this.loading = false;
+      }, error => {
+        this.loading = false;
+        ErrorManager.handleError(error);
+      });
+  }
 
   initRiskTreatment() {
     this.riskTreatment = new RiskTreatment();
   }
-
 
   initForm() {
     this.form = this._formBuilder.group({
@@ -173,7 +194,7 @@ export class EditRiskTreatmentByRiskComponent implements OnInit {
       .subscribe(res => {
         this.riskTreatment = res.data;
         this.loading2 = false;
-
+        this.dialogRef.close({ updated: true });
       }, error => {
         this.loading2 = false;
         ErrorManager.handleError(error);
@@ -267,16 +288,19 @@ export class EditRiskTreatmentByRiskComponent implements OnInit {
   }
 
   setRiskLevelColor(riskLevelId: number) {
-    console.log('setRiskLevelColor',riskLevelId);
+    console.log('setRiskLevelColor', riskLevelId);
 
     this.color = '';
-    this.riskLevels.forEach((item: RiskLevel) =>{
+    this.riskLevels.forEach((item: RiskLevel) => {
       if (item.riskLevelId == riskLevelId)
         this.color = item.color;
     });
 
   }
 
+  close() {
+    this.dialogRef.close();
+  }
 
 }
 

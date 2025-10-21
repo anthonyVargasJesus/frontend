@@ -170,7 +170,6 @@ export class ActionPlanByBreachIdComponent implements OnInit {
       dialogRef.afterClosed().subscribe(data => {
         if (data == null)
           return;
-
         if (data.updated == true)
           this.get();
       });

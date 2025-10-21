@@ -9,6 +9,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ResponsibleService } from 'app/services/responsible.service';
 import { Responsible } from 'app/models/responsible';
 import { DialogData } from 'app/models/dialog-data'; import { Risk } from 'app/models/risk';
+import { RiskService } from 'app/services/risk.service';
 
 @Component({
   selector: 'app-edit-control-implementation-by-risk',
@@ -18,8 +19,6 @@ import { DialogData } from 'app/models/dialog-data'; import { Risk } from 'app/m
 })
 export class EditControlImplementationByRiskComponent implements OnInit {
 
-
-  @Input()
   controlImplementationId: number;
 
   constructor(
@@ -27,7 +26,9 @@ export class EditControlImplementationByRiskComponent implements OnInit {
     private route: ActivatedRoute,
     private _formBuilder: FormBuilder,
     public router: Router, private responsibleService: ResponsibleService,
-
+    private riskService: RiskService,
+    private dialogRef: MatDialogRef<EditControlImplementationByRiskComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: DialogData,
   ) { }
 
   responsibles: Responsible[] = [];
@@ -35,16 +36,35 @@ export class EditControlImplementationByRiskComponent implements OnInit {
   loading = false;
   loading2 = false; public form: FormGroup;
   public submitted = false;
-  public title: string = 'EDITAR CONTROLIMPLEMENTATION';;
+  public title: string = 'EDITAR CONTROL';
+
+  riskId: number;
+  selectedRisk: Risk;
 
   ngOnInit(): void {
-    this.initForm();
-    this.getAllResponsibles();
-    this.initControlImplementation();
 
+    this.controlImplementationId = this.data['controlImplementationId'];
+    this.riskId = this.data['riskId'];
+    this.initForm();
+    this.obtainRisk();
+    this.initControlImplementation();
 
   }
 
+
+  obtainRisk() {
+    this.loading = true;
+    this.riskService.obtain(this.riskId.toString())
+      .subscribe((res: any) => {
+        this.selectedRisk = res.data;
+        this.initForm();
+        this.getAllResponsibles();
+        this.loading = false;
+      }, error => {
+        this.loading = false;
+        ErrorManager.handleError(error);
+      });
+  }
 
   initControlImplementation() {
     this.controlImplementation = new ControlImplementation();
@@ -66,6 +86,8 @@ export class EditControlImplementationByRiskComponent implements OnInit {
       verificationDate: ['', []],
       responsibleId: ['', [Validators.required,]],
       observation: ['', [Validators.maxLength(500),]],
+      isImplemented: [false, [Validators.maxLength(5),]],
+      isEffective: [false, [Validators.maxLength(5),]],
     });
   }
 
@@ -74,7 +96,7 @@ export class EditControlImplementationByRiskComponent implements OnInit {
     this.controlImplementationService.obtain(id)
       .subscribe((res: any) => {
         this.controlImplementation = res.data;
-        this.setFormValue(this.controlImplementation); 
+        this.setFormValue(this.controlImplementation);
         this.loading = false;
       }, error => {
         this.loading = false;
@@ -89,6 +111,8 @@ export class EditControlImplementationByRiskComponent implements OnInit {
       verificationDate: ((controlImplementation.verificationDate == null) ? '' : controlImplementation.verificationDate),
       responsibleId: ((controlImplementation.responsibleId == null) ? '' : controlImplementation.responsibleId),
       observation: ((controlImplementation.observation == null) ? '' : controlImplementation.observation),
+      isImplemented: ((controlImplementation.isImplemented == null) ? '' : controlImplementation.isImplemented),
+      isEffective: ((controlImplementation.isEffective == null) ? '' : controlImplementation.isEffective),
     });
   }
 
@@ -104,6 +128,13 @@ export class EditControlImplementationByRiskComponent implements OnInit {
     this.controlImplementation.observation = this.form.value.observation;
     if (this.form.value.observation == "")
       this.controlImplementation.observation = null;
+
+    this.controlImplementation.isImplemented = this.form.value.isImplemented;
+    if (this.form.value.isImplemented == "")
+      this.controlImplementation.isImplemented = null;
+    this.controlImplementation.isEffective = this.form.value.isEffective;
+    if (this.form.value.isEffective == "")
+      this.controlImplementation.isEffective = null;
   }
 
   getAllResponsibles() {
@@ -137,6 +168,7 @@ export class EditControlImplementationByRiskComponent implements OnInit {
       .subscribe(res => {
         this.controlImplementation = res.data;
         this.loading2 = false;
+        this.dialogRef.close({ updated: true });
       }, error => {
         this.loading2 = false;
         ErrorManager.handleError(error);
@@ -144,6 +176,9 @@ export class EditControlImplementationByRiskComponent implements OnInit {
 
   }
 
+  close() {
+    this.dialogRef.close();
+  }
 
 }
 

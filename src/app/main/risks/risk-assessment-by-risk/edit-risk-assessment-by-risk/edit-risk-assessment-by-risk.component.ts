@@ -8,6 +8,9 @@ import { RiskAssessmentService } from 'app/services/risk-assessment.service';
 import { RiskLevelService } from 'app/services/risk-level.service';
 import { RiskLevel } from 'app/models/risk-level';
 import { Risk } from 'app/models/risk';
+import { DialogData } from 'app/models/dialog-data';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { RiskService } from 'app/services/risk.service';
 
 @Component({
   selector: 'app-edit-risk-assessment-by-risk',
@@ -17,18 +20,18 @@ import { Risk } from 'app/models/risk';
 })
 export class EditRiskAssessmentByRiskComponent implements OnInit {
 
-  @Input()
   riskAssessmentId: number;
-
   valuationCID: number;
+  selectedRisk: Risk = new Risk();
 
   constructor(
     private riskAssessmentService: RiskAssessmentService,
     private route: ActivatedRoute,
     private _formBuilder: FormBuilder,
     public router: Router, private riskLevelService: RiskLevelService,
-
-
+    private dialogRef: MatDialogRef<EditRiskAssessmentByRiskComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: DialogData,
+    private riskService: RiskService,
   ) { }
 
   riskLevels: RiskLevel[] = [];
@@ -36,25 +39,37 @@ export class EditRiskAssessmentByRiskComponent implements OnInit {
 
   riskAssessment: RiskAssessment;
   loading = false;
-  loading2 = false; public contentHeader: object; public form: FormGroup;
+  loading2 = false;
+  public contentHeader: object; public form: FormGroup;
   public submitted = false;
   public title: string = 'EDITAR';
 
   color: string = '';
 
   ngOnInit(): void {
+    this.riskAssessmentId = this.data['riskAssessmentId'];
+    this.riskId = this.data['riskId'];
+
     this.initForm();
-
     this.initMenuName();
-    this.getAllRiskLevels();
-
+    this.obtainRisk();
     this.initRiskAssessment();
-
-
-
-
   }
 
+  obtainRisk() {
+    this.loading = true;
+    this.riskService.obtain(this.riskId.toString())
+      .subscribe((res: any) => {
+        this.selectedRisk = res.data;
+        this.valuationCID = this.selectedRisk.valuationCID;
+        this.initForm();
+        this.getAllRiskLevels();
+        this.loading = false;
+      }, error => {
+        this.loading = false;
+        ErrorManager.handleError(error);
+      });
+  }
 
   initRiskAssessment() {
     this.riskAssessment = new RiskAssessment();
@@ -170,6 +185,7 @@ export class EditRiskAssessmentByRiskComponent implements OnInit {
       .subscribe(res => {
         this.riskAssessment = res.data;
         this.loading2 = false;
+        this.dialogRef.close({ updated: true });
       }, error => {
         this.loading2 = false;
         ErrorManager.handleError(error);
@@ -256,6 +272,9 @@ export class EditRiskAssessmentByRiskComponent implements OnInit {
 
   }
 
+  close() {
+    this.dialogRef.close();
+  }
 
 }
 

@@ -20,6 +20,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from 'environments/environment';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 const appRoutes: Routes = [
@@ -46,6 +47,10 @@ const appRoutes: Routes = [
   {
     path: 'risks',
     loadChildren: () => import('./main/risks/risks.module').then(m => m.RisksModule)
+  },
+  {
+    path: 'actives',
+    loadChildren: () => import('./main/actives/actives.module').then(m => m.ActivesModule)
   },
   {
     path: '',
@@ -87,7 +92,7 @@ const appRoutes: Routes = [
     //SampleModule,
     //CustomComponentsModule,
     //SecurityModule,
-
+    MatSnackBarModule,
 
   ],
   providers: [

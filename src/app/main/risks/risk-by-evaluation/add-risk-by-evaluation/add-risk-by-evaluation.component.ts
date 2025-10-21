@@ -4,17 +4,14 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Risk } from 'app/models/risk';
 import { ErrorManager } from 'app/errors/error-manager';
 import { RiskService } from 'app/services/risk.service';
-
 import { ActivesInventoryService } from 'app/services/actives-inventory.service';
 import { ActivesInventory } from 'app/models/actives-inventory';
 import { MenaceService } from 'app/services/menace.service';
 import { Menace } from 'app/models/menace';
 import { VulnerabilityService } from 'app/services/vulnerability.service';
 import { Vulnerability } from 'app/models/vulnerability';
-
-import { Evaluation } from 'app/models/evaluation';
 import { DialogData } from 'app/models/dialog-data';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 
 @Component({
@@ -27,9 +24,6 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export class AddRiskByEvaluationComponent implements OnInit {
 
-
-
-  
   constructor(
     private riskService: RiskService,
     public router: Router,
@@ -37,6 +31,8 @@ export class AddRiskByEvaluationComponent implements OnInit {
     private menaceService: MenaceService,
     private vulnerabilityService: VulnerabilityService,
     private route: ActivatedRoute,
+    private dialogRef: MatDialogRef<AddRiskByEvaluationComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: DialogData,
   ) { }
 
   activesInventories: ActivesInventory[] = [];
@@ -51,50 +47,21 @@ export class AddRiskByEvaluationComponent implements OnInit {
   public contentHeader: object;
 
   evaluationId: string;
+  defaultRisk: Risk = new Risk();
+  breachId?: number;
 
   ngOnInit(): void {
-
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      this.evaluationId = params.get('id').toString();
-    });
-
+    this.evaluationId = this.data['evaluationId'];
+    this.defaultRisk = this.data['defaultRisk'];
+    this.breachId = this.data['breachId'];
     this.initForm();
-    this.initMenuName();
     this.getAllActivesInventories();
-    this.getAllMenaces();
-    this.getAllVulnerabilities();
-
-
-
-    this.initRisk();
-
   }
 
-  initMenuName() {
-    
-    this.contentHeader = {
-      headerTitle: 'Evaluación de riesgos',
-      actionButton: false,
-      breadcrumb: {
-        type: '',
-        links: [
-          {
-            name: 'EVALUACIÓN',
-            isLink: false,
-            link: '#'
-          },
-          {
-            name: 'Riesgos',
-            isLink: false
-          },
-        ]
-      }
-    }
-
-  }
 
   initForm() {
     this.form = this._formBuilder.group({
+      name: ['', [Validators.required, Validators.maxLength(200),]],
       activesInventoryId: ['', [Validators.required,]],
       activesInventoryNumber: ['', [Validators.maxLength(20),]],
       activesInventoryName: ['', [Validators.maxLength(100),]],
@@ -105,33 +72,54 @@ export class AddRiskByEvaluationComponent implements OnInit {
 
   initRisk() {
     this.risk = new Risk();
+    if (this.defaultRisk) {
+      console.log(this.defaultRisk);
+      this.form.patchValue({
+        name: this.defaultRisk.name,
+        activesInventoryId: '',
+        menaceId: this.defaultRisk.menaceId,
+        vulnerabilityId: this.defaultRisk.vulnerabilityId,
+      });
+    }
   }
 
   getAllActivesInventories() {
+    this.loading = true;
     this.activesInventoryService.getAll()
       .subscribe((res: any) => {
         this.activesInventories = res.data;
+        this.loading = false;
+        this.getAllMenaces();
       }, error => {
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }
 
 
   getAllMenaces() {
+    this.loading = true;
     this.menaceService.getAll()
       .subscribe((res: any) => {
         this.menaces = res.data;
+        this.loading = false;
+        this.getAllVulnerabilities();
       }, error => {
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }
 
 
   getAllVulnerabilities() {
+    this.loading = true;
     this.vulnerabilityService.getAll()
       .subscribe((res: any) => {
         this.vulnerabilities = res.data;
+        this.loading = false;
+        this.initRisk();
       }, error => {
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }
@@ -139,6 +127,7 @@ export class AddRiskByEvaluationComponent implements OnInit {
 
   getFormValue() {
     this.risk.activesInventoryId = this.form.value.activesInventoryId;
+    this.risk.name = this.form.value.name;
     this.risk.activesInventoryNumber = this.form.value.activesInventoryNumber;
     if (this.form.value.activesInventoryNumber == "")
       this.risk.activesInventoryNumber = null;
@@ -164,12 +153,14 @@ export class AddRiskByEvaluationComponent implements OnInit {
     this.getFormValue();
 
     this.risk.evaluationId = Number(this.evaluationId);
+    if (this.defaultRisk)
+      this.risk.breachId = Number(this.breachId);
 
     this.riskService.insert(this.risk)
       .subscribe(res => {
         this.risk = res.data;
         this.loading2 = false;
-        this.router.navigate(['/edit-risk', this.risk.riskId]);
+        this.dialogRef.close({ updated: true });
       }, error => {
         this.loading2 = false;
         ErrorManager.handleError(error);
@@ -187,7 +178,7 @@ export class AddRiskByEvaluationComponent implements OnInit {
         activesInventoryNumber = activesInventory.number;
         activesInventoryName = activesInventory.name;
       }
-    }); 
+    });
 
     this.form.patchValue({
       activesInventoryNumber: activesInventoryNumber,
@@ -196,8 +187,8 @@ export class AddRiskByEvaluationComponent implements OnInit {
 
   }
 
-  navigateToBack() {
-    this.router.navigate(['/risks/current-risks']);
+  close() {
+    this.dialogRef.close();
   }
 
 }

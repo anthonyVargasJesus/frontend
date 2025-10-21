@@ -27,12 +27,51 @@ import { AddRiskTreatmentByRiskComponent } from './risk-treatment-by-risk/add-ri
 import { EditRiskTreatmentByRiskComponent } from './risk-treatment-by-risk/edit-risk-treatment-by-risk/edit-risk-treatment-by-risk.component';
 import { AddControlImplementationByRiskComponent } from './control-implementation-by-risk/add-control-implementation-by-risk/add-control-implementation-by-risk.component';
 import { EditControlImplementationByRiskComponent } from './control-implementation-by-risk/edit-control-implementation-by-risk/edit-control-implementation-by-risk.component';
+import { RiskToEvaluationComponent } from './risk-to-evaluation/risk-to-evaluation.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { RiskToTreatmentComponent } from './risk-to-treatment/risk-to-treatment.component';
+import { RiskToControlComponent } from './risk-to-control/risk-to-control.component';
+import { ControlImplementationByRiskComponent } from './control-implementation-by-risk/control-implementation-by-risk.component';
+import { AcceptRiskComponent } from './accept-risk/accept-risk.component';
+import { ScalateRiskComponent } from './scalate-risk/scalate-risk.component';
+import { FollowUpRiskComponent } from './follow-up-risk/follow-up-risk.component';
+import { ReopenRiskComponent } from './reopen-risk/reopen-risk.component';
+import { MenaceTypeComponent } from './menace-type/menace-type.component';
+import { AddMenaceTypeComponent } from './menace-type/add-menace-type/add-menace-type.component';
+import { EditMenaceTypeComponent } from './menace-type/edit-menace-type/edit-menace-type.component';
+import { MenaceComponent } from './menace/menace.component';
+import { AddMenaceComponent } from './menace/add-menace/add-menace.component';
+import { EditMenaceComponent } from './menace/edit-menace/edit-menace.component';
+import { VulnerabilityTypeComponent } from './vulnerability-type/vulnerability-type.component';
+import { AddVulnerabilityTypeComponent } from './vulnerability-type/add-vulnerability-type/add-vulnerability-type.component';
+import { EditVulnerabilityTypeComponent } from './vulnerability-type/edit-vulnerability-type/edit-vulnerability-type.component';
+import { VulnerabilityComponent } from './vulnerability/vulnerability.component';
+import { AddVulnerabilityComponent } from './vulnerability/add-vulnerability/add-vulnerability.component';
+import { EditVulnerabilityComponent } from './vulnerability/edit-vulnerability/edit-vulnerability.component';
+import { ResidualRiskComponent } from './residual-risk/residual-risk.component';
+import { AddResidualRiskComponent } from './residual-risk/add-residual-risk/add-residual-risk.component';
+import { EditResidualRiskComponent } from './residual-risk/edit-residual-risk/edit-residual-risk.component';
+import { RiskTreatmentMethodComponent } from './risk-treatment-method/risk-treatment-method.component';
+import { AddRiskTreatmentMethodComponent } from './risk-treatment-method/add-risk-treatment-method/add-risk-treatment-method.component';
+import { EditRiskTreatmentMethodComponent } from './risk-treatment-method/edit-risk-treatment-method/edit-risk-treatment-method.component';
+import { RiskLevelComponent } from './risk-level/risk-level.component';
+import { AddRiskLevelComponent } from './risk-level/add-risk-level/add-risk-level.component';
+import { EditRiskLevelComponent } from './risk-level/edit-risk-level/edit-risk-level.component';
+
 
 @NgModule({
   declarations: [
-    RisksIdentificationComponent,RiskByEvaluationComponent, AddRiskByEvaluationComponent, EditRiskByEvaluationComponent, CurrentRiskEvaluationComponent,
+    RisksIdentificationComponent, RiskByEvaluationComponent, AddRiskByEvaluationComponent, EditRiskByEvaluationComponent, CurrentRiskEvaluationComponent,
     AddRiskAssessmentByRiskComponent, EditRiskAssessmentByRiskComponent, AddRiskTreatmentByRiskComponent, EditRiskTreatmentByRiskComponent,
-        AddControlImplementationByRiskComponent, EditControlImplementationByRiskComponent,
+    AddControlImplementationByRiskComponent, EditControlImplementationByRiskComponent, RiskToEvaluationComponent,
+     RiskToTreatmentComponent, RiskToControlComponent, ControlImplementationByRiskComponent, AcceptRiskComponent, ScalateRiskComponent, FollowUpRiskComponent, ReopenRiskComponent,
+    MenaceTypeComponent, AddMenaceTypeComponent, EditMenaceTypeComponent,
+    MenaceComponent, AddMenaceComponent, EditMenaceComponent,
+    VulnerabilityTypeComponent, AddVulnerabilityTypeComponent, EditVulnerabilityTypeComponent,
+    VulnerabilityComponent, AddVulnerabilityComponent, EditVulnerabilityComponent,
+    ResidualRiskComponent, AddResidualRiskComponent, EditResidualRiskComponent,
+    RiskLevelComponent, AddRiskLevelComponent, EditRiskLevelComponent,
+    RiskTreatmentMethodComponent, AddRiskTreatmentMethodComponent, EditRiskTreatmentMethodComponent,
   ],
   imports: [
     CommonModule,
@@ -51,7 +90,8 @@ import { EditControlImplementationByRiskComponent } from './control-implementati
     NgbModule,
     NgxChartsModule,
     MatRadioModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatSnackBarModule,
   ]
 })
 

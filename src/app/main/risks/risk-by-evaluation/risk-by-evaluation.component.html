@@ -64,10 +64,11 @@
                             <thead>
                                 <tr>
                                     <th>RIESGO</th>
-                                    <th>NRO. ACTIVO</th>
+                                    <th>NRO.</th>
                                     <th>NOMBRE DE ACTIVO</th>
                                     <th>AMENAZA</th>
                                     <th>VULNERABILIDAD</th>
+                                    <th>EVALUACIÓN</th>
                                     <th class="text-right">ACCIÓN</th>
                                 </tr>
                             </thead>
@@ -120,6 +121,15 @@
                                             <ng-container *ngIf="risk.vulnerability">
                                                 {{ risk.vulnerability.name}}
                                             </ng-container>
+                                        </td>
+
+                                        <td>
+                                            <button class="btn btn-link p-0"
+                                                [style.color]="coreConfig.layout.skin === 'dark' ? '#b4b7bd' : ''"
+                                                [ngClass]="{'text-primary': coreConfig.layout.skin !== 'dark'}"
+                                                (click)="initEvaluation(risk)">
+                                                [Iniciar Evaluación]
+                                            </button>
                                         </td>
 
                                         <td class="text-right">

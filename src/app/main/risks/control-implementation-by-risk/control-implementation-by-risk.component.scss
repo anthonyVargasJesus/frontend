@@ -1,0 +1,32 @@
+.status-cell {
+    text-align: left;
+    vertical-align: middle;
+}
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.status.ok {
+    color: #22c55e;
+    /* verde */
+}
+
+.status.no {
+    color: #ef476f;
+    /* rojo rosado */
+}
+
+.status.pending {
+    color: #fbbf24;
+    /* amarillo ámbar */
+}
+
+.status.muted {
+    color: #b4b7bd;
+    /* gris claro */
+}

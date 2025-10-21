@@ -13,6 +13,8 @@ export class ControlImplementation {
         public companyId?: number,
         public risk?: Risk,
         public responsible?: Responsible,
+        public isImplemented?: boolean,
+        public isEffective?: boolean,
     ) { }
 }
 

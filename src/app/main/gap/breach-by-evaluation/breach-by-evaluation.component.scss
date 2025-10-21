@@ -1,0 +1,25 @@
+/* 🔹 Estilo general del bloque */
+.action-plan-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-right: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #d0d0d0;
+}
+
+/* 🔹 Bolita de color (el “●”) */
+.action-plan-status .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: currentColor;
+  vertical-align: middle;
+}
+
+/* 🔹 Ajuste para tabla oscura (Vuexy / dark mode) */
+td {
+  vertical-align: middle !important;
+}

@@ -15,14 +15,8 @@ export class ControlImplementationService {
 
     constructor(public http: HttpClient) { }
 
-    getAll() {
-        const url = environment.apiUrl + '/api/controlImplementation/all';
-        return this.http.get(url);
-    }
-
-    get(skip: number, pageSize: number, search: string) {
-        const url = environment.apiUrl + '/api/controlImplementation' + '?skip=' + skip 
-        + '&pageSize=' + pageSize + '&search=' + search;
+    getByriskId(skip: number, pageSize: number, riskId: number, search: string) {
+        const url = environment.apiUrl + '/api/controlImplementation' + '?skip=' + skip + '&pageSize=' + pageSize + '&riskId=' + riskId + '&search=' + search;
         return this.http.get(url);
     }
 

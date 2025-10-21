@@ -44,30 +44,24 @@ export class CurrentRiskEvaluationComponent implements OnInit {
   }
 
   initMenuName() {
-
-    let title = '';
-    if (this.evaluation)
-      title = this.evaluation.description;
-
     this.contentHeader = {
-      headerTitle: 'Evaluación de riesgos',
+      headerTitle: 'Riesgos registrados',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'EVALUACIÓN',
+            name: 'RIESGOS',
             isLink: false,
             link: '#'
           },
           {
-            name: 'Riesgos',
+            name: 'Registrados',
             isLink: false
-          },
+          }
         ]
       }
     }
-    
   }
 
 }

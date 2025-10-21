@@ -31,6 +31,22 @@ import { EditActionPlanStatusComponent } from './action-plan-status/edit-action-
 import { ActionPlanPriorityComponent } from './action-plan-priority/action-plan-priority.component';
 import { AddActionPlanPriorityComponent } from './action-plan-priority/add-action-plan-priority/add-action-plan-priority.component';
 import { EditActionPlanPriorityComponent } from './action-plan-priority/edit-action-plan-priority/edit-action-plan-priority.component';
+import { RiskStatusComponent } from './risk-status/risk-status.component';
+import { AddRiskStatusComponent } from './risk-status/add-risk-status/add-risk-status.component';
+import { EditRiskStatusComponent } from './risk-status/edit-risk-status/edit-risk-status.component';
+import { ToastContentComponent } from './toast-content/toast-content.component';
+import { PersonalComponent } from './personal/personal.component';
+import { AddPersonalComponent } from './personal/add-personal/add-personal.component';
+import { EditPersonalComponent } from './personal/edit-personal/edit-personal.component';
+import { MaturityLevelComponent } from './maturity-level/maturity-level.component';
+import { AddMaturityLevelComponent } from './maturity-level/add-maturity-level/add-maturity-level.component';
+import { EditMaturityLevelComponent } from './maturity-level/edit-maturity-level/edit-maturity-level.component';
+import { IndicatorComponent } from './indicator/indicator.component';
+import { AddIndicatorComponent } from './indicator/add-indicator/add-indicator.component';
+import { EditIndicatorComponent } from './indicator/edit-indicator/edit-indicator.component';
+import { ConfidentialityLevelComponent } from './confidentiality-level/confidentiality-level.component';
+import { AddConfidentialityLevelComponent } from './confidentiality-level/add-confidentiality-level/add-confidentiality-level.component';
+import { EditConfidentialityLevelComponent } from './confidentiality-level/edit-confidentiality-level/edit-confidentiality-level.component';
 
 
 @NgModule({
@@ -40,7 +56,12 @@ import { EditActionPlanPriorityComponent } from './action-plan-priority/edit-act
     ControlTypeComponent, AddControlTypeComponent, EditControlTypeComponent,
     DocumentTypeComponent, AddDocumentTypeComponent, EditDocumentTypeComponent,
     ActionPlanStatusComponent, AddActionPlanStatusComponent, EditActionPlanStatusComponent,
-    ActionPlanPriorityComponent, AddActionPlanPriorityComponent, EditActionPlanPriorityComponent
+    ActionPlanPriorityComponent, AddActionPlanPriorityComponent, EditActionPlanPriorityComponent,
+    RiskStatusComponent, AddRiskStatusComponent, EditRiskStatusComponent,ToastContentComponent,
+    MaturityLevelComponent, AddMaturityLevelComponent, EditMaturityLevelComponent, IndicatorComponent, AddIndicatorComponent,
+    EditIndicatorComponent, PersonalComponent, AddPersonalComponent, EditPersonalComponent, 
+    ConfidentialityLevelComponent, AddConfidentialityLevelComponent,
+    EditConfidentialityLevelComponent,
   ],
   imports: [
         CommonModule,
@@ -56,6 +77,7 @@ import { EditActionPlanPriorityComponent } from './action-plan-priority/edit-act
         MatNativeDateModule,
         MatSlideToggleModule,
         NgbModule,
+        //CustomComponentsModule
   ]
 })
 

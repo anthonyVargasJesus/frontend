@@ -12,13 +12,12 @@ import { EditBreachByEvaluationComponent } from './edit-breach-by-evaluation/edi
 import { AddBreachByEvaluationComponent } from './add-breach-by-evaluation/add-breach-by-evaluation.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-breach-by-evaluation',
   templateUrl: './breach-by-evaluation.component.html',
-  styles: [
-  ]
+  styleUrls: ['./breach-by-evaluation.component.scss']
 })
 
 export class BreachByEvaluationComponent implements OnInit {
@@ -49,10 +48,14 @@ export class BreachByEvaluationComponent implements OnInit {
 
   constructor(private breachService: BreachService, private loginService: LoginService,
     private _coreConfigService: CoreConfigService, private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog, private sanitizer: DomSanitizer
   ) {
 
   }
+
+  sanitize(html: string): SafeHtml {
+  return this.sanitizer.bypassSecurityTrustHtml(html);
+}
 
   ngOnInit() {
     this.getTheme();

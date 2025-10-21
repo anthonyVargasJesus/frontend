@@ -6,6 +6,10 @@ import { ErrorManager } from 'app/errors/error-manager';
 import { RiskAssessmentService } from 'app/services/risk-assessment.service';
 import { RiskLevelService } from 'app/services/risk-level.service';
 import { RiskLevel } from 'app/models/risk-level';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { DialogData } from 'app/models/dialog-data';
+import { Risk } from 'app/models/risk';
+import { RiskService } from 'app/services/risk.service';
 
 
 @Component({
@@ -18,21 +22,17 @@ import { RiskLevel } from 'app/models/risk-level';
 
 export class AddRiskAssessmentByRiskComponent implements OnInit {
 
-  @Input()
   riskId: number;
-
-  @Input()
-  riskAssessmentId: number;
-
-  @Input()
+  //riskAssessmentId: number;
   valuationCID: number;
-
-  @Output() childEvent = new EventEmitter<number>();
+  selectedRisk: Risk;
 
   constructor(
     private riskAssessmentService: RiskAssessmentService,
     public router: Router, private _formBuilder: FormBuilder,
-    private riskLevelService: RiskLevelService,
+    private riskLevelService: RiskLevelService, private dialogRef: MatDialogRef<AddRiskAssessmentByRiskComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: DialogData,
+    private riskService: RiskService,
   ) { }
 
   riskLevels: RiskLevel[] = [];
@@ -46,10 +46,29 @@ export class AddRiskAssessmentByRiskComponent implements OnInit {
   color: string = '';
 
   ngOnInit(): void {
-    this.initForm();
+
+    this.riskId = this.data['riskId'];
+    //this.riskAssessmentId = this.data['riskAssessmentId'];
+    //this.valuationCID = this.data['valuationCID'];
+
     this.initMenuName();
-    this.getAllRiskLevels();
+    this.obtainRisk();
     this.initRiskAssessment();
+  }
+
+  obtainRisk() {
+    this.loading = true;
+    this.riskService.obtain(this.riskId.toString())
+      .subscribe((res: any) => {
+        this.selectedRisk = res.data;
+        this.valuationCID = this.selectedRisk.valuationCID;
+        this.initForm();
+        this.getAllRiskLevels();
+        this.loading = false;
+      }, error => {
+        this.loading = false;
+        ErrorManager.handleError(error);
+      });
   }
 
   initMenuName() {
@@ -132,7 +151,9 @@ export class AddRiskAssessmentByRiskComponent implements OnInit {
       .subscribe(res => {
         this.riskAssessment = res.data;
         this.loading2 = false;
-        this.childEvent.emit(this.riskAssessment.riskAssessmentId);
+        this.dialogRef.close({ updated: true });
+        // this.loading2 = false;
+        // this.childEvent.emit(this.riskAssessment.riskAssessmentId);
       }, error => {
         this.loading2 = false;
         ErrorManager.handleError(error);
@@ -209,6 +230,10 @@ export class AddRiskAssessmentByRiskComponent implements OnInit {
       }
     });
 
+  }
+
+  close() {
+    this.dialogRef.close();
   }
 
 }

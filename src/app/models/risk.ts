@@ -21,6 +21,7 @@ export class Risk {
         public valuationCID?: number,
         public riskTreatmentId?: number,
         public controlImplementationId?: number,
+        public breachId?: number,
     ) { }
 }
 

@@ -25,12 +25,12 @@ export class EditRiskByEvaluationComponent implements OnInit {
 
   constructor(
     private riskService: RiskService,
-    private route: ActivatedRoute,
     private _formBuilder: FormBuilder,
     public router: Router, private activesInventoryService: ActivesInventoryService,
     private menaceService: MenaceService,
     private vulnerabilityService: VulnerabilityService,
-
+    private dialogRef: MatDialogRef<EditRiskByEvaluationComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: DialogData,
 
   ) { }
 
@@ -48,21 +48,19 @@ export class EditRiskByEvaluationComponent implements OnInit {
 
   public title: string = 'EDITAR RIESGO';
 
-
   riskAssessmentId: number = 0;
   valuationCID: number = 0;
 
   riskTreatmentId: number = 0;
   controlImplementationId: number = 0;
 
-
   ngOnInit(): void {
+    this.id = this.data['id'];
     this.initForm();
-    this.initMenuName();
-    this.getAllMenaces();
     this.initRisk();
+    this.initMenuName();
+    this.getAllActivesInventories();
   }
-
 
   initRisk() {
     this.risk = new Risk();
@@ -70,12 +68,11 @@ export class EditRiskByEvaluationComponent implements OnInit {
     this.initMenace();
     this.initVulnerability();
   }
+
   initActivesInventory() {
     if (this.activesInventories.length > 0)
       this.risk.activesInventory = this.activesInventories[0];
   }
-
-
 
   initMenace() {
     if (this.menaces.length > 0)
@@ -171,36 +168,48 @@ export class EditRiskByEvaluationComponent implements OnInit {
     this.risk.vulnerabilityId = this.form.value.vulnerabilityId;
   }
 
+
   getAllActivesInventories() {
+    this.loading = true;
     this.activesInventoryService.getAll()
       .subscribe((res: any) => {
         this.activesInventories = res.data;
-        this.route.paramMap.subscribe((params: ParamMap) => {
-          this.id = params.get('id').toString();
-          this.obtain(this.id);
-        });
+        this.loading = false;
+        this.getAllMenaces();
       }, error => {
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }
+
+
   getAllMenaces() {
+    this.loading = true;
     this.menaceService.getAll()
       .subscribe((res: any) => {
         this.menaces = res.data;
+        this.loading = false;
         this.getAllVulnerabilities();
       }, error => {
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }
+
+
   getAllVulnerabilities() {
+    this.loading = true;
     this.vulnerabilityService.getAll()
       .subscribe((res: any) => {
         this.vulnerabilities = res.data;
-        this.getAllActivesInventories();
+        this.loading = false;
+        this.obtain(this.id);
       }, error => {
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }
+
 
 
   get f() {
@@ -216,12 +225,11 @@ export class EditRiskByEvaluationComponent implements OnInit {
     this.loading2 = true;
     this.getFormValue();
 
-
-
     this.riskService.update(this.risk)
       .subscribe(res => {
-        this.risk = res.data; this.loading2 = false;
-
+        this.risk = res.data;
+        this.loading2 = false;
+        this.dialogRef.close({ updated: true });
 
       }, error => {
         this.loading2 = false;
@@ -230,9 +238,7 @@ export class EditRiskByEvaluationComponent implements OnInit {
 
   }
 
-  navigateToBack() {
-    this.router.navigate(['/risks/current-risks']);
-  }
+
 
   childEvent(riskAssessmentId: number) {
     this.riskAssessmentId = riskAssessmentId;
@@ -245,6 +251,29 @@ export class EditRiskByEvaluationComponent implements OnInit {
 
   childEvent3(controlImplementationId: number) {
     this.controlImplementationId = controlImplementationId;
+  }
+
+  changeActiveInventory(value: number) {
+
+    let activesInventoryNumber = '';
+    let activesInventoryName = '';
+
+    this.activesInventories.forEach((activesInventory) => {
+      if (activesInventory.activesInventoryId == value) {
+        activesInventoryNumber = activesInventory.number;
+        activesInventoryName = activesInventory.name;
+      }
+    });
+
+    this.form.patchValue({
+      activesInventoryNumber: activesInventoryNumber,
+      activesInventoryName: activesInventoryName,
+    });
+
+  }
+
+  close() {
+    this.dialogRef.close();
   }
 
 }

@@ -25,7 +25,7 @@ export class RiskTreatmentService {
         const url = environment.apiUrl + '/api/riskTreatment';
         return this.http.post(url, riskTreatment)
             .pipe(map((resp: any) => {
-                Swal.fire('RiskTreatment registrado', 'El RiskTreatment se registró satisfactoriamente', 'success');
+                Swal.fire('Tratamiento registrado', 'El tratamiento se registró satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -39,7 +39,7 @@ export class RiskTreatmentService {
         const url = environment.apiUrl + '/api/riskTreatment/' + riskTreatment.riskTreatmentId;
         return this.http.put(url, riskTreatment)
             .pipe(map((resp: any) => {
-                Swal.fire('RiskTreatment actualizado', 'El RiskTreatment se actualizó satisfactoriamente', 'success');
+                Swal.fire('Tratamiento actualizado', 'El tratamiento se actualizó satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -48,6 +48,21 @@ export class RiskTreatmentService {
                 return throwError(error);
             }));
     }
+
+    delete(id: number) {
+        const url = environment.apiUrl + '/api/riskTreatment/' + id;
+        return this.http.delete(url)
+            .pipe(map((resp: any) => {
+                Swal.fire('¡Éxito!', 'El registro se eliminó satisfactoriamente', 'success');
+                return resp;
+            }
+            ))
+            .pipe(catchError((error) => {
+                ErrorManager.handleError(error);
+                return throwError(error);
+            }));
+    }
+
 
 }
 

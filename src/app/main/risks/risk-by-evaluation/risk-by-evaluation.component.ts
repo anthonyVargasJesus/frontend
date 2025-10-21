@@ -9,8 +9,10 @@ import Swal from 'sweetalert2';
 import { Subject } from 'rxjs/internal/Subject';
 import { CoreConfigService } from '@core/services/config.service';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
-
 import { MatDialog } from '@angular/material/dialog';
+import { AddRiskAssessmentByRiskComponent } from '../risk-assessment-by-risk/add-risk-assessment-by-risk/add-risk-assessment-by-risk.component';
+import { AddRiskByEvaluationComponent } from './add-risk-by-evaluation/add-risk-by-evaluation.component';
+import { EditRiskByEvaluationComponent } from './edit-risk-by-evaluation/edit-risk-by-evaluation.component';
 
 
 @Component({
@@ -39,18 +41,24 @@ export class RiskByEvaluationComponent implements OnInit {
   public currentSkin: string;
   private _unsubscribeAll: Subject<any>;
   private panelClass: string;
-  @Input()
-  evaluationId: number;
 
+  evaluationId: number;
+  coreConfig: any;
+
+  REGISTERED_STATUS_ID: number = 1;
+  //IN_EVALUATION_STATUS_ID = 2
 
   constructor(private riskService: RiskService, private router: Router, private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
     private dialog: MatDialog
   ) {
-
+    this._unsubscribeAll = new Subject();
   }
 
   ngOnInit() {
+    this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
+      this.coreConfig = config;
+    });
     this.getTheme();
     this.initMenuName();
     this.pageSize = PAGE_SIZE;
@@ -80,18 +88,18 @@ export class RiskByEvaluationComponent implements OnInit {
 
   initMenuName() {
     this.contentHeader = {
-      headerTitle: 'Risk',
+      headerTitle: 'Riesgos registrados',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'Risk',
+            name: 'RIESGOS',
             isLink: false,
             link: '#'
           },
           {
-            name: 'Risk',
+            name: 'Registrados',
             isLink: false
           }
         ]
@@ -99,14 +107,12 @@ export class RiskByEvaluationComponent implements OnInit {
     }
   }
 
-
-
   get() {
     this.loading = true;
-    this.riskService.getByevaluationId(this.skip, this.pageSize, 
-      this.evaluationId, this.searchText)
+    this.riskService.getByevaluationId(this.skip, this.pageSize, this.REGISTERED_STATUS_ID, this.searchText)
       .subscribe((res: any) => {
         this.asignObjects(res);
+        this.evaluationId = res.evaluationId;
         this.page = (this.skip / this.pageSize) + 1;
         this.results = getResults(this.total, this.totalPages);
         this.loading = false;
@@ -147,11 +153,47 @@ export class RiskByEvaluationComponent implements OnInit {
   }
 
   add() {
-    this.router.navigate(['/risks/add-risk', this.evaluationId]);
+   if (this.loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(AddRiskByEvaluationComponent, {
+        height: '620px',
+        width: '600px',
+        data: {
+          evaluationId: this.evaluationId,
+        },
+        autoFocus: false,
+        panelClass: this.panelClass
+      });
+
+      dialogRef.afterClosed().subscribe(data => {
+        if (data == null)
+          return;
+
+        if (data.updated == true)
+          this.get();
+      });
+    }
   }
 
-  edit(id: String) {
-    this.router.navigate(['/risks/edit-risk', id]);
+  edit(id: String) {   
+    if (this.loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(EditRiskByEvaluationComponent, {
+        height: '620px',
+        width: '600px',
+        data: {
+          id: id,
+        },
+        autoFocus: false,
+        panelClass: this.panelClass
+      });
+
+      dialogRef.afterClosed().subscribe(data => {
+        if (data == null)
+          return;
+
+        if (data.updated == true)
+          this.get();
+      });
+    } 
   }
 
   delete(risk: Risk) {
@@ -199,6 +241,34 @@ export class RiskByEvaluationComponent implements OnInit {
     this.totalPages = res.pagination.totalPages;
   }
 
+  
+  initEvaluation(risk: Risk) {
 
-}  
+    if (this.loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(AddRiskAssessmentByRiskComponent, {
+        height: '650px',
+        width: '700px',
+        data: {
+          riskId: risk.riskId,
+          riskAssessmentId: risk.riskAssessmentId,
+          valuationCID: risk.valuationCID,
+        },
+        autoFocus: false,
+        panelClass: this.panelClass
+      });
+
+      dialogRef.afterClosed().subscribe(data => {
+        if (data == null)
+          return;
+
+        if (data.updated == true)
+          this.get();
+      });
+    }
+
+
+  }
+
+
+}
 

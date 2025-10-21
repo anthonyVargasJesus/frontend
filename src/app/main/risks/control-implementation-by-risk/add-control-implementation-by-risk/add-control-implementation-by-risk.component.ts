@@ -7,6 +7,9 @@ import { ControlImplementationService } from 'app/services/control-implementatio
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ResponsibleService } from 'app/services/responsible.service';
 import { Responsible } from 'app/models/responsible';
+import { DialogData } from 'app/models/dialog-data';
+import { Risk } from 'app/models/risk';
+import { RiskService } from 'app/services/risk.service';
 
 @Component({
   selector: 'app-add-control-implementation-by-risk',
@@ -18,16 +21,15 @@ import { Responsible } from 'app/models/responsible';
 
 export class AddControlImplementationByRiskComponent implements OnInit {
 
-   @Input()
-   riskId: number;
- 
-   @Input()
-   controlImplementationId: number;
-   
+  riskId: number;
+  selectedRisk: Risk;
+
   constructor(
     private controlImplementationService: ControlImplementationService,
     private _formBuilder: FormBuilder, private responsibleService: ResponsibleService,
-
+    private dialogRef: MatDialogRef<AddControlImplementationByRiskComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: DialogData,
+    private riskService: RiskService,
   ) { }
 
   responsibles: Responsible[] = [];
@@ -38,12 +40,26 @@ export class AddControlImplementationByRiskComponent implements OnInit {
   public form: FormGroup;
   public submitted = false;
 
-  @Output() childEvent3 = new EventEmitter<number>();
-  
+
   ngOnInit(): void {
+    this.riskId = this.data['riskId'];
     this.initForm();
-    this.getAllResponsibles();
     this.initControlImplementation();
+    this.obtainRisk();
+  }
+
+  obtainRisk() {
+    this.loading = true;
+    this.riskService.obtain(this.riskId.toString())
+      .subscribe((res: any) => {
+        this.selectedRisk = res.data;
+        this.initForm();
+        this.getAllResponsibles();
+        this.loading = false;
+      }, error => {
+        this.loading = false;
+        ErrorManager.handleError(error);
+      });
   }
 
   initForm() {
@@ -64,16 +80,16 @@ export class AddControlImplementationByRiskComponent implements OnInit {
   getAllResponsibles() {
     // Por el momento solo se usa el ISO 27001, mas adelante se puede cambiar
     const ISO_27001_ID = 4;
+    this.loading = true;
     this.responsibleService.getAll(ISO_27001_ID)
       .subscribe((res: any) => {
         this.responsibles = res.data;
-        this.initControlImplementation();
+        this.loading = false;
       }, error => {
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }
-
-
 
   getFormValue() {
     this.controlImplementation.activities = this.form.value.activities;
@@ -107,12 +123,17 @@ export class AddControlImplementationByRiskComponent implements OnInit {
       .subscribe(res => {
         this.controlImplementation = res.data;
         this.loading2 = false;
-        this.childEvent3.emit(this.controlImplementation.controlImplementationId);
+        this.dialogRef.close({ updated: true });
       }, error => {
         this.loading2 = false;
         ErrorManager.handleError(error);
       });
 
-  } 
+  }
+
+  close() {
+    this.dialogRef.close();
+  }
+
 }
 

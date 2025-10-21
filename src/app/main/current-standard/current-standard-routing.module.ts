@@ -12,6 +12,8 @@ import { ScopeByStandardComponent } from './scope-by-standard/scope-by-standard.
 import { HomeStandardComponent } from './home-standard/home-standard.component';
 import { DefaultRisk } from 'app/models/default-risk';
 import { DefaultRiskComponent } from './default-risk/default-risk.component';
+import { DocumentationSupportComponent } from './documentation-support/documentation-support.component';
+import { EditDocumentationSupportComponent } from './documentation-support/edit-documentation-support/edit-documentation-support.component';
 
 
 const routes: Routes = [
@@ -26,6 +28,16 @@ const routes: Routes = [
     { path: 'scope/:id', component: ScopeByStandardComponent, },
     { path: 'default-risk/:id', component: DefaultRiskComponent, },
     { path: 'home', component: HomeStandardComponent, },
+    {
+        path: 'supports/:id',
+        component: DocumentationSupportComponent,
+        data: { animation: 'supports' }
+    },
+    {
+        path: 'support-detail/:id',
+        component: EditDocumentationSupportComponent,
+        data: { animation: 'supports' }
+    },
 ];
 
 

@@ -5,10 +5,13 @@ import { CoreConfigService } from '@core/services/config.service';
 import { getResults, PAGE_SIZE } from 'app/config/config';
 import { ErrorManager } from 'app/errors/error-manager';
 import { Breach } from 'app/models/breach';
+import { Risk } from 'app/models/risk';
 import { BreachService } from 'app/services/breach.service';
 import { LoginService } from 'app/services/login.service';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { Subject } from 'rxjs/internal/Subject';
+import { AddRiskByEvaluationComponent } from '../risk-by-evaluation/add-risk-by-evaluation/add-risk-by-evaluation.component';
+import { Evaluation } from 'app/models/evaluation';
 
 @Component({
   selector: 'app-risks-identification',
@@ -33,16 +36,20 @@ export class RisksIdentificationComponent implements OnInit {
   public currentSkin: string;
   private _unsubscribeAll: Subject<any>;
   private panelClass: string;
-
+  coreConfig: any;
+  currentEvaluation: Evaluation = new Evaluation();
 
   constructor(private breachService: BreachService, private loginService: LoginService,
     private _coreConfigService: CoreConfigService, private router: Router,
     private dialog: MatDialog
   ) {
-
+    this._unsubscribeAll = new Subject();
   }
 
   ngOnInit() {
+    this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
+      this.coreConfig = config;
+    });
     this.getTheme();
     this.initMenuName();
     this.pageSize = PAGE_SIZE;
@@ -94,7 +101,7 @@ export class RisksIdentificationComponent implements OnInit {
     this.breachService.getRisksIdentification(this.skip, this.pageSize, this.searchText)
       .subscribe((res: any) => {
         this.asignObjects(res);
-        console.log(res)
+        this.currentEvaluation = res.currentEvaluation;
         this.page = (this.skip / this.pageSize) + 1;
         this.results = getResults(this.total, this.totalPages);
         this.loading = false;
@@ -164,6 +171,29 @@ export class RisksIdentificationComponent implements OnInit {
     this.totalPages = res.pagination.totalPages;
   }
 
+  createRisk(defaultRisk: Risk, breachId: number) {
 
+    if (this.loginService.isAuthenticated()) {
+      let dialogRef = this.dialog.open(AddRiskByEvaluationComponent, {
+        height: '620px',
+        width: '600px',
+        data: {
+          evaluationId: this.currentEvaluation.evaluationId,
+          breachId: breachId,
+          defaultRisk: defaultRisk,
+        },
+        autoFocus: false,
+        panelClass: this.panelClass
+      });
+
+      dialogRef.afterClosed().subscribe(data => {
+        if (data == null)
+          return;
+
+        if (data.updated == true)
+          this.get();
+      });
+    }
+  }
 
 }

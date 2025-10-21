@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
   hmr: false,
-  apiUrl: 'https://qualifier-services-930633bfde3e.herokuapp.com',
+  apiUrl: 'https://qualifier-backend-production.up.railway.app',
 };

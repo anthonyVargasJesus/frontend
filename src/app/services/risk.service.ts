@@ -15,13 +15,13 @@ export class RiskService {
 
     constructor(public http: HttpClient) { }
 
-    getAllByevaluationId(evaluationId: number,) {
-        const url = environment.apiUrl + '/api/risk/all/evaluation?' + '&evaluationId=' + evaluationId;
+    getMonitoring(skip: number, pageSize: number, search: string) {
+        const url = environment.apiUrl + '/api/risk/GetMonitoring' + '?skip=' + skip + '&pageSize=' + pageSize + '&search=' + search;
         return this.http.get(url);
     }
 
-    getByevaluationId(skip: number, pageSize: number, evaluationId: number, search: string) {
-        const url = environment.apiUrl + '/api/risk' + '?skip=' + skip + '&pageSize=' + pageSize + '&evaluationId=' + evaluationId + '&search=' + search;
+    getByevaluationId(skip: number, pageSize: number, riskStatusId: number, search: string) {
+        const url = environment.apiUrl + '/api/risk' + '?skip=' + skip + '&pageSize=' + pageSize + '&riskStatusId=' + riskStatusId + '&search=' + search;
         return this.http.get(url);
     }
 
@@ -34,7 +34,7 @@ export class RiskService {
         const url = environment.apiUrl + '/api/risk';
         return this.http.post(url, risk)
             .pipe(map((resp: any) => {
-                Swal.fire('Risk registrado', 'El Risk se registró satisfactoriamente', 'success');
+                Swal.fire('Riesgo registrado', 'El riesgo se registró satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -48,7 +48,22 @@ export class RiskService {
         const url = environment.apiUrl + '/api/risk/' + risk.riskId;
         return this.http.put(url, risk)
             .pipe(map((resp: any) => {
-                Swal.fire('Risk actualizado', 'El Risk se actualizó satisfactoriamente', 'success');
+                Swal.fire('Riesgo actualizado', 'El riesgo se actualizó satisfactoriamente', 'success');
+                return resp;
+            }
+            ))
+            .pipe(catchError((error) => {
+                ErrorManager.handleError(error);
+                return throwError(error);
+            }));
+    }
+
+    updateStatus(id: number, riskStatusId: number) {
+        const url = environment.apiUrl + '/api/risk/status?riskId=' + id + '&riskStatusId=' + riskStatusId;
+        let body = {};
+        return this.http.put(url, body)
+            .pipe(map((resp: any) => {
+                Swal.fire('Estado actualizado', 'El estado actualizó satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -62,7 +77,7 @@ export class RiskService {
         const url = environment.apiUrl + '/api/risk/' + id;
         return this.http.delete(url)
             .pipe(map((resp: any) => {
-                Swal.fire('Risk eliminado', 'El Risk se eliminó satisfactoriamente', 'success');
+                Swal.fire('Riesgo eliminado', 'El riesgo se eliminó satisfactoriamente', 'success');
                 return resp;
             }
             ))
