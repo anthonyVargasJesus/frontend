@@ -13,7 +13,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { RiskTreatmentService } from 'app/services/risk-treatment.service';
 import { EditRiskTreatmentByRiskComponent } from '../risk-treatment-by-risk/edit-risk-treatment-by-risk/edit-risk-treatment-by-risk.component';
 import { AddControlImplementationByRiskComponent } from '../control-implementation-by-risk/add-control-implementation-by-risk/add-control-implementation-by-risk.component';
-import { ControlImplementationByRiskComponent } from '../control-implementation-by-risk/control-implementation-by-risk.component';
 import { FollowUpRiskComponent } from '../follow-up-risk/follow-up-risk.component';
 
 
@@ -22,6 +21,8 @@ import { FollowUpRiskComponent } from '../follow-up-risk/follow-up-risk.componen
   templateUrl: './risk-to-treatment.component.html',
   styleUrls: ['./risk-to-treatment.component.scss']
 })
+
+
 export class RiskToTreatmentComponent implements OnInit {
 
 
@@ -37,28 +38,38 @@ export class RiskToTreatmentComponent implements OnInit {
   results: string;
   previous = true;
   next = true;
+
   public contentHeader: object;
   public currentSkin: string;
   private _unsubscribeAll: Subject<any>;
   private panelClass: string;
+  coreConfig: any;
 
   @Input()
   evaluationId: number;
-  coreConfig: any;
 
   IN_TREATMENT_STATUS_ID = 4
 
-  constructor(private riskService: RiskService, private router: Router, private loginService: LoginService,
-    private _coreConfigService: CoreConfigService, private riskTreatmentService: RiskTreatmentService,
+  constructor(
+    private riskService: RiskService,
+    private router: Router,
+    private loginService: LoginService,
+    private _coreConfigService: CoreConfigService,
+    private riskTreatmentService: RiskTreatmentService,
     private dialog: MatDialog
   ) {
     this._unsubscribeAll = new Subject();
   }
 
   ngOnInit() {
+    this.iniComponent();
+  }
+
+  iniComponent() {
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       this.coreConfig = config;
     });
+
     this.getTheme();
     this.initMenuName();
     this.pageSize = PAGE_SIZE;
@@ -82,7 +93,6 @@ export class RiskToTreatmentComponent implements OnInit {
     else
       this.panelClass = 'custom-default-dialog-container';
   }
-
 
 
   initMenuName() {
@@ -112,7 +122,6 @@ export class RiskToTreatmentComponent implements OnInit {
       this.IN_TREATMENT_STATUS_ID, this.searchText)
       .subscribe((res: any) => {
         this.asignObjects(res);
-        console.log(res);
         this.page = (this.skip / this.pageSize) + 1;
         this.results = getResults(this.total, this.totalPages);
         this.loading = false;

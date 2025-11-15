@@ -124,7 +124,6 @@ export class RequirementComponent implements OnInit {
     this.loading = true;
     this.requirementService.get(this.standardId)
       .subscribe((res: any) => {
-        console.log(res);
         this.asignObjects(res);
         this.loading = false;
       }, error => {

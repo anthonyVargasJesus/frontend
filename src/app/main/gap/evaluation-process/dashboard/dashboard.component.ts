@@ -130,8 +130,6 @@ export class DashboardComponent implements OnInit {
         this.title = this.requirementsIndicator.name;
         this.value = this.requirementsIndicator.value;
 
-        // let x = this.convertToChartObject(this.requirements[0], res.indicators);
-        // console.log('x', x);
 
         this.loading = false;
 
@@ -164,8 +162,6 @@ export class DashboardComponent implements OnInit {
     this.loading = true;
     this.evaluationService.getControlDashboard(this.standardId, this.evaluationId)
       .subscribe((res: any) => {
-
-        console.log('Control Dashboard', res);
 
         this.controlsIndicator = res.controlsIndicator;
         this.controlMaximum = res.controlsIndicator.maximum;

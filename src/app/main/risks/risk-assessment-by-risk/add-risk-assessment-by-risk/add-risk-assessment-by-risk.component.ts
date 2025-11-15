@@ -176,9 +176,6 @@ export class AddRiskAssessmentByRiskComponent implements OnInit {
 
   calculateRiskAssessmentValue(menaceLevelValue: any, vulnerabilityLevelValue: any) {
 
-    console.log('menaceLevelValue', menaceLevelValue);
-    console.log('vulnerabilityLevelValue', vulnerabilityLevelValue);
-
     let riskAssessmentValue: any = '';
 
     if (!menaceLevelValue) {
@@ -194,9 +191,7 @@ export class AddRiskAssessmentByRiskComponent implements OnInit {
       return;
     }
 
-
     riskAssessmentValue = (Number(menaceLevelValue) * Number(vulnerabilityLevelValue)) * this.valuationCID;
-    console.log('fdsfsd', riskAssessmentValue)
 
     this.riskAssessment.riskAssessmentValue = riskAssessmentValue;
     this.riskAssessment.riskLevelId = this.getRiskLevelId(riskAssessmentValue);

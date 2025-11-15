@@ -73,7 +73,6 @@ export class AddRiskByEvaluationComponent implements OnInit {
   initRisk() {
     this.risk = new Risk();
     if (this.defaultRisk) {
-      console.log(this.defaultRisk);
       this.form.patchValue({
         name: this.defaultRisk.name,
         activesInventoryId: '',

@@ -113,7 +113,6 @@ export class RiskToEvaluationComponent implements OnInit {
       this.IN_EVALUATION_STATUS_ID, this.searchText)
       .subscribe((res: any) => {
         this.asignObjects(res);
-        console.log(res);
         this.page = (this.skip / this.pageSize) + 1;
         this.results = getResults(this.total, this.totalPages);
         this.loading = false;

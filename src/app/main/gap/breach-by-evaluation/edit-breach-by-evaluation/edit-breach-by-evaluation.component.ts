@@ -311,7 +311,6 @@ export class EditBreachByEvaluationComponent implements OnInit {
 
         if (data.requirement) {
 
-          console.log("requirement se", data.requirement);
           this.selectedRequirement = data.requirement;
           this.selectedControl = undefined;
 
@@ -348,7 +347,6 @@ export class EditBreachByEvaluationComponent implements OnInit {
 
         if (data.control) {
 
-          console.log("controls", data.control);
           this.selectedControl = data.control;
           this.selectedRequirement = undefined;
 

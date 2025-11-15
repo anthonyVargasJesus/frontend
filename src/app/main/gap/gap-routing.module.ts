@@ -24,11 +24,6 @@ const routes: Routes = [
         component: EvaluationProcessListComponent,
         data: { animation: 'evaluation-process-list' }
     },
-    // {
-    //     path: 'evaluation-process/:id',
-    //     component: EvaluationProcessComponent,
-    //     data: { animation: 'evaluation-process' }
-    // },
 ];
 
 @NgModule({

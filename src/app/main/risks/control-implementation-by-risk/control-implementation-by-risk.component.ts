@@ -122,7 +122,6 @@ export class ControlImplementationByRiskComponent implements OnInit {
     this.controlImplementationService.getByriskId(this.skip, this.pageSize, this.riskId, this.searchText)
       .subscribe((res: any) => {
         this.asignObjects(res);
-        console.log(res);
         this.page = (this.skip / this.pageSize) + 1;
         this.results = getResults(this.total, this.totalPages);
         this.loading = false;

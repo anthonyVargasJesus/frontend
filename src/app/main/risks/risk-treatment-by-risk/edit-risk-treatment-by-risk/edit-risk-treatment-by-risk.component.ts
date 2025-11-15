@@ -240,8 +240,6 @@ export class EditRiskTreatmentByRiskComponent implements OnInit {
     this.riskTreatment.riskLevelId = this.getRiskLevelId(riskAssessmentValue);
     this.riskTreatment.residualRiskId = this.getResidualRiskId(riskAssessmentValue);
 
-    console.log(' this.riskTreatment.residualRisklId', this.riskTreatment.residualRiskId)
-
     this.form.patchValue({
       riskAssessmentValue: riskAssessmentValue,
       riskLevelId: (this.riskTreatment.riskLevelId == 0) ? '' : this.riskTreatment.riskLevelId,
@@ -288,7 +286,6 @@ export class EditRiskTreatmentByRiskComponent implements OnInit {
   }
 
   setRiskLevelColor(riskLevelId: number) {
-    console.log('setRiskLevelColor', riskLevelId);
 
     this.color = '';
     this.riskLevels.forEach((item: RiskLevel) => {

@@ -176,8 +176,6 @@ export class AddBreachByEvaluationComponent implements OnInit {
 
     this.breach.standardId = this.standardId;
 
-    console.log("breach to save", this.breach);
-
     this.breachService.insert(this.breach)
       .subscribe(res => {
         this.breach = res.data;
@@ -213,7 +211,6 @@ export class AddBreachByEvaluationComponent implements OnInit {
 
         if (data.requirement) {
 
-          console.log("requirement se", data.requirement);
           this.selectedRequirement = data.requirement;
 
           this.form.patchValue({
@@ -247,7 +244,6 @@ export class AddBreachByEvaluationComponent implements OnInit {
 
         if (data.control) {
 
-          console.log("controls", data.control);
           this.selectedControl = data.control;
 
           this.form.patchValue({

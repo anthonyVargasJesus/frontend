@@ -40,7 +40,7 @@ export class CustomRequirementEvaluationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //console.log(this.isSearch)
+
   }
 
   add(requirement: Requirement) {

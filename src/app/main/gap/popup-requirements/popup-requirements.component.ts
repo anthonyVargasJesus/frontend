@@ -35,7 +35,6 @@ export class PopupRequirementsComponent implements OnInit {
     this.loading = true;
     this.requirementService.get(this.standardId)
       .subscribe((res: any) => {
-        console.log(res);
         this.requirements = res.data;
         this.loading = false;
       }, error => {

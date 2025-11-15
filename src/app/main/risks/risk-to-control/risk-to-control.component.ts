@@ -111,7 +111,6 @@ export class RiskToControlComponent implements OnInit {
     this.riskService.getMonitoring(this.skip, this.pageSize, this.searchText)
       .subscribe((res: any) => {
         this.asignObjects(res);
-        console.log(res);
         this.page = (this.skip / this.pageSize) + 1;
         this.results = getResults(this.total, this.totalPages);
         this.loading = false;

@@ -122,7 +122,6 @@ export class EditRiskAssessmentByRiskComponent implements OnInit {
     this.riskAssessmentService.obtain(id)
       .subscribe((res: any) => {
         this.riskAssessment = res.data;
-        console.log(res);
         this.valuationCID = this.riskAssessment.valuationCID;
         this.setFormValue(this.riskAssessment);
         this.setRiskLevelColor(this.riskAssessment.riskLevelId);
@@ -226,8 +225,6 @@ export class EditRiskAssessmentByRiskComponent implements OnInit {
 
 
     riskAssessmentValue = (Number(menaceLevelValue) * Number(vulnerabilityLevelValue)) * this.valuationCID;
-    console.log('fdsfsd', riskAssessmentValue)
-
     this.riskAssessment.riskAssessmentValue = riskAssessmentValue;
     this.riskAssessment.riskLevelId = this.getRiskLevelId(riskAssessmentValue);
 

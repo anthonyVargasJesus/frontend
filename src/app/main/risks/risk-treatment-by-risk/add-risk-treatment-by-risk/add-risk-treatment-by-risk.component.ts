@@ -247,12 +247,9 @@ export class AddRiskTreatmentByRiskComponent implements OnInit {
 
     riskAssessmentValue = (Number(menaceLevelValue) * Number(vulnerabilityLevelValue)) * this.valuationCID;
 
-
     this.riskTreatment.riskAssessmentValue = riskAssessmentValue;
     this.riskTreatment.riskLevelId = this.getRiskLevelId(riskAssessmentValue);
     this.riskTreatment.residualRiskId = this.getResidualRiskId(riskAssessmentValue);
-
-    console.log(' this.riskTreatment.residualRisklId', this.riskTreatment.residualRiskId)
 
     this.form.patchValue({
       riskAssessmentValue: riskAssessmentValue,

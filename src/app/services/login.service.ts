@@ -121,7 +121,6 @@ export class LoginService {
 
     // 2. Decodifica token
     const user = this.getCurrentUser();
-    console.log(user);
 
     if (!user || typeof user.rls !== 'string')
       this.router.navigate(['/pages/miscellaneous/not-authorized']);
