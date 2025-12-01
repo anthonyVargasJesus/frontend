@@ -61,11 +61,12 @@ import { EditRiskLevelComponent } from './risk-level/edit-risk-level/edit-risk-l
 
 @NgModule({
   declarations: [
-    RisksIdentificationComponent, RiskByEvaluationComponent, AddRiskByEvaluationComponent, EditRiskByEvaluationComponent, CurrentRiskEvaluationComponent,
-    AddRiskAssessmentByRiskComponent, EditRiskAssessmentByRiskComponent, AddRiskTreatmentByRiskComponent, EditRiskTreatmentByRiskComponent,
-    AddControlImplementationByRiskComponent, EditControlImplementationByRiskComponent, RiskToEvaluationComponent,
-     RiskToTreatmentComponent, RiskToControlComponent, ControlImplementationByRiskComponent, AcceptRiskComponent, ScalateRiskComponent, FollowUpRiskComponent, ReopenRiskComponent,
-    MenaceTypeComponent, AddMenaceTypeComponent, EditMenaceTypeComponent,
+    RisksIdentificationComponent, RiskByEvaluationComponent, AddRiskByEvaluationComponent, EditRiskByEvaluationComponent, 
+    CurrentRiskEvaluationComponent, AddRiskAssessmentByRiskComponent, EditRiskAssessmentByRiskComponent, 
+    AddRiskTreatmentByRiskComponent, EditRiskTreatmentByRiskComponent,AddControlImplementationByRiskComponent, 
+    EditControlImplementationByRiskComponent, RiskToEvaluationComponent,
+    RiskToTreatmentComponent, RiskToControlComponent, ControlImplementationByRiskComponent, AcceptRiskComponent, ScalateRiskComponent, 
+    FollowUpRiskComponent, ReopenRiskComponent,MenaceTypeComponent, AddMenaceTypeComponent, EditMenaceTypeComponent,
     MenaceComponent, AddMenaceComponent, EditMenaceComponent,
     VulnerabilityTypeComponent, AddVulnerabilityTypeComponent, EditVulnerabilityTypeComponent,
     VulnerabilityComponent, AddVulnerabilityComponent, EditVulnerabilityComponent,
