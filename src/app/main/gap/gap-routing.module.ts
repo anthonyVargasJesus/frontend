@@ -11,7 +11,7 @@ import { EvaluationProcessListComponent } from './evaluation-process-list/evalua
 const routes: Routes = [
     { path: 'requirement-evaluation', component: CurrentRequirementEvaluationComponent, },
     { path: 'control-evaluation', component: CurrentControlEvaluationComponent, },
-    { path: 'current-breachs', component: CurrentBreachsComponent, },
+    { path: 'current-breaches', component: CurrentBreachsComponent, },
     { path: 'resume', component: HomeComponent, },
     { path: 'edit-breach/:breachId/:standardId', component: EditBreachByEvaluationComponent },
     {

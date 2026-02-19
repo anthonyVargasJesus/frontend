@@ -110,11 +110,9 @@
                     <div class="col-md-6">
                         <div class="form-group">
 
-                            <div style="display:flex; margin-bottom:-10px;">
+                            <div style="display:flex; margin-bottom:0px;">
                                 <label class="form-label">Valor</label>
-                                <label style="margin-left: 5px;">(</label>
-                                <label style="font-size: 22px; margin-top:-1px;">*</label>
-                                <label>)</label>
+                    
                             </div>
                             <input type="number" formControlName="value"
                                 [ngClass]="{ 'is-invalid': submitted && f.value.errors }" maxlength="5"

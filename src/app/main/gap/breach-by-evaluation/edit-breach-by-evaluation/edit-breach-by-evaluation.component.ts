@@ -289,7 +289,7 @@ export class EditBreachByEvaluationComponent implements OnInit {
   }
 
   navigateToBack() {
-    this.router.navigate(['/gap/current-breachs']);
+    this.router.navigate(['/gap/current-breaches']);
   }
 
   openRequirements() {

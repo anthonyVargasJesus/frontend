@@ -15,6 +15,8 @@ import { DialogData } from 'app/models/dialog-data';
   styles: [
   ]
 })
+
+
 export class EditDefaultSectionComponent implements OnInit {
 
   constructor(
@@ -98,6 +100,7 @@ export class EditDefaultSectionComponent implements OnInit {
 
 
   getFormValue() {
+    this.defaultSection.defaultSectionId = Number(this.id);
     this.defaultSection.numeration = this.form.value.numeration;
     this.defaultSection.name = this.form.value.name;
     this.defaultSection.description = this.form.value.description;

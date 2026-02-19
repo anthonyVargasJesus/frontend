@@ -47,6 +47,10 @@ import { EditIndicatorComponent } from './indicator/edit-indicator/edit-indicato
 import { ConfidentialityLevelComponent } from './confidentiality-level/confidentiality-level.component';
 import { AddConfidentialityLevelComponent } from './confidentiality-level/add-confidentiality-level/add-confidentiality-level.component';
 import { EditConfidentialityLevelComponent } from './confidentiality-level/edit-confidentiality-level/edit-confidentiality-level.component';
+import { DefaultSectionComponent } from './default-section/default-section.component';
+import { AddDefaultSectionComponent } from './default-section/add-default-section/add-default-section.component';
+import { EditDefaultSectionComponent } from './default-section/edit-default-section/edit-default-section.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 
 @NgModule({
@@ -62,6 +66,7 @@ import { EditConfidentialityLevelComponent } from './confidentiality-level/edit-
     EditIndicatorComponent, PersonalComponent, AddPersonalComponent, EditPersonalComponent, 
     ConfidentialityLevelComponent, AddConfidentialityLevelComponent,
     EditConfidentialityLevelComponent,
+     DefaultSectionComponent, AddDefaultSectionComponent, EditDefaultSectionComponent,
   ],
   imports: [
         CommonModule,
@@ -76,6 +81,7 @@ import { EditConfidentialityLevelComponent } from './confidentiality-level/edit-
         MatInputModule,
         MatNativeDateModule,
         MatSlideToggleModule,
+        MatExpansionModule,
         NgbModule,
         //CustomComponentsModule
   ]

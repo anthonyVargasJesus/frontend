@@ -14,6 +14,8 @@ import { DialogData } from 'app/models/dialog-data';
   styles: [
   ]
 })
+
+
 export class AddDefaultSectionComponent implements OnInit {
 
   constructor(
@@ -37,6 +39,8 @@ export class AddDefaultSectionComponent implements OnInit {
   ngOnInit(): void {
     this.documentTypeId = this.data['documentTypeId'];
     this.defaultSectionId = this.data['defaultSectionId'];
+    if (!this.defaultSectionId)
+      this.defaultSectionId = '0';
     this.level = this.data['level'];
     this.initForm();
     this.getAllDefaultSections();

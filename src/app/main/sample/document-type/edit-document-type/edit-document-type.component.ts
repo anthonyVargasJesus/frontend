@@ -131,7 +131,7 @@ export class EditDocumentTypeComponent implements OnInit {
   }
 
   navigateToBack() {
-    this.router.navigate(['/current-standard/document-type']);
+    this.router.navigate(['/mantto/document-type']);
   }
 
 }

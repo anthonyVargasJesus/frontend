@@ -20,6 +20,8 @@ import { EditDefaultSectionComponent } from './edit-default-section/edit-default
   styles: [
   ]
 })
+
+
 export class DefaultSectionComponent implements OnInit {
 
   defaultSections: DefaultSection[] = [];

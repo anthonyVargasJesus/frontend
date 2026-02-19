@@ -102,7 +102,7 @@ export class EditRequirementEvaluationComponent implements OnInit {
       responsible: ['', [Validators.required,]],
       justification: ['', [Validators.required, Validators.maxLength(500),]],
       improvementActions: ['', [Validators.maxLength(1000),]],
-      documentation: ['', [Validators.required,]],
+      //documentation: ['', [Validators.required,]],
     });
   }
 
@@ -128,7 +128,7 @@ export class EditRequirementEvaluationComponent implements OnInit {
       responsible: ((requirementEvaluation.responsibleId == null) ? '' : requirementEvaluation.responsibleId),
       justification: ((requirementEvaluation.justification == null) ? '' : requirementEvaluation.justification),
       improvementActions: ((requirementEvaluation.improvementActions == null) ? '' : requirementEvaluation.improvementActions),
-      documentation: requirementEvaluation.arrayReferenceDocumentations
+      //documentation: requirementEvaluation.arrayReferenceDocumentations
     });
 
 

@@ -38,9 +38,6 @@ import { ScopeByStandardComponent } from './scope-by-standard/scope-by-standard.
 import { AddScopeByStandardComponent } from './scope-by-standard/add-scope-by-standard/add-scope-by-standard.component';
 import { EditScopeByStandardComponent } from './scope-by-standard/edit-scope-by-standard/edit-scope-by-standard.component';
 import { HomeStandardComponent } from './home-standard/home-standard.component';
-import { DefaultSectionComponent } from './default-section/default-section.component';
-import { AddDefaultSectionComponent } from './default-section/add-default-section/add-default-section.component';
-import { EditDefaultSectionComponent } from './default-section/edit-default-section/edit-default-section.component';
 import { SectionComponent } from './section/section.component';
 import { AddSectionComponent } from './section/add-section/add-section.component';
 import { EditSectionComponent } from './section/edit-section/edit-section.component';
@@ -70,18 +67,22 @@ import { EditSupportForControlComponent } from './support-for-control/edit-suppo
 @NgModule({
   declarations: [StandardComponent, AddStandardComponent, EditStandardComponent, DocumentationComponent,
     AddDocumentationComponent, EditDocumentationComponent, ResponsibleComponent, AddResponsibleComponent,
-    EditResponsibleComponent, DefaultSectionComponent, AddDefaultSectionComponent, EditDefaultSectionComponent,
+    EditResponsibleComponent,
     RequirementComponent, AddRequirementComponent,
     EditRequirementComponent, ControlComponent, ControlGroupComponent,
     AddControlGroupComponent, EditControlGroupComponent, EditControlComponent, AddControlComponent,
     PolicyByStandardComponent, AddPolicyByStandardComponent, EditPolicyComponent,
     ScopeByStandardComponent, AddScopeByStandardComponent, EditScopeByStandardComponent, HomeStandardComponent,
-    SectionComponent, AddSectionComponent, EditSectionComponent, SectionByDocumentationIdComponent, DefaultRiskComponent, AddDefaultRiskComponent, EditDefaultRiskComponent,
-    RequirementInDefaultRiskByRequirementComponent, AddRequirementInDefaultRiskByRequirementComponent, EditRequirementInDefaultRiskByRequirementComponent,
+    SectionComponent, AddSectionComponent, EditSectionComponent, SectionByDocumentationIdComponent, DefaultRiskComponent, 
+    AddDefaultRiskComponent, EditDefaultRiskComponent,
+    RequirementInDefaultRiskByRequirementComponent, AddRequirementInDefaultRiskByRequirementComponent, 
+    EditRequirementInDefaultRiskByRequirementComponent,
     ControlInDefaultRiskByControlComponent, AddControlInDefaultRiskByControlComponent, EditControlInDefaultRiskByControlComponent,
-    ActivesInventoryInDefaultRiskByDefaultRiskComponent, AddActivesInventoryInDefaultRiskByDefaultRiskComponent, EditActivesInventoryInDefaultRiskByDefaultRiskComponent,
+    ActivesInventoryInDefaultRiskByDefaultRiskComponent, AddActivesInventoryInDefaultRiskByDefaultRiskComponent,
+     EditActivesInventoryInDefaultRiskByDefaultRiskComponent,
     SupportForRequirementComponent, AddSupportForRequirementComponent, EditSupportForRequirementComponent,
-    DocumentationSupportComponent,EditDocumentationSupportComponent,SupportForControlComponent, AddSupportForControlComponent, EditSupportForControlComponent,
+    DocumentationSupportComponent,EditDocumentationSupportComponent,SupportForControlComponent, AddSupportForControlComponent, 
+  EditSupportForControlComponent,
   ],
   imports: [
     CommonModule,

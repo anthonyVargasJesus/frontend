@@ -52,7 +52,7 @@ export class EditIndicatorComponent implements OnInit {
       name: ['', [Validators.required, Validators.maxLength(100),]],
       description: ['', [Validators.required, Validators.maxLength(500),]],
       abbreviation: ['', [Validators.required, Validators.maxLength(10),]],
-      value: ['', [Validators.required, Validators.maxLength(8),]],
+      value: ['', [ Validators.maxLength(8),]],
       color: ['', [Validators.required, Validators.maxLength(100),]],
     });
   }

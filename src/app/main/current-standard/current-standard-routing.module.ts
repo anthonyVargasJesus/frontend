@@ -10,7 +10,6 @@ import { ControlGroupComponent } from './control-group/control-group.component';
 import { PolicyByStandardComponent } from './policy-by-standard/policy-by-standard.component';
 import { ScopeByStandardComponent } from './scope-by-standard/scope-by-standard.component';
 import { HomeStandardComponent } from './home-standard/home-standard.component';
-import { DefaultRisk } from 'app/models/default-risk';
 import { DefaultRiskComponent } from './default-risk/default-risk.component';
 import { DocumentationSupportComponent } from './documentation-support/documentation-support.component';
 import { EditDocumentationSupportComponent } from './documentation-support/edit-documentation-support/edit-documentation-support.component';
