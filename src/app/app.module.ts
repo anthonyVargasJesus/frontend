@@ -22,6 +22,11 @@ import { AngularFireModule } from '@angular/fire';
 import { environment } from 'environments/environment';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeEsPe from '@angular/common/locales/es-PE'; // Importas el locale de Perú
+
+registerLocaleData(localeEsPe); // Lo registras
 
 const appRoutes: Routes = [
   {
@@ -103,6 +108,7 @@ const appRoutes: Routes = [
     },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: MAT_DATE_LOCALE, useValue: 'es-PE' },
+    { provide: LOCALE_ID, useValue: 'es-PE' },
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler

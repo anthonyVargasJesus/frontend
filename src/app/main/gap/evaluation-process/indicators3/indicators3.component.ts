@@ -1,4 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { CoreConfigService } from '@core/services/config.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+
 
 @Component({
   selector: 'app-indicators3',
@@ -6,6 +10,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styles: [
   ]
 })
+
 export class Indicators3Component implements OnInit {
 
   @Input()
@@ -16,12 +21,17 @@ export class Indicators3Component implements OnInit {
 
   view: any[] = [700, 400];
 
-  constructor() {
-    
+  coreConfig: any;
+  private _unsubscribeAll: Subject<any>;
+
+  constructor(private _coreConfigService: CoreConfigService) {
+    this._unsubscribeAll = new Subject();
   }
 
   ngOnInit(): void {
-
+    this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
+      this.coreConfig = config;
+    });
   }
 
   // options

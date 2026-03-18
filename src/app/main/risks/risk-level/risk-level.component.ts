@@ -78,18 +78,18 @@ export class RiskLevelComponent implements OnInit {
 
   initMenuName() {
     this.contentHeader = {
-      headerTitle: 'RiskLevel',
+      headerTitle: 'Niveles de Riesgo',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'RiskLevel',
+            name: 'RIESGOS',
             isLink: false,
             link: '#'
           },
           {
-            name: 'RiskLevel',
+            name: 'Niveles de Riesgo',
             isLink: false
           }
         ]

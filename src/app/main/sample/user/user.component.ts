@@ -38,15 +38,20 @@ export class UserComponent implements OnInit {
   private _unsubscribeAll: Subject<any>;
   private panelClass: string;
 
+  coreConfig: any;
 
   constructor(private userService: UserService, private router: Router, private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
     private dialog: MatDialog
   ) {
-
+    this._unsubscribeAll = new Subject();
   }
 
   ngOnInit() {
+    
+    this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
+      this.coreConfig = config;
+    });
     this.getTheme();
     this.initMenuName();
     this.pageSize = PAGE_SIZE;
@@ -82,7 +87,7 @@ export class UserComponent implements OnInit {
         type: '',
         links: [
           {
-            name: 'CONFIGURACIÓN',
+            name: 'CATÁLOGOS',
             isLink: false,
             link: '#'
           },
@@ -104,6 +109,8 @@ export class UserComponent implements OnInit {
         this.asignObjects(res);
         this.page = (this.skip / this.pageSize) + 1;
         this.results = getResults(this.total, this.totalPages);
+        console.log(this.users);
+        this.setColors();
         this.loading = false;
         this.disabledPagination();
       }, error => {
@@ -193,6 +200,27 @@ export class UserComponent implements OnInit {
     this.totalPages = res.pagination.totalPages;
   }
 
+  setColors() {
+    this.users.forEach(user => {
+      user.color = this.getRandomColor();
+    });
+  }
 
-}  
+  getRandomColor() {
+    const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+    return "#" + randomColor;
+  }
+
+  getState(code: Number) {
+    const ACTIVE_STATE = 1;
+    const INACTIVE_STATE = 2;
+
+    if (code == ACTIVE_STATE)
+      return "text-success";
+    else if (code == INACTIVE_STATE)
+      return "text-danger";
+
+  }
+
+}
 

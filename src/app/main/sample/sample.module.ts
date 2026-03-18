@@ -51,6 +51,7 @@ import { DefaultSectionComponent } from './default-section/default-section.compo
 import { AddDefaultSectionComponent } from './default-section/add-default-section/add-default-section.component';
 import { EditDefaultSectionComponent } from './default-section/edit-default-section/edit-default-section.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { ModalImageUserComponent } from './user/modal-image-user/modal-image-user.component';
 
 
 @NgModule({
@@ -66,7 +67,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     EditIndicatorComponent, PersonalComponent, AddPersonalComponent, EditPersonalComponent, 
     ConfidentialityLevelComponent, AddConfidentialityLevelComponent,
     EditConfidentialityLevelComponent,
-     DefaultSectionComponent, AddDefaultSectionComponent, EditDefaultSectionComponent,
+     DefaultSectionComponent, AddDefaultSectionComponent, EditDefaultSectionComponent, ModalImageUserComponent
   ],
   imports: [
         CommonModule,

@@ -89,7 +89,7 @@ export class IndicatorComponent implements OnInit {
         type: '',
         links: [
           {
-            name: 'CONFIGURACIÓN',
+            name: 'CATÁLOGOS',
             isLink: false,
             link: '#'
           },

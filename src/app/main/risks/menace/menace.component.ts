@@ -78,18 +78,18 @@ export class MenaceComponent implements OnInit {
 
   initMenuName() {
     this.contentHeader = {
-      headerTitle: 'Menace',
+      headerTitle: 'Amenazas',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'Menace',
+            name: 'RIESGOS',
             isLink: false,
             link: '#'
           },
           {
-            name: 'Menace',
+            name: 'Amenazas',
             isLink: false
           }
         ]
@@ -147,8 +147,8 @@ export class MenaceComponent implements OnInit {
 
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(AddMenaceComponent, {
-        height: '600px',
-        width: '600px',
+        height: '500px',
+        width: '500px',
         autoFocus: false, panelClass: this.panelClass
       });
 
@@ -167,8 +167,8 @@ export class MenaceComponent implements OnInit {
 
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(EditMenaceComponent, {
-        height: '600px',
-        width: '600px',
+        height: '500px',
+        width: '500px',
         data: {
           _id: id,
         },

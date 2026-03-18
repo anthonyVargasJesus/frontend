@@ -66,7 +66,7 @@
                 <div class="form-group">
 
                     <div style="display:flex; margin-bottom:-10px;">
-                        <label class="form-label">name</label>
+                        <label class="form-label">Nombre</label>
                         <label style="margin-left: 5px;">(</label>
                         <label style="font-size: 22px; margin-top:-1px;">*</label>
                         <label>)</label>
@@ -74,8 +74,8 @@
                     <input type="text" formControlName="name" [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
                         maxlength="200" class="form-control" aria-describedby="" autofocus="" tabindex="1">
                     <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-                        <div *ngIf="f.name.errors.required"> El name es obligatorio</div>
-                        <div *ngIf="f.name.errors.maxlength">El name no puede tener mas de 200 caracteres </div>
+                        <div *ngIf="f.name.errors.required"> El nombre es obligatorio</div>
+                        <div *ngIf="f.name.errors.maxlength">El nombre no puede tener mas de 200 caracteres </div>
                     </div>
                 </div>
 

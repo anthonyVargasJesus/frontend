@@ -36,6 +36,8 @@ export class User {
         public standardId?: number,
         public password?: string,
         public ipAddress?: string,
+        public lastAccess?: Date,
+        
     ) { }
 }
 

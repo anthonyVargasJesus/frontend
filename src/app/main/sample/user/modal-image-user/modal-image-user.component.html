@@ -40,8 +40,9 @@
 
 
     <div mat-dialog-title class="d-flex align-items-center" style="margin-top:-5px;">
-        <h4>NUEVO NIVEL DE CONFIDENCIALIDAD</h4>
-        <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto" style="margin-right: -16px;">
+        <h4>{{user.name }} {{user.firstName }}</h4>
+        <div class="template-demo d-flex justify-content-between flex-nowrap ml-auto"
+            style="margin-top:-10px; margin-right:-16px;">
 
             <button type="button" rippleeffect="" class="btn btn-flat-dark waves-effect" (click)="close()">
                 <div class="icon-wrapper">
@@ -59,40 +60,41 @@
 
     <div class="card border" style="margin-top: -15px !important;">
         <div class="card-body">
-            <small class="form-text text-muted mb-2 text-center" style="margin-top: -10px;">Los campos con(*)
-                son obligatorios</small>
-            <form [formGroup]="form" (ngSubmit)="save()" class="auth-login-form mt-0" autocomplete="off">
-                <div class="form-group">
 
-                    <div style="display:flex; margin-bottom:-10px;">
-                        <label class="form-label">Nombre</label>
-                        <label style="margin-left: 5px;">(</label>
-                        <label style="font-size: 22px; margin-top:-1px;">*</label>
-                        <label>)</label>
-                    </div>
-                    <input type="text" formControlName="name" [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
-                        maxlength="200" class="form-control" aria-describedby="" autofocus="" tabindex="1">
-                    <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-                        <div *ngIf="f.name.errors.required"> El nombre es obligatorio</div>
-                        <div *ngIf="f.name.errors.maxlength">El nombre no puede tener mas de 200 caracteres </div>
-                    </div>
+            <div class="col-md-12 ">
+
+                <div align="center"
+                    style="border: 1px solid #404656;border-radius: 5px;background-color: transparent;margin-top: 10px;">
+                    <img *ngIf="!imagenTemp" [src]="fake | imagen" class="w150 text-center">
+                    <img *ngIf="imagenTemp" [src]="imagenTemp" class="w150 text-center">
                 </div>
+                <br>
+                <input #inputFile class="form-control text-center" (change)="seleccionImage($event.target.files[0])"
+                    type="file">
 
+                <br>
+                <div class="col-md-12 text-center">
+                    <button *ngIf="!loading2" (click)="subirImagen()" [disabled]="!imagenTemp" rippleeffect=""
+                        class="btn btn-primary waves-effect waves-float waves-light mr-1" style="width: 180px;">
 
-                <div class="col-md-12 text-center mt-3">
-                    <button *ngIf="!loading2" type="submit" rippleeffect="" class="btn btn-primary mr-1 waves-effect"
-                        style="width:180px;height: 40px;">GUARDAR</button>
-                    <button *ngIf="loading2" type="button" disabled="" rippleeffect=""
-                        class="btn btn-outline-primary waves-effect mr-1" style="width:180px;height: 40px;">
-                        <span role="status" aria-hidden="true" class="spinner-border spinner-border-sm"></span>
-                        <span class="ml-25 align-middle">Guardando...</span>
+                        SUBIR IMAGEN
                     </button>
+                    <button *ngIf="loading2" data-v-aa799a9e="" type="button" disabled="disabled"
+                        class="btn btn-outline-primary disabled mr-1" style="width: 180px;">
+                        <span data-v-aa799a9e="" aria-hidden="true" class="spinner-border spinner-border-sm">
+                            <!---->
+                        </span> Subiendo...
+                    </button>
+
+                    <!-- <button type="submit" rippleeffect="" (click)="subirImagen()"  [disabled]="!imagenTemp" class="btn btn-primary mr-1 waves-effect waves-float waves-light" >SUBIR IMAGEN</button> -->
                     <button type="reset" rippleeffect="" class="btn btn-outline-secondary waves-effect"
                         (click)="close()">CANCELAR</button>
                 </div>
+                <br>
+
+            </div>
 
 
-            </form>
         </div>
     </div>
 

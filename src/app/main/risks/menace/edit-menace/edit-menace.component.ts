@@ -38,27 +38,14 @@ export class EditMenaceComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-
-    this.getAllMenaceTypes();
-
-    this.initMenace();
-
     this.id = this.data['_id'];
-    this.obtain(this.id);
-
-
+    this.getAllMenaceTypes();
+    this.initMenace();
   }
-
 
   initMenace() {
     this.menace = new Menace();
-    this.initMenaceType();
   }
-  initMenaceType() {
-    if (this.menaceTypes.length > 0)
-      this.menace.menaceType = this.menaceTypes[0];
-  }
-
 
   initForm() {
     this.form = this._formBuilder.group({
@@ -95,11 +82,14 @@ export class EditMenaceComponent implements OnInit {
   }
 
   getAllMenaceTypes() {
+    this.loading = true;
     this.menaceTypeService.getAll()
       .subscribe((res: any) => {
         this.menaceTypes = res.data;
-        this.initMenace();
+        this.loading = false;
+        this.obtain(this.id);
       }, error => {
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }

@@ -5,7 +5,9 @@
   [legend]="showLegend"
   [legendPosition]="legendPosition"
   [labels]="showLabels"
-  [doughnut]="isDoughnut"
+  [doughnut]="isDoughnut" [style]="coreConfig.layout.skin === 'dark'
+                            ? 'fill: #b4b7bd;'
+                            : 'fill: #6e6b7b;'"
   >
 </ngx-charts-pie-chart>
 

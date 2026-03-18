@@ -23,7 +23,7 @@ export class EditUserComponent implements OnInit {
     private userService: UserService,
     private route: ActivatedRoute,
     private _formBuilder: FormBuilder,
-    public router: Router, 
+    public router: Router,
     private userStateService: UserStateService,
     private standardService: StandardService
 
@@ -41,33 +41,15 @@ export class EditUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.initMenuName(); 
-    this.getAllUserStates();
-    this.getAllStandards();
+    this.initMenuName();
     this.initUser();
-
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      this.id = params.get('id').toString();
-      this.obtain(this.id);
-    });
-
+    this.getAllUserStates();
   }
-
 
   initUser() {
     this.user = new User();
-    this.initUserState();
   }
 
-
-
-
-
-
-  initUserState() {
-    if (this.userStates.length > 0)
-      this.user.userState = this.userStates[0];
-  }
 
 
   initForm() {
@@ -82,9 +64,9 @@ export class EditUserComponent implements OnInit {
       documentNumber: ['', [Validators.required, Validators.maxLength(20),]],
       standard: ['', [Validators.required,]],
     });
-  } 
-  
-  
+  }
+
+
   initMenuName() {
     this.contentHeader = {
       headerTitle: 'Usuarios',
@@ -93,7 +75,7 @@ export class EditUserComponent implements OnInit {
         type: '',
         links: [
           {
-            name: 'CONFIGURACIÓN',
+            name: 'CATÁLOGOS',
             isLink: false,
             link: '#'
           },
@@ -148,21 +130,33 @@ export class EditUserComponent implements OnInit {
   }
 
   getAllUserStates() {
+    this.loading = true;
     this.userStateService.getAll()
       .subscribe((res: any) => {
         this.userStates = res.data;
-        this.initUser();
+        this.loading = false;
+        this.getAllStandards();
+
       }, error => {
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }
 
   getAllStandards() {
+    this.loading = true;
     this.standardService.getAll()
       .subscribe((res: any) => {
         this.standards = res.data;
-        this.initUser();
+        this.loading = false;
+
+        this.route.paramMap.subscribe((params: ParamMap) => {
+          this.id = params.get('id').toString();
+          this.obtain(this.id);
+        });
+
       }, error => {
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }
@@ -193,7 +187,7 @@ export class EditUserComponent implements OnInit {
       });
 
   }
-  
+
   navigateToBack() {
     this.router.navigate(['/mantto/user']);
   }

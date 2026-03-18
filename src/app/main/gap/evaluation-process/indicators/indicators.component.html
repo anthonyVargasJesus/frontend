@@ -8,7 +8,9 @@
   [doughnut]="isDoughnut"
   (select)="onSelect($event)"
   (activate)="onActivate($event)"
-  [view]="view"
+  [view]="view"  [style]="coreConfig.layout.skin === 'dark'
+                            ? 'fill: #b4b7bd;'
+                            : 'fill: #6e6b7b;'" 
   (deactivate)="onDeactivate($event)"
   >
 </ngx-charts-pie-chart>

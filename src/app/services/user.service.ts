@@ -90,7 +90,7 @@ export class UserService {
 
         return this.http.put(url, user)
             .pipe(map((resp: any) => {
-                Swal.fire('Imgen subida', 'La imagen para ' + user.name + ' ' + user.firstName + ' fue subida.', 'success');
+                Swal.fire('Imagen subida', 'La imagen para ' + user.name + ' ' + user.firstName + ' fue subida.', 'success');
                 return resp;
             }
             ))

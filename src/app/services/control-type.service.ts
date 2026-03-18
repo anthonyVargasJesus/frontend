@@ -34,7 +34,7 @@ export class ControlTypeService {
         const url = environment.apiUrl + '/api/controlType';
         return this.http.post(url, controlType)
             .pipe(map((resp: any) => {
-                Swal.fire('ControlType registrado', 'El ControlType se registró satisfactoriamente', 'success');
+                Swal.fire('Tipo de control registrado', 'El tipo de control se registró satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -48,7 +48,7 @@ export class ControlTypeService {
         const url = environment.apiUrl + '/api/controlType/' + controlType.controlTypeId;
         return this.http.put(url, controlType)
             .pipe(map((resp: any) => {
-                Swal.fire('ControlType actualizado', 'El ControlType se actualizó satisfactoriamente', 'success');
+                Swal.fire('Tipo de control actualizado', 'El tipo de control se actualizó satisfactoriamente', 'success');
                 return resp;
             }
             ))
@@ -62,7 +62,7 @@ export class ControlTypeService {
         const url = environment.apiUrl + '/api/controlType/' + id;
         return this.http.delete(url)
             .pipe(map((resp: any) => {
-                Swal.fire('ControlType eliminado', 'El ControlType se eliminó satisfactoriamente', 'success');
+                Swal.fire('Tipo de control eliminado', 'El tipo de control se eliminó satisfactoriamente', 'success');
                 return resp;
             }
             ))

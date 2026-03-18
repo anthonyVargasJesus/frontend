@@ -78,18 +78,18 @@ export class ResidualRiskComponent implements OnInit {
 
   initMenuName() {
     this.contentHeader = {
-      headerTitle: 'ResidualRisk',
+      headerTitle: 'Riesgo residual',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'ResidualRisk',
+            name: 'RIESGOS',
             isLink: false,
             link: '#'
           },
           {
-            name: 'ResidualRisk',
+            name: 'Riesgo residual',
             isLink: false
           }
         ]

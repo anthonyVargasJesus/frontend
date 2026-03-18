@@ -45,11 +45,6 @@
                                     </span><span data-v-aa799a9e="" class="sr-only">Loading...</span>
                                 </button>
 
-                                <button (click)="add()" rippleeffect="" title="Agregar un nuevo breach"
-                                    class="btn btn-primary ml-1 waves-effect waves-float waves-light"
-                                    style="float: right!important;margin-right: 10px;margin-top:0px;">
-                                    <i data-feather='plus'></i>
-                                </button>
 
                             </div>
                         </div>
@@ -75,7 +70,7 @@
 
                                 <ng-container *ngIf="loading">
                                     <tr>
-                                        <td colspan="12">
+                                        <td colspan="4">
                                             <div class="container text-center mt-5">
 
                                                 <div class="spinner-grow text-primary" role="status">
@@ -96,7 +91,7 @@
 
                                     <ng-container *ngIf="breachs.length == 0">
                                         <tr>
-                                            <td colspan="12">
+                                            <td colspan="4">
                                                 <div class="text-center mt-2 mb-2">
                                                     <div class="empty-row ng-star-inserted">No hay resultados para
                                                         mostrar</div>

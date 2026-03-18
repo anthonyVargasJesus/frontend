@@ -1,9 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { CoreConfigService } from '@core/services/config.service';
 import { ErrorManager } from 'app/errors/error-manager';
 import { Indicator } from 'app/models/indicator';
 import { MaturityLevel } from 'app/models/maturity-level';
 import { Requirement } from 'app/models/requirement';
 import { EvaluationService } from 'app/services/evaluation.service';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+import { Subject } from 'rxjs/internal/Subject';
 
 
 @Component({
@@ -80,9 +83,17 @@ export class DashboardComponent implements OnInit {
   @Input()
   standardName: string;
 
-  constructor(private evaluationService: EvaluationService,) { }
+  coreConfig: any;
+  private _unsubscribeAll: Subject<any>;
+
+  constructor(private evaluationService: EvaluationService, private _coreConfigService: CoreConfigService) {
+    this._unsubscribeAll = new Subject();
+  }
 
   ngOnInit(): void {
+    this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
+      this.coreConfig = config;
+    });
     this.getDashboard();
   }
 

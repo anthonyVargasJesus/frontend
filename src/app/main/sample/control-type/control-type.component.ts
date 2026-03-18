@@ -83,7 +83,7 @@ export class ControlTypeComponent implements OnInit {
         type: '',
         links: [
           {
-            name: 'ControlType',
+            name: 'CATÁLOGOS',
             isLink: false,
             link: '#'
           },
@@ -147,7 +147,7 @@ export class ControlTypeComponent implements OnInit {
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(AddControlTypeComponent, {
         height: '600px',
-        width: '550px',
+        width: '600px',
         autoFocus: false, panelClass: this.panelClass
       });
 

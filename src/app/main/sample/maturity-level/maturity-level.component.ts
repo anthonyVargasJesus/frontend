@@ -86,7 +86,7 @@ export class MaturityLevelComponent implements OnInit {
         type: '',
         links: [
           {
-            name: 'CONFIGURACIÓN',
+            name: 'CATÁLOGOS',
             isLink: false,
             link: '#'
           },

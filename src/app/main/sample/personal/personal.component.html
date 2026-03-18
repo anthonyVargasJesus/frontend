@@ -1,6 +1,6 @@
 <div class="content-wrapper">
     <div class="content-body">
-        <!-- <app-content-header [contentHeader]="contentHeader"></app-content-header> -->
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
         <section id="home-page">
             <section class="users-list-wrapper">
                 <div class="card">
@@ -63,11 +63,10 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th> NAME</th>
-                                    <th> FIRSTNAME</th>
-                                    <th> LASTNAME</th>
-                                    <th> EMAIL</th>
-                                    <th> POSITION</th>
+                                    <th> NOMBRE</th>
+                                    <th> APELLIDOS</th>
+                                    <th> CORREO</th>
+                                    <th> POSICIÓN</th>
 
                                     <th class="text-right">ACCIÓN</th>
                                 </tr>
@@ -110,8 +109,7 @@
 
                                     <tr *ngFor="let personal of personals; let i = index">
                                         <td> {{personal.name}} </td>
-                                        <td> {{personal.firstName}} </td>
-                                        <td> {{personal.lastName}} </td>
+                                        <td> {{personal.firstName}} {{personal.lastName}}</td>
                                         <td> {{personal.email}} </td>
                                         <td> {{personal.position}} </td>
 

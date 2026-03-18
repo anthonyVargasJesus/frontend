@@ -84,7 +84,7 @@ export class DocumentTypeComponent implements OnInit {
         type: '',
         links: [
           {
-            name: 'Documentación',
+            name: 'CATÁLOGOS',
             isLink: false,
             link: '#'
           },

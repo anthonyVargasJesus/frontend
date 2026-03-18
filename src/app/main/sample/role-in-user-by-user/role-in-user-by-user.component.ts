@@ -149,8 +149,8 @@ export class RoleInUserByUserComponent implements OnInit {
 
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(AddRoleInUserByUserComponent, {
-        height: '600px',
-        width: '600px',
+        height: '400px',
+        width: '500px',
         autoFocus: false, data: { userId: this.userId }, panelClass: this.panelClass
       });
 
@@ -169,8 +169,8 @@ export class RoleInUserByUserComponent implements OnInit {
 
     if (this.loginService.isAuthenticated()) {
       let dialogRef = this.dialog.open(EditRoleInUserByUserComponent, {
-        height: '600px',
-        width: '600px',
+        height: '400px',
+        width: '500px',
         data: {
           _id: id, userId: this.userId,
         },

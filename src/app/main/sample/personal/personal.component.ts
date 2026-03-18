@@ -86,7 +86,7 @@ export class PersonalComponent implements OnInit {
         type: '',
         links: [
           {
-            name: 'Personal',
+            name: 'CATÁLOGOS',
             isLink: false,
             link: '#'
           },

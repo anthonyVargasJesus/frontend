@@ -5,9 +5,7 @@
             <section class="users-list-wrapper">
                 <div class="card">
 
-
-                    <hr>
-                    <div class="row mt-0 mb-0">
+                    <div class="row mt-1 mb-0">
                         <div class="col-md-6 col-12">
                             <div class="d-flex justify-content-between align-items-center m-1">
 
@@ -47,7 +45,7 @@
                                     </span><span data-v-aa799a9e="" class="sr-only">Loading...</span>
                                 </button>
 
-                                <button (click)="add()" rippleeffect="" title="Agregar un nuevo user"
+                                <button (click)="add()" rippleeffect="" title="Agregar un nuevo usuario"
                                     class="btn btn-primary ml-1 waves-effect waves-float waves-light"
                                     style="float: right!important;margin-right: 10px;margin-top:0px;">
                                     <i data-feather='plus'></i>
@@ -58,16 +56,17 @@
 
                     </div>
 
+
                     <div class="table-responsive">
 
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th> NAME</th>
-                                    <th> FIRSTNAME</th>
-                                    <th> LASTNAME</th>
-                                    <th> EMAIL</th>
-                                    <th> DOCUMENTNUMBER</th>
+                                    <th> USUARIO</th>
+                                    <th> CORREO</th>
+                                    <th> ESTADO</th>
+                                    <th> ÚLTIMA VEZ</th>
+                                    <th> TELÉFONO</th>
 
                                     <th class="text-right">ACCIÓN</th>
                                 </tr>
@@ -93,14 +92,14 @@
 
                                             </div>
                                         </td>
-
+                                    </tr>
                                 </ng-container>
                                 <ng-container *ngIf="!loading">
 
                                     <ng-container *ngIf="users.length == 0">
                                         <tr>
                                             <td colspan="6">
-                                                <div class="text-center mt-2 mb-2">
+                                                <div class="text-center mt-2">
                                                     <div class="empty-row ng-star-inserted">No hay resultados para
                                                         mostrar</div>
                                                 </div>
@@ -109,18 +108,67 @@
                                     </ng-container>
 
                                     <tr *ngFor="let user of users; let i = index">
-                                        <td> {{user.name}} </td>
-                                        <td> {{user.firstName}} </td>
-                                        <td> {{user.lastName}} </td>
-                                        <td> {{user.email}} </td>
-                                        <td> {{user.documentNumber}} </td>
+
+                                        <td>
+                                            <div class="media">
+                                                <div *ngIf="!user.image" class="media-aside align-self-center"
+                                                    (click)="edit(user.userId)">
+                                                    <div class="avatar mr-1 ml-0">
+                                                        <div class="avatar-content"
+                                                            [style.background-color]="user.color">{{ user.name + ' ' +
+                                                            user.firstName | initials }}</div>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="user.image" class="media-aside align-self-center">
+                                                    <a [routerLink]="['/mantto/edit-user/' + user.userId]"
+                                                        class="b-avatar badge-light-info rounded-circle" target="_self"
+                                                        style="width: 32px; height: 32px;"><span class="b-avatar-img">
+                                                            <img class="rounded-circle mr-1" [src]="user.image"
+                                                                height="32" width="32" alt="datatable-avatar">
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                                <div class="media-body">
+                                                    <span (click)="edit(user.userId)" style="cursor:pointer;"
+                                                        class="font-weight-bold d-block text-nowrap" target="_self">
+                                                        {{user.name}} {{user.firstName}}</span>
+                                                    <small class="text-muted">
+
+                                                        <span>
+                                                            {{user.rolesText}}
+                                                        </span>
+
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            {{user.email}}
+                                        </td>
+
+                                        <td>
+                                            <span class="font-weight-bolder" style="margin-top:3px;"
+                                                [ngClass]="getState(user.userState.value)">
+                                                {{user.userState.name}}
+                                            </span>
+                                        </td>
+                                        <td>
+
+                                        {{ user.lastAccess | date:"d 'de' MMMM 'a las' h:mm a" }}
+
+                                        </td>
+                                        <td>
+                                            {{user.phone}}
+                                        </td>
+
 
                                         <td class="text-right">
                                             <div
                                                 style="display: flex; flex-direction: row-reverse;margin-right: -10px;">
 
-                                                <a *ngIf="!user.isDeleted" (click)="delete(user)" container="body"
-                                                    placement="top" class="mr-1" title="Eliminar a {{user.name}}">
+                                                <a *ngIf="!user.deleted" (click)="delete(user,true)" container="body"
+                                                    placement="top" class="mr-1" title="Dar de baja a {{user.name}}">
                                                     <div class="icon-wrapper">
                                                         <i class="feather font-medium-4" data-feather='trash-2'></i>
                                                     </div>
