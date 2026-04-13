@@ -1,83 +1,80 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { getResults, getSearchResults, INIT_PAGE, PAGE_SIZE } from 'app/config/config';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import Swal from 'sweetalert2';
+
+import { UserService } from 'app/services/user.service';
 import { LoginService } from 'app/services/login.service';
+import { CoreConfigService } from '@core/services/config.service';
 import { ErrorManager } from 'app/errors/error-manager';
 import { User } from 'app/models/user';
-import { UserService } from 'app/services/user.service';
-import Swal from 'sweetalert2';
-import { Subject } from 'rxjs/internal/Subject';
-import { CoreConfigService } from '@core/services/config.service';
-import { takeUntil } from 'rxjs/internal/operators/takeUntil';
-
-import { MatDialog } from '@angular/material/dialog';
-
+import { PAGE_SIZE, getResults } from 'app/config/config';
+import { CoreConfig } from 'app/models/interfaces/core-config.interface';
 
 @Component({
   selector: 'app-user',
-  templateUrl: './user.component.html',
-  styles: [
-  ]
+  templateUrl: './user.component.html'
 })
-export class UserComponent implements OnInit {
 
-
+export class UserComponent implements OnInit, OnDestroy {
+  // Se mantienen exactamente tus nombres de variables
   users: User[] = [];
   page = 1;
   skip = 0;
-  pageSize;
+  pageSize: number = PAGE_SIZE;
   total = 0;
   totalPages = 0;
   loading = false;
   searchText: string = '';
-  results: string;
+  results: string = '';
   previous = true;
   next = true;
-  public contentHeader: object;
-  public currentSkin: string;
+  public contentHeader!: object;
+  public currentSkin: string = 'default';
   private _unsubscribeAll: Subject<any>;
-  private panelClass: string;
+  private panelClass: string = '';
+  coreConfig!: CoreConfig;
 
-  coreConfig: any;
+  
 
-  constructor(private userService: UserService, private router: Router, private loginService: LoginService,
-    private _coreConfigService: CoreConfigService,
-    private dialog: MatDialog
+  constructor(
+    private userService: UserService, 
+    private router: Router, 
+    private loginService: LoginService,
+    private _coreConfigService: CoreConfigService
   ) {
+    // Inicializamos el Subject una sola vez en el constructor
     this._unsubscribeAll = new Subject();
   }
 
   ngOnInit() {
-    
-    this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
-      this.coreConfig = config;
-    });
-    this.getTheme();
-    this.initMenuName();
     this.pageSize = PAGE_SIZE;
-    this.get();
-  }
-
-  getTheme() {
-    this._unsubscribeAll = new Subject();
-    this._coreConfigService
-      .getConfig()
+    
+    // Suscripción unificada a la configuración
+    this._coreConfigService.config
       .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(config => {
+      .subscribe((config: CoreConfig) => {
+        this.coreConfig = config;
         this.currentSkin = config.layout.skin;
         this.setDialogContainerStyle();
       });
+
+    this.initMenuName();
+    this.get();
+  }
+
+  ngOnDestroy() {
+    // Limpieza vital para evitar fugas de memoria en Angular 11
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
   }
 
   setDialogContainerStyle() {
-    if (this.currentSkin == 'dark')
-      this.panelClass = 'custom-dark-dialog-container';
-    else
-      this.panelClass = 'custom-default-dialog-container';
+    this.panelClass = this.currentSkin === 'dark' 
+      ? 'custom-dark-dialog-container' 
+      : 'custom-default-dialog-container';
   }
-
-
-
 
   initMenuName() {
     this.contentHeader = {
@@ -86,31 +83,22 @@ export class UserComponent implements OnInit {
       breadcrumb: {
         type: '',
         links: [
-          {
-            name: 'CATÁLOGOS',
-            isLink: false,
-            link: '#'
-          },
-          {
-            name: 'Usuarios',
-            isLink: false
-          }
+          { name: 'CATÁLOGOS', isLink: false, link: '#' },
+          { name: 'Usuarios', isLink: false }
         ]
       }
-    }
+    };
   }
-
-
 
   get() {
     this.loading = true;
     this.userService.get(this.skip, this.pageSize, this.searchText)
+      .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res: any) => {
         this.asignObjects(res);
+        this.setColors();
         this.page = (this.skip / this.pageSize) + 1;
         this.results = getResults(this.total, this.totalPages);
-        console.log(this.users);
-        this.setColors();
         this.loading = false;
         this.disabledPagination();
       }, error => {
@@ -119,46 +107,17 @@ export class UserComponent implements OnInit {
       });
   }
 
-  changePageSize(value) {
-    this.pageSize = value;
-    this.get();
-  }
-
-  changePage(value: number) {
-    const desde = this.skip + value;
-    if (desde >= this.total)
-      return;
-
-    if (desde < 0)
-      return;
-
-    this.skip += value;
-    this.get();
-  }
-
-  disabledPagination() {
-
-    this.previous = true;
-    this.next = true;
-
-    if (this.page > 1)
-      this.previous = false;
-
-    if (this.page < this.totalPages)
-      this.next = false;
-  }
+  // Nombres de métodos originales respetados
   add() {
     this.router.navigate(['/mantto/add-user']);
   }
 
-  edit(id: String) {
+  edit(id: string) {
     this.router.navigate(['/mantto/edit-user', id]);
   }
 
   delete(user: User) {
-
-    let text: string;
-    text = '¿Esta seguro de eliminar el usuario ' + user.name + '?';
+    const text = `¿Esta seguro de eliminar el usuario ${user.name}?`;
 
     Swal.fire({
       title: 'Confirmación',
@@ -171,15 +130,12 @@ export class UserComponent implements OnInit {
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.isConfirmed) {
-
-        this.userService.delete(user.userId.toString())
-          .subscribe(deleted => {
+        this.userService.delete(user.userId!)
+          .subscribe(() => {
             this.get();
           });
-
       }
-    })
-
+    });
   }
 
   search(text: string) {
@@ -188,13 +144,32 @@ export class UserComponent implements OnInit {
     this.get();
   }
 
-  onKeydown(event, text: string) {
+  onKeydown(event: KeyboardEvent, text: string) {
     this.searchText = text;
-    if (event.key === 'Enter')
+    if (event.key === 'Enter') {
       this.search(this.searchText);
+    }
   }
 
-  asignObjects(res) {
+  changePageSize(value: number) {
+    this.pageSize = value;
+    this.get();
+  }
+
+  changePage(value: number) {
+    const desde = this.skip + value;
+    if (desde >= this.total || desde < 0) return;
+
+    this.skip += value;
+    this.get();
+  }
+
+  disabledPagination() {
+    this.previous = this.page <= 1;
+    this.next = this.page >= this.totalPages;
+  }
+
+  asignObjects(res: any) {
     this.users = res.data;
     this.total = res.pagination.totalRows;
     this.totalPages = res.pagination.totalPages;
@@ -207,20 +182,11 @@ export class UserComponent implements OnInit {
   }
 
   getRandomColor() {
-    const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-    return "#" + randomColor;
+    return "#" + Math.floor(Math.random() * 16777215).toString(16);
   }
 
-  getState(code: Number) {
-    const ACTIVE_STATE = 1;
-    const INACTIVE_STATE = 2;
-
-    if (code == ACTIVE_STATE)
-      return "text-success";
-    else if (code == INACTIVE_STATE)
-      return "text-danger";
-
+  getState(code: number) {
+    if (code == 1) return "text-success";
+    if (code == 2) return "text-danger";
   }
-
 }
-

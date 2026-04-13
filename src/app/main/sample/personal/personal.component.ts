@@ -1,45 +1,44 @@
-import { Component, OnInit } from '@angular/core';
-import { getResults, getSearchResults, INIT_PAGE, PAGE_SIZE } from 'app/config/config';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import Swal from 'sweetalert2';
+
+import { getResults, PAGE_SIZE } from 'app/config/config';
 import { LoginService } from 'app/services/login.service';
 import { ErrorManager } from 'app/errors/error-manager';
 import { Personal } from 'app/models/personal';
 import { PersonalService } from 'app/services/personal.service';
-import Swal from 'sweetalert2';
-import { Subject } from 'rxjs/internal/Subject';
 import { CoreConfigService } from '@core/services/config.service';
-import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+import { CoreConfig } from 'app/models/interfaces/core-config.interface';
+
 import { EditPersonalComponent } from './edit-personal/edit-personal.component';
 import { AddPersonalComponent } from './add-personal/add-personal.component';
-import { MatDialog } from '@angular/material/dialog';
-
 
 @Component({
   selector: 'app-personal',
   templateUrl: './personal.component.html',
-  styles: [
-  ]
+  styles: []
 })
-
-
-export class PersonalComponent implements OnInit {
+export class PersonalComponent implements OnInit, OnDestroy {
 
   personals: Personal[] = [];
   selectedRow = 0;
   page = 1;
   skip = 0;
-  pageSize;
+  pageSize: number = PAGE_SIZE;
   total = 0;
   totalPages = 0;
   loading = false;
   searchText: string = '';
-  results: string;
+  results: string = '';
   previous = true;
   next = true;
-  public contentHeader: object;
-  public currentSkin: string;
-  private _unsubscribeAll: Subject<any>;
-  private panelClass: string;
 
+  public contentHeader!: object;
+  public currentSkin: string = 'default';
+  private _unsubscribeAll: Subject<void>;
+  private panelClass: string = '';
 
   constructor(
     private personalService: PersonalService,
@@ -47,7 +46,7 @@ export class PersonalComponent implements OnInit {
     private _coreConfigService: CoreConfigService,
     private dialog: MatDialog
   ) {
-
+    this._unsubscribeAll = new Subject();
   }
 
   ngOnInit() {
@@ -57,26 +56,26 @@ export class PersonalComponent implements OnInit {
     this.get();
   }
 
+  ngOnDestroy() {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
+  }
+
   getTheme() {
-    this._unsubscribeAll = new Subject();
     this._coreConfigService
-      .getConfig()
+      .config
       .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(config => {
+      .subscribe((config: CoreConfig) => {
         this.currentSkin = config.layout.skin;
         this.setDialogContainerStyle();
       });
   }
 
   setDialogContainerStyle() {
-    if (this.currentSkin == 'dark')
-      this.panelClass = 'custom-dark-dialog-container';
-    else
-      this.panelClass = 'custom-default-dialog-container';
+    this.panelClass = this.currentSkin === 'dark' 
+      ? 'custom-dark-dialog-container' 
+      : 'custom-default-dialog-container';
   }
-
-
-
 
   initMenuName() {
     this.contentHeader = {
@@ -85,114 +84,88 @@ export class PersonalComponent implements OnInit {
       breadcrumb: {
         type: '',
         links: [
-          {
-            name: 'CATÁLOGOS',
-            isLink: false,
-            link: '#'
-          },
-          {
-            name: 'Personal',
-            isLink: false
-          }
+          { name: 'CATÁLOGOS', isLink: false, link: '#' },
+          { name: 'Personal', isLink: false }
         ]
       }
-    }
+    };
   }
-
-
 
   get() {
     this.loading = true;
     this.personalService.get(this.skip, this.pageSize, this.searchText)
-      .subscribe((res: any) => {
-        this.asignObjects(res);
-        this.page = (this.skip / this.pageSize) + 1;
-        this.results = getResults(this.total, this.totalPages);
-        this.loading = false;
-        this.disabledPagination();
-      }, error => {
-        this.loading = false;
-        ErrorManager.handleError(error);
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe({
+        next: (res: any) => {
+          this.asignObjects(res);
+          this.page = (this.skip / this.pageSize) + 1;
+          this.results = getResults(this.total, this.totalPages);
+          this.loading = false;
+          this.disabledPagination();
+        },
+        error: (error) => {
+          this.loading = false;
+          ErrorManager.handleError(error);
+        }
       });
   }
 
-  changePageSize(value) {
+  changePageSize(value: number) {
     this.pageSize = value;
+    this.skip = 0;
     this.get();
   }
 
   changePage(value: number) {
     const desde = this.skip + value;
-    if (desde >= this.total)
-      return;
-
-    if (desde < 0)
-      return;
+    if (desde >= this.total || desde < 0) return;
 
     this.skip += value;
     this.get();
   }
 
-  
   disabledPagination() {
-
-    this.previous = true;
-    this.next = true;
-
-    if (this.page > 1)
-      this.previous = false;
-
-    if (this.page < this.totalPages)
-      this.next = false;
+    this.previous = this.page <= 1;
+    this.next = this.page >= this.totalPages;
   }
 
   add() {
-
     if (this.loginService.isAuthenticated()) {
-      let dialogRef = this.dialog.open(AddPersonalComponent, {
+      const dialogRef = this.dialog.open(AddPersonalComponent, {
         height: '600px',
         width: '600px',
-        autoFocus: false, panelClass: this.panelClass
+        autoFocus: false, 
+        panelClass: this.panelClass
       });
 
-      dialogRef.afterClosed().subscribe(data => {
-        if (data == null)
-          return;
-
-        if (data.updated == true)
-          this.get();
-      });
+      dialogRef.afterClosed()
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe(data => {
+          if (data?.updated) this.get();
+        });
     }
-
   }
 
-  edit(id: String) {
-
+  edit(id: string) {
     if (this.loginService.isAuthenticated()) {
-      let dialogRef = this.dialog.open(EditPersonalComponent, {
+      const dialogRef = this.dialog.open(EditPersonalComponent, {
         height: '600px',
         width: '600px',
-        data: {
-          _id: id,
-        },
+        data: { _id: id },
         autoFocus: false,
         panelClass: this.panelClass
       });
 
-      dialogRef.afterClosed().subscribe(data => {
-        if (data == null)
-          return;
-
-        if (data.updated == true)
-          this.get();
-      });
+      dialogRef.afterClosed()
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe(data => {
+          if (data?.updated) this.get();
+        });
     }
   }
 
   delete(personal: Personal) {
-
-    let text: string;
-    text = '¿Esta seguro de eliminar la personal ' + personal.name + '?';
+    const text = `¿Esta seguro de eliminar el registro de ${personal.name}?`;
 
     Swal.fire({
       title: 'Confirmación',
@@ -205,15 +178,13 @@ export class PersonalComponent implements OnInit {
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.isConfirmed) {
-
-        this.personalService.delete(personal.personalId)
-          .subscribe(deleted => {
+        this.personalService.delete(personal.personalId!)
+          .pipe(takeUntil(this._unsubscribeAll))
+          .subscribe(() => {
             this.get();
           });
-
       }
-    })
-
+    });
   }
 
   search(text: string) {
@@ -222,16 +193,16 @@ export class PersonalComponent implements OnInit {
     this.get();
   }
 
-  onKeydown(event, text: string) {
+  onKeydown(event: KeyboardEvent, text: string) {
     this.searchText = text;
-    if (event.key === 'Enter')
+    if (event.key === 'Enter') {
       this.search(this.searchText);
+    }
   }
 
-  asignObjects(res) {
+  asignObjects(res: any) {
     this.personals = res.data;
     this.total = res.pagination.totalRows;
     this.totalPages = res.pagination.totalPages;
   }
-
 }

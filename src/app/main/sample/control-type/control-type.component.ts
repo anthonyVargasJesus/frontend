@@ -1,50 +1,52 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import Swal from 'sweetalert2';
+
 import { getResults, PAGE_SIZE } from 'app/config/config';
 import { LoginService } from 'app/services/login.service';
 import { ErrorManager } from 'app/errors/error-manager';
 import { ControlType } from 'app/models/control-type';
 import { ControlTypeService } from 'app/services/control-type.service';
-import Swal from 'sweetalert2';
-import { Subject } from 'rxjs/internal/Subject';
 import { CoreConfigService } from '@core/services/config.service';
-import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+import { CoreConfig } from 'app/models/interfaces/core-config.interface'; // Asegúrate de tener esta interfaz
+
 import { EditControlTypeComponent } from './edit-control-type/edit-control-type.component';
 import { AddControlTypeComponent } from './add-control-type/add-control-type.component';
-import { MatDialog } from '@angular/material/dialog';
-
 
 @Component({
   selector: 'app-control-type',
   templateUrl: './control-type.component.html',
-  styles: [
-  ]
+  styles: []
 })
-export class ControlTypeComponent implements OnInit {
-
+export class ControlTypeComponent implements OnInit, OnDestroy {
 
   controlTypes: ControlType[] = [];
   selectedRow = 0;
   page = 1;
   skip = 0;
-  pageSize;
+  pageSize: number = PAGE_SIZE;
   total = 0;
   totalPages = 0;
   loading = false;
   searchText: string = '';
-  results: string;
+  results: string = '';
   previous = true;
   next = true;
-  public contentHeader: object;
-  public currentSkin: string;
-  private _unsubscribeAll: Subject<any>;
-  private panelClass: string;
 
+  public contentHeader!: object;
+  public currentSkin: string = 'default';
+  private _unsubscribeAll: Subject<void>;
+  private panelClass: string = '';
 
-  constructor(private controlTypeService: ControlTypeService, private loginService: LoginService,
+  constructor(
+    private controlTypeService: ControlTypeService, 
+    private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
     private dialog: MatDialog
   ) {
-
+    this._unsubscribeAll = new Subject();
   }
 
   ngOnInit() {
@@ -54,26 +56,26 @@ export class ControlTypeComponent implements OnInit {
     this.get();
   }
 
+  ngOnDestroy() {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
+  }
+
   getTheme() {
-    this._unsubscribeAll = new Subject();
     this._coreConfigService
-      .getConfig()
+      .config // Usando el observable directo si está disponible, o getConfig()
       .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(config => {
+      .subscribe((config: CoreConfig) => {
         this.currentSkin = config.layout.skin;
         this.setDialogContainerStyle();
       });
   }
 
   setDialogContainerStyle() {
-    if (this.currentSkin == 'dark')
-      this.panelClass = 'custom-dark-dialog-container';
-    else
-      this.panelClass = 'custom-default-dialog-container';
+    this.panelClass = this.currentSkin === 'dark' 
+      ? 'custom-dark-dialog-container' 
+      : 'custom-default-dialog-container';
   }
-
-
-
 
   initMenuName() {
     this.contentHeader = {
@@ -82,25 +84,17 @@ export class ControlTypeComponent implements OnInit {
       breadcrumb: {
         type: '',
         links: [
-          {
-            name: 'CATÁLOGOS',
-            isLink: false,
-            link: '#'
-          },
-          {
-            name: 'Tipos de control',
-            isLink: false
-          }
+          { name: 'CATÁLOGOS', isLink: false, link: '#' },
+          { name: 'Tipos de control', isLink: false }
         ]
       }
-    }
+    };
   }
-
-
 
   get() {
     this.loading = true;
     this.controlTypeService.get(this.skip, this.pageSize, this.searchText)
+      .pipe(takeUntil(this._unsubscribeAll)) // Añadido para seguridad
       .subscribe((res: any) => {
         this.asignObjects(res);
         this.page = (this.skip / this.pageSize) + 1;
@@ -113,82 +107,61 @@ export class ControlTypeComponent implements OnInit {
       });
   }
 
-  changePageSize(value) {
+  changePageSize(value: number) {
     this.pageSize = value;
     this.get();
   }
 
   changePage(value: number) {
     const desde = this.skip + value;
-    if (desde >= this.total)
-      return;
-
-    if (desde < 0)
-      return;
+    if (desde >= this.total || desde < 0) return;
 
     this.skip += value;
     this.get();
   }
 
   disabledPagination() {
-
-    this.previous = true;
-    this.next = true;
-
-    if (this.page > 1)
-      this.previous = false;
-
-    if (this.page < this.totalPages)
-      this.next = false;
+    this.previous = this.page <= 1;
+    this.next = this.page >= this.totalPages;
   }
 
   add() {
-
     if (this.loginService.isAuthenticated()) {
-      let dialogRef = this.dialog.open(AddControlTypeComponent, {
+      const dialogRef = this.dialog.open(AddControlTypeComponent, {
         height: '600px',
         width: '600px',
-        autoFocus: false, panelClass: this.panelClass
+        autoFocus: false, 
+        panelClass: this.panelClass
       });
 
-      dialogRef.afterClosed().subscribe(data => {
-        if (data == null)
-          return;
-
-        if (data.updated == true)
-          this.get();
-      });
+      dialogRef.afterClosed()
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe(data => {
+          if (data?.updated) this.get();
+        });
     }
-
   }
 
-  edit(id: String) {
-
+  edit(id: string) {
     if (this.loginService.isAuthenticated()) {
-      let dialogRef = this.dialog.open(EditControlTypeComponent, {
+      const dialogRef = this.dialog.open(EditControlTypeComponent, {
         height: '600px',
         width: '600px',
-        data: {
-          _id: id,
-        },
+        data: { _id: id },
         autoFocus: false,
         panelClass: this.panelClass
       });
 
-      dialogRef.afterClosed().subscribe(data => {
-        if (data == null)
-          return;
-
-        if (data.updated == true)
-          this.get();
-      });
+      dialogRef.afterClosed()
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe(data => {
+          if (data?.updated) this.get();
+        });
     }
   }
 
   delete(controlType: ControlType) {
-
-    let text: string;
-    text = '¿Esta seguro de eliminar el tipo de control ' + controlType.name + '?';
+    const text = `¿Esta seguro de eliminar el tipo de control ${controlType.name}?`;
 
     Swal.fire({
       title: 'Confirmación',
@@ -201,15 +174,12 @@ export class ControlTypeComponent implements OnInit {
       cancelButtonText: 'No'
     }).then((result) => {
       if (result.isConfirmed) {
-
-        this.controlTypeService.delete(controlType.controlTypeId)
-          .subscribe(deleted => {
+        this.controlTypeService.delete(controlType.controlTypeId!)
+          .subscribe(() => {
             this.get();
           });
-
       }
-    })
-
+    });
   }
 
   search(text: string) {
@@ -218,35 +188,16 @@ export class ControlTypeComponent implements OnInit {
     this.get();
   }
 
-  onKeydown(event, text: string) {
+  onKeydown(event: KeyboardEvent, text: string) {
     this.searchText = text;
-    if (event.key === 'Enter')
+    if (event.key === 'Enter') {
       this.search(this.searchText);
+    }
   }
 
-  asignObjects(res) {
+  asignObjects(res: any) {
     this.controlTypes = res.data;
     this.total = res.pagination.totalRows;
     this.totalPages = res.pagination.totalPages;
   }
-
-
-}  //{
-//path: 'control-type',
-//component: ControlTypeComponent,
-//data: { animation: 'control-type' }
-//},
-
-//ControlTypeComponent, AddControlTypeComponent, EditControlTypeComponent
-//{
-//id: 'controlType',
-//title: '',
-//translate: 'MENU.CONTROLTYPE',
-//type: 'item',
-//icon: 'file',
-//url: 'controlType'
-//},
-
-//   CONTROLTYPE: 'ControlType'
-
-
+}

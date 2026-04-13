@@ -65,7 +65,7 @@ export class UserService {
             }));
     }
 
-    delete(id: string) {
+    delete(id: number) {
         const url = environment.apiUrl + '/api/user/' + id ;
         return this.http.delete(url)
             .pipe(map((resp: any) => {
