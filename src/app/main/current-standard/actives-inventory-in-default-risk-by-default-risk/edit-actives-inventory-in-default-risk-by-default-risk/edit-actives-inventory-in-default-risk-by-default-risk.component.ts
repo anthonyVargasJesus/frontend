@@ -30,10 +30,11 @@ export class EditActivesInventoryInDefaultRiskByDefaultRiskComponent implements 
 
   activesInventories: ActivesInventory[] = [];
 
-  activesInventoryInDefaultRisk: ActivesInventoryInDefaultRisk;
+  activesInventoryInDefaultRisk: ActivesInventoryInDefaultRisk = {} as ActivesInventoryInDefaultRisk;
   loading = false;
-  id: string;
-  loading2 = false; public form: FormGroup;
+  id: string = '';
+  loading2 = false; 
+  public form!: FormGroup;
   public submitted = false;
   public title: string = 'EDITAR ACTIVO';
 
@@ -88,7 +89,7 @@ export class EditActivesInventoryInDefaultRiskByDefaultRiskComponent implements 
     this.activesInventoryInDefaultRisk.activesInventoryId = this.form.value.activesInventoryId;
     this.activesInventoryInDefaultRisk.isActive = this.form.value.isActive;
     if (this.form.value.isActive == "")
-      this.activesInventoryInDefaultRisk.isActive = null;
+      this.activesInventoryInDefaultRisk.isActive = undefined;
   }
 
   getAllActivesInventories() {

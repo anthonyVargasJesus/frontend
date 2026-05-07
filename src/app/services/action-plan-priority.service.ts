@@ -1,77 +1,70 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ErrorManager } from 'app/errors/error-manager';
-import { ActionPlanPriority } from 'app/models/action-plan-priority';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import Swal from 'sweetalert2';
+
 import { environment } from 'environments/environment';
-import { throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import Swal from 'sweetalert2'
+import { ActionPlanPriority } from 'app/models/action-plan-priority';
+import { ErrorManager } from 'app/errors/error-manager';
+import { ApiResponse } from 'app/models/common/api-response.interface';
+import { ApiSingleResponse } from 'app/models/common/api-single-response.interface';
+
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
-
 export class ActionPlanPriorityService {
+  private readonly endpoint = `${environment.apiUrl}/api/actionPlanPriority`;
 
-    constructor(public http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-    getAll() {
-        const url = environment.apiUrl + '/api/actionPlanPriority/all';
-        return this.http.get(url);
-    }
+  getAll(): Observable<ApiResponse<ActionPlanPriority>> {
+    return this.http.get<ApiResponse<ActionPlanPriority>>(`${this.endpoint}/all`);
+  }
 
-    get(skip: number, pageSize: number, search: string) {
-        const url = environment.apiUrl + '/api/actionPlanPriority' + '?skip=' + skip + '&pageSize=' + pageSize + '&search=' + search;
-        return this.http.get(url);
-    }
+  get(skip: number, pageSize: number, search: string): Observable<ApiResponse<ActionPlanPriority>> {
+    const params = new HttpParams()
+      .set('skip', skip.toString())
+      .set('pageSize', pageSize.toString())
+      .set('search', search || '');
 
-    obtain(id: string) {
-        const url = environment.apiUrl + '/api/actionPlanPriority/' + id;
-        return this.http.get(url);
-    }
+    return this.http.get<ApiResponse<ActionPlanPriority>>(this.endpoint, { params });
+  }
 
-    insert(actionPlanPriority: ActionPlanPriority) {
-        const url = environment.apiUrl + '/api/actionPlanPriority';
-        return this.http.post(url, actionPlanPriority)
-            .pipe(map((resp: any) => {
-                Swal.fire('¡Éxito!', 'El registro se inglesó satisfactoriamente', 'success');
-                return resp;
-            }
-            ))
-            .pipe(catchError((error) => {
-                ErrorManager.handleError(error);
-                return throwError(error);
-            }));
-    }
+  obtain(id: string | number): Observable<ApiSingleResponse<ActionPlanPriority>> {
+    return this.http.get<ApiSingleResponse<ActionPlanPriority>>(`${this.endpoint}/${id}`);
+  }
 
-    update(actionPlanPriority: ActionPlanPriority) {
-        const url = environment.apiUrl + '/api/actionPlanPriority/' + actionPlanPriority.actionPlanPriorityId;
-        return this.http.put(url, actionPlanPriority)
-            .pipe(map((resp: any) => {
-                Swal.fire('¡Éxito!', 'El registro se actualizó satisfactoriamente', 'success');
-                return resp;
-            }
-            ))
-            .pipe(catchError((error) => {
-                ErrorManager.handleError(error);
-                return throwError(error);
-            }));
-    }
+  insert(payload: ActionPlanPriority): Observable<ApiSingleResponse<ActionPlanPriority>> {
+    return this.http.post<ApiSingleResponse<ActionPlanPriority>>(this.endpoint, payload).pipe(
+      tap(() => this.notify('ingresó')),
+      catchError(this.handleError)
+    );
+  }
 
-    delete(id: number) {
-        const url = environment.apiUrl + '/api/actionPlanPriority/' + id;
-        return this.http.delete(url)
-            .pipe(map((resp: any) => {
-                Swal.fire('¡Éxito!', 'El registro se eliminó satisfactoriamente', 'success');
-                return resp;
-            }
-            ))
-            .pipe(catchError((error) => {
-                ErrorManager.handleError(error);
-                return throwError(error);
-            }));
-    }
+  update(payload: ActionPlanPriority): Observable<ApiSingleResponse<ActionPlanPriority>> {
+    const url = `${this.endpoint}/${payload.actionPlanPriorityId}`;
+    return this.http.put<ApiSingleResponse<ActionPlanPriority>>(url, payload).pipe(
+      tap(() => this.notify('actualizó')),
+      catchError(this.handleError)
+    );
+  }
 
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.endpoint}/${id}`).pipe(
+      tap(() => this.notify('eliminó')),
+      catchError(this.handleError)
+    );
+  }
+
+  private notify(action: string): void {
+    Swal.fire('¡Éxito!', `El registro se ${action} satisfactoriamente`, 'success');
+  }
+
+  private handleError(error: any): Observable<never> {
+    ErrorManager.handleError(error);
+    return throwError(error);
+  }
 
 }
-

@@ -25,33 +25,24 @@ export class EditActionPlanStatusComponent implements OnInit {
   ) { }
 
 
-  actionPlanStatus: ActionPlanStatus;
+  actionPlanStatus: ActionPlanStatus  = {} as ActionPlanStatus;
   loading = false;
-  id: string;
-  loading2 = false; public form: FormGroup;
+  id: string = '';
+  loading2 = false; 
+  public form!: FormGroup;
   public submitted = false;
-  public title: string = 'EDITAR ACTIONPLANSTATUS';;
+  public title: string = 'EDITAR ACTIONPLANSTATUS';
 
   ngOnInit(): void {
-
     this.initForm();
-
-
     this.initActionPlanStatus();
-
     this.id = this.data['_id'];
     this.obtain(this.id);
-
-
   }
-
 
   initActionPlanStatus() {
     this.actionPlanStatus = new ActionPlanStatus();
   }
-
-
-
 
 
   initForm() {
@@ -69,7 +60,8 @@ export class EditActionPlanStatusComponent implements OnInit {
     this.actionPlanStatusService.obtain(id)
       .subscribe((res: any) => {
         this.actionPlanStatus = res.data;
-        this.setFormValue(this.actionPlanStatus); this.title = this.actionPlanStatus.name.toUpperCase();
+        this.setFormValue(this.actionPlanStatus); 
+        this.title = this.actionPlanStatus.name!.toUpperCase();
         this.loading = false;
       }, error => {
         this.loading = false;
@@ -112,15 +104,11 @@ export class EditActionPlanStatusComponent implements OnInit {
     this.loading2 = true;
     this.getFormValue();
 
-
-
     this.actionPlanStatusService.update(this.actionPlanStatus)
       .subscribe(res => {
         this.actionPlanStatus = res.data;
         this.dialogRef.close({ updated: true });
         this.loading2 = false;
-
-
       }, error => {
         this.loading2 = false;
         ErrorManager.handleError(error);

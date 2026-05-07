@@ -26,10 +26,10 @@ export class AddActionPlanStatusComponent implements OnInit {
   ) { }
 
 
-  actionPlanStatus: ActionPlanStatus;
+  actionPlanStatus: ActionPlanStatus  = {} as ActionPlanStatus;
   loading = false;
   loading2 = false;
-  public form: FormGroup;
+  public form!: FormGroup;
   public submitted = false;
 
 

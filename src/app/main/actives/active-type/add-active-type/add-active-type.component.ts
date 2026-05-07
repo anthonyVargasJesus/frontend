@@ -20,10 +20,10 @@ export class AddActiveTypeComponent implements OnInit {
     private dialogRef: MatDialogRef<AddActiveTypeComponent>,
   ) { }
 
-  activeType: ActiveType;
+  activeType: ActiveType = {} as ActiveType;
   loading = false;
   loading2 = false;
-  public form: FormGroup;
+  public form!: FormGroup;
   public submitted = false;
 
   ngOnInit(): void {

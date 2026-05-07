@@ -1,77 +1,94 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ErrorManager } from 'app/errors/error-manager';
-import { ActionPlanStatus } from 'app/models/action-plan-status';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import Swal from 'sweetalert2';
+
 import { environment } from 'environments/environment';
-import { throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import Swal from 'sweetalert2'
+import { ActionPlanStatus } from 'app/models/action-plan-status';
+import { ErrorManager } from 'app/errors/error-manager';
+import { ApiResponse } from 'app/models/common/api-response.interface';
+import { ApiSingleResponse } from 'app/models/common/api-single-response.interface';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
-
 export class ActionPlanStatusService {
+  private readonly endpoint = `${environment.apiUrl}/api/actionPlanStatus`;
 
-    constructor(public http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-    getAll() {
-        const url = environment.apiUrl + '/api/actionPlanStatus/all';
-        return this.http.get(url);
-    }
+  /**
+   * Obtiene todos los estados sin paginación
+   */
+  getAll(): Observable<ApiResponse<ActionPlanStatus>> {
+    return this.http.get<ApiResponse<ActionPlanStatus>>(`${this.endpoint}/all`);
+  }
 
-    get(skip: number, pageSize: number, search: string) {
-        const url = environment.apiUrl + '/api/actionPlanStatus' + '?skip=' + skip + '&pageSize=' + pageSize + '&search=' + search;
-        return this.http.get(url);
-    }
+  /**
+   * Obtiene estados con paginación y búsqueda
+   */
+  get(skip: number = 0, pageSize: number = 10, search: string = ''): Observable<ApiResponse<ActionPlanStatus>> {
+    const params = new HttpParams()
+      .set('skip', skip.toString())
+      .set('pageSize', pageSize.toString())
+      .set('search', search);
 
-    obtain(id: string) {
-        const url = environment.apiUrl + '/api/actionPlanStatus/' + id;
-        return this.http.get(url);
-    }
+    return this.http.get<ApiResponse<ActionPlanStatus>>(this.endpoint, { params });
+  }
 
-    insert(actionPlanStatus: ActionPlanStatus) {
-        const url = environment.apiUrl + '/api/actionPlanStatus';
-        return this.http.post(url, actionPlanStatus)
-            .pipe(map((resp: any) => {
-                Swal.fire('¡Éxito!', 'El registro se inglesó satisfactoriamente', 'success');
-                return resp;
-            }
-            ))
-            .pipe(catchError((error) => {
-                ErrorManager.handleError(error);
-                return throwError(error);
-            }));
-    }
+  /**
+   * Obtiene un estado por ID envuelto en el sobre de respuesta única
+   */
+  obtain(id: string | number): Observable<ApiSingleResponse<ActionPlanStatus>> {
+    return this.http.get<ApiSingleResponse<ActionPlanStatus>>(`${this.endpoint}/${id}`);
+  }
 
-    update(actionPlanStatus: ActionPlanStatus) {
-        const url = environment.apiUrl + '/api/actionPlanStatus/' + actionPlanStatus.actionPlanStatusId;
-        return this.http.put(url, actionPlanStatus)
-            .pipe(map((resp: any) => {
-                Swal.fire('¡Éxito!', 'El registro se actualizó satisfactoriamente', 'success');
-                return resp;
-            }
-            ))
-            .pipe(catchError((error) => {
-                ErrorManager.handleError(error);
-                return throwError(error);
-            }));
-    }
+  /**
+   * Inserta un nuevo estado
+   */
+  insert(payload: ActionPlanStatus): Observable<ApiSingleResponse<ActionPlanStatus>> {
+    return this.http.post<ApiSingleResponse<ActionPlanStatus>>(this.endpoint, payload).pipe(
+      tap(() => this.notify('ingresó')),
+      catchError(this.handleError)
+    );
+  }
 
-    delete(id: number) {
-        const url = environment.apiUrl + '/api/actionPlanStatus/' + id;
-        return this.http.delete(url)
-            .pipe(map((resp: any) => {
-                Swal.fire('¡Éxito!', 'El registro se eliminó satisfactoriamente', 'success');
-                return resp;
-            }
-            ))
-            .pipe(catchError((error) => {
-                ErrorManager.handleError(error);
-                return throwError(error);
-            }));
-    }
+  /**
+   * Actualiza un estado existente
+   */
+  update(payload: ActionPlanStatus): Observable<ApiSingleResponse<ActionPlanStatus>> {
+    const url = `${this.endpoint}/${payload.actionPlanStatusId}`;
+    return this.http.put<ApiSingleResponse<ActionPlanStatus>>(url, payload).pipe(
+      tap(() => this.notify('actualizó')),
+      catchError(this.handleError)
+    );
+  }
 
+  /**
+   * Elimina un estado por ID
+   */
+  delete(id: number): Observable<ApiSingleResponse<void>> {
+    return this.http.delete<ApiSingleResponse<void>>(`${this.endpoint}/${id}`).pipe(
+      tap(() => this.notify('eliminó')),
+      catchError(this.handleError)
+    );
+  }
 
+  // --- Helpers Privados ---
+
+  /**
+   * Centraliza las notificaciones de éxito
+   */
+  private notify(action: string): void {
+    Swal.fire('¡Éxito!', `El registro se ${action} satisfactoriamente`, 'success');
+  }
+
+  /**
+   * Gestiona los errores de la petición
+   */
+  private handleError(error: any): Observable<never> {
+    ErrorManager.handleError(error);
+    return throwError(error);
+  }
 }
-

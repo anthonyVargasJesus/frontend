@@ -27,21 +27,21 @@ export class ActivesInventoryInDefaultRiskByDefaultRiskComponent implements OnIn
   selectedRow = 0;
   page = 1;
   skip = 0;
-  pageSize;
+  pageSize = PAGE_SIZE;
   total = 0;
   totalPages = 0;
   loading = false;
   searchText: string = '';
-  results: string;
+  results: string = '';
   previous = true;
   next = true;
-  public contentHeader: object;
-  public currentSkin: string;
-  private _unsubscribeAll: Subject<any>;
-  private panelClass: string;
+  public contentHeader: object = {};
+  public currentSkin: string = 'default';
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  private panelClass: string = '';
 
   @Input()
-  defaultRiskId: number;
+  defaultRiskId: number = 0;
 
 
   constructor(private activesInventoryInDefaultRiskService: ActivesInventoryInDefaultRiskService, private loginService: LoginService,
@@ -117,7 +117,7 @@ export class ActivesInventoryInDefaultRiskByDefaultRiskComponent implements OnIn
       });
   }
 
-  changePageSize(value) {
+  changePageSize(value: number) {
     this.pageSize = value;
     this.get();
   }
@@ -192,7 +192,7 @@ export class ActivesInventoryInDefaultRiskByDefaultRiskComponent implements OnIn
   delete(activesInventoryInDefaultRisk: ActivesInventoryInDefaultRisk) {
 
     let text: string;
-    text = '¿Está seguro de eliminar el registro ' + activesInventoryInDefaultRisk.activesInventory.name + '?';
+    text = '¿Está seguro de eliminar el registro ' + activesInventoryInDefaultRisk.activesInventory!.name + '?';
 
     Swal.fire({
       title: 'Confirmación',
@@ -206,7 +206,7 @@ export class ActivesInventoryInDefaultRiskByDefaultRiskComponent implements OnIn
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.activesInventoryInDefaultRiskService.delete(activesInventoryInDefaultRisk.activesInventoryInDefaultRiskId)
+        this.activesInventoryInDefaultRiskService.delete(Number(activesInventoryInDefaultRisk.activesInventoryInDefaultRiskId))
           .subscribe(deleted => {
             this.get();
           });
@@ -222,35 +222,19 @@ export class ActivesInventoryInDefaultRiskByDefaultRiskComponent implements OnIn
     this.get();
   }
 
-  onKeydown(event, text: string) {
+  onKeydown(event: KeyboardEvent, text: string) {
     this.searchText = text;
     if (event.key === 'Enter')
       this.search(this.searchText);
   }
 
-  asignObjects(res) {
+  asignObjects(res: any) {
     this.activesInventoryInDefaultRisks = res.data;
     this.total = res.pagination.totalRows;
     this.totalPages = res.pagination.totalPages;
   }
 
 
-}  //{
-//path: 'actives-inventory-in-default-risk',
-//component: ActivesInventoryInDefaultRiskComponent,
-//data: { animation: 'actives-inventory-in-default-risk' }
-//},
-
-//ActivesInventoryInDefaultRiskComponent, AddActivesInventoryInDefaultRiskComponent, EditActivesInventoryInDefaultRiskComponent
-//{
-//id: 'activesInventoryInDefaultRisk',
-//title: '',
-//translate: 'MENU.ACTIVESINVENTORYINDEFAULTRISK',
-//type: 'item',
-//icon: 'file',
-//url: 'activesInventoryInDefaultRisk'
-//},
-
-//   ACTIVESINVENTORYINDEFAULTRISK: 'ActivesInventoryInDefaultRisk'
+}
 
 

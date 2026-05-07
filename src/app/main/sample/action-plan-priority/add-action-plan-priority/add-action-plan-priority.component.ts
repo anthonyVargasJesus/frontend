@@ -26,18 +26,16 @@ export class AddActionPlanPriorityComponent implements OnInit {
   ) { }
 
 
-  actionPlanPriority: ActionPlanPriority;
+  actionPlanPriority: ActionPlanPriority = {} as ActionPlanPriority;
   loading = false;
   loading2 = false;
-  public form: FormGroup;
+  public form!: FormGroup;
   public submitted = false;
 
 
   ngOnInit(): void {
     this.initForm();
-
     this.initActionPlanPriority();
-
   }
 
   initForm() {
@@ -82,7 +80,6 @@ export class AddActionPlanPriorityComponent implements OnInit {
 
     this.loading2 = true;
     this.getFormValue();
-
 
 
     this.actionPlanPriorityService.insert(this.actionPlanPriority)

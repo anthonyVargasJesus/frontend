@@ -1,4 +1,4 @@
 export interface DialogData {
-    animal: string;
-    name: string;
+    _id: string;
+    defaultRiskId: number;
   }

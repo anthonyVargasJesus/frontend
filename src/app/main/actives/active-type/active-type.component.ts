@@ -26,18 +26,18 @@ export class ActiveTypeComponent implements OnInit {
   selectedRow = 0;
   page = 1;
   skip = 0;
-  pageSize;
+  pageSize = PAGE_SIZE;
   total = 0;
   totalPages = 0;
   loading = false;
   searchText: string = '';
-  results: string;
+  results: string = '';
   previous = true;
   next = true;
-  public contentHeader: object;
-  public currentSkin: string;
-  private _unsubscribeAll: Subject<any>;
-  private panelClass: string;
+  public contentHeader: object = {};
+  public currentSkin: string = 'default';
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  private panelClass: string = '';
 
   constructor(private activeTypeService: ActiveTypeService, private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
@@ -108,7 +108,7 @@ export class ActiveTypeComponent implements OnInit {
       });
   }
 
-  changePageSize(value) {
+  changePageSize(value: any) {
     this.pageSize = value;
     this.get();
   }
@@ -192,7 +192,7 @@ export class ActiveTypeComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.activeTypeService.delete(activeType.activeTypeId)
+        this.activeTypeService.delete(Number(activeType.activeTypeId))
           .subscribe(deleted => {
             this.get();
           });
@@ -208,13 +208,13 @@ export class ActiveTypeComponent implements OnInit {
     this.get();
   }
 
-  onKeydown(event, text: string) {
+  onKeydown(event: any, text: string) {
     this.searchText = text;
     if (event.key === 'Enter')
       this.search(this.searchText);
   }
 
-  asignObjects(res) {
+  asignObjects(res: any) {
     this.activeTypes = res.data;
     this.total = res.pagination.totalRows;
     this.totalPages = res.pagination.totalPages;

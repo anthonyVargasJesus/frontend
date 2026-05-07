@@ -25,33 +25,25 @@ export class EditActionPlanPriorityComponent implements OnInit {
   ) { }
 
 
-  actionPlanPriority: ActionPlanPriority;
+  actionPlanPriority: ActionPlanPriority = {} as ActionPlanPriority;
   loading = false;
-  id: string;
-  loading2 = false; public form: FormGroup;
+  id: string = '';
+  loading2 = false; 
+  public form!: FormGroup;
   public submitted = false;
   public title: string = 'EDITAR PRIORIDAD';
 
   ngOnInit(): void {
-
     this.initForm();
-
-
     this.initActionPlanPriority();
-
     this.id = this.data['_id'];
     this.obtain(this.id);
-
-
   }
 
 
   initActionPlanPriority() {
     this.actionPlanPriority = new ActionPlanPriority();
   }
-
-
-
 
 
   initForm() {
@@ -69,7 +61,8 @@ export class EditActionPlanPriorityComponent implements OnInit {
     this.actionPlanPriorityService.obtain(id)
       .subscribe((res: any) => {
         this.actionPlanPriority = res.data;
-        this.setFormValue(this.actionPlanPriority); this.title = this.actionPlanPriority.name.toUpperCase();
+        this.setFormValue(this.actionPlanPriority); 
+        this.title = this.actionPlanPriority.name!.toUpperCase();
         this.loading = false;
       }, error => {
         this.loading = false;
@@ -87,7 +80,6 @@ export class EditActionPlanPriorityComponent implements OnInit {
     });
   }
 
-
   getFormValue() {
     this.actionPlanPriority.actionPlanPriorityId = Number(this.id);
     this.actionPlanPriority.name = this.form.value.name;
@@ -96,8 +88,6 @@ export class EditActionPlanPriorityComponent implements OnInit {
     this.actionPlanPriority.value = this.form.value.value;
     this.actionPlanPriority.color = this.form.value.color;
   }
-
-
 
   get f() {
     return this.form.controls;

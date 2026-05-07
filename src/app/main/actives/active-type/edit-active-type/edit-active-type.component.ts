@@ -27,8 +27,9 @@ export class EditActiveTypeComponent implements OnInit {
 
   activeType: ActiveType = new ActiveType();
   loading = false;
-  id: string;
-  loading2 = false; public form: FormGroup;
+  id: string = '';
+  loading2 = false; 
+  public form!: FormGroup;
   public submitted = false;
   //public last: string = '';
 

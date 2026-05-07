@@ -31,12 +31,12 @@ export class AddActivesInventoryInDefaultRiskByDefaultRiskComponent implements O
 
   activesInventories: ActivesInventory[] = [];
 
-  activesInventoryInDefaultRisk: ActivesInventoryInDefaultRisk;
+  activesInventoryInDefaultRisk: ActivesInventoryInDefaultRisk = {} as ActivesInventoryInDefaultRisk;
   loading = false;
   loading2 = false;
-  public form: FormGroup;
+  public form!: FormGroup;
   public submitted = false;
-  defaultRiskId: number;
+  defaultRiskId: number = 0;
 
   ngOnInit(): void {
     this.defaultRiskId = this.data['defaultRiskId'];
@@ -61,9 +61,9 @@ export class AddActivesInventoryInDefaultRiskByDefaultRiskComponent implements O
     this.activesInventoryService.getAll()
       .subscribe((res: any) => {
         this.activesInventories = res.data;
-         this.loading = false;
+        this.loading = false;
       }, error => {
-          this.loading = false;
+        this.loading = false;
         ErrorManager.handleError(error);
       });
   }
@@ -72,7 +72,7 @@ export class AddActivesInventoryInDefaultRiskByDefaultRiskComponent implements O
     this.activesInventoryInDefaultRisk.activesInventoryId = this.form.value.activesInventoryId;
     this.activesInventoryInDefaultRisk.isActive = this.form.value.isActive;
     if (this.form.value.isActive == "")
-      this.activesInventoryInDefaultRisk.isActive = null;
+      this.activesInventoryInDefaultRisk.isActive = undefined;
   }
 
 
