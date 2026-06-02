@@ -1,0 +1,22 @@
+.card-statistics .statistics-body .avatar {
+  width: 48px;
+  height: 48px;
+}
+
+table th {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.progress {
+  border-radius: 4px;
+}
+
+.badge-light-primary { background-color: rgba(115, 103, 240, .12); color: #7367f0; }
+.badge-light-success { background-color: rgba(40, 199, 111, .12); color: #28c76f; }
+
+ngx-charts-pie-chart,
+ngx-charts-bar-vertical-stacked {
+  width: 100%;
+}

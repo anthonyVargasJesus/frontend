@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SecurityHomeComponent } from './security-home/security-home.component';
+import { UserActivityComponent } from './user-activity/user-activity.component';
 import { OptionComponent } from './option/option.component';
 import { AddOptionComponent } from './option/add-option/add-option.component';
 import { EditOptionComponent } from './option/edit-option/edit-option.component';
@@ -37,9 +39,11 @@ import { EditUserStateComponent } from './user-state/edit-user-state/edit-user-s
     MenuComponent, AddMenuComponent, EditMenuComponent, RoleComponent, AddRoleComponent, EditRoleComponent,
     OptionInMenuByMenuComponent, AddOptionInMenuByMenuComponent, EditOptionInMenuByMenuComponent,
     MenuInRoleComponent, EditCompanyComponent,
-    UserStateComponent, AddUserStateComponent, EditUserStateComponent,],
+    UserStateComponent, AddUserStateComponent, EditUserStateComponent,
+    UserActivityComponent,],
   imports: [
     CommonModule,
+    NgxChartsModule,
     NgxMaskModule.forRoot(),
     SecurityRoutingModule,
     ContentHeaderModule,

@@ -58,6 +58,7 @@ import { EvaluationAdminComponent } from './evaluation-admin/evaluation-admin.co
 import { AddEvaluationAdminComponent } from './evaluation-admin/add-evaluation-admin/add-evaluation-admin.component';
 import { EditEvaluationAdminComponent } from './evaluation-admin/edit-evaluation-admin/edit-evaluation-admin.component';
 import { EvaluationProcessListComponent } from './evaluation-process-list/evaluation-process-list.component';
+import { ActionPlanProgressComponent } from './evaluation-process/action-plan-progress/action-plan-progress.component';
 
 
 @NgModule({
@@ -78,6 +79,7 @@ import { EvaluationProcessListComponent } from './evaluation-process-list/evalua
          RequirementNodeComponent, PopupRequirementsComponent, PopupControlsComponent, ControlNodeComponent, 
          ActionPlanByBreachIdComponent, AddActionPlanByBreachIdComponent, EditActionPlanByBreachIdComponent,
          EvaluationAdminComponent, AddEvaluationAdminComponent, EditEvaluationAdminComponent, EvaluationProcessListComponent,
+         ActionPlanProgressComponent,
   ],
   imports: [
     CommonModule,

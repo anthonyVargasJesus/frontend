@@ -6,8 +6,8 @@ import { RoleComponent } from './role/role.component';
 import { SecurityHomeComponent } from './security-home/security-home.component';
 import { EditCompanyComponent } from './company/edit-company/edit-company.component';
 import { SecurityGuard } from 'app/guards/security.guard';
-
 import { UserStateComponent } from './user-state/user-state.component';
+import { UserActivityComponent } from './user-activity/user-activity.component';
 
 const routes: Routes = [
     { path: 'edit-company', component: EditCompanyComponent, },
@@ -15,7 +15,8 @@ const routes: Routes = [
     { path: 'menu', component: MenuComponent, },
     { path: 'role', component: RoleComponent, },
     { path: 'security-home', component: SecurityHomeComponent },
-    { path: 'user-state', component: UserStateComponent,},
+    { path: 'user-state', component: UserStateComponent, },
+    { path: 'user-activity', component: UserActivityComponent, },
 ];
 
 @NgModule({

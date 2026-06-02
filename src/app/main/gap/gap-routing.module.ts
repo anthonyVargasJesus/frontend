@@ -7,6 +7,7 @@ import { CurrentBreachsComponent } from './current-breachs/current-breachs.compo
 import { EditBreachByEvaluationComponent } from './breach-by-evaluation/edit-breach-by-evaluation/edit-breach-by-evaluation.component';
 import { EvaluationAdminComponent } from './evaluation-admin/evaluation-admin.component';
 import { EvaluationProcessListComponent } from './evaluation-process-list/evaluation-process-list.component';
+import { ActionPlanProgressComponent } from './evaluation-process/action-plan-progress/action-plan-progress.component';
 
 const routes: Routes = [
     { path: 'requirement-evaluation', component: CurrentRequirementEvaluationComponent, },
@@ -24,6 +25,7 @@ const routes: Routes = [
         component: EvaluationProcessListComponent,
         data: { animation: 'evaluation-process-list' }
     },
+    { path: 'action-plan-progress', component: ActionPlanProgressComponent },
 ];
 
 @NgModule({

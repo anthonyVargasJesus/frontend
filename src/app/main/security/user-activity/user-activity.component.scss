@@ -1,0 +1,32 @@
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #7367f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  .avatar-initials {
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+  }
+}
+
+.card-statistics .statistics-body .avatar {
+  width: 48px;
+  height: 48px;
+}
+
+table th {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+ngx-charts-pie-chart,
+ngx-charts-bar-vertical {
+  width: 100%;
+}

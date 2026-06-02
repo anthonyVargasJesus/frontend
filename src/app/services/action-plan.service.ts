@@ -18,6 +18,10 @@ export class ActionPlanService {
 
   constructor(private http: HttpClient) { }
 
+  getProgress(): Observable<any> {
+    return this.http.get<any>(`${this.endpoint}/progress`);
+  }
+
   /**
    * Obtiene planes de acción filtrados por breachId con paginación
    */

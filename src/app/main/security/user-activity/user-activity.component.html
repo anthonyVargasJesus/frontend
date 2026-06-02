@@ -1,0 +1,207 @@
+<div class="content-wrapper">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <ng-container *ngIf="loading">
+      <div class="container text-center mt-5 mb-5">
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!loading && data">
+
+      <!-- Tarjetas resumen -->
+      <div class="row match-height mb-2">
+        <div class="col-xl-3 col-md-6 col-12">
+          <div class="card card-statistics">
+            <div class="card-body statistics-body">
+              <div class="media align-items-center">
+                <div class="media-body">
+                  <p class="card-text mb-25">Total Usuarios</p>
+                  <h2 class="font-weight-bolder mb-0">{{ data.totalUsers }}</h2>
+                </div>
+                <div class="avatar bg-light-primary ml-1">
+                  <div class="avatar-content"><i data-feather="users" class="avatar-icon"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 col-12">
+          <div class="card card-statistics">
+            <div class="card-body statistics-body">
+              <div class="media align-items-center">
+                <div class="media-body">
+                  <p class="card-text mb-25">Activos</p>
+                  <h2 class="font-weight-bolder mb-0 text-success">{{ data.totalActive }}</h2>
+                </div>
+                <div class="avatar bg-light-success ml-1">
+                  <div class="avatar-content"><i data-feather="user-check" class="avatar-icon"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 col-12">
+          <div class="card card-statistics">
+            <div class="card-body statistics-body">
+              <div class="media align-items-center">
+                <div class="media-body">
+                  <p class="card-text mb-25">Sin acceso registrado</p>
+                  <h2 class="font-weight-bolder mb-0 text-secondary">{{ data.neverAccessed }}</h2>
+                </div>
+                <div class="avatar bg-light-secondary ml-1">
+                  <div class="avatar-content"><i data-feather="user-x" class="avatar-icon"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 col-12">
+          <div class="card card-statistics">
+            <div class="card-body statistics-body">
+              <div class="media align-items-center">
+                <div class="media-body">
+                  <p class="card-text mb-25">Sin acceso &gt;30 días</p>
+                  <h2 class="font-weight-bolder mb-0 text-danger">{{ data.notAccessedIn30Days }}</h2>
+                </div>
+                <div class="avatar bg-light-danger ml-1">
+                  <div class="avatar-content"><i data-feather="alert-circle" class="avatar-icon"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráficos -->
+      <div class="row mb-2">
+        <div class="col-md-4">
+          <div class="card border">
+            <div class="card-header">
+              <h4 class="card-title">Estado de Usuarios</h4>
+            </div>
+            <div class="card-body d-flex justify-content-center">
+              <ngx-charts-pie-chart
+                [results]="data.userStateChart"
+                [colorScheme]="stateColorScheme"
+                [legend]="true"
+                [labels]="true"
+                [doughnut]="true"
+                [arcWidth]="0.4"
+                [legendPosition]="'below'"
+                style="width:100%">
+              </ngx-charts-pie-chart>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card border">
+            <div class="card-header">
+              <h4 class="card-title">Frecuencia de Acceso</h4>
+            </div>
+            <div class="card-body d-flex justify-content-center">
+              <ngx-charts-pie-chart
+                [results]="data.accessFrequencyChart"
+                [colorScheme]="accessColorScheme"
+                [legend]="true"
+                [labels]="true"
+                [doughnut]="false"
+                [legendPosition]="'below'"
+                style="width:100%">
+              </ngx-charts-pie-chart>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card border">
+            <div class="card-header">
+              <h4 class="card-title">Usuarios por Rol</h4>
+            </div>
+            <div class="card-body d-flex justify-content-center">
+              <ngx-charts-bar-vertical
+                [results]="data.roleDistributionChart"
+                [colorScheme]="roleColorScheme"
+                [xAxis]="true"
+                [yAxis]="true"
+                [showDataLabel]="true"
+                [roundEdges]="true"
+                [barPadding]="8"
+                style="width:100%">
+              </ngx-charts-bar-vertical>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de usuarios -->
+      <div class="card border">
+        <div class="card-header">
+          <h4 class="card-title">Detalle por Usuario</h4>
+          <small class="text-muted">Ordenado por último acceso (más reciente primero)</small>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th>USUARIO</th>
+                  <th>EMAIL</th>
+                  <th>ROLES</th>
+                  <th class="text-center">ESTADO</th>
+                  <th class="text-center">ÚLTIMO ACCESO</th>
+                  <th class="text-center">ACTIVIDAD</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="data.users.length === 0">
+                  <td colspan="6" class="text-center py-3">No hay usuarios para mostrar</td>
+                </tr>
+                <tr *ngFor="let user of data.users">
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="user-avatar mr-1" *ngIf="!user.image">
+                        <span class="avatar-initials">{{ getUserInitials(user) }}</span>
+                      </div>
+                      <img *ngIf="user.image" [src]="user.image" class="avatar-img rounded-circle mr-1"
+                        width="36" height="36" style="object-fit:cover;">
+                      <div>
+                        <span class="font-weight-bold">{{ user.name }} {{ user.firstName }}</span>
+                        <br>
+                        <small class="text-muted">{{ user.lastName }}</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td><small>{{ user.email }}</small></td>
+                  <td><small class="text-muted">{{ user.rolesText }}</small></td>
+                  <td class="text-center">
+                    <span [class]="getStateBadgeClass(user.userStateValue)">{{ user.userStateName }}</span>
+                  </td>
+                  <td class="text-center">
+                    <small *ngIf="user.lastAccess">
+                      {{ user.lastAccess | date:'dd/MM/yyyy HH:mm' }}
+                    </small>
+                    <small *ngIf="!user.lastAccess" class="text-muted">Sin registro</small>
+                  </td>
+                  <td class="text-center">
+                    <span [class]="getAccessBadgeClass(user.accessBucket)">
+                      {{ getDaysSinceLabel(user.daysSinceLastAccess) }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </ng-container>
+  </div>
+</div>

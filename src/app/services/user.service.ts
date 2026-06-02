@@ -79,6 +79,11 @@ export class UserService {
             }));
     }
 
+    getActivity() {
+        const url = environment.apiUrl + '/api/user/activity';
+        return this.http.get(url);
+    }
+
     getMenus(id: string) {
         const url = environment.apiUrl + '/api/user/menus/' + id;
         return this.http.get(url);

@@ -1,0 +1,249 @@
+<div class="content-wrapper">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <!-- Cargando -->
+    <ng-container *ngIf="loading">
+      <div class="container text-center mt-5 mb-5">
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+      </div>
+    </ng-container>
+
+    <!-- Sin evaluación activa -->
+    <ng-container *ngIf="!loading && data && !data.hasCurrentEvaluation">
+      <div class="card">
+        <div class="card-body text-center py-5">
+          <i data-feather="alert-circle" style="width:48px;height:48px;" class="text-warning"></i>
+          <h5 class="mt-2">No hay una evaluación activa</h5>
+          <p class="text-muted">Para visualizar este reporte, debe haber una evaluación marcada como actual en el sistema.</p>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Con evaluación activa -->
+    <ng-container *ngIf="!loading && data && data.hasCurrentEvaluation">
+
+      <!-- Banner evaluación actual -->
+      <div class="alert alert-primary d-flex align-items-center mb-2" role="alert">
+        <i data-feather="calendar" class="mr-1"></i>
+        <span>
+          <strong>Evaluación actual:</strong> {{ data.evaluationDescription }}
+          &nbsp;|&nbsp;
+          {{ data.evaluationStartDate | date:'dd/MM/yyyy' }} — {{ data.evaluationEndDate | date:'dd/MM/yyyy' }}
+        </span>
+      </div>
+
+      <!-- Sin planes en la evaluación actual -->
+      <ng-container *ngIf="data.totalPlans === 0">
+        <div class="card">
+          <div class="card-body text-center py-5">
+            <i data-feather="inbox" style="width:48px;height:48px;" class="text-muted"></i>
+            <p class="mt-2 text-muted">No hay planes de acción registrados para la evaluación actual.</p>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Con planes -->
+      <ng-container *ngIf="data.totalPlans > 0">
+
+        <!-- Tarjetas resumen -->
+        <div class="row match-height mb-2">
+          <div class="col-xl-3 col-md-6 col-12">
+            <div class="card card-statistics">
+              <div class="card-body statistics-body">
+                <div class="media align-items-center">
+                  <div class="media-body">
+                    <p class="card-text mb-25">Total Planes</p>
+                    <h2 class="font-weight-bolder mb-0">{{ data.totalPlans }}</h2>
+                  </div>
+                  <div class="avatar bg-light-primary ml-1">
+                    <div class="avatar-content"><i data-feather="clipboard" class="avatar-icon"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-6 col-12">
+            <div class="card card-statistics">
+              <div class="card-body statistics-body">
+                <div class="media align-items-center">
+                  <div class="media-body">
+                    <p class="card-text mb-25">Responsables</p>
+                    <h2 class="font-weight-bolder mb-0 text-primary">{{ data.totalResponsibles }}</h2>
+                  </div>
+                  <div class="avatar bg-light-info ml-1">
+                    <div class="avatar-content"><i data-feather="users" class="avatar-icon"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-6 col-12">
+            <div class="card card-statistics">
+              <div class="card-body statistics-body">
+                <div class="media align-items-center">
+                  <div class="media-body">
+                    <p class="card-text mb-25">Planes Vencidos</p>
+                    <h2 class="font-weight-bolder mb-0 text-danger">{{ data.overdueCount }}</h2>
+                  </div>
+                  <div class="avatar bg-light-danger ml-1">
+                    <div class="avatar-content"><i data-feather="alert-triangle" class="avatar-icon"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-6 col-12">
+            <div class="card card-statistics">
+              <div class="card-body statistics-body">
+                <div class="media align-items-center">
+                  <div class="media-body">
+                    <p class="card-text mb-25">Tasa Global</p>
+                    <h2 class="font-weight-bolder mb-0 text-success">{{ data.globalCompletionRate }}%</h2>
+                  </div>
+                  <div class="avatar bg-light-success ml-1">
+                    <div class="avatar-content"><i data-feather="trending-up" class="avatar-icon"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráficos -->
+        <div class="row mb-2">
+          <div class="col-md-5">
+            <div class="card border h-100">
+              <div class="card-header">
+                <h4 class="card-title">Distribución por Estado</h4>
+              </div>
+              <div class="card-body d-flex justify-content-center align-items-center">
+                <ngx-charts-pie-chart
+                  [results]="data.statusChart"
+                  [colorScheme]="getStatusColorScheme()"
+                  [legend]="true"
+                  [labels]="true"
+                  [doughnut]="true"
+                  [arcWidth]="0.45"
+                  [legendPosition]="'below'"
+                  [view]="view"
+                  style="width:100%">
+                </ngx-charts-pie-chart>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="card border h-100">
+              <div class="card-header">
+                <h4 class="card-title">Distribución por Prioridad</h4>
+              </div>
+              <div class="card-body d-flex justify-content-center align-items-center">
+                <ngx-charts-pie-chart
+                  [results]="data.priorityChart"
+                  [colorScheme]="getPriorityColorScheme()"
+                  [legend]="true"
+                  [labels]="false"
+                  [doughnut]="false"
+                  [legendPosition]="'below'"
+                  [view]="view"
+                  style="width:100%">
+                </ngx-charts-pie-chart>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="card border h-100">
+              <div class="card-header">
+                <h4 class="card-title">Planes por Estado y Responsable</h4>
+              </div>
+              <div class="card-body d-flex justify-content-center align-items-center"
+                   *ngIf="data.responsibleStackedChart?.length">
+                <ngx-charts-bar-vertical-stacked
+                  [results]="data.responsibleStackedChart"
+                  [colorScheme]="getStatusColorScheme()"
+                  [xAxis]="true"
+                  [yAxis]="true"
+                  [showDataLabel]="false"
+                  [roundEdges]="false"
+                  [barPadding]="8"
+                  style="width:100%">
+                </ngx-charts-bar-vertical-stacked>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabla por responsable -->
+        <div class="card border">
+          <div class="card-header">
+            <h4 class="card-title">Detalle por Responsable</h4>
+            <small class="text-muted">Ordenado por: vencidos (↓) y tasa de cumplimiento (↑)</small>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>RESPONSABLE</th>
+                    <th class="text-center">TOTAL</th>
+                    <th class="text-center">COMPLETADOS</th>
+                    <th class="text-center">VENCIDOS</th>
+                    <th style="min-width: 160px;">PROGRESO</th>
+                    <th>DETALLE POR ESTADO</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let r of data.responsibles">
+                    <td>
+                      <span class="font-weight-bold">{{ r.responsibleName }}</span>
+                    </td>
+                    <td class="text-center">
+                      <span class="badge badge-light-primary">{{ r.total }}</span>
+                    </td>
+                    <td class="text-center">
+                      <span class="badge badge-light-success">{{ r.completed }}</span>
+                    </td>
+                    <td class="text-center">
+                      <span [class]="getOverdueBadge(r.overdue)">{{ r.overdue }}</span>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="progress flex-grow-1 mr-1" style="height: 8px;">
+                          <div class="progress-bar"
+                            [class]="getCompletionBarClass(r.completionRate)"
+                            [style.width.%]="r.completionRate">
+                          </div>
+                        </div>
+                        <small class="font-weight-bold" style="min-width:38px;">{{ getRateText(r.completionRate) }}</small>
+                      </div>
+                    </td>
+                    <td>
+                      <span *ngFor="let s of r.statusBreakdown"
+                        class="badge mr-25 mb-25"
+                        [style.background-color]="s.color"
+                        style="color:#fff; font-size:11px;">
+                        {{ s.abbreviation || s.statusName }}: {{ s.count }}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </ng-container>
+      <!-- /Con planes -->
+
+    </ng-container>
+    <!-- /Con evaluación activa -->
+
+  </div>
+</div>
