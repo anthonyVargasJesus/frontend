@@ -15,6 +15,11 @@ export class BreachService {
 
     constructor(public http: HttpClient) { }
 
+    getSeverityReport() {
+        const url = environment.apiUrl + '/api/breach/severity-report';
+        return this.http.get<any>(url);
+    }
+
     getRisksIdentification(skip: number, pageSize: number, search: string) {
         const url = environment.apiUrl + '/api/breach/RisksIdentification' + '?skip=' + skip + '&pageSize=' + pageSize + '&search=' + search;
         return this.http.get(url);

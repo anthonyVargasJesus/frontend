@@ -1,0 +1,266 @@
+<div class="content-wrapper">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <!-- Cargando -->
+    <ng-container *ngIf="loading">
+      <div class="container text-center mt-5 mb-5">
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+      </div>
+    </ng-container>
+
+    <!-- Sin evaluación activa -->
+    <ng-container *ngIf="!loading && data && !data.hasCurrentEvaluation">
+      <div class="card">
+        <div class="card-body text-center py-5">
+          <i data-feather="alert-circle" style="width:48px;height:48px;" class="text-warning"></i>
+          <h5 class="mt-2">No hay una evaluación activa</h5>
+          <p class="text-muted">Para visualizar este reporte, debe haber una evaluación marcada como actual en el sistema.</p>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Con evaluación activa -->
+    <ng-container *ngIf="!loading && data && data.hasCurrentEvaluation">
+
+      <!-- Banner evaluación actual -->
+      <div class="alert alert-primary d-flex align-items-center mb-2" role="alert">
+        <i data-feather="calendar" class="mr-1"></i>
+        <span>
+          <strong>Evaluación actual:</strong> {{ data.evaluationDescription }}
+          &nbsp;|&nbsp;
+          {{ data.evaluationStartDate | date:'dd/MM/yyyy' }} — {{ data.evaluationEndDate | date:'dd/MM/yyyy' }}
+        </span>
+      </div>
+
+      <!-- Sin brechas -->
+      <ng-container *ngIf="data.totalBreaches === 0">
+        <div class="card">
+          <div class="card-body text-center py-5">
+            <i data-feather="check-circle" style="width:48px;height:48px;" class="text-success"></i>
+            <h5 class="mt-2">Sin brechas registradas</h5>
+            <p class="text-muted">No hay brechas registradas para la evaluación actual.</p>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Con brechas -->
+      <ng-container *ngIf="data.totalBreaches > 0">
+
+        <!-- Tarjetas resumen -->
+        <div class="row match-height mb-2">
+
+          <div class="col-xl-3 col-md-6 col-12">
+            <div class="card card-statistics">
+              <div class="card-body statistics-body">
+                <div class="media align-items-center">
+                  <div class="media-body">
+                    <p class="card-text mb-25">Total Brechas</p>
+                    <h2 class="font-weight-bolder mb-0">{{ data.totalBreaches }}</h2>
+                  </div>
+                  <div class="avatar bg-light-primary ml-1">
+                    <div class="avatar-content"><i data-feather="alert-triangle" class="avatar-icon"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-6 col-12">
+            <div class="card card-statistics">
+              <div class="card-body statistics-body">
+                <div class="media align-items-center">
+                  <div class="media-body">
+                    <p class="card-text mb-25">Sin Plan de Acción</p>
+                    <h2 class="font-weight-bolder mb-0 text-danger">{{ data.withoutActionPlan }}</h2>
+                    <small class="text-muted">requieren atención</small>
+                  </div>
+                  <div class="avatar bg-light-danger ml-1">
+                    <div class="avatar-content"><i data-feather="x-circle" class="avatar-icon"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-6 col-12">
+            <div class="card card-statistics">
+              <div class="card-body statistics-body">
+                <div class="media align-items-center">
+                  <div class="media-body">
+                    <p class="card-text mb-25">Severidad más Alta</p>
+                    <h2 class="font-weight-bolder mb-0" [style.color]="data.highestSeverityColor">{{ data.highestSeverityCount }}</h2>
+                    <small class="text-muted">{{ data.highestSeverityName }}</small>
+                  </div>
+                  <div class="avatar ml-1" [style.background-color]="data.highestSeverityColor + '29'">
+                    <div class="avatar-content"><i data-feather="zap" class="avatar-icon" [style.color]="data.highestSeverityColor"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-6 col-12">
+            <div class="card card-statistics">
+              <div class="card-body statistics-body">
+                <div class="media align-items-center">
+                  <div class="media-body">
+                    <p class="card-text mb-25">Responsables</p>
+                    <h2 class="font-weight-bolder mb-0 text-info">{{ data.totalResponsibles }}</h2>
+                  </div>
+                  <div class="avatar bg-light-info ml-1">
+                    <div class="avatar-content"><i data-feather="users" class="avatar-icon"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Gráficos -->
+        <div class="row mb-2">
+
+          <div class="col-md-5">
+            <div class="card border h-100">
+              <div class="card-header">
+                <h4 class="card-title">Distribución por Severidad</h4>
+              </div>
+              <div class="card-body d-flex justify-content-center align-items-center">
+                <ngx-charts-pie-chart
+                  [results]="data.severityChart"
+                  [colorScheme]="getSeverityColorScheme()"
+                  [legend]="true"
+                  [labels]="true"
+                  [doughnut]="true"
+                  [arcWidth]="0.45"
+                  [legendPosition]="'below'"
+                  [view]="view"
+                  style="width:100%">
+                </ngx-charts-pie-chart>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="card border h-100">
+              <div class="card-header">
+                <h4 class="card-title">Distribución por Estado</h4>
+              </div>
+              <div class="card-body d-flex justify-content-center align-items-center">
+                <ngx-charts-pie-chart
+                  [results]="data.statusChart"
+                  [colorScheme]="getStatusColorScheme()"
+                  [legend]="true"
+                  [labels]="false"
+                  [doughnut]="false"
+                  [legendPosition]="'below'"
+                  [view]="view"
+                  style="width:100%">
+                </ngx-charts-pie-chart>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="card border h-100">
+              <div class="card-header">
+                <h4 class="card-title">Cobertura de Planes</h4>
+              </div>
+              <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                <div class="text-center mb-1">
+                  <h1 class="font-weight-bolder text-success mb-0">
+                    {{ data.totalBreaches - data.withoutActionPlan }}
+                  </h1>
+                  <small class="text-muted">con plan de acción</small>
+                </div>
+                <div class="progress w-100 mb-1" style="height:12px;">
+                  <div class="progress-bar bg-success"
+                    [style.width.%]="((data.totalBreaches - data.withoutActionPlan) / data.totalBreaches) * 100">
+                  </div>
+                </div>
+                <small class="font-weight-bold text-success">
+                  {{ (((data.totalBreaches - data.withoutActionPlan) / data.totalBreaches) * 100).toFixed(1) }}% cubiertas
+                </small>
+                <hr class="w-100">
+                <div class="text-center">
+                  <h3 class="font-weight-bolder text-danger mb-0">{{ data.withoutActionPlan }}</h3>
+                  <small class="text-muted">sin plan de acción</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Tabla de brechas -->
+        <div class="card border">
+          <div class="card-header">
+            <h4 class="card-title">Detalle de Brechas</h4>
+            <small class="text-muted">Ordenado por severidad (↓)</small>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>BRECHA</th>
+                    <th class="text-center">TIPO</th>
+                    <th class="text-center">SEVERIDAD</th>
+                    <th class="text-center">ESTADO</th>
+                    <th>RESPONSABLE</th>
+                    <th class="text-center">PLANES DE ACCIÓN</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let b of data.breaches">
+                    <td>
+                      <div>
+                        <small class="text-muted" *ngIf="b.numerationToShow">{{ b.numerationToShow }}</small>
+                        <div class="font-weight-bold">{{ b.title }}</div>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <i [attr.data-feather]="getTypeIcon(b.type)" style="width:16px;height:16px;" class="text-muted"></i>
+                      <small class="d-block text-muted" style="font-size:10px;">{{ getTypeLabel(b.type) }}</small>
+                    </td>
+                    <td class="text-center">
+                      <span class="badge"
+                        [style.background-color]="b.severityColor"
+                        style="color:#fff; min-width:60px;">
+                        {{ b.severityAbbreviation || b.severityName }}
+                      </span>
+                    </td>
+                    <td class="text-center">
+                      <span class="badge"
+                        [style.background-color]="b.statusColor"
+                        style="color:#fff; min-width:60px;">
+                        {{ b.statusAbbreviation || b.statusName }}
+                      </span>
+                    </td>
+                    <td>{{ b.responsibleName }}</td>
+                    <td class="text-center">
+                      <span *ngIf="b.actionPlanCount > 0" class="badge badge-light-success">
+                        {{ b.actionPlanCount }} plan{{ b.actionPlanCount > 1 ? 'es' : '' }}
+                      </span>
+                      <span *ngIf="b.actionPlanCount === 0" class="badge badge-light-danger">
+                        Sin plan
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </ng-container>
+      <!-- /Con brechas -->
+
+    </ng-container>
+    <!-- /Con evaluación activa -->
+
+  </div>
+</div>

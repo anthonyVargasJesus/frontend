@@ -8,6 +8,8 @@ import { EditBreachByEvaluationComponent } from './breach-by-evaluation/edit-bre
 import { EvaluationAdminComponent } from './evaluation-admin/evaluation-admin.component';
 import { EvaluationProcessListComponent } from './evaluation-process-list/evaluation-process-list.component';
 import { ActionPlanProgressComponent } from './evaluation-process/action-plan-progress/action-plan-progress.component';
+import { ComplianceEvolutionComponent } from './evaluation-process/compliance-evolution/compliance-evolution.component';
+import { BreachSeverityReportComponent } from './evaluation-process/breach-severity-report/breach-severity-report.component';
 
 const routes: Routes = [
     { path: 'requirement-evaluation', component: CurrentRequirementEvaluationComponent, },
@@ -26,6 +28,8 @@ const routes: Routes = [
         data: { animation: 'evaluation-process-list' }
     },
     { path: 'action-plan-progress', component: ActionPlanProgressComponent },
+    { path: 'compliance-evolution', component: ComplianceEvolutionComponent },
+    { path: 'breach-severity-report', component: BreachSeverityReportComponent },
 ];
 
 @NgModule({

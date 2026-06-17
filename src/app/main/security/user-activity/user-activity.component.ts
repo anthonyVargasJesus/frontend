@@ -11,7 +11,7 @@ export class UserActivityComponent implements OnInit {
   loading = false;
   data: any = null;
 
-  public contentHeader: object;
+  public contentHeader: object = {};
 
   stateColorScheme = { domain: ['#4CAF50', '#F44336', '#9E9E9E'] };
   accessColorScheme = { domain: ['#4CAF50', '#2196F3', '#FF9800', '#F44336', '#9C27B0', '#9E9E9E'] };

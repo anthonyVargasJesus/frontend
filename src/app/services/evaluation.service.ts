@@ -94,6 +94,11 @@ export class EvaluationService {
     }
 
 
+    getComplianceEvolution() {
+        const url = environment.apiUrl + '/api/evaluation/compliance-evolution';
+        return this.http.get<any>(url);
+    }
+
     getExcelDashboard(standardId: string, evaluationId: string) {
 
         const url = environment.apiUrl + '/api/evaluation/excel-dashboard?standardId=' + standardId + '&evaluationId=' + evaluationId;

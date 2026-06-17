@@ -59,6 +59,8 @@ import { AddEvaluationAdminComponent } from './evaluation-admin/add-evaluation-a
 import { EditEvaluationAdminComponent } from './evaluation-admin/edit-evaluation-admin/edit-evaluation-admin.component';
 import { EvaluationProcessListComponent } from './evaluation-process-list/evaluation-process-list.component';
 import { ActionPlanProgressComponent } from './evaluation-process/action-plan-progress/action-plan-progress.component';
+import { ComplianceEvolutionComponent } from './evaluation-process/compliance-evolution/compliance-evolution.component';
+import { BreachSeverityReportComponent } from './evaluation-process/breach-severity-report/breach-severity-report.component';
 
 
 @NgModule({
@@ -80,6 +82,8 @@ import { ActionPlanProgressComponent } from './evaluation-process/action-plan-pr
          ActionPlanByBreachIdComponent, AddActionPlanByBreachIdComponent, EditActionPlanByBreachIdComponent,
          EvaluationAdminComponent, AddEvaluationAdminComponent, EditEvaluationAdminComponent, EvaluationProcessListComponent,
          ActionPlanProgressComponent,
+         ComplianceEvolutionComponent,
+         BreachSeverityReportComponent,
   ],
   imports: [
     CommonModule,

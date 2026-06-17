@@ -1,0 +1,209 @@
+<div class="content-wrapper">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <!-- Cargando -->
+    <ng-container *ngIf="loading">
+      <div class="container text-center mt-5 mb-5">
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+      </div>
+    </ng-container>
+
+    <!-- Sin evaluaciones -->
+    <ng-container *ngIf="!loading && data && data.totalEvaluations === 0">
+      <div class="card">
+        <div class="card-body text-center py-5">
+          <i data-feather="bar-chart-2" style="width:48px;height:48px;" class="text-muted"></i>
+          <h5 class="mt-2">Sin historial de evaluaciones</h5>
+          <p class="text-muted">No hay evaluaciones registradas para esta empresa.</p>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Con datos -->
+    <ng-container *ngIf="!loading && data && data.totalEvaluations > 0">
+
+      <!-- Tarjetas resumen -->
+      <div class="row match-height mb-2">
+
+        <div class="col-xl-3 col-md-6 col-12">
+          <div class="card card-statistics">
+            <div class="card-body statistics-body">
+              <div class="media align-items-center">
+                <div class="media-body">
+                  <p class="card-text mb-25">Total Evaluaciones</p>
+                  <h2 class="font-weight-bolder mb-0">{{ data.totalEvaluations }}</h2>
+                  <small class="text-muted" *ngIf="data.currentEvaluationDescription">
+                    Actual: {{ data.currentEvaluationDescription }}
+                  </small>
+                </div>
+                <div class="avatar bg-light-primary ml-1">
+                  <div class="avatar-content"><i data-feather="layers" class="avatar-icon"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 col-12">
+          <div class="card card-statistics">
+            <div class="card-body statistics-body">
+              <div class="media align-items-center">
+                <div class="media-body">
+                  <p class="card-text mb-25">Cumplimiento General</p>
+                  <h2 class="font-weight-bolder mb-0 text-primary">{{ getRateLabel(data.currentOverallRate) }}</h2>
+                  <small [class]="getDeltaClass((data.deltaRequirements + data.deltaControls) / 2)">
+                    {{ data.previousEvaluationDescription ? getDeltaIcon((data.deltaRequirements + data.deltaControls) / 2) + ' vs anterior' : 'Primera evaluación' }}
+                  </small>
+                </div>
+                <div class="avatar bg-light-info ml-1">
+                  <div class="avatar-content"><i data-feather="trending-up" class="avatar-icon"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 col-12">
+          <div class="card card-statistics">
+            <div class="card-body statistics-body">
+              <div class="media align-items-center">
+                <div class="media-body">
+                  <p class="card-text mb-25">Requisitos (actual)</p>
+                  <h2 class="font-weight-bolder mb-0 text-success">{{ getRateLabel(data.currentRequirementsRate) }}</h2>
+                  <small [class]="getDeltaClass(data.deltaRequirements)">
+                    {{ data.previousEvaluationDescription ? getDeltaIcon(data.deltaRequirements) + ' vs anterior' : 'Primera evaluación' }}
+                  </small>
+                </div>
+                <div class="avatar bg-light-success ml-1">
+                  <div class="avatar-content"><i data-feather="check-circle" class="avatar-icon"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 col-12">
+          <div class="card card-statistics">
+            <div class="card-body statistics-body">
+              <div class="media align-items-center">
+                <div class="media-body">
+                  <p class="card-text mb-25">Controles (actual)</p>
+                  <h2 class="font-weight-bolder mb-0 text-warning">{{ getRateLabel(data.currentControlsRate) }}</h2>
+                  <small [class]="getDeltaClass(data.deltaControls)">
+                    {{ data.previousEvaluationDescription ? getDeltaIcon(data.deltaControls) + ' vs anterior' : 'Primera evaluación' }}
+                  </small>
+                </div>
+                <div class="avatar bg-light-warning ml-1">
+                  <div class="avatar-content"><i data-feather="shield" class="avatar-icon"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Gráfico de línea (evolución) -->
+      <div class="card border mb-2" *ngIf="data.chart?.length">
+        <div class="card-header">
+          <h4 class="card-title">Evolución de Cumplimiento por Evaluación</h4>
+          <div class="d-flex align-items-center">
+            <span class="badge badge-pill" style="background:#7367f0;color:#fff;" class="mr-50">General</span>
+            <span class="badge badge-pill bg-success text-white mx-50">Requisitos</span>
+            <span class="badge badge-pill" style="background:#ff9f43;color:#fff;">Controles</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div style="width:100%; height:320px; display:block;">
+            <ngx-charts-line-chart
+              [results]="data.chart"
+              [colorScheme]="lineColorScheme"
+              [xAxis]="true"
+              [yAxis]="true"
+              [showGridLines]="true"
+              [roundDomains]="false"
+              [yScaleMin]="0"
+              [yScaleMax]="100"
+              [yAxisTickFormatting]="yAxisTickFormatting"
+              [legend]="true"
+              [legendPosition]="'below'"
+              [curve]="'linear'"
+              [tooltipDisabled]="false">
+            </ngx-charts-line-chart>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla histórica -->
+      <div class="card border">
+        <div class="card-header">
+          <h4 class="card-title">Historial por Evaluación</h4>
+          <small class="text-muted">Ordenado cronológicamente</small>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead>
+                <tr>
+                  <th>EVALUACIÓN</th>
+                  <th class="text-center">PERÍODO</th>
+                  <th class="text-center">REQUISITOS</th>
+                  <th class="text-center">CONTROLES</th>
+                  <th style="min-width:160px;">CUMPLIMIENTO GENERAL</th>
+                  <th class="text-center">ESTADO</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let e of data.evaluations" [class.table-active]="e.isCurrent">
+                  <td>
+                    <span class="font-weight-bold">{{ e.description }}</span>
+                  </td>
+                  <td class="text-center">
+                    <small class="text-muted">
+                      {{ e.startDate | date:'dd/MM/yyyy' }} — {{ e.endDate | date:'dd/MM/yyyy' }}
+                    </small>
+                  </td>
+                  <td class="text-center">
+                    <span *ngIf="e.requirementsRate !== null && e.requirementsRate !== undefined; else noData">
+                      <span class="font-weight-bold">{{ getRateLabel(e.requirementsRate) }}</span>
+                      <br><small class="text-muted">{{ e.requirementsCount }} ítems</small>
+                    </span>
+                    <ng-template #noData><span class="text-muted">—</span></ng-template>
+                  </td>
+                  <td class="text-center">
+                    <span *ngIf="e.controlsRate !== null && e.controlsRate !== undefined; else noCtrl">
+                      <span class="font-weight-bold">{{ getRateLabel(e.controlsRate) }}</span>
+                      <br><small class="text-muted">{{ e.controlsCount }} ítems</small>
+                    </span>
+                    <ng-template #noCtrl><span class="text-muted">—</span></ng-template>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center" *ngIf="e.overallRate !== null && e.overallRate !== undefined; else noOverall">
+                      <div class="progress flex-grow-1 mr-1" style="height:8px;">
+                        <div class="progress-bar"
+                          [class]="getCompletionBarClass(e.overallRate)"
+                          [style.width.%]="e.overallRate">
+                        </div>
+                      </div>
+                      <small class="font-weight-bold" style="min-width:42px;">{{ getRateLabel(e.overallRate) }}</small>
+                    </div>
+                    <ng-template #noOverall><span class="text-muted">—</span></ng-template>
+                  </td>
+                  <td class="text-center">
+                    <span *ngIf="e.isCurrent" class="badge badge-light-success">Actual</span>
+                    <span *ngIf="!e.isCurrent" class="badge badge-light-secondary">Anterior</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </ng-container>
+
+  </div>
+</div>
