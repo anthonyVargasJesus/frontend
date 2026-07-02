@@ -46,7 +46,7 @@ export class ReopenRiskComponent implements OnInit {
   save() {
 
     this.loading2 = true;
-    const IN_TREATMENT_STATUS_ID = 4;
+    const IN_TREATMENT_STATUS_ID = 3;
 
     this.riskService.updateStatus(this.riskId, IN_TREATMENT_STATUS_ID)
       .subscribe(res => {

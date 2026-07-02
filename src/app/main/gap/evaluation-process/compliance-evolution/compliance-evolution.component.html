@@ -1,6 +1,6 @@
-<div class="content-wrapper">
-  <div class="content-body">
-    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+<div [class.content-wrapper]="!embedded">
+  <div [class.content-body]="!embedded">
+    <app-content-header *ngIf="!embedded" [contentHeader]="contentHeader"></app-content-header>
 
     <!-- Cargando -->
     <ng-container *ngIf="loading">
@@ -130,7 +130,7 @@
               [yAxisTickFormatting]="yAxisTickFormatting"
               [legend]="true"
               [legendPosition]="'below'"
-              [curve]="'linear'"
+              [curve]="curveLinear"
               [tooltipDisabled]="false">
             </ngx-charts-line-chart>
           </div>

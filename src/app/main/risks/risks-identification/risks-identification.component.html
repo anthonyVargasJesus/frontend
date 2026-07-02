@@ -3,6 +3,32 @@
         <app-content-header [contentHeader]="contentHeader"></app-content-header>
         <section id="home-page">
             <section class="users-list-wrapper">
+
+                <div class="row mx-0 mb-1" *ngIf="severitySummary.length > 0">
+                    <div class="col-md-3 col-6 mb-1">
+                        <div class="summary-card d-flex align-items-center p-1" style="border-left-color:#7367f0;">
+                            <div class="summary-icon-wrapper mr-1" style="background-color:#7367f01a;">
+                                <i data-feather="alert-triangle" style="color:#7367f0;"></i>
+                            </div>
+                            <div>
+                                <h3 class="mb-0 font-weight-bolder">{{totalBreachesCount}}</h3>
+                                <span class="summary-label">Total de brechas</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6 mb-1" *ngFor="let severity of severitySummary">
+                        <div class="summary-card d-flex align-items-center p-1" [style.border-left-color]="severity.color">
+                            <div class="summary-icon-wrapper mr-1" [style.background-color]="severity.color + '1a'">
+                                <i data-feather="alert-octagon" [style.color]="severity.color"></i>
+                            </div>
+                            <div>
+                                <h3 class="mb-0 font-weight-bolder">{{severity.value}}</h3>
+                                <span class="summary-label">{{severity.name}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card">
 
                     <div class="row mt-0 mb-0">
@@ -53,7 +79,7 @@
 
                     <div class="table-responsive">
 
-                        <table class="table">
+                        <table class="table table-hover risks-identification-table">
                             <thead>
                                 <tr>
                                     <th style="width: 35% !important;">Brecha encontrada</th>
@@ -103,36 +129,45 @@
                                     <tr *ngFor="let breach of breachs; let i = index">
 
 
-                                        <td> {{breach.title}} </td>
+                                        <td class="font-weight-bold">
+                                            <div class="d-flex align-items-center">
+                                                <i data-feather="alert-circle" class="text-muted mr-50" style="min-width:16px;"></i>
+                                                <span>{{breach.title}}</span>
+                                            </div>
+                                        </td>
 
                                         <td>
                                             <ng-container *ngIf="breach.breachSeverity">
-                                                <span class="circle"
-                                                    [ngStyle]="{'background-color': breach.breachSeverity.color}"></span>
+                                                <span class="badge" style="color:#fff; min-width:60px;"
+                                                    [style.background-color]="breach.breachSeverity.color">
+                                                    {{ breach.breachSeverity.name }}
+                                                </span>
                                             </ng-container>
-                                            {{ breach.breachSeverity.name}}
-
                                         </td>
                                         <td>
 
                                             <ng-container *ngIf="breach.defaultRisks">
-                                                <ul class="list-unstyled">
-                                                    <li *ngFor="let risk of breach.defaultRisks">
-                                                        • {{ risk.name }}
-                                                        <button class="btn btn-link p-0"
-                                                            [style.color]="coreConfig.layout.skin === 'dark' ? '#b4b7bd' : ''"
-                                                            [ngClass]="{'text-primary': coreConfig.layout.skin !== 'dark'}"
-                                                            (click)="createRisk(risk,breach.breachId)">
-                                                            [+ Crear Riesgo]
-                                                        </button>
-                                                   
+                                                <ul class="list-unstyled mb-0">
+                                                    <li *ngFor="let risk of breach.defaultRisks" class="suggested-risk-item d-flex align-items-start">
+                                                        <i data-feather="shield" class="text-warning mr-50 mt-25" style="min-width:14px;"></i>
+                                                        <div class="flex-grow-1">
+                                                            <span>{{ risk.name }}</span>
+                                                            <button class="btn btn-sm btn-flat-primary py-0 px-50 ml-25 d-inline-flex align-items-center"
+                                                                [style.color]="coreConfig.layout.skin === 'dark' ? '#66b3ff' : ''"
+                                                                (click)="createRisk(risk,breach.breachId!)">
+                                                                <i data-feather="plus-circle" class="mr-25" style="width:12px;height:12px;"></i>
+                                                                Crear riesgo
+                                                            </button>
+                                                        </div>
                                                     </li>
                                                 </ul>
                                             </ng-container>
 
                                         </td>
                                         <td>
-                                            {{breach.riskSummary}}
+                                            <span class="badge badge-light-secondary" style="font-size:0.8rem; font-weight:500;">
+                                                {{breach.riskSummary}}
+                                            </span>
                                         </td>
 
                                     </tr>

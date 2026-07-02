@@ -143,7 +143,44 @@
                   </ng-template>
                 </li>
 
+                <li ngbNavItem [ngbNavItem]="5">
 
+                  <a ngbNavLink class="d-flex align-items-center"><i data-feather="alert-triangle" class="mr-sm-50"></i><span
+                      class="d-none d-sm-block">BRECHAS</span></a>
+                  <ng-template ngbNavContent>
+                    <div class="tab-pane active" role="tabpanel">
+
+                      <app-breach-severity-report [embedded]="true"></app-breach-severity-report>
+
+                    </div>
+                  </ng-template>
+                </li>
+
+                <li ngbNavItem [ngbNavItem]="6">
+
+                  <a ngbNavLink class="d-flex align-items-center"><i data-feather="clipboard" class="mr-sm-50"></i><span
+                      class="d-none d-sm-block">PLANES DE ACCIÓN</span></a>
+                  <ng-template ngbNavContent>
+                    <div class="tab-pane active" role="tabpanel">
+
+                      <app-action-plan-progress [embedded]="true"></app-action-plan-progress>
+
+                    </div>
+                  </ng-template>
+                </li>
+
+                <li ngbNavItem [ngbNavItem]="7">
+
+                  <a ngbNavLink class="d-flex align-items-center"><i data-feather="trending-up" class="mr-sm-50"></i><span
+                      class="d-none d-sm-block">EVOLUCIÓN</span></a>
+                  <ng-template ngbNavContent>
+                    <div class="tab-pane active" role="tabpanel">
+
+                      <app-compliance-evolution [embedded]="true"></app-compliance-evolution>
+
+                    </div>
+                  </ng-template>
+                </li>
 
               </ul>
 

@@ -183,7 +183,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   toggleHome() {
     this._authenticationService.logout();
-    this._router.navigate(['/home']);
+    this._router.navigate(['/gap/resume']);
   }
 
   // Lifecycle Hooks

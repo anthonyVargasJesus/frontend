@@ -126,20 +126,22 @@ export class DashboardComponent implements OnInit {
 
         this.radarData = this.normalizeIndicators(this.indicators);
 
+        const requirementIndicatorName = this.safeIndicatorName(this.requirementsIndicator);
+
         this.headerData = [{
-          'name': this.requirementsIndicator.name,
-          'value': this.requirementsIndicator.value
+          'name': requirementIndicatorName,
+          'value': this.requirementsIndicator.value || 0
         }];
 
         this.headerColorScheme = {
-          domain: [this.requirementsIndicator.color],
+          domain: [this.safeIndicatorColor(this.requirementsIndicator)],
           group: 'Ordinal',
           selectable: true,
           name: 'Custom Scheme'
         };
 
-        this.title = this.requirementsIndicator.name;
-        this.value = this.requirementsIndicator.value;
+        this.title = requirementIndicatorName;
+        this.value = this.requirementsIndicator.value || 0;
 
 
         this.loading = false;
@@ -151,6 +153,16 @@ export class DashboardComponent implements OnInit {
         this.loading = false;
         ErrorManager.handleError(error);
       });
+  }
+
+  // ngx-charts crashes (formatLabel/label.toLocaleString) when a bar's name is null,
+  // which happens when an indicator's average value doesn't fall in any calificación range
+  safeIndicatorName(indicator: any): string {
+    return indicator && indicator.name ? indicator.name : 'Sin calificación';
+  }
+
+  safeIndicatorColor(indicator: any): string {
+    return indicator && indicator.color ? indicator.color : '#b4b7bd';
   }
 
   normalizeIndicators(indicators: any[]): any[] {
@@ -177,13 +189,15 @@ export class DashboardComponent implements OnInit {
         this.controlsIndicator = res.controlsIndicator;
         this.controlMaximum = res.controlsIndicator.maximum;
 
+        const controlIndicatorName = this.safeIndicatorName(this.controlsIndicator);
+
         this.controlHeaderData = [{
-          'name': this.controlsIndicator.name,
-          'value': this.controlsIndicator.value
+          'name': controlIndicatorName,
+          'value': this.controlsIndicator.value || 0
         }];
 
         this.controlHeaderColorScheme = {
-          domain: [this.controlsIndicator.color],
+          domain: [this.safeIndicatorColor(this.controlsIndicator)],
           group: 'Ordinal',
           selectable: true,
           name: 'Custom Scheme'
@@ -196,8 +210,8 @@ export class DashboardComponent implements OnInit {
           name: 'Custom Scheme'
         };
 
-        this.controlTitle = this.controlsIndicator.name;
-        this.controlValue = this.controlsIndicator.value;
+        this.controlTitle = controlIndicatorName;
+        this.controlValue = this.controlsIndicator.value || 0;
 
         this.controlRadarData = this.normalizeControlIndicators(res.indicators);
 

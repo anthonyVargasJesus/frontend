@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BreachService } from 'app/services/breach.service';
 
 @Component({
@@ -7,6 +7,9 @@ import { BreachService } from 'app/services/breach.service';
   styleUrls: ['./breach-severity-report.component.scss']
 })
 export class BreachSeverityReportComponent implements OnInit {
+
+  @Input()
+  embedded = false;
 
   loading = false;
   data: any = null;

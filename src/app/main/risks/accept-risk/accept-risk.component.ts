@@ -48,7 +48,7 @@ export class AcceptRiskComponent implements OnInit {
   save() {
 
     this.loading2 = true;
-    const ACCEPTED_STATUS_ID = 6;
+    const ACCEPTED_STATUS_ID = 5;
 
     this.riskService.updateStatus(this.riskId, ACCEPTED_STATUS_ID)
       .subscribe(res => {

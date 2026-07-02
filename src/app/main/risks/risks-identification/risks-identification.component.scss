@@ -3,3 +3,60 @@
   font-weight: 600;
   text-decoration: underline;
 }
+
+.risks-identification-table {
+  td, th {
+    vertical-align: middle;
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+  }
+
+  .suggested-risk-item {
+    padding: 0.35rem 0;
+
+    &:not(:last-child) {
+      border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
+    }
+  }
+}
+
+.dark-theme .risks-identification-table .suggested-risk-item:not(:last-child) {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.summary-card {
+  border-radius: 0.5rem;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid transparent;
+  height: 100%;
+
+  h3 {
+    font-size: 1.5rem;
+    line-height: 1.4;
+  }
+
+  .summary-label {
+    color: #a8aaae;
+    font-size: 0.8rem;
+  }
+
+  .summary-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    height: 42px;
+    border-radius: 50%;
+
+    i {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+.dark-theme .summary-card {
+  background-color: #283046;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}

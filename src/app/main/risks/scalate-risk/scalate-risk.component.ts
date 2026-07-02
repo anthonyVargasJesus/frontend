@@ -45,7 +45,7 @@ export class ScalateRiskComponent implements OnInit {
   save() {
 
     this.loading2 = true;
-    const ESCALATED_STATUS_ID = 7;
+    const ESCALATED_STATUS_ID = 6;
 
     this.riskService.updateStatus(this.riskId, ESCALATED_STATUS_ID)
       .subscribe(res => {

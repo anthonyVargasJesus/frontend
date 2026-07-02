@@ -48,7 +48,7 @@ export class RiskToTreatmentComponent implements OnInit {
   @Input()
   evaluationId: number;
 
-  IN_TREATMENT_STATUS_ID = 4
+  IN_TREATMENT_STATUS_ID = 3
 
   constructor(
     private riskService: RiskService,

@@ -38,6 +38,8 @@ export class RisksIdentificationComponent implements OnInit {
   private panelClass: string;
   coreConfig: any;
   currentEvaluation: Evaluation = new Evaluation();
+  severitySummary: { name: string, value: number, color: string }[] = [];
+  totalBreachesCount = 0;
 
   constructor(private breachService: BreachService, private loginService: LoginService,
     private _coreConfigService: CoreConfigService, private router: Router,
@@ -54,6 +56,25 @@ export class RisksIdentificationComponent implements OnInit {
     this.initMenuName();
     this.pageSize = PAGE_SIZE;
     this.get();
+    this.loadSeveritySummary();
+  }
+
+  loadSeveritySummary() {
+    this.breachService.getSeverityReport().subscribe({
+      next: (res: any) => {
+        const data = res?.data ?? res;
+        if (!data || !data.hasCurrentEvaluation)
+          return;
+
+        this.totalBreachesCount = data.totalBreaches;
+        this.severitySummary = (data.severityChart || []).map((item: any, i: number) => ({
+          name: item.name,
+          value: item.value,
+          color: (data.severityColors && data.severityColors[i]) || '#82868b'
+        }));
+      },
+      error: () => { }
+    });
   }
 
   getTheme() {
@@ -77,7 +98,7 @@ export class RisksIdentificationComponent implements OnInit {
 
   initMenuName() {
     this.contentHeader = {
-      headerTitle: 'Indentificación de riesgos',
+      headerTitle: 'Identificación de riesgos',
       actionButton: false,
       breadcrumb: {
         type: '',

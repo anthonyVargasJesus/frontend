@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActionPlanService } from 'app/services/action-plan.service';
 
 @Component({
@@ -7,6 +7,9 @@ import { ActionPlanService } from 'app/services/action-plan.service';
   styleUrls: ['./action-plan-progress.component.scss']
 })
 export class ActionPlanProgressComponent implements OnInit {
+
+  @Input()
+  embedded = false;
 
   loading = false;
   data: any = null;

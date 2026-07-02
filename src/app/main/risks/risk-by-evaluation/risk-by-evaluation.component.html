@@ -3,6 +3,21 @@
         <!-- <app-content-header [contentHeader]="contentHeader"></app-content-header> -->
         <section id="home-page">
             <section class="users-list-wrapper">
+
+                <div class="row mx-0 mb-1">
+                    <div class="col-md-3 col-6 mb-1">
+                        <div class="summary-card d-flex align-items-center p-1" style="border-left-color:#7367f0;">
+                            <div class="summary-icon-wrapper mr-1" style="background-color:#7367f01a;">
+                                <i data-feather="shield" style="color:#7367f0;"></i>
+                            </div>
+                            <div>
+                                <h3 class="mb-0 font-weight-bolder">{{total}}</h3>
+                                <span class="summary-label">Riesgos registrados</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card">
 
 
@@ -60,7 +75,7 @@
 
                     <div class="table-responsive">
 
-                        <table class="table table-bordered">
+                        <table class="table table-hover risk-by-evaluation-table">
                             <thead>
                                 <tr>
                                     <th>RIESGO</th>
@@ -109,26 +124,44 @@
                                     </ng-container>
 
                                     <tr *ngFor="let risk of risks; let i = index">
-                                        <td> {{risk.name}} </td>
-                                        <td> {{risk.activesInventoryNumber}} </td>
-                                        <td> {{risk.activesInventoryName}} </td>
+                                        <td class="font-weight-bold">
+                                            <div class="d-flex align-items-center">
+                                                <i data-feather="target" class="text-muted mr-50" style="min-width:16px;"></i>
+                                                <span>{{risk.name}}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-light-secondary">{{risk.activesInventoryNumber}}</span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i data-feather="hard-drive" class="text-muted mr-50" style="min-width:14px;"></i>
+                                                <span>{{risk.activesInventoryName}}</span>
+                                            </div>
+                                        </td>
                                         <td>
                                             <ng-container *ngIf="risk.menace">
-                                                {{ risk.menace.name}}
+                                                <div class="d-flex align-items-center">
+                                                    <i data-feather="zap" class="text-warning mr-50" style="min-width:14px;"></i>
+                                                    <span>{{ risk.menace.name}}</span>
+                                                </div>
                                             </ng-container>
                                         </td>
                                         <td>
                                             <ng-container *ngIf="risk.vulnerability">
-                                                {{ risk.vulnerability.name}}
+                                                <div class="d-flex align-items-center">
+                                                    <i data-feather="unlock" class="text-danger mr-50" style="min-width:14px;"></i>
+                                                    <span>{{ risk.vulnerability.name}}</span>
+                                                </div>
                                             </ng-container>
                                         </td>
 
                                         <td>
-                                            <button class="btn btn-link p-0"
-                                                [style.color]="coreConfig.layout.skin === 'dark' ? '#b4b7bd' : ''"
-                                                [ngClass]="{'text-primary': coreConfig.layout.skin !== 'dark'}"
+                                            <button class="btn btn-sm btn-flat-primary d-inline-flex align-items-center"
+                                                [style.color]="coreConfig.layout.skin === 'dark' ? '#66b3ff' : ''"
                                                 (click)="initEvaluation(risk)">
-                                                [Iniciar Evaluación]
+                                                <i data-feather="play-circle" class="mr-25" style="width:14px;height:14px;"></i>
+                                                Iniciar Evaluación
                                             </button>
                                         </td>
 

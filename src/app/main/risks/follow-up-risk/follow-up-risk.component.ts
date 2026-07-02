@@ -46,7 +46,7 @@ export class FollowUpRiskComponent implements OnInit {
   save() {
 
     this.loading2 = true;
-    const FOLLOW_UP_STATUS_ID = 5;
+    const FOLLOW_UP_STATUS_ID = 4;
 
     this.riskService.updateStatus(this.riskId, FOLLOW_UP_STATUS_ID)
       .subscribe(res => {

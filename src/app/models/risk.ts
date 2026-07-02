@@ -22,6 +22,20 @@ export class Risk {
         public riskTreatmentId?: number,
         public controlImplementationId?: number,
         public breachId?: number,
+        public initialRiskValue?: number,
+        public initialRiskLevel?: string,
+        public initialRiskColor?: string,
+        public treatedRiskValue?: number,
+        public treatedRiskLevel?: string,
+        public treatedRiskColor?: string,
+        public residualRiskValue?: number,
+        public residualRiskLevel?: string,
+        public residualRiskColor?: string,
+        public plannedControls?: number,
+        public effectiveControls?: number,
+        public controlSummary?: string,
+        public trend?: string,
+        public trendIcon?: string,
     ) { }
 }
 

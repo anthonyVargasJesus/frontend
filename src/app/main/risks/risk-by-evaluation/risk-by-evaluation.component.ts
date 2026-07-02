@@ -18,8 +18,7 @@ import { EditRiskByEvaluationComponent } from './edit-risk-by-evaluation/edit-ri
 @Component({
   selector: 'app-risk-by-evaluation',
   templateUrl: './risk-by-evaluation.component.html',
-  styles: [
-  ]
+  styleUrls: ['./risk-by-evaluation.component.scss']
 })
 
 export class RiskByEvaluationComponent implements OnInit {

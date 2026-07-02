@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { EvaluationService } from 'app/services/evaluation.service';
+import { curveLinear } from 'd3-shape';
 
 @Component({
   selector: 'app-compliance-evolution',
@@ -9,11 +10,15 @@ import { EvaluationService } from 'app/services/evaluation.service';
 
 export class ComplianceEvolutionComponent implements OnInit {
 
+  @Input()
+  embedded = false;
+
   loading = false;
   data: any = null;
 
   public contentHeader: object = {};
 
+  curveLinear = curveLinear;
   lineColorScheme = { domain: ['#7367f0', '#28c76f', '#ff9f43'] };
 
   constructor(private evaluationService: EvaluationService) {}

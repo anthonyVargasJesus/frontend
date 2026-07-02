@@ -230,6 +230,14 @@ export class RiskToControlComponent implements OnInit {
 
   }
 
+  getTrendBadgeClass(trend: string): string {
+    if (trend === 'Subiendo')
+      return 'badge-light-danger';
+    if (trend === 'Bajando')
+      return 'badge-light-success';
+    return 'badge-light-secondary';
+  }
+
   reopenRisk(risk: Risk) {
 
     if (this.loginService.isAuthenticated()) {
