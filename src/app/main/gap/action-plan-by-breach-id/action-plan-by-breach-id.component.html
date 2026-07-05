@@ -118,8 +118,8 @@
                                         </td>
 
                                         <td>
-                                            <ng-container *ngIf="actionPlan.responsible">
-                                                {{ actionPlan.responsible.name}}
+                                            <ng-container *ngIf="actionPlan.user">
+                                                {{ actionPlan.user.name}}
                                             </ng-container>
                                         </td>
                                         <td>{{ actionPlan.startDate | date:'dd/MM/yyyy' }}</td>

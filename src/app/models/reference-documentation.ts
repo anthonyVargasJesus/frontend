@@ -12,5 +12,9 @@ export class ReferenceDocumentation {
         public companyId?: number,
         public documentation?: Documentation,
         public url?: string,
+        public evidenceType?: 'ARCHIVO' | 'ENLACE',
+        public fileSizeBytes?: number,
+        public creationDate?: string,
+        public creationUserEmail?: string,
     ) { }
 }

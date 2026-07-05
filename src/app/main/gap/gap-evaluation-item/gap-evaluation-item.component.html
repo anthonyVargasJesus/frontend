@@ -1,0 +1,140 @@
+<div class="gap-eval-item" [style.border-left]="'4px solid ' + estadoColor">
+
+    <!-- Encabezado: código + nombre + estado, todo visible sin abrir nada -->
+    <div class="d-flex align-items-start flex-wrap" style="gap: 12px;">
+
+        <span class="gap-eval-item__code mono">
+            {{ item.letter || item.numerationToShow }}
+        </span>
+
+        <div class="flex-grow-1" style="min-width: 220px;">
+            <div class="gap-eval-item__name">{{ item.name }}</div>
+            <div class="gap-eval-item__meta" *ngIf="displayTheme">{{ displayTheme }}</div>
+            <div class="gap-eval-item__meta" *ngIf="evaluacion?.responsible">
+                Responsable: {{ evaluacion.responsible?.name }}
+            </div>
+        </div>
+
+    
+    </div>
+
+    <!-- Selección rápida de nivel de madurez: un clic, sin modal -->
+    <div class="d-flex flex-wrap mt-2" style="gap: 6px;">
+        <button type="button" *ngFor="let ml of maturityLevels" (click)="pickMaturityLevel(ml)"
+            class="maturity-chip" [title]="ml.description" [ngStyle]="{
+          'background-color': form?.value?.maturityLevel == ml.maturityLevelId ? ml.color : paleBackgroundFor(ml),
+          'border-color': form?.value?.maturityLevel == ml.maturityLevelId ? ml.color : 'transparent',
+          'color': form?.value?.maturityLevel == ml.maturityLevelId ? '#fff' : ml.color
+        }">
+            {{ ml.name }}
+        </button>
+    </div>
+    <div *ngIf="submitted && f.maturityLevel.errors" style="color:#A8443B; font-size:12.5px; margin-top:4px;">
+        Debes seleccionar un nivel de madurez
+    </div>
+
+    <div class="mt-2">
+        <button type="button" class="gap-eval-item__toggle" (click)="toggleDetalle()">
+            <mat-icon style="font-size: 16px; vertical-align: middle;">
+                {{ expanded ? 'expand_less' : 'expand_more' }}
+            </mat-icon>
+            {{ expanded ? 'Ocultar detalle' : 'Detalle y evidencias' }}
+        </button>
+    </div>
+
+    <!-- Panel expandible: reemplaza al modal "EVALUAR REQUISITO/CONTROL" -->
+    <div *ngIf="expanded" class="gap-eval-item__panel">
+
+        <form [formGroup]="form" (ngSubmit)="save()" autocomplete="off">
+
+            <div class="form-group">
+                <label class="form-label">Responsable <span style="color:#A8443B;">*</span></label>
+                <select formControlName="responsible" class="form-control" style="max-width: 360px;"
+                    [ngClass]="{ 'is-invalid': submitted && f.responsible.errors }">
+                    <option value="">Seleccione</option>
+                    <option *ngFor="let responsible of responsibles" [value]="responsible.responsibleId">
+                        {{ responsible.name }}
+                    </option>
+                </select>
+                <div *ngIf="submitted && f.responsible.errors" class="invalid-feedback">
+                    El responsable es obligatorio
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap" style="gap: 12px;">
+
+                <div class="form-group" style="flex: 1 1 0; min-width: 220px;">
+                    <label class="form-label">
+                        Justificación de la aplicabilidad o de la no aplicabilidad
+                        <span style="color:#A8443B;">*</span>
+                    </label>
+                    <textarea rows="3" formControlName="justification" maxlength="500" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.justification.errors }"></textarea>
+                    <small class="d-block text-right" style="color:#8A939B;">
+                        {{ form.value.justification?.length || 0 }}/500
+                    </small>
+                    <div *ngIf="submitted && f.justification.errors" class="invalid-feedback">
+                        <div *ngIf="f.justification.errors.required">La justificación es obligatoria</div>
+                        <div *ngIf="f.justification.errors.maxlength">No puede tener más de 500 caracteres</div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="flex: 1 1 0; min-width: 220px;" *ngIf="improvementActionsRequired">
+                    <label class="form-label">
+                        Acciones de mejora
+                        <span style="color:#A8443B;">*</span>
+                    </label>
+                    <textarea rows="3" formControlName="improvementActions" maxlength="1000" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.improvementActions.errors }"></textarea>
+                    <small class="d-block text-right" style="color:#8A939B;">
+                        {{ form.value.improvementActions?.length || 0 }}/1000
+                    </small>
+                    <div *ngIf="submitted && f.improvementActions.errors" class="invalid-feedback">
+                        <div *ngIf="f.improvementActions.errors.required">
+                            Las acciones de mejora son obligatorias cuando el estado es Parcial o No cumple
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="d-flex flex-wrap" style="gap: 8px;">
+                <button type="submit" class="gap-eval-item__btn-primary" [disabled]="saving">
+                    <span *ngIf="saving" class="spinner-border spinner-border-sm mr-1"></span>
+                    GUARDAR
+                </button>
+            </div>
+
+        </form>
+
+        <hr>
+
+        <div class="d-flex align-items-center flex-wrap" style="gap: 10px;">
+            <button type="button" class="gap-eval-item__attach-btn" [disabled]="!hasSavedEvaluation"
+                [title]="hasSavedEvaluation ? '' : 'Guarda la evaluación primero para poder adjuntar evidencias'"
+                (click)="attachEvidence()">
+                <mat-icon style="font-size: 15px; vertical-align: middle;">attach_file</mat-icon>
+                Adjuntar archivo
+            </button>
+            <button type="button" class="gap-eval-item__attach-btn gap-eval-item__attach-btn--solid"
+                [disabled]="!hasSavedEvaluation"
+                [title]="hasSavedEvaluation ? '' : 'Guarda la evaluación primero para poder adjuntar evidencias'"
+                (click)="attachLink()">
+                <mat-icon style="font-size: 15px; vertical-align: middle;">link</mat-icon>
+                Agregar enlace
+            </button>
+        </div>
+        <div class="gap-eval-item__meta mt-1 mb-2" *ngIf="!hasSavedEvaluation">
+            Guarda la evaluación (elige un nivel de madurez y presiona GUARDAR) para poder adjuntar evidencias.
+        </div>
+
+        <br>
+
+        <app-gap-evidence-list #evidenceList [tipo]="tipo" [standardId]="standardId" [evaluationId]="evaluationId"
+            [requirementEvaluationId]="requirementEvaluationIdForEvidence"
+            [controlEvaluationId]="controlEvaluationIdForEvidence" (updateEvent)="onEvidenceUpdated()">
+        </app-gap-evidence-list>
+
+    </div>
+
+</div>

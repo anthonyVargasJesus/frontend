@@ -1,0 +1,59 @@
+<div class="gap-evidence">
+
+    <input #fileInput type="file" style="display:none" (change)="onFileSelected(fileInput.files && fileInput.files[0]); fileInput.value = ''" />
+
+    <div *ngIf="uploading" class="gap-evidence__uploading">
+        <span class="spinner-border spinner-border-sm mr-1"></span> Subiendo archivo...
+    </div>
+
+    <div *ngIf="referenceDocumentations.length > 0" class="gap-evidence__list">
+        <div class="gap-evidence__row" *ngFor="let doc of referenceDocumentations">
+
+            <div class="d-flex align-items-center" style="gap: 10px;">
+                <mat-icon class="gap-evidence__row-icon">{{ doc.evidenceType === 'ENLACE' ? 'link' : 'description' }}</mat-icon>
+
+                <div class="gap-evidence__row-body">
+                    <a [href]="doc.url" download target="_blank" rel="noopener" class="gap-evidence__row-name"
+                        title="Abrir evidencia">{{ doc.name }}</a>
+                    <div class="gap-evidence__row-meta">
+                        <ng-container *ngIf="doc.evidenceType === 'ENLACE'; else archivoMeta">
+                            ENLACE · consultado {{ doc.creationDate | date:'dd MMM yyyy' }}
+                        </ng-container>
+                        <ng-template #archivoMeta>
+                            {{ formatFileSize(doc.fileSizeBytes) }} · {{ doc.creationDate | date:'dd MMM yyyy' }}
+                        </ng-template>
+                        <ng-container *ngIf="doc.creationUserEmail"> · {{ doc.creationUserEmail }}</ng-container>
+                    </div>
+                </div>
+
+                <button type="button" class="gap-evidence__row-action" (click)="delete(doc)" title="Eliminar evidencia">
+                    <mat-icon>delete_outline</mat-icon>
+                </button>
+            </div>
+
+            <input type="text" class="gap-evidence__row-description" placeholder="¿Qué demuestra esta evidencia?"
+                [(ngModel)]="doc.description" (focus)="onDescriptionFocus(doc)" (blur)="saveDescription(doc)" />
+
+        </div>
+    </div>
+
+    <div *ngIf="addingLink" class="gap-evidence__add-link">
+        <input type="url" class="form-control" placeholder="https://..." [(ngModel)]="newLinkUrl"
+            (keydown.enter)="saveLink()" autofocus />
+        <div class="gap-evidence__add-link-actions">
+            <button type="button" class="gap-eval-item__btn-primary" [disabled]="savingLink || !newLinkUrl?.trim()"
+                (click)="saveLink()">
+                <span *ngIf="savingLink" class="spinner-border spinner-border-sm mr-1"></span>
+                GUARDAR ENLACE
+            </button>
+            <button type="button" class="gap-eval-item__btn-outline" [disabled]="savingLink" (click)="cancelAddLink()">
+                CANCELAR
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="!loading && !addingLink && referenceDocumentations.length === 0" class="gap-evidence__empty">
+        {{ emptyMessage }}
+    </div>
+
+</div>

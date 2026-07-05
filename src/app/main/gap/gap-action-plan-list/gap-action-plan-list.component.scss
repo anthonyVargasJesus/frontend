@@ -1,0 +1,158 @@
+:host {
+    display: block;
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+.gap-ap__item {
+    background: #fbfcfc;
+    border: 1px solid #e2e7ea;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+.gap-ap__item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.gap-ap__item-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #6b7480;
+}
+
+.gap-ap__delete-link {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: #a8443b;
+    padding: 0;
+    font-family: inherit;
+}
+
+.gap-ap__title {
+    width: 100%;
+    font-family: inherit;
+    font-size: 13px;
+    border: 1px solid #d6dce0;
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    resize: vertical;
+}
+
+.gap-ap__title:focus {
+    outline: 2px solid #2f6f5e;
+    border-color: #2f6f5e;
+}
+
+.gap-ap__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 10px;
+}
+
+// Todos los campos en una sola fila (Responsable, Fecha límite, Prioridad, Estado), igual que
+// el prototipo: Responsable se estira, el resto se ajusta a su contenido.
+.gap-ap__row--single .gap-ap__field {
+    flex: 0 0 auto;
+    min-width: 0;
+}
+
+.gap-ap__row--single .gap-ap__field--grow {
+    flex: 1 1 160px;
+}
+
+.gap-ap__field {
+    flex: 1 1 0;
+    min-width: 180px;
+}
+
+.gap-ap__field label {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #4a5560;
+    margin-bottom: 4px;
+}
+
+.gap-ap__input {
+    width: 100%;
+    font-family: inherit;
+    font-size: 13px;
+    border: 1px solid #d6dce0;
+    border-radius: 6px;
+    padding: 6px 10px;
+    background: #ffffff;
+    color: #1c2733;
+}
+
+.gap-ap__input:focus {
+    outline: 2px solid #2f6f5e;
+    border-color: #2f6f5e;
+}
+
+.gap-ap__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.gap-ap__pill {
+    border: 1.5px solid;
+    border-radius: 6px;
+    background: #ffffff;
+    font-weight: 700;
+    font-size: 11.5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform .1s ease;
+}
+
+.gap-ap__pill:hover {
+    transform: translateY(-1px);
+}
+
+.gap-ap__save-btn {
+    background: #1c2733;
+    border: 1.5px solid #1c2733;
+    color: #f5f7f8;
+    font-weight: 600;
+    font-size: 12.5px;
+    padding: 6px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.gap-ap__save-btn:disabled {
+    opacity: .6;
+    cursor: default;
+}
+
+.gap-ap__add-btn {
+    background: #f7f8f9;
+    border: 1px dashed #c7ced3;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #4a5560;
+    padding: 8px 14px;
+    font-family: inherit;
+}
+
+.gap-ap__add-btn:hover {
+    background: #edf1f3;
+    border-color: #9aa4ab;
+}

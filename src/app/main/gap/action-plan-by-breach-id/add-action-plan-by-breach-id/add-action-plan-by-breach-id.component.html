@@ -89,15 +89,15 @@
                                 <label style="font-size: 22px; margin-top:-1px;">*</label>
                                 <label>)</label>
                             </div>
-                            <select formControlName="responsibleId"
-                                [ngClass]="{ 'is-invalid': submitted && f.responsibleId.errors }" class="form-control"
+                            <select formControlName="userId"
+                                [ngClass]="{ 'is-invalid': submitted && f.userId.errors }" class="form-control"
                                 tabindex="1">
                                 <option value=""> Seleccione </option>
-                                <option *ngFor="let responsible of responsibles" [value]="responsible.responsibleId">{{
-                                    responsible.name}} </option>
+                                <option *ngFor="let user of users" [value]="user.userId">{{ user.name }} {{
+                                    user.firstName }}</option>
                             </select>
-                            <div *ngIf="submitted && f.responsibleId.errors" class="invalid-feedback">
-                                <div *ngIf="f.responsibleId.errors.required">El responsable responsibleId es obligatorio
+                            <div *ngIf="submitted && f.userId.errors" class="invalid-feedback">
+                                <div *ngIf="f.userId.errors.required">El responsable es obligatorio
                                 </div>
                             </div>
                         </div>

@@ -7,11 +7,12 @@ export class ActionPlan {
         public standardId?: number,
         public title?: string,
         public description?: string,
-        public responsibleId?: number,
+        public userId?: number,
         public startDate?: Date,
         public dueDate?: Date,
         public actionPlanStatusId?: number,
         public actionPlanPriorityId?: number,
+        public user?: { name?: string },
     ) { }
 }
 

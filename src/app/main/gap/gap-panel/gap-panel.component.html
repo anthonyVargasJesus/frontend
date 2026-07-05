@@ -1,0 +1,129 @@
+<div class="gap-panel">
+
+    <header class="gap-panel__header">
+        <div class="gap-panel__header-inner">
+            <div>
+                <div class="gap-panel__eyebrow">
+                    Análisis de brechas · {{ evaluation?.standard?.name || 'Estándar' }}
+                </div>
+                <h1 class="gap-panel__title">{{ evaluation?.description || 'Cargando...' }}</h1>
+            </div>
+            <div class="gap-panel__stat">
+                <div class="gap-panel__pct mono" [ngClass]="pctClass()">{{ stats.pct }}%</div>
+                <div class="gap-panel__stat-label">
+                    cumplimiento estimado · {{ stats.evaluados }}/{{ stats.total }} evaluados ·
+                    {{ totalEvidencias }} con evidencia
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="gap-panel__body" *ngIf="!loading; else cargando">
+
+        <div class="gap-panel__tabs">
+            <button type="button" class="gap-panel__tab" [class.active]="vista === 'evaluacion'"
+                (click)="vista = 'evaluacion'">
+                Evaluación
+            </button>
+            <button type="button" class="gap-panel__tab" [class.active]="vista === 'plan'"
+                (click)="vista = 'plan'">
+                Plan de acción ({{ visibleBreaches.length }})
+            </button>
+        </div>
+
+        <ng-container *ngIf="vista === 'evaluacion'">
+
+            <div class="gap-panel__card">
+                <div class="gap-panel__card-title">Mapa de brecha por tema</div>
+
+                <div class="gap-theme-row" *ngFor="let t of temaRows">
+                    <div class="gap-theme-row__label">{{ t.theme }}</div>
+                    <div class="gap-theme-row__bar">
+                        <div class="gap-theme-row__seg" *ngFor="let seg of t.segments"
+                            [style.width.%]="t.total ? (seg.count / t.total * 100) : 0"
+                            [style.background]="seg.color" [title]="seg.name + ': ' + seg.count"></div>
+                        <div class="gap-theme-row__seg" [style.width.%]="t.total ? (t.pendiente / t.total * 100) : 0"
+                            [title]="'Pendiente: ' + t.pendiente" style="background:#EAEDEF;"></div>
+                    </div>
+                    <div class="gap-theme-row__count mono">{{ t.evaluados }}/{{ t.total }}</div>
+                </div>
+
+                <div class="gap-theme-legend">
+                    <span *ngFor="let ml of maturityLevels"><i [style.background]="ml.color"></i> {{ ml.name }} ({{ countEstado(ml.name) }})</span>
+                    <span><i style="background:#8A939B"></i> Pendiente ({{ countEstado('Pendiente') }})</span>
+                </div>
+            </div>
+
+            <input type="search" class="gap-panel__search" [(ngModel)]="searchText"
+                placeholder="Buscar por código o nombre (ej. A.8.13, copias, acceso...)" />
+
+            <nav class="gap-panel__filters">
+                <button type="button" *ngFor="let tema of temas" class="chip" [class.active]="filtroTema === tema"
+                    (click)="filtroTema = tema">
+                    {{ tema }}
+                </button>
+            </nav>
+
+            <app-gap-evaluation-item *ngFor="let item of visibleItems" [tipo]="item.tipo" [theme]="item.theme"
+                [evaluacion]="item.evaluacion" [standardId]="standardId" [evaluationId]="evaluationId"
+                [maturityLevelsInput]="maturityLevels" [responsiblesInput]="responsibles"
+                (updateEvent)="onUpdate()">
+            </app-gap-evaluation-item>
+
+            <div class="text-muted text-center mt-3" *ngIf="visibleItems.length === 0">
+                No hay ítems que coincidan con la búsqueda o el filtro.
+            </div>
+
+        </ng-container>
+
+        <ng-container *ngIf="vista === 'plan'">
+
+            <div class="gap-panel__card">
+                <div class="gap-panel__pct mono" style="font-size:28px;" [ngClass]="{
+              'gap-panel__pct--good': actionPlanStats.total > 0 && actionPlanStats.completed === actionPlanStats.total,
+              'gap-panel__pct--bad': actionPlanStats.total === 0 || actionPlanStats.completed < actionPlanStats.total
+            }">{{ actionPlanStats.completed }}/{{ actionPlanStats.total }}</div>
+                <div class="gap-panel__stat-label" style="color:#8A939B;">
+                    acciones completadas · {{ visibleBreaches.length }} brechas
+                </div>
+                <div class="gap-theme-row__bar mt-2">
+                    <div class="gap-theme-row__seg" style="background:#2F6F5E;"
+                        [style.width.%]="actionPlanStats.total ? (actionPlanStats.completed / actionPlanStats.total * 100) : 0">
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="visibleBreaches.length === 0" class="text-center text-muted py-5">
+                No hay brechas registradas para esta evaluación.
+            </div>
+
+            <div class="gap-panel__card" *ngFor="let breach of visibleBreaches">
+                <div class="d-flex align-items-center flex-wrap" style="gap: 10px; margin-bottom: 12px;">
+                    <span class="mono" style="font-size:12px;font-weight:600;background:#EDF1F3;color:#33414D;padding:3px 8px;border-radius:5px;">
+                        {{ breach.numerationToShow }}
+                    </span>
+                    <div class="flex-grow-1" style="font-weight:600;">{{ breach.title }}</div>
+                    <span class="status-badge" *ngIf="estadoDeBreach(breach)"
+                        [style.color]="colorDeEstadoBreach(breach)" [style.border-color]="colorDeEstadoBreach(breach)">
+                        {{ estadoDeBreach(breach) }}
+                    </span>
+                </div>
+
+                <app-gap-action-plan-list [breachId]="breach.breachId" [evaluationId]="evaluationId"
+                    [standardId]="standardId" [statusesInput]="actionPlanStatuses"
+                    [prioritiesInput]="actionPlanPriorities" [usersInput]="users"
+                    (countsChanged)="onActionPlanCounts(breach.breachId, $event)">
+                </app-gap-action-plan-list>
+            </div>
+
+        </ng-container>
+
+    </div>
+
+    <ng-template #cargando>
+        <div class="text-center py-5">
+            <div class="spinner-grow text-primary" role="status"></div>
+        </div>
+    </ng-template>
+
+</div>

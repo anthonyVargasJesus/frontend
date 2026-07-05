@@ -7,6 +7,8 @@ import { ErrorManager } from 'app/errors/error-manager';
 import { RequirementService } from 'app/services/requirement.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogData } from 'app/models/dialog-data';
+import { ResponsibleService } from 'app/services/responsible.service';
+import { Responsible } from 'app/models/responsible';
 
 
 @Component({
@@ -22,12 +24,14 @@ export class EditRequirementComponent implements OnInit {
     private route: ActivatedRoute,
     private _formBuilder: FormBuilder,
     public router: Router,
-    @Inject(MAT_DIALOG_DATA) private data: DialogData, 
+    @Inject(MAT_DIALOG_DATA) private data: DialogData,
     private dialogRef: MatDialogRef<EditRequirementComponent>,
+    private responsibleService: ResponsibleService,
 
   ) { }
 
   requirements: Requirement[] = [];
+  responsibles: Responsible[] = [];
 
   requirement: Requirement;
   loading = false;
@@ -62,6 +66,7 @@ export class EditRequirementComponent implements OnInit {
       level: ['', [Validators.required, Validators.maxLength(8),]],
       parentId: [0, []],
       isEvaluable: [false, [Validators.maxLength(5),]],
+      defaultResponsible: ['', []],
     });
   }
 
@@ -71,6 +76,7 @@ export class EditRequirementComponent implements OnInit {
       .subscribe((res: any) => {
         this.requirement = res.data;
         this.getAllRequirements(this.requirement.standardId);
+        this.getAllResponsibles(this.requirement.standardId);
         this.setFormValue(this.requirement);
         this.requirementId = this.requirement.requirementId;
         this.standardId = this.requirement.standardId;
@@ -91,6 +97,7 @@ export class EditRequirementComponent implements OnInit {
       level: ((requirement.level == null) ? '' : requirement.level),
       parentId: ((requirement.parentId == null) ? '' : requirement.parentId),
       isEvaluable: ((requirement.isEvaluable == null) ? '' : requirement.isEvaluable),
+      defaultResponsible: ((requirement.defaultResponsibleId == null) ? '' : requirement.defaultResponsibleId),
     });
   }
 
@@ -103,12 +110,22 @@ export class EditRequirementComponent implements OnInit {
     this.requirement.parentId = this.form.value.parentId;
     this.requirement.isEvaluable = this.form.value.isEvaluable;
     this.requirement.letter = this.form.value.letter;
+    this.requirement.defaultResponsibleId = this.form.value.defaultResponsible ? this.form.value.defaultResponsible : null;
   }
 
   getAllRequirements(standardId: number) {
     this.requirementService.getAll(standardId)
       .subscribe((res: any) => {
         this.requirements = res.data;
+      }, error => {
+        ErrorManager.handleError(error);
+      });
+  }
+
+  getAllResponsibles(standardId: number) {
+    this.responsibleService.getAll(standardId)
+      .subscribe((res: any) => {
+        this.responsibles = res.data;
       }, error => {
         ErrorManager.handleError(error);
       });

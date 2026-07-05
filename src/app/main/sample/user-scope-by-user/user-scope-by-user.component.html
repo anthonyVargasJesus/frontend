@@ -1,0 +1,41 @@
+<div *ngIf="loading" class="text-center py-3">
+    <div class="spinner-grow text-primary" role="status"></div>
+</div>
+
+<div *ngIf="!loading">
+
+    <h5>Grupos de control</h5>
+    <p class="text-muted" style="font-size: 12.5px;">
+        El usuario solo verá en el panel de evaluación los grupos de control marcados aquí.
+    </p>
+    <div class="form-check" *ngFor="let cg of controlGroups">
+        <input type="checkbox" class="form-check-input" [id]="'cg-' + cg.controlGroupId"
+            [checked]="selectedControlGroupIds.has(cg.controlGroupId)" (change)="toggleControlGroup(cg.controlGroupId)" />
+        <label class="form-check-label" [for]="'cg-' + cg.controlGroupId">{{ cg.name }}</label>
+    </div>
+    <div *ngIf="controlGroups.length === 0" class="text-muted">No hay grupos de control para esta norma.</div>
+
+    <hr>
+
+    <h5>Familias de cláusula</h5>
+    <p class="text-muted" style="font-size: 12.5px;">
+        El usuario solo verá en el panel de evaluación las familias de cláusula marcadas aquí.
+    </p>
+    <div class="form-check" *ngFor="let family of requirementFamilies">
+        <input type="checkbox" class="form-check-input" [id]="'rf-' + family.requirementId"
+            [checked]="selectedRequirementFamilyIds.has(family.requirementId)"
+            (change)="toggleRequirementFamily(family.requirementId)" />
+        <label class="form-check-label" [for]="'rf-' + family.requirementId">
+            {{ family.numeration }}. {{ family.name }}
+        </label>
+    </div>
+    <div *ngIf="requirementFamilies.length === 0" class="text-muted">No hay familias de cláusula para esta norma.</div>
+
+    <div class="mt-3">
+        <button type="button" class="btn btn-primary" [disabled]="saving" (click)="save()">
+            <span *ngIf="saving" class="spinner-border spinner-border-sm mr-1"></span>
+            GUARDAR ASIGNACIÓN
+        </button>
+    </div>
+
+</div>

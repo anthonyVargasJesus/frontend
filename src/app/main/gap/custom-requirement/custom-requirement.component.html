@@ -58,10 +58,18 @@
 </ng-container>
 
 <ng-container *ngIf="requirement.requirementEvaluations?.length">
+    <app-gap-evaluation-item [tipo]="'requisito'" [standardId]="standardId" [evaluationId]="evaluationId"
+        [evaluacion]="requirementEvaluation" (updateEvent)="updateList($event)"
+        *ngFor="let requirementEvaluation of requirement.requirementEvaluations; index as i"></app-gap-evaluation-item>
+</ng-container>
+
+<!-- Fila anterior (modal), desactivada temporalmente para probar app-gap-evaluation-item:
+<ng-container *ngIf="requirement.requirementEvaluations?.length">
     <app-custom-requirement-evaluation [standardId]="standardId" [evaluationId]="evaluationId"
         [requirementEvaluation]="requirementEvaluation" [panelClass]="panelClass" [isSearch]="isSearch" (updateEvent)="updateList($event)"
         *ngFor="let requirementEvaluation of requirement.requirementEvaluations; index as i"></app-custom-requirement-evaluation>
 </ng-container>
+-->
 
 <!-- <mat-expansion-panel class="requirement-panel" [expanded]="isExpanded" (opened)="isExpanded = true"
     (closed)="isExpanded = false">

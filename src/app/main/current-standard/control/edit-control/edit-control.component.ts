@@ -9,6 +9,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ControlGroupService } from 'app/services/control-group.service';
 import { ControlGroup } from 'app/models/control-group';
 import { DialogData } from 'app/models/dialog-data';
+import { ResponsibleService } from 'app/services/responsible.service';
+import { Responsible } from 'app/models/responsible';
 
 
 @Component({
@@ -26,10 +28,12 @@ export class EditControlComponent implements OnInit {
     private _formBuilder: FormBuilder,
     public router: Router, private controlGroupService: ControlGroupService,
     @Inject(MAT_DIALOG_DATA) private data: DialogData, private dialogRef: MatDialogRef<EditControlComponent>,
+    private responsibleService: ResponsibleService,
 
   ) { }
 
   controlGroups: ControlGroup[] = [];
+  responsibles: Responsible[] = [];
 
   control: Control;
   loading = false;
@@ -46,6 +50,7 @@ export class EditControlComponent implements OnInit {
     this.id = this.data['_id'];
     this.standardId = this.data['standardId'];
     this.getAllControlGroups();
+    this.getAllResponsibles();
     this.obtain(this.id);
   }
 
@@ -68,6 +73,7 @@ export class EditControlComponent implements OnInit {
       name: ['', [Validators.required, Validators.maxLength(100),]],
       description: ['', [Validators.maxLength(500),]],
       controlGroup: ['', [Validators.required,]],
+      defaultResponsible: ['', []],
     });
   }
 
@@ -90,6 +96,7 @@ export class EditControlComponent implements OnInit {
       name: ((control.name == null) ? '' : control.name),
       description: ((control.description == null) ? '' : control.description),
       controlGroup: ((control.controlGroupId == null) ? '' : control.controlGroupId),
+      defaultResponsible: ((control.defaultResponsibleId == null) ? '' : control.defaultResponsibleId),
     });
   }
 
@@ -100,6 +107,7 @@ export class EditControlComponent implements OnInit {
     this.control.description = this.form.value.description;
     if (this.form.value.controlGroup)
       this.control.controlGroupId = this.form.value.controlGroup;
+    this.control.defaultResponsibleId = this.form.value.defaultResponsible ? this.form.value.defaultResponsible : null;
   }
 
   getAllControlGroups() {
@@ -107,6 +115,15 @@ export class EditControlComponent implements OnInit {
       .subscribe((res: any) => {
         this.controlGroups = res.data;
         this.initControl();
+      }, error => {
+        ErrorManager.handleError(error);
+      });
+  }
+
+  getAllResponsibles() {
+    this.responsibleService.getAll(Number(this.standardId))
+      .subscribe((res: any) => {
+        this.responsibles = res.data;
       }, error => {
         ErrorManager.handleError(error);
       });

@@ -159,7 +159,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-10">
+                                    <div class="col-md-5">
                                         <div class="form-group">
 
                                             <div style="display:flex; margin-bottom:2px;">
@@ -174,6 +174,25 @@
                                                     [value]="requirement.requirementId">{{
                                                     requirement.numeration}}. {{ requirement.name}} </option>
                                             </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+
+                                            <div style="display:flex; margin-bottom:2px;">
+                                                <label class="form-label">Responsable por defecto</label>
+                                            </div>
+
+                                            <select formControlName="defaultResponsible" class="form-control">
+                                                <option value=""> Sin asignar </option>
+                                                <option *ngFor="let responsible of responsibles"
+                                                    [value]="responsible.responsibleId">{{ responsible.name }}</option>
+                                            </select>
+                                            <small class="form-text text-muted">
+                                                Se usa para precargar el responsable la primera vez que se evalúa
+                                                este requisito en una evaluación nueva.
+                                            </small>
 
                                         </div>
                                     </div>

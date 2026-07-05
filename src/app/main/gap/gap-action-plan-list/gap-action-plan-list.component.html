@@ -1,0 +1,71 @@
+<div class="gap-ap">
+
+    <div *ngIf="loading" class="text-center py-3">
+        <span class="spinner-border spinner-border-sm mr-1"></span> Cargando plan de acción...
+    </div>
+
+    <ng-container *ngIf="!loading">
+    <div class="gap-ap__item" *ngFor="let ap of actionPlans; let i = index">
+        <div class="gap-ap__item-header">
+            <span class="gap-ap__item-label">ACCIÓN {{ i + 1 }}</span>
+            <button type="button" class="gap-ap__delete-link" (click)="delete(ap)">Eliminar</button>
+        </div>
+
+        <textarea rows="2" class="gap-ap__title" placeholder="¿Qué hay que hacer? (ej. contratar servicio de backup, redactar procedimiento, capacitar al equipo...)"
+            [(ngModel)]="ap.title"></textarea>
+
+        <div class="gap-ap__row gap-ap__row--single">
+            <div class="gap-ap__field gap-ap__field--grow">
+                <label>Responsable</label>
+                <select class="gap-ap__input" [(ngModel)]="ap.userId">
+                    <option [ngValue]="undefined">Seleccione</option>
+                    <option *ngFor="let user of usersInput" [ngValue]="user.userId">{{ user.name }} {{ user.firstName }}</option>
+                </select>
+            </div>
+
+            <div class="gap-ap__field" style="width: 160px;">
+                <label>Fecha límite</label>
+                <input type="date" class="gap-ap__input" [value]="dueDateStr(ap)"
+                    (change)="setDueDate(ap, $any($event.target).value)" />
+            </div>
+
+            <div class="gap-ap__field">
+                <label>Prioridad</label>
+                <div class="gap-ap__pills">
+                    <button type="button" *ngFor="let priority of prioritiesInput" class="gap-ap__pill"
+                        [class.active]="ap.actionPlanPriorityId === priority.actionPlanPriorityId"
+                        [style.background]="ap.actionPlanPriorityId === priority.actionPlanPriorityId ? priority.color : ''"
+                        [style.border-color]="priority.color"
+                        [style.color]="ap.actionPlanPriorityId === priority.actionPlanPriorityId ? '#fff' : priority.color"
+                        (click)="ap.actionPlanPriorityId = priority.actionPlanPriorityId">
+                        {{ priority.name }}
+                    </button>
+                </div>
+            </div>
+
+            <div class="gap-ap__field">
+                <label>Estado</label>
+                <div class="gap-ap__pills">
+                    <button type="button" *ngFor="let status of statusesInput" class="gap-ap__pill"
+                        [class.active]="ap.actionPlanStatusId === status.actionPlanStatusId"
+                        [style.background]="ap.actionPlanStatusId === status.actionPlanStatusId ? status.color : ''"
+                        [style.border-color]="status.color"
+                        [style.color]="ap.actionPlanStatusId === status.actionPlanStatusId ? '#fff' : status.color"
+                        (click)="ap.actionPlanStatusId = status.actionPlanStatusId">
+                        {{ status.name }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="gap-ap__save-btn" [disabled]="isSaving(ap)" (click)="save(ap)">
+            <span *ngIf="isSaving(ap)" class="spinner-border spinner-border-sm mr-1"></span>
+            GUARDAR
+        </button>
+    </div>
+    </ng-container>
+
+    <button type="button" class="gap-ap__add-btn" *ngIf="!loading" (click)="add()">+ Agregar acción</button>
+
+</div> 
+

@@ -23,6 +23,23 @@ export class ActionPlanService {
   }
 
   /**
+   * Tareas asignadas al usuario logeado (JWT) para una evaluación — "Mis acciones".
+   */
+  getByUser(evaluationId: number): Observable<ApiResponse<ActionPlan>> {
+    const params = new HttpParams().set('evaluationId', evaluationId.toString());
+    return this.http.get<ApiResponse<ActionPlan>>(`${this.endpoint}/byUser`, { params });
+  }
+
+  /**
+   * Actualiza sin el toast de éxito — para "Mi avance", donde cambiar de estado es la única
+   * acción de la pantalla y no hace falta confirmarla con una alerta cada vez.
+   */
+  updateQuiet(payload: ActionPlan): Observable<ApiSingleResponse<ActionPlan>> {
+    const url = `${this.endpoint}/${payload.actionPlanId}`;
+    return this.http.put<ApiSingleResponse<ActionPlan>>(url, payload).pipe(catchError(this.handleError));
+  }
+
+  /**
    * Obtiene planes de acción filtrados por breachId con paginación
    */
   getBybreachId(

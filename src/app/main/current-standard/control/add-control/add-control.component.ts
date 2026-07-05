@@ -9,6 +9,8 @@ import { ControlGroupService } from 'app/services/control-group.service';
 import { ControlGroup } from 'app/models/control-group';
 import { StandardService } from 'app/services/standard.service';
 import { DialogData } from 'app/models/dialog-data';
+import { ResponsibleService } from 'app/services/responsible.service';
+import { Responsible } from 'app/models/responsible';
 
 
 
@@ -27,10 +29,12 @@ export class AddControlComponent implements OnInit {
     private _formBuilder: FormBuilder, private dialogRef: MatDialogRef<AddControlComponent>,
     private controlGroupService: ControlGroupService,
     @Inject(MAT_DIALOG_DATA) private data: DialogData,
+    private responsibleService: ResponsibleService,
 
   ) { }
 
   controlGroups: ControlGroup[] = [];
+  responsibles: Responsible[] = [];
 
   control: Control;
   loading = false;
@@ -45,6 +49,7 @@ export class AddControlComponent implements OnInit {
     this.controlGroupId = this.data['controlGroupId'];
     this.standardId = this.data['standardId'];
     this.getAllControlGroups();
+    this.getAllResponsibles();
     this.initForm();
     this.initControl();
   }
@@ -56,7 +61,17 @@ export class AddControlComponent implements OnInit {
       name: ['', [Validators.required, Validators.maxLength(100),]],
       description: ['', [Validators.maxLength(500),]],
       controlGroup: [Number(this.controlGroupId), [Validators.required,]],
+      defaultResponsible: ['', []],
     });
+  }
+
+  getAllResponsibles() {
+    this.responsibleService.getAll(Number(this.standardId))
+      .subscribe((res: any) => {
+        this.responsibles = res.data;
+      }, error => {
+        ErrorManager.handleError(error);
+      });
   }
 
   initControl() {
@@ -99,6 +114,7 @@ export class AddControlComponent implements OnInit {
     this.control.description = this.form.value.description;
     if (this.form.value.controlGroup)
       this.control.controlGroupId = this.form.value.controlGroup;
+    this.control.defaultResponsibleId = this.form.value.defaultResponsible ? this.form.value.defaultResponsible : null;
   }
 
 

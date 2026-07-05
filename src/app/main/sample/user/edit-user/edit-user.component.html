@@ -359,6 +359,22 @@
               </ng-template>
             </li>
 
+            <li ngbNavItem>
+              <a ngbNavLink class="d-flex align-items-center">
+                <i data-feather="eye" class="mr-sm-50"></i>
+                <span class="d-none d-sm-block">GRUPOS Y FAMILIAS</span></a>
+              <ng-template ngbNavContent>
+                <div class="tab-pane" role="tabpanel">
+                  <div class="card border">
+                    <div class="card-body">
+                      <app-user-scope-by-user *ngIf="!loading" [userId]="user.userId" [standardId]="user.standardId">
+                      </app-user-scope-by-user>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+
           </ul>
           <div [ngbNavOutlet]="nav" class="mt - 2"></div>
 

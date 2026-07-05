@@ -1,0 +1,104 @@
+:host {
+    display: block;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #1c2733;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.mono {
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+.my-ap__banner {
+    background: #ffffff;
+    border: 1px solid #e2e7ea;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: #4a5560;
+    margin-bottom: 20px;
+}
+
+.my-ap__item {
+    background: #ffffff;
+    border: 1px solid #e2e7ea;
+    border-left: 4px solid #2f6f5e;
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+}
+
+.my-ap__code {
+    font-size: 12px;
+    font-weight: 600;
+    background: #edf1f3;
+    color: #33414d;
+    padding: 3px 8px;
+    border-radius: 5px;
+    white-space: nowrap;
+}
+
+.my-ap__breach-title {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.my-ap__badge {
+    display: inline-block;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 3px 10px;
+    font-weight: 700;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.my-ap__due {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: #8a939b;
+    white-space: nowrap;
+}
+
+.my-ap__title {
+    font-size: 13.5px;
+    color: #33414d;
+    margin: 10px 0 12px;
+}
+
+.my-ap__progress {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.my-ap__progress-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #4a5560;
+    margin-right: 4px;
+}
+
+.my-ap__pill {
+    border: 1.5px solid;
+    border-radius: 6px;
+    background: #ffffff;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 5px 12px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform .1s ease;
+}
+
+.my-ap__pill:hover {
+    transform: translateY(-1px);
+}
+
+.my-ap__pill:disabled {
+    opacity: .6;
+    cursor: default;
+}

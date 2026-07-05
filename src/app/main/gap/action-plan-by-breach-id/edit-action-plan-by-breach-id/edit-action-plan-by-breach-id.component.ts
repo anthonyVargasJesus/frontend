@@ -5,8 +5,8 @@ import { ActionPlan } from 'app/models/action-plan';
 import { ErrorManager } from 'app/errors/error-manager';
 import { ActionPlanService } from 'app/services/action-plan.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ResponsibleService } from 'app/services/responsible.service';
-import { Responsible } from 'app/models/responsible';
+import { UserService } from 'app/services/user.service';
+import { User } from 'app/models/user';
 import { ActionPlanStatusService } from 'app/services/action-plan-status.service';
 import { ActionPlanStatus } from 'app/models/action-plan-status';
 import { ActionPlanPriorityService } from 'app/services/action-plan-priority.service';
@@ -28,14 +28,14 @@ export class EditActionPlanByBreachIdComponent implements OnInit {
     private actionPlanService: ActionPlanService,
     private route: ActivatedRoute,
     private _formBuilder: FormBuilder,
-    public router: Router, private responsibleService: ResponsibleService,
+    public router: Router, private userService: UserService,
     private actionPlanStatusService: ActionPlanStatusService,
     private actionPlanPriorityService: ActionPlanPriorityService,
     @Inject(MAT_DIALOG_DATA) private data: DialogData, private dialogRef: MatDialogRef<EditActionPlanByBreachIdComponent>,
 
   ) { }
 
-  responsibles: Responsible[] = [];
+  users: User[] = [];
   actionPlanStatuss: ActionPlanStatus[] = [];
   actionPlanPriorities: ActionPlanPriority[] = [];
 
@@ -52,7 +52,7 @@ export class EditActionPlanByBreachIdComponent implements OnInit {
         this.id = this.data['_id'];
     this.standardId = this.data['standardId'];
     this.initForm();
-    this.getAllResponsibles();
+    this.getAllUsers();
     this.initActionPlan();
   }
 
@@ -65,7 +65,7 @@ export class EditActionPlanByBreachIdComponent implements OnInit {
     this.form = this._formBuilder.group({
       title: ['', [Validators.required, Validators.maxLength(150),]],
       description: ['', [Validators.maxLength(300),]],
-      responsibleId: ['', [Validators.required,]],
+      userId: ['', [Validators.required,]],
       startDate: ['', [Validators.required,]],
       dueDate: ['', [Validators.required,]],
       actionPlanStatusId: ['', [Validators.required,]],
@@ -91,7 +91,7 @@ export class EditActionPlanByBreachIdComponent implements OnInit {
     this.form.setValue({
       title: ((actionPlan.title == null) ? '' : actionPlan.title),
       description: ((actionPlan.description == null) ? '' : actionPlan.description),
-      responsibleId: ((actionPlan.responsibleId == null) ? '' : actionPlan.responsibleId),
+      userId: ((actionPlan.userId == null) ? '' : actionPlan.userId),
       startDate: ((actionPlan.startDate == null) ? '' : actionPlan.startDate),
       dueDate: ((actionPlan.dueDate == null) ? '' : actionPlan.dueDate),
       actionPlanStatusId: ((actionPlan.actionPlanStatusId == null) ? '' : actionPlan.actionPlanStatusId),
@@ -106,18 +106,18 @@ export class EditActionPlanByBreachIdComponent implements OnInit {
     this.actionPlan.description = this.form.value.description;
     if (this.form.value.description == "")
       this.actionPlan.description = null;
-    this.actionPlan.responsibleId = this.form.value.responsibleId;
+    this.actionPlan.userId = this.form.value.userId;
     this.actionPlan.startDate = this.form.value.startDate;
     this.actionPlan.dueDate = this.form.value.dueDate;
     this.actionPlan.actionPlanStatusId = this.form.value.actionPlanStatusId;
     this.actionPlan.actionPlanPriorityId = this.form.value.actionPlanPriorityId;
   }
 
-  getAllResponsibles() {
+  getAllUsers() {
     this.loading = true;
-    this.responsibleService.getAll(this.standardId)
+    this.userService.getAll()
       .subscribe((res: any) => {
-        this.responsibles = res.data;
+        this.users = res.data;
         this.loading = false;
         this.getAllActionPlanStatuss();
 

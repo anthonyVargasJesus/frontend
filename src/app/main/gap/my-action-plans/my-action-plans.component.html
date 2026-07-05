@@ -1,0 +1,43 @@
+<div class="my-ap">
+
+    <div class="my-ap__banner">
+        Acciones asignadas a <strong>{{ userEmail }}</strong>. Actualiza "Mi avance" cuando cambies de estado — el
+        dueño del control lo va a ver reflejado en su panel de evaluación.
+    </div>
+
+    <div *ngIf="loading" class="text-center py-4">
+        <span class="spinner-border spinner-border-sm mr-1"></span> Cargando tus acciones...
+    </div>
+
+    <div *ngIf="!loading && actionPlans.length === 0" class="text-center text-muted py-5">
+        No tienes acciones asignadas por ahora.
+    </div>
+
+    <div class="my-ap__item" *ngFor="let ap of actionPlans">
+        <div class="d-flex align-items-start flex-wrap" style="gap: 10px;">
+            <span class="mono my-ap__code">{{ ap.breachNumerationToShow }}</span>
+            <div class="flex-grow-1">
+                <div class="my-ap__breach-title">{{ ap.breachTitle }}</div>
+            </div>
+            <span class="my-ap__badge" [style.color]="ap.priorityColor" [style.border-color]="ap.priorityColor">
+                {{ ap.priorityName }}
+            </span>
+            <span class="my-ap__due">vence {{ ap.dueDate | date:'yyyy-MM-dd' }}</span>
+        </div>
+
+        <div class="my-ap__title">{{ ap.title }}</div>
+
+        <div class="my-ap__progress">
+            <span class="my-ap__progress-label">Mi avance:</span>
+            <button type="button" *ngFor="let status of statuses" class="my-ap__pill"
+                [disabled]="isSaving(ap.actionPlanId)" [class.active]="ap.actionPlanStatusId === status.actionPlanStatusId"
+                [style.background]="ap.actionPlanStatusId === status.actionPlanStatusId ? status.color : ''"
+                [style.border-color]="status.color"
+                [style.color]="ap.actionPlanStatusId === status.actionPlanStatusId ? '#fff' : status.color"
+                (click)="setStatus(ap, status.actionPlanStatusId)">
+                {{ status.name }}
+            </button>
+        </div>
+    </div>
+
+</div>

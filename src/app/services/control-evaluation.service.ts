@@ -16,8 +16,8 @@ export class ControlEvaluationService {
     constructor(public http: HttpClient) { }
 
     
-    getAllByStandardIdByEvaluationId(standardId: number, evaluationId: number) {
-        const url = environment.apiUrl + '/api/controlEvaluation/all?' + 'standardId=' + standardId + '&evaluationId=' + evaluationId;
+    getAllByStandardIdByEvaluationId(standardId: number, evaluationId: number, scopeToUser: boolean = false) {
+        const url = environment.apiUrl + '/api/controlEvaluation/all?' + 'standardId=' + standardId + '&evaluationId=' + evaluationId + '&scopeToUser=' + scopeToUser;
         return this.http.get(url);
     }
 

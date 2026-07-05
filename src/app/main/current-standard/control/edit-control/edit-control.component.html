@@ -125,6 +125,23 @@
                                 <div class="form-group">
 
                                     <div style="display:flex; margin-bottom:2px;">
+                                        <label class="form-label">Responsable por defecto</label>
+                                    </div>
+
+                                    <select formControlName="defaultResponsible" class="form-control">
+                                        <option value=""> Sin asignar </option>
+                                        <option *ngFor="let responsible of responsibles"
+                                            [value]="responsible.responsibleId">{{ responsible.name }}</option>
+                                    </select>
+                                    <small class="form-text text-muted">
+                                        Se usa para precargar el responsable la primera vez que se evalúa este
+                                        control en una evaluación nueva.
+                                    </small>
+                                </div>
+
+                                <div class="form-group">
+
+                                    <div style="display:flex; margin-bottom:2px;">
                                         <label class="form-label">Descripción</label>
                                     </div>
                                     <textarea rows="3" formControlName="description"

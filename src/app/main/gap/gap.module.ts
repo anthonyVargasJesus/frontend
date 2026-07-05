@@ -61,6 +61,11 @@ import { EvaluationProcessListComponent } from './evaluation-process-list/evalua
 import { ActionPlanProgressComponent } from './evaluation-process/action-plan-progress/action-plan-progress.component';
 import { ComplianceEvolutionComponent } from './evaluation-process/compliance-evolution/compliance-evolution.component';
 import { BreachSeverityReportComponent } from './evaluation-process/breach-severity-report/breach-severity-report.component';
+import { GapEvaluationItemComponent } from './gap-evaluation-item/gap-evaluation-item.component';
+import { GapPanelComponent } from './gap-panel/gap-panel.component';
+import { GapEvidenceListComponent } from './gap-evidence-list/gap-evidence-list.component';
+import { GapActionPlanListComponent } from './gap-action-plan-list/gap-action-plan-list.component';
+import { MyActionPlansComponent } from './my-action-plans/my-action-plans.component';
 
 
 @NgModule({
@@ -84,6 +89,11 @@ import { BreachSeverityReportComponent } from './evaluation-process/breach-sever
          ActionPlanProgressComponent,
          ComplianceEvolutionComponent,
          BreachSeverityReportComponent,
+         GapEvaluationItemComponent,
+         GapPanelComponent,
+         GapEvidenceListComponent,
+         GapActionPlanListComponent,
+         MyActionPlansComponent,
   ],
   imports: [
     CommonModule,

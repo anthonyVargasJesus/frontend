@@ -10,8 +10,12 @@ import { EvaluationProcessListComponent } from './evaluation-process-list/evalua
 import { ActionPlanProgressComponent } from './evaluation-process/action-plan-progress/action-plan-progress.component';
 import { ComplianceEvolutionComponent } from './evaluation-process/compliance-evolution/compliance-evolution.component';
 import { BreachSeverityReportComponent } from './evaluation-process/breach-severity-report/breach-severity-report.component';
+import { GapPanelComponent } from './gap-panel/gap-panel.component';
+import { MyActionPlansComponent } from './my-action-plans/my-action-plans.component';
 
 const routes: Routes = [
+    { path: 'panel', component: GapPanelComponent, },
+    { path: 'my-action-plans', component: MyActionPlansComponent, },
     { path: 'requirement-evaluation', component: CurrentRequirementEvaluationComponent, },
     { path: 'control-evaluation', component: CurrentControlEvaluationComponent, },
     { path: 'current-breaches', component: CurrentBreachsComponent, },
