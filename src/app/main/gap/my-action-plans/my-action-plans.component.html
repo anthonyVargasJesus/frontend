@@ -38,6 +38,25 @@
                 {{ status.name }}
             </button>
         </div>
+
+        <div *ngIf="hasEvidenceTarget(ap)" class="my-ap__evidence">
+            <div class="d-flex align-items-center flex-wrap" style="gap: 10px;">
+                <button type="button" class="my-ap__attach-btn" (click)="evidenceList.add()">
+                    <mat-icon style="font-size: 15px; vertical-align: middle;">attach_file</mat-icon>
+                    Adjuntar archivo
+                </button>
+                <button type="button" class="my-ap__attach-btn my-ap__attach-btn--solid"
+                    (click)="evidenceList.openAddLink()">
+                    <mat-icon style="font-size: 15px; vertical-align: middle;">link</mat-icon>
+                    Agregar enlace
+                </button>
+            </div>
+
+            <app-gap-evidence-list #evidenceList [tipo]="tipoDe(ap)" [standardId]="ap.standardId"
+                [evaluationId]="ap.evaluationId" [requirementEvaluationId]="ap.requirementEvaluationId"
+                [controlEvaluationId]="ap.controlEvaluationId">
+            </app-gap-evidence-list>
+        </div>
     </div>
 
 </div>

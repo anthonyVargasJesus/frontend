@@ -26,6 +26,13 @@
                     </div>
                 </div>
 
+                <button type="button" class="gap-evidence__obsolete-badge"
+                    [class.gap-evidence__obsolete-badge--obsolete]="doc.isObsolete"
+                    (click)="toggleObsolete(doc)"
+                    [title]="doc.isObsolete ? 'Marcar como vigente' : 'Marcar como obsoleta'">
+                    {{ doc.isObsolete ? 'Obsoleta' : 'Vigente' }}
+                </button>
+
                 <button type="button" class="gap-evidence__row-action" (click)="delete(doc)" title="Eliminar evidencia">
                     <mat-icon>delete_outline</mat-icon>
                 </button>

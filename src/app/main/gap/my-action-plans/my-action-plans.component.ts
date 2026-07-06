@@ -62,6 +62,16 @@ export class MyActionPlansComponent implements OnInit {
     return this.savingIds.has(actionPlanId);
   }
 
+  // El backend resuelve requirementEvaluationId/controlEvaluationId desde la brecha (Breach solo
+  // guarda requirementId/controlId) — <app-gap-evidence-list> necesita saber cuál de los dos usar.
+  tipoDe(ap: any): 'requisito' | 'control' {
+    return ap.requirementEvaluationId ? 'requisito' : 'control';
+  }
+
+  hasEvidenceTarget(ap: any): boolean {
+    return !!(ap.requirementEvaluationId || ap.controlEvaluationId);
+  }
+
   setStatus(ap: any, actionPlanStatusId: number) {
     if (ap.actionPlanStatusId === actionPlanStatusId) return;
 

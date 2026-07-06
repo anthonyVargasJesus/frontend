@@ -150,6 +150,31 @@
     cursor: default;
 }
 
+.gap-evidence__obsolete-badge {
+    border: 1px solid transparent;
+    border-radius: 5px;
+    padding: 2px 8px;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    cursor: pointer;
+    flex-shrink: 0;
+    background: #edf1f3;
+    color: #8a939b;
+    border-color: #d6dce0;
+}
+
+.gap-evidence__obsolete-badge:hover {
+    filter: brightness(0.96);
+}
+
+.gap-evidence__obsolete-badge--obsolete {
+    background: #f5e3e1;
+    color: #a8443b;
+    border-color: #e7c3bf;
+}
+
 .gap-evidence__empty {
     border: 1px dashed #d6dce0;
     border-radius: 6px;

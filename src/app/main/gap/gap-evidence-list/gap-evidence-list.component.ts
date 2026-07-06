@@ -187,6 +187,18 @@ export class GapEvidenceListComponent implements OnInit, OnChanges {
     }, error => ErrorManager.handleError(error));
   }
 
+  // Marca manual, sin modal: clic en la insignia "Vigente"/"Obsoleta" y se guarda al toque,
+  // igual que el resto de acciones rápidas de esta lista.
+  toggleObsolete(doc: ReferenceDocumentation) {
+    doc.isObsolete = !doc.isObsolete;
+    this._referenceDocumentationService.update(doc).subscribe(() => {
+      this.updateEvent.emit();
+    }, error => {
+      doc.isObsolete = !doc.isObsolete;
+      ErrorManager.handleError(error);
+    });
+  }
+
   delete(referenceDocumentation: ReferenceDocumentation) {
     Swal.fire({
       title: 'Confirmación',

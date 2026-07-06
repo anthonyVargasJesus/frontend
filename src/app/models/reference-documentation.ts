@@ -16,5 +16,6 @@ export class ReferenceDocumentation {
         public fileSizeBytes?: number,
         public creationDate?: string,
         public creationUserEmail?: string,
+        public isObsolete?: boolean,
     ) { }
 }

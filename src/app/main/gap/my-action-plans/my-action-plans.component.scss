@@ -102,3 +102,41 @@
     opacity: .6;
     cursor: default;
 }
+
+.my-ap__evidence {
+    display: block;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #e2e7ea;
+}
+
+.my-ap__attach-btn {
+    background: #f7f8f9;
+    border: 1px dashed #c7ced3;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4a5560;
+    padding: 4px 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: inherit;
+    margin-bottom: 10px;
+}
+
+.my-ap__attach-btn:hover {
+    background: #edf1f3;
+    border-color: #9aa4ab;
+}
+
+.my-ap__attach-btn--solid {
+    background: #ffffff;
+    border: 1.5px solid #1c2733;
+}
+
+.my-ap__attach-btn--solid:hover {
+    background: #f1f3f4;
+    border-color: #1c2733;
+}
