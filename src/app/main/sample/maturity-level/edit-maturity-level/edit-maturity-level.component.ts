@@ -7,6 +7,8 @@ import { ErrorManager } from 'app/errors/error-manager';
 import { MaturityLevelService } from 'app/services/maturity-level.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogData } from 'app/models/dialog-data';
+import { BreachSeverityService } from 'app/services/breach-severity.service';
+import { BreachSeverity } from 'app/models/breach-severity';
 
 
 @Component({
@@ -22,6 +24,7 @@ export class EditMaturityLevelComponent implements OnInit {
     private route: ActivatedRoute,
     private _formBuilder: FormBuilder,
     public router: Router, @Inject(MAT_DIALOG_DATA) private data: DialogData, private dialogRef: MatDialogRef<EditMaturityLevelComponent>,
+    private breachSeverityService: BreachSeverityService,
 
   ) { }
 
@@ -33,11 +36,14 @@ export class EditMaturityLevelComponent implements OnInit {
   public submitted = false;
   public last: string = '';
 
+  breachSeverities: BreachSeverity[] = [];
+
   ngOnInit(): void {
     this.initForm();
     this.initMaturityLevel();
     this.id = this.data['_id'];
     this.obtain(this.id);
+    this.getAllBreachSeverities();
   }
 
 
@@ -53,7 +59,31 @@ export class EditMaturityLevelComponent implements OnInit {
       abbreviation: ['', [Validators.required, Validators.maxLength(10),]],
       value: ['', [Validators.required, Validators.maxLength(8),]],
       color: ['', [Validators.required, Validators.maxLength(100),]],
+      generatesBreach: [false, []],
+      breachSeverityId: ['', []],
     });
+
+    this.form.get('generatesBreach')?.valueChanges.subscribe(value => {
+      if (value) {
+        this.form.get('breachSeverityId')?.setValidators([Validators.required]);
+      } else {
+        this.form.get('breachSeverityId')?.clearValidators();
+        this.form.patchValue({ breachSeverityId: '' });
+      }
+      this.form.get('breachSeverityId')?.updateValueAndValidity();
+    });
+  }
+
+  getAllBreachSeverities() {
+    this.loading = true;
+    this.breachSeverityService.getAll()
+      .subscribe((res: any) => {
+        this.breachSeverities = res.data;
+        this.loading = false;
+      }, error => {
+        this.loading = false;
+        ErrorManager.handleError(error);
+      });
   }
 
   obtain(id: string) {
@@ -78,6 +108,8 @@ export class EditMaturityLevelComponent implements OnInit {
       abbreviation: ((maturityLevel.abbreviation == null) ? '' : maturityLevel.abbreviation),
       value: ((maturityLevel.value == null) ? '' : maturityLevel.value),
       color: ((maturityLevel.color == null) ? '' : maturityLevel.color),
+      generatesBreach: ((maturityLevel.generatesBreach == null) ? false : maturityLevel.generatesBreach),
+      breachSeverityId: ((maturityLevel.breachSeverityId == null) ? '' : maturityLevel.breachSeverityId),
     });
   }
 
@@ -88,6 +120,8 @@ export class EditMaturityLevelComponent implements OnInit {
     this.maturityLevel.abbreviation = this.form.value.abbreviation;
     this.maturityLevel.value = this.form.value.value;
     this.maturityLevel.color = this.form.value.color;
+    this.maturityLevel.generatesBreach = this.form.value.generatesBreach;
+    this.maturityLevel.breachSeverityId = this.form.value.breachSeverityId ? Number(this.form.value.breachSeverityId) : null;
   }
   setNullValues() {
   }

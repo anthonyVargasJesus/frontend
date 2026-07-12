@@ -151,6 +151,40 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            <div style="display:flex; margin-bottom:2px;">
+                                <label class="form-label">Genera brecha</label>
+                            </div>
+                            <mat-slide-toggle style="margin-top:7px;" formControlName="generatesBreach"></mat-slide-toggle>
+                        </div>
+                    </div>
+                    <div class="col-md-6" *ngIf="form.value.generatesBreach">
+                        <div class="form-group">
+
+                            <div style="display:flex; margin-bottom:-10px;">
+                                <label class="form-label">Severidad de la brecha</label>
+                                <label style="margin-left: 5px;">(</label>
+                                <label style="font-size: 22px; margin-top:-1px;">*</label>
+                                <label>)</label>
+                            </div>
+                            <select formControlName="breachSeverityId"
+                                [ngClass]="{ 'is-invalid': submitted && f.breachSeverityId.errors }"
+                                class="form-control" tabindex="1">
+                                <option value="">Seleccione</option>
+                                <option *ngFor="let breachSeverity of breachSeverities"
+                                    [value]="breachSeverity.breachSeverityId">{{ breachSeverity.name }}</option>
+                            </select>
+                            <div *ngIf="submitted && f.breachSeverityId.errors" class="invalid-feedback">
+                                <div *ngIf="f.breachSeverityId.errors.required">La severidad es obligatoria cuando el
+                                    nivel genera brecha</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-group">
 
                     <div style="display:flex; margin-bottom:-10px;">

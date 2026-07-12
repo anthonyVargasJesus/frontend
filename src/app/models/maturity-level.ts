@@ -7,5 +7,7 @@ export class MaturityLevel {
         public abbreviation?: string,
         public value?: number,
         public color?: string,
+        public generatesBreach?: boolean,
+        public breachSeverityId?: number,
     ) { }
 }
