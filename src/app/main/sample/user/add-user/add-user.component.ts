@@ -168,7 +168,7 @@ export class AddUserComponent implements OnInit {
       .subscribe(res => {
         this.user = res.data;
         this.loading2 = false; 
-        this.router.navigate(['/edit-user', res.data]);
+        this.router.navigate(['/mantto/edit-user', res.data]);
       }, error => {
         this.loading2 = false;
         ErrorManager.handleError(error);

@@ -21,7 +21,7 @@ export class MyActionPlansComponent implements OnInit {
 
   loading = true;
   userEmail = '';
-  evaluationId: number;
+  evaluationId: number = 0;
   actionPlans: any[] = [];
   statuses: any[] = [];
   savingIds = new Set<number>();
