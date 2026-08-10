@@ -171,7 +171,13 @@ export class GapHomeComponent implements OnInit, OnDestroy {
   }
 
   private loadResumen() {
-    this._gapService.getResumen().subscribe((res: any) => {
+    // scopeToUser=false: "Análisis del GAP" es una vista general de toda la evaluación (mapa
+    // de brecha por tema, buscador sin acotar), no una lista personal — con el default
+    // (scopeToUser=true) el backend solo trae ítems de grupos de control asignados al usuario
+    // logueado (MAE_USER_CONTROL_GROUP), y para cualquier usuario sin esa asignación explícita
+    // (ej. roles administrativos/de seguridad) la pantalla queda vacía aunque la evaluación sí
+    // tenga ítems reales.
+    this._gapService.getResumen(false).subscribe((res: any) => {
       this.evaluation = res.evaluation;
       this.standardId = res.evaluation?.standardId;
       this.evaluationId = res.evaluation?.evaluationId;
@@ -202,7 +208,7 @@ export class GapHomeComponent implements OnInit, OnDestroy {
     if (!this.hasMore || this.loadingMore) return;
 
     this.loadingMore = true;
-    this._gapService.getItems(this.skip, this.pageSize, this.searchText, this.filtroTema).subscribe((res: any) => {
+    this._gapService.getItems(this.skip, this.pageSize, this.searchText, this.filtroTema, false).subscribe((res: any) => {
       const data = res.data || [];
       const nuevos = data.map((dto: any) => this.toGapItem(dto));
       this.pageItems = reset ? nuevos : [...this.pageItems, ...nuevos];
