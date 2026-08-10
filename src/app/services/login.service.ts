@@ -139,7 +139,7 @@ export class LoginService {
     // else if (roles.includes(CODE_SECURITY_MODULE))
     //   this.router.navigate(['/security/security-home']);
     //     else if (roles.includes(CODE_GAP_MODULE))
-      this.router.navigate(['/gap/gap-home']);
+      this.router.navigate(['/gap/resume']);
     // else
     //   this.router.navigate(['/pages/miscellaneous/not-authorized']);
   }
