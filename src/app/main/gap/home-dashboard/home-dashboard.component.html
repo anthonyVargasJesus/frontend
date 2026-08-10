@@ -1,0 +1,133 @@
+<div class="content-wrapper">
+    <div class="content-body">
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+        <div class="hd">
+
+            <div class="hd__body" *ngIf="!loading; else cargando">
+
+                <div class="hd__error" *ngIf="errorMessage">
+                    {{ errorMessage }}
+                    <button type="button" class="hd__retry" (click)="load()">Reintentar</button>
+                </div>
+
+                <ng-container *ngIf="!errorMessage && dashboard">
+
+                    <!-- Cumplimiento -->
+                    <div class="hd__card">
+                        <div class="hd__compliance">
+                            <div class="hd__donut-wrap">
+                                <svg viewBox="0 0 120 120" class="hd__donut">
+                                    <circle cx="60" cy="60" r="50" fill="none" stroke="#EAEDEF" stroke-width="16"></circle>
+                                    <circle *ngFor="let seg of donutSegments" cx="60" cy="60" r="50" fill="none"
+                                        [attr.stroke]="seg.color" stroke-width="16"
+                                        [attr.stroke-dasharray]="seg.dasharray" [attr.stroke-dashoffset]="seg.dashoffset"
+                                        transform="rotate(-90 60 60)"></circle>
+                                </svg>
+                                <div class="hd__donut-center">
+                                    <div class="hd__donut-pct mono">{{ dashboard.compliancePercentage }}%</div>
+                                    <div class="hd__donut-label">cumple</div>
+                                </div>
+                            </div>
+                            <div class="hd__compliance-info">
+                                <div class="hd__card-title">Cumplimiento</div>
+                                <div class="hd__compliance-subtitle">{{ dashboard.evaluatedItems }} de {{ dashboard.totalItems }} evaluados</div>
+                                <div class="hd__legend">
+                                    <span *ngFor="let l of visibleLegend"><i [style.background]="l.color"></i>{{ l.name }} · {{ l.count }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Por área -->
+                    <div class="hd__section-title">Por área</div>
+                    <div class="hd__area-scroll" *ngIf="dashboard.themes.length > 0; else sinAreas">
+                        <div class="hd__area-card" *ngFor="let t of dashboard.themes; trackBy: trackByTheme"
+                            [style.border-top-color]="themeColor(t)">
+                            <div class="hd__area-name">{{ t.theme }}</div>
+                            <div class="hd__area-pct mono" [style.color]="themeColor(t)">{{ t.percentage }}%</div>
+                            <div class="hd__area-fraction mono">{{ t.evaluatedItems }}/{{ t.totalItems }}</div>
+                        </div>
+                    </div>
+                    <ng-template #sinAreas>
+                        <div class="text-muted" style="font-size:12px; margin-bottom:16px;">Sin áreas para mostrar.</div>
+                    </ng-template>
+
+                    <!-- Stat tiles -->
+                    <div class="hd__stats-grid">
+                        <div class="hd__stat-tile">
+                            <div class="hd__stat-icon" style="background: rgba(168,68,59,0.12); color:#A8443B;">
+                                <mat-icon style="font-size:18px;">report</mat-icon>
+                            </div>
+                            <div>
+                                <div class="hd__stat-value mono">{{ dashboard.openBreachesCount }}</div>
+                                <div class="hd__stat-label">Brechas abiertas</div>
+                            </div>
+                        </div>
+                        <div class="hd__stat-tile">
+                            <div class="hd__stat-icon" style="background: rgba(176,122,31,0.12); color:#B07A1F;">
+                                <mat-icon style="font-size:18px;">hourglass_empty</mat-icon>
+                            </div>
+                            <div>
+                                <div class="hd__stat-value mono">{{ pendingTileCount }}</div>
+                                <div class="hd__stat-label">Sin evaluar</div>
+                            </div>
+                        </div>
+                        <div class="hd__stat-tile">
+                            <div class="hd__stat-icon" style="background: rgba(168,68,59,0.12); color:#A8443B;">
+                                <mat-icon style="font-size:18px;">event_busy</mat-icon>
+                            </div>
+                            <div>
+                                <div class="hd__stat-value mono">{{ dashboard.overdueActionPlansCount }}</div>
+                                <div class="hd__stat-label">Acciones vencidas</div>
+                            </div>
+                        </div>
+                        <div class="hd__stat-tile">
+                            <div class="hd__stat-icon" [style.background]="'rgba(0,0,0,0.06)'" [style.color]="evidenceColor()">
+                                <mat-icon style="font-size:18px;">attach_file</mat-icon>
+                            </div>
+                            <div>
+                                <div class="hd__stat-value mono">{{ evidenceCoveragePct }}%</div>
+                                <div class="hd__stat-label">Con evidencia</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Brechas por severidad -->
+                    <ng-container *ngIf="dashboard.breachSeverityBreakdown.length > 0">
+                        <div class="hd__section-title">Brechas por severidad</div>
+                        <div class="hd__card">
+                            <div class="hd__severity-bar">
+                                <div class="hd__severity-seg" *ngFor="let s of dashboard.breachSeverityBreakdown"
+                                    [style.width.%]="severityWidthPct(s)" [style.background]="s.color"></div>
+                            </div>
+                            <div class="hd__legend" style="margin-top:10px;">
+                                <span *ngFor="let s of dashboard.breachSeverityBreakdown">
+                                    <i [style.background]="s.color"></i>{{ s.name }} ({{ s.count }})
+                                </span>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <!-- Continuar evaluando -->
+                    <ng-container *ngIf="visiblePendingItems.length > 0">
+                        <div class="hd__section-title">Continuar evaluando</div>
+                        <div class="hd__pending-row" *ngFor="let p of visiblePendingItems; trackBy: trackByPendingItem">
+                            <span class="mono hd__pending-code">{{ p.code }}</span>
+                            <div class="hd__pending-name">{{ p.name }}</div>
+                        </div>
+                    </ng-container>
+
+                </ng-container>
+
+            </div>
+
+            <ng-template #cargando>
+                <div class="text-center py-5">
+                    <div class="spinner-grow text-primary" role="status"></div>
+                </div>
+            </ng-template>
+
+        </div>
+    </div>
+</div>

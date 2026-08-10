@@ -1,0 +1,69 @@
+<div class="content-wrapper">
+    <div class="content-body">
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+        <div class="soa">
+
+            <div class="soa__body" *ngIf="!loading; else cargando">
+
+                <div class="soa__error" *ngIf="errorMessage">
+                    {{ errorMessage }}
+                    <button type="button" class="soa__retry" (click)="load()">Reintentar</button>
+                </div>
+
+                <div class="text-center text-muted py-5" *ngIf="!errorMessage && !hasCurrentEvaluation">
+                    No hay una evaluación activa.
+                </div>
+
+                <ng-container *ngIf="!errorMessage && hasCurrentEvaluation">
+
+                    <div class="soa__header">
+                        <div class="soa__header-text">
+                            <div class="soa__title">Declaración de Aplicabilidad (SOA)</div>
+                            <div class="soa__subtitle">{{ subtitle }}</div>
+                        </div>
+                        <button type="button" class="soa__export-btn" [disabled]="exporting || controls.length === 0"
+                            title="Exportar Excel" (click)="exportExcel()">
+                            <mat-icon style="font-size:18px; vertical-align: middle;">ios_share</mat-icon>
+                        </button>
+                    </div>
+
+                    <div class="soa__warning" *ngIf="pendingCount > 0">
+                        <mat-icon style="font-size:16px; vertical-align: middle;">warning_amber</mat-icon>
+                        {{ pendingCount }} controles/cláusulas sin evaluar — el SOA está incompleto hasta cubrirlos.
+                    </div>
+
+                    <div class="soa__card" *ngFor="let c of controls; trackBy: trackByCode">
+                        <div class="soa__card-inner" [style.border-left-color]="aplicaColor(c)">
+                            <div class="d-flex align-items-start" style="gap: 10px;">
+                                <span class="mono soa__code">{{ c.code }}</span>
+                                <div class="flex-grow-1 soa__name">{{ c.name }}</div>
+                            </div>
+
+                            <div class="soa__pills">
+                                <span class="soa__pill" [style.color]="aplicaColor(c)"
+                                    [style.background]="pillBackground(aplicaColor(c))">
+                                    {{ aplicaLabel(c) }}
+                                </span>
+                                <span class="soa__pill" style="color:#6B7480;" [style.background]="pillBackground('#6B7480')">
+                                    {{ c.implementacion }}
+                                </span>
+                            </div>
+
+                            <div class="soa__justificacion">{{ c.justificacion }}</div>
+                        </div>
+                    </div>
+
+                </ng-container>
+
+            </div>
+
+            <ng-template #cargando>
+                <div class="text-center py-5">
+                    <div class="spinner-grow text-primary" role="status"></div>
+                </div>
+            </ng-template>
+
+        </div>
+    </div>
+</div>

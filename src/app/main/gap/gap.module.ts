@@ -66,6 +66,9 @@ import { GapPanelComponent } from './gap-panel/gap-panel.component';
 import { GapEvidenceListComponent } from './gap-evidence-list/gap-evidence-list.component';
 import { GapActionPlanListComponent } from './gap-action-plan-list/gap-action-plan-list.component';
 import { MyActionPlansComponent } from './my-action-plans/my-action-plans.component';
+import { PlanDeAccionComponent } from './plan-de-accion/plan-de-accion.component';
+import { SoaReportComponent } from './soa-report/soa-report.component';
+import { HomeDashboardComponent } from './home-dashboard/home-dashboard.component';
 
 
 @NgModule({
@@ -94,6 +97,9 @@ import { MyActionPlansComponent } from './my-action-plans/my-action-plans.compon
          GapEvidenceListComponent,
          GapActionPlanListComponent,
          MyActionPlansComponent,
+         PlanDeAccionComponent,
+         SoaReportComponent,
+         HomeDashboardComponent,
   ],
   imports: [
     CommonModule,

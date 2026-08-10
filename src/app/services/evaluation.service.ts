@@ -15,8 +15,11 @@ export class EvaluationService {
 
     constructor(public http: HttpClient) { }
 
-    getCurrent() {
-        const url = environment.apiUrl + '/api/evaluation/current';
+    // evaluationId opcional: sin él, trae la evaluación marcada como "actual" (comportamiento
+    // histórico); con él, trae esa evaluación puntual (usado por el desplegable de "Resumen").
+    getCurrent(evaluationId?: number) {
+        let url = environment.apiUrl + '/api/evaluation/current';
+        if (evaluationId) url += '?id=' + evaluationId;
         return this.http.get(url);
     }
 
@@ -41,8 +44,12 @@ export class EvaluationService {
         return this.http.get(url);
     }
 
-    get(skip: number, pageSize: number, search: string) {
-        const url = environment.apiUrl + '/api/evaluation' + '?skip=' + skip + '&pageSize=' + pageSize + '&search=' + search;
+    // standardId opcional: sin él, trae evaluaciones de todas las normas de la compañía
+    // mezcladas (comportamiento histórico); con él, solo las de esa norma — necesario
+    // para diferenciarlas ahora que hay más de una norma cargada.
+    get(skip: number, pageSize: number, search: string, standardId?: number) {
+        let url = environment.apiUrl + '/api/evaluation' + '?skip=' + skip + '&pageSize=' + pageSize + '&search=' + search;
+        if (standardId) url += '&standardId=' + standardId;
         return this.http.get(url);
     }
 
@@ -94,8 +101,12 @@ export class EvaluationService {
     }
 
 
-    getComplianceEvolution() {
-        const url = environment.apiUrl + '/api/evaluation/compliance-evolution';
+    // standardId opcional: sin él, el backend lo resuelve a la norma de la evaluación
+    // "actual" — necesario desde que hay más de una norma cargada (antes se mezclaban
+    // en una sola línea de tiempo todas las evaluaciones de la empresa).
+    getComplianceEvolution(standardId?: number) {
+        let url = environment.apiUrl + '/api/evaluation/compliance-evolution';
+        if (standardId) url += '?standardId=' + standardId;
         return this.http.get<any>(url);
     }
 

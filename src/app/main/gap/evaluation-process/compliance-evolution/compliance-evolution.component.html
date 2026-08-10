@@ -2,6 +2,33 @@
   <div [class.content-body]="!embedded">
     <app-content-header *ngIf="!embedded" [contentHeader]="contentHeader"></app-content-header>
 
+    <!-- Desplegable de norma (solo standalone) + exportar. Los dos botones y el desplegable
+         quedan FUERA de #reportContent (ver abajo), así que ni siquiera hace falta excluirlos
+         a mano del PDF — html2canvas solo ve lo que está dentro de ese div. -->
+    <div class="d-flex align-items-center justify-content-between mb-1">
+      <label class="d-flex align-items-center mb-0" *ngIf="!embedded && standards.length > 0">Norma
+        <select class="form-control mx-25 ng-untouched ng-pristine ng-valid"
+          [(ngModel)]="selectedStandardId" (change)="onStandardChange()"
+          style="margin-left: 10px !important;min-width: 260px;">
+          <option *ngFor="let s of standards" [ngValue]="s.standardId">{{ s.name }}</option>
+        </select>
+      </label>
+      <div class="ml-auto" *ngIf="data && data.totalEvaluations > 0">
+        <!-- El ícono queda SIEMPRE en el DOM (nunca se agrega/quita con *ngIf) — alternar su
+             visibilidad con *ngIf rompía feather-icons: cada click dejaba un ícono nuevo sin
+             limpiar el anterior (feather.replace() no sabe que Angular recreó el nodo). Acá
+             solo se oculta con [hidden], el nodo nunca se destruye. -->
+        <button type="button" class="btn btn-outline-secondary btn-sm mr-1" [disabled]="exportingPdf" (click)="exportPdf()">
+          <span *ngIf="exportingPdf" class="spinner-border spinner-border-sm mr-50" role="status"></span>
+          <i data-feather="file-text" [hidden]="exportingPdf" style="width:14px;height:14px;vertical-align:-2px;"></i> PDF
+        </button>
+        <button type="button" class="btn btn-outline-success btn-sm" [disabled]="exporting" (click)="exportExcel()">
+          <span *ngIf="exporting" class="spinner-border spinner-border-sm mr-50" role="status"></span>
+          <i data-feather="download" [hidden]="exporting" style="width:14px;height:14px;vertical-align:-2px;"></i> Excel
+        </button>
+      </div>
+    </div>
+
     <!-- Cargando -->
     <ng-container *ngIf="loading">
       <div class="container text-center mt-5 mb-5">
@@ -24,6 +51,20 @@
 
     <!-- Con datos -->
     <ng-container *ngIf="!loading && data && data.totalEvaluations > 0">
+      <!-- #reportContent: lo único que se captura para el PDF (ver exportPdf() en el .ts) —
+           html2canvas ignora todo lo marcado con d-print-none dentro de este contenedor
+           (el selector de norma y los botones de exportar quedan fuera de este div igual). -->
+      <div #reportContent>
+
+      <!-- Norma a la que corresponde este historial — en standalone ya la muestra el
+           desplegable de arriba; embebido no tiene desplegable (ver arriba), así que acá
+           se deja como badge de solo lectura para no perder la referencia. -->
+      <div class="d-flex align-items-center mb-1" *ngIf="embedded && data.standardName">
+        <span class="badge badge-light-primary" style="font-size:1rem;padding:0.6rem 1rem;">
+          <i data-feather="shield" style="width:14px;height:14px;margin-right:6px;vertical-align:-2px;"></i>
+          Norma: {{ data.standardName }}
+        </span>
+      </div>
 
       <!-- Tarjetas resumen -->
       <div class="row match-height mb-2">
@@ -104,6 +145,98 @@
           </div>
         </div>
 
+      </div>
+
+      <!-- Composición actual por nivel de madurez — las tarjetas de arriba dan el promedio
+           (ej. 61.6%), pero no dicen cómo se ve la mezcla real detrás de ese número. Barra
+           horizontal apilada (no un pie: son proporciones de un todo con pocas categorías,
+           el pie no ayuda ahí) con los mismos colores que ya usa el catálogo de niveles de
+           madurez en el resto de la app — no una paleta nueva. -->
+      <div class="card border mb-2" *ngIf="data.requirementsComposition?.length || data.controlsComposition?.length">
+        <div class="card-header">
+          <h4 class="card-title">Composición actual por nivel de madurez</h4>
+          <small class="text-muted">{{ data.currentEvaluationDescription }}</small>
+        </div>
+        <div class="card-body">
+          <div class="mb-2" *ngIf="data.requirementsComposition?.length">
+            <p class="mb-25 font-weight-bold">Requisitos</p>
+            <div class="d-flex" style="height:22px;border-radius:11px;overflow:hidden;background:#EAEDEF;">
+              <div *ngFor="let seg of data.requirementsComposition; let last = last"
+                [style.width.%]="seg.percentage"
+                [style.background]="seg.color"
+                [style.marginRight.px]="last ? 0 : 2"
+                [title]="seg.name + ': ' + seg.count + ' (' + seg.percentage + '%)'"
+                class="d-flex align-items-center justify-content-center">
+                <small *ngIf="seg.percentage >= 8" style="color:#fff;font-weight:600;font-size:11px;">{{ seg.percentage }}%</small>
+              </div>
+            </div>
+          </div>
+          <div class="mb-1" *ngIf="data.controlsComposition?.length">
+            <p class="mb-25 font-weight-bold">Controles</p>
+            <div class="d-flex" style="height:22px;border-radius:11px;overflow:hidden;background:#EAEDEF;">
+              <div *ngFor="let seg of data.controlsComposition; let last = last"
+                [style.width.%]="seg.percentage"
+                [style.background]="seg.color"
+                [style.marginRight.px]="last ? 0 : 2"
+                [title]="seg.name + ': ' + seg.count + ' (' + seg.percentage + '%)'"
+                class="d-flex align-items-center justify-content-center">
+                <small *ngIf="seg.percentage >= 8" style="color:#fff;font-weight:600;font-size:11px;">{{ seg.percentage }}%</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Leyenda: identidad nunca solo por color -->
+          <div class="mt-2">
+            <span *ngFor="let seg of (data.requirementsComposition?.length ? data.requirementsComposition : data.controlsComposition)"
+              class="mr-2 d-inline-flex align-items-center">
+              <i [style.background]="seg.color" style="display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;"></i>
+              <small class="text-muted">{{ seg.name }}</small>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ¿En qué mejoramos/empeoramos? — la pregunta obvia después de ver que el % subió;
+           el gráfico y las tarjetas de arriba solo dicen "cuánto", esto dice "en qué". Compara
+           ítem por ítem la evaluación actual contra la anterior (mismo par que las tarjetas). -->
+      <div class="card border mb-2" *ngIf="data.previousEvaluationDescription">
+        <div class="card-header">
+          <h4 class="card-title">¿En qué mejoramos o empeoramos?</h4>
+          <small class="text-muted">{{ data.previousEvaluationDescription }} → {{ data.currentEvaluationDescription }}</small>
+        </div>
+        <div class="card-body">
+          <ng-container *ngIf="data.changes?.length; else sinCambios">
+            <div class="row">
+              <div class="col-md-6">
+                <h6 class="text-success"><i data-feather="arrow-up-circle" style="width:16px;height:16px;vertical-align:-3px;"></i>
+                  Mejoraron ({{ data.improvedCount }})</h6>
+                <ul class="list-unstyled" style="max-height:320px;overflow-y:auto;">
+                  <li *ngFor="let c of data.changes" [hidden]="!c.improved" class="mb-1 pb-1 border-bottom">
+                    <span class="badge badge-light-secondary mr-50">{{ c.code }}</span>
+                    <span>{{ c.name }}</span><br>
+                    <small class="text-muted">{{ c.previousLevel }} → <span class="text-success font-weight-bold">{{ c.currentLevel }}</span></small>
+                  </li>
+                </ul>
+                <p class="text-muted" *ngIf="data.improvedCount === 0">Ningún ítem mejoró en este ciclo.</p>
+              </div>
+              <div class="col-md-6">
+                <h6 class="text-danger"><i data-feather="arrow-down-circle" style="width:16px;height:16px;vertical-align:-3px;"></i>
+                  Empeoraron ({{ data.worsenedCount }})</h6>
+                <ul class="list-unstyled" style="max-height:320px;overflow-y:auto;">
+                  <li *ngFor="let c of data.changes" [hidden]="c.improved" class="mb-1 pb-1 border-bottom">
+                    <span class="badge badge-light-secondary mr-50">{{ c.code }}</span>
+                    <span>{{ c.name }}</span><br>
+                    <small class="text-muted">{{ c.previousLevel }} → <span class="text-danger font-weight-bold">{{ c.currentLevel }}</span></small>
+                  </li>
+                </ul>
+                <p class="text-muted" *ngIf="data.worsenedCount === 0">Ningún ítem empeoró en este ciclo.</p>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #sinCambios>
+            <p class="text-muted mb-0">Ningún ítem cambió de nivel de madurez entre estas dos evaluaciones.</p>
+          </ng-template>
+        </div>
       </div>
 
       <!-- Gráfico de línea (evolución) -->
@@ -203,6 +336,7 @@
         </div>
       </div>
 
+      </div>
     </ng-container>
 
   </div>

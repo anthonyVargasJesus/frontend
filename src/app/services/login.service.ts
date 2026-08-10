@@ -133,15 +133,15 @@ export class LoginService {
       this.router.navigate(['/pages/miscellaneous/not-authorized']);
     }
 
-    // Orden de prioridad
-    if (roles.includes(CODE_CURRENT_STANDARD_MODULE))
-      this.router.navigate(['/current-standard/home']);
-    else if (roles.includes(CODE_SECURITY_MODULE))
-      this.router.navigate(['/security/security-home']);
-        else if (roles.includes(CODE_GAP_MODULE))
+    // // Orden de prioridad
+    // if (roles.includes(CODE_CURRENT_STANDARD_MODULE))
+    //   this.router.navigate(['/current-standard/home']);
+    // else if (roles.includes(CODE_SECURITY_MODULE))
+    //   this.router.navigate(['/security/security-home']);
+    //     else if (roles.includes(CODE_GAP_MODULE))
       this.router.navigate(['/gap/gap-home']);
-    else
-      this.router.navigate(['/pages/miscellaneous/not-authorized']);
+    // else
+    //   this.router.navigate(['/pages/miscellaneous/not-authorized']);
   }
 
 

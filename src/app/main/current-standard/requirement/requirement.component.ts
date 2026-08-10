@@ -13,6 +13,8 @@ import { ErrorManager } from 'app/errors/error-manager';
 import Swal from 'sweetalert2';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { LoginModel } from 'app/models/login-model';
+import { StandardService } from 'app/services/standard.service';
+import { Standard } from 'app/models/standard';
 
 @Component({
   selector: 'app-requirement',
@@ -37,6 +39,7 @@ export class RequirementComponent implements OnInit {
 
   currentLoginModel: LoginModel = new LoginModel();
   coreConfig: any;
+  standard: Standard = new Standard();
 
   constructor(
     private requirementService: RequirementService,
@@ -44,6 +47,7 @@ export class RequirementComponent implements OnInit {
     private _coreConfigService: CoreConfigService,
     private dialog: MatDialog,
     private route: ActivatedRoute,
+    private standardService: StandardService,
   ) {
     this._unsubscribeAll = new Subject();
   }
@@ -58,16 +62,31 @@ export class RequirementComponent implements OnInit {
 
 
     this.getTheme();
-    this.initMenuName();
 
     if (this.standardId == undefined) {
       this.route.paramMap.subscribe((params: ParamMap) => {
         this.standardId = Number(params.get('id').toString());
-        this.get();
+        this.obtainStandard(this.standardId);
       });
     } else
-      this.get();
+      this.obtainStandard(this.standardId);
 
+  }
+
+  // Trae la norma actual para mostrar su nombre real en el breadcrumb
+  // (antes usaba currentLoginModel.cs, un valor fijo de la sesión que no
+  // cambia según qué norma se esté viendo — mismo patrón que ya usa
+  // ResponsibleComponent).
+  obtainStandard(id: number) {
+    this.standardService.obtain(id.toString())
+      .subscribe((res: any) => {
+        this.standard = res.data;
+        this.initMenuName();
+        this.get();
+      }, error => {
+        this.initMenuName();
+        this.get();
+      });
   }
 
   expandAll() {
@@ -106,7 +125,7 @@ export class RequirementComponent implements OnInit {
         type: '',
         links: [
           {
-            name: this.currentLoginModel.cs,
+            name: this.standard?.name || this.currentLoginModel.cs,
             isLink: false,
             link: '#'
           },

@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:host {
+    display: block;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #1c2733;
+}
+
+.mono {
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+.soa {
+    background: #f5f7f8;
+    margin: -1.5rem -2rem;
+    padding: 20px 27px 40px;
+}
+
+.soa__error {
+    background: #f5e3e1;
+    color: #a8443b;
+    border: 1px solid #e6b6ae;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.soa__retry {
+    background: #a8443b;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.soa__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .05);
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.soa__title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1c2733;
+}
+
+.soa__subtitle {
+    font-size: 11.5px;
+    color: #6b7480;
+    margin-top: 4px;
+}
+
+.soa__export-btn {
+    background: none;
+    border: none;
+    color: #2f6f5e;
+    cursor: pointer;
+    padding: 4px;
+    flex-shrink: 0;
+    border-radius: 6px;
+}
+
+.soa__export-btn:hover:not(:disabled) {
+    background: #e4f0eb;
+}
+
+.soa__export-btn:disabled {
+    opacity: .5;
+    cursor: default;
+}
+
+.soa__warning {
+    background: #f5e3e1;
+    color: #a8443b;
+    font-weight: 600;
+    font-size: 11.5px;
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.soa__card {
+    margin-bottom: 10px;
+}
+
+.soa__card-inner {
+    background: #ffffff;
+    border-radius: 12px;
+    border-left: 4px solid;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .05);
+    padding: 12px;
+}
+
+.soa__code {
+    font-size: 11px;
+    font-weight: 700;
+    background: #edf1f3;
+    color: #1c2733;
+    padding: 3px 8px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.soa__name {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.soa__pills {
+    display: flex;
+    gap: 6px;
+    margin: 8px 0;
+    flex-wrap: wrap;
+}
+
+.soa__pill {
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-size: 10.5px;
+    font-weight: 700;
+}
+
+.soa__justificacion {
+    font-size: 12px;
+    color: #6b7480;
+}

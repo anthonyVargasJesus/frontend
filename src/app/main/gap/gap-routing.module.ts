@@ -12,8 +12,17 @@ import { ComplianceEvolutionComponent } from './evaluation-process/compliance-ev
 import { BreachSeverityReportComponent } from './evaluation-process/breach-severity-report/breach-severity-report.component';
 import { GapPanelComponent } from './gap-panel/gap-panel.component';
 import { MyActionPlansComponent } from './my-action-plans/my-action-plans.component';
+import { GapHomeComponent } from './gap-home/gap-home.component';
+import { PlanDeAccionComponent } from './plan-de-accion/plan-de-accion.component';
+import { SoaReportComponent } from './soa-report/soa-report.component';
+import { HomeDashboardComponent } from './home-dashboard/home-dashboard.component';
 
 const routes: Routes = [
+    // Destino real de la redirección por rol GAP (login.service.ts → redirectByRole()).
+    { path: 'gap-home', component: GapHomeComponent, },
+    { path: 'inicio', component: HomeDashboardComponent, },
+    { path: 'plan-de-accion', component: PlanDeAccionComponent, },
+    { path: 'soa-report', component: SoaReportComponent, },
     { path: 'panel', component: GapPanelComponent, },
     { path: 'my-action-plans', component: MyActionPlansComponent, },
     { path: 'requirement-evaluation', component: CurrentRequirementEvaluationComponent, },
@@ -23,6 +32,14 @@ const routes: Routes = [
     { path: 'edit-breach/:breachId/:standardId', component: EditBreachByEvaluationComponent },
     {
         path: 'evaluation-admin',
+        component: EvaluationAdminComponent,
+        data: { animation: 'evaluation-admin' }
+    },
+    // Variante con norma explícita en la ruta: filtra la lista a esa norma desde el
+    // arranque (además, la pantalla igual deja elegir/cambiar la norma con un selector).
+    // Sin standardId (arriba) sigue trayendo todas las normas mezcladas, como antes.
+    {
+        path: 'evaluation-admin/:standardId',
         component: EvaluationAdminComponent,
         data: { animation: 'evaluation-admin' }
     },

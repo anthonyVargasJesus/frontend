@@ -73,9 +73,9 @@
                                 <label style="font-size: 22px; margin-top:-1px;">*</label>
                                 <label>)</label>
                             </div>
-                            <input type="number" formControlName="number"
-                                [ngClass]="{ 'is-invalid': submitted && f.number.errors }" maxlength="5" class="form-control" aria-describedby="" 
-                                autofocus="" tabindex="1">
+                            <input type="number" formControlName="number" step="0.1"
+                                [ngClass]="{ 'is-invalid': submitted && f.number.errors }" maxlength="5" class="form-control" aria-describedby=""
+                                autofocus="" tabindex="1" placeholder="Ej: 6 o 6.1">
                             <div *ngIf="submitted && f.number.errors" class="invalid-feedback">
                                 <div *ngIf="f.number.errors.required"> El número es obligatorio</div>
                                 <div *ngIf="f.number.errors.maxlength">El número no puede tener mas de 5 caracteres </div>

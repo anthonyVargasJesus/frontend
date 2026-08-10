@@ -1,0 +1,114 @@
+<div class="content-wrapper">
+    <div class="content-body">
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+        <div class="plan-de-accion">
+
+            <div class="plan-de-accion__body" *ngIf="!loading; else cargando">
+
+                <div class="plan-de-accion__error" *ngIf="errorMessage">
+                    {{ errorMessage }}
+                    <button type="button" class="plan-de-accion__retry" (click)="load()">Reintentar</button>
+                </div>
+
+                <ng-container *ngIf="!errorMessage">
+
+                    <div class="plan-de-accion__card">
+                        <div class="plan-de-accion__pct mono"
+                            [class.plan-de-accion__pct--good]="totals.total > 0 && totals.completed === totals.total"
+                            [class.plan-de-accion__pct--bad]="totals.total === 0 || totals.completed < totals.total">
+                            {{ totals.completed }}/{{ totals.total }}
+                        </div>
+                        <div class="plan-de-accion__caption">
+                            acciones completadas · {{ filterCounts.todas }} brechas
+                        </div>
+                        <div class="plan-de-accion__bar">
+                            <div class="plan-de-accion__bar-seg" [style.width.%]="progressPct"></div>
+                        </div>
+                    </div>
+
+                    <div class="plan-de-accion__filters">
+                        <div class="plan-de-accion__estado-chips">
+                            <button type="button" class="chip" [class.active]="filtroEstado === 'todas'"
+                                (click)="filtroEstado = 'todas'">
+                                Todas ({{ filterCounts.todas }})
+                            </button>
+                            <button type="button" class="chip chip--estado" [class.active]="filtroEstado === 'noCumple'"
+                                [style.color]="filtroEstado === 'noCumple' ? '#fff' : statusChipColor('No cumple')"
+                                [style.background]="filtroEstado === 'noCumple' ? statusChipColor('No cumple') : '#fff'"
+                                [style.border-color]="statusChipColor('No cumple')"
+                                (click)="filtroEstado = 'noCumple'">
+                                No cumple ({{ filterCounts.noCumple }})
+                            </button>
+                            <button type="button" class="chip chip--estado" [class.active]="filtroEstado === 'parcial'"
+                                [style.color]="filtroEstado === 'parcial' ? '#fff' : statusChipColor('Parcial')"
+                                [style.background]="filtroEstado === 'parcial' ? statusChipColor('Parcial') : '#fff'"
+                                [style.border-color]="statusChipColor('Parcial')"
+                                (click)="filtroEstado = 'parcial'">
+                                Parcial ({{ filterCounts.parcial }})
+                            </button>
+                        </div>
+
+                        <div class="plan-de-accion__filters-right">
+                            <select class="plan-de-accion__sort" [(ngModel)]="sortOption">
+                                <option value="numeracion">Orden: Numeración</option>
+                                <option value="estado">Orden: Estado</option>
+                            </select>
+
+                            <button type="button" class="chip chip--group" [class.active]="groupByTheme"
+                                (click)="groupByTheme = !groupByTheme">
+                                Agrupar por tema
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-muted text-center py-5" *ngIf="rows.length === 0">
+                        {{ emptyMessage }}
+                    </div>
+
+                    <ng-container *ngFor="let row of rows; trackBy: trackByRow">
+
+                        <div class="plan-de-accion__theme-header" *ngIf="row.kind === 'theme'">
+                            <span>{{ row.theme }}</span>
+                            <span class="text-muted">({{ row.count }})</span>
+                        </div>
+
+                        <div class="plan-de-accion__breach" *ngIf="row.kind === 'breach'">
+                            <div class="plan-de-accion__breach-head" (click)="toggleBreach(row.resolved.breach.breachId)">
+                                <span class="mono plan-de-accion__breach-code">{{ row.resolved.breach.numerationToShow }}</span>
+                                <div class="plan-de-accion__breach-title">{{ row.resolved.breach.title }}</div>
+                                <span class="status-badge" [style.color]="row.resolved.colorHex"
+                                    [style.border-color]="row.resolved.colorHex">
+                                    {{ row.resolved.estado }}
+                                </span>
+                                <mat-icon class="plan-de-accion__chevron">
+                                    {{ isExpanded(row.resolved.breach.breachId) ? 'expand_less' : 'expand_more' }}
+                                </mat-icon>
+                            </div>
+
+                            <div class="plan-de-accion__breach-detail" *ngIf="isVisited(row.resolved.breach.breachId)"
+                                [hidden]="!isExpanded(row.resolved.breach.breachId)">
+                                <app-gap-action-plan-list [breachId]="row.resolved.breach.breachId"
+                                    [evaluationId]="evaluationId" [standardId]="standardId"
+                                    [statusesInput]="actionPlanStatuses" [prioritiesInput]="actionPlanPriorities"
+                                    [usersInput]="users"
+                                    (countsChanged)="onActionPlanCounts(row.resolved.breach.breachId, $event)">
+                                </app-gap-action-plan-list>
+                            </div>
+                        </div>
+
+                    </ng-container>
+
+                </ng-container>
+
+            </div>
+
+            <ng-template #cargando>
+                <div class="text-center py-5">
+                    <div class="spinner-grow text-primary" role="status"></div>
+                </div>
+            </ng-template>
+
+        </div>
+    </div>
+</div>

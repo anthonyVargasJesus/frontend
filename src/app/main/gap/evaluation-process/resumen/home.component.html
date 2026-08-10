@@ -75,6 +75,17 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-md-12">
+
+                  <div class="d-flex justify-content-center align-items-center mb-1">
+                    <label for="evaluationSelect" class="mb-0 mr-1" style="font-weight: 600;">Evaluación:</label>
+                    <select id="evaluationSelect" class="form-control" style="max-width: 320px;"
+                      [ngModel]="selectedEvaluationId" (ngModelChange)="onEvaluationChange($event)">
+                      <option *ngFor="let item of evaluationsList" [ngValue]="item.evaluationId">
+                        {{item.description}} — {{item.standard?.name}}
+                      </option>
+                    </select>
+                  </div>
+
                   <div class="text-center">
                     <h1 class="text-center" style="margin-top: 5px;margin-bottom: 5px;"> {{evaluation.description}}
                       ({{evaluation.startDate | date: 'dd/MM/yyyy'}})</h1>
@@ -176,7 +187,7 @@
                   <ng-template ngbNavContent>
                     <div class="tab-pane active" role="tabpanel">
 
-                      <app-compliance-evolution [embedded]="true"></app-compliance-evolution>
+                      <app-compliance-evolution [embedded]="true" [standardId]="standardId"></app-compliance-evolution>
 
                     </div>
                   </ng-template>

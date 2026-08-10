@@ -23,6 +23,25 @@ export class ActionPlanService {
   }
 
   /**
+   * Todo lo que "Mis acciones" necesita para cargar en una sola respuesta (tareas del usuario +
+   * catálogo de estados) — mismo endpoint que usa la app móvil, reemplaza evaluation.getCurrent
+   * + getByUser + actionPlanStatus.getAll.
+   */
+  getMyActionsBootstrap(): Observable<any> {
+    return this.http.get<any>(`${this.endpoint}/my-actions-bootstrap`);
+  }
+
+  /**
+   * Conteo total/completadas por brecha de una evaluación, agregado server-side en una sola
+   * consulta — usado por "Plan de acción" para el resumen "X/Y acciones completadas" sin pedir
+   * un endpoint por brecha. Misma llamada que ya usa la app móvil.
+   */
+  getCountsByBreach(evaluationId: number): Observable<any> {
+    const params = new HttpParams().set('evaluationId', evaluationId.toString());
+    return this.http.get<any>(`${this.endpoint}/countsByBreach`, { params });
+  }
+
+  /**
    * Tareas asignadas al usuario logeado (JWT) para una evaluación — "Mis acciones".
    */
   getByUser(evaluationId: number): Observable<ApiResponse<ActionPlan>> {

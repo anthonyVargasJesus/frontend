@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { getResults, getSearchResults, INIT_PAGE, PAGE_SIZE } from 'app/config/config';
 import { LoginService } from 'app/services/login.service';
 import { ErrorManager } from 'app/errors/error-manager';
 import { Evaluation } from 'app/models/evaluation';
+import { Standard } from 'app/models/standard';
+import { StandardService } from 'app/services/standard.service';
 import Swal from 'sweetalert2';
 import { Subject } from 'rxjs/internal/Subject';
 import { CoreConfigService } from '@core/services/config.service';
@@ -43,10 +45,18 @@ export class EvaluationAdminComponent implements OnInit {
   private _unsubscribeAll: Subject<any>;
   private panelClass: string;
 
+  // Norma para diferenciar/filtrar la lista — antes esta pantalla mezclaba evaluaciones
+  // de todas las normas sin distinción visible (viable mientras solo existía ISO 27001;
+  // ambiguo ahora que hay más de una). Si la ruta trae :standardId se usa como filtro
+  // inicial; el selector debajo permite cambiarlo o volver a "Todas las normas".
+  standards: Standard[] = [];
+  standardId: number | null = null;
 
   constructor(
     private evaluationService: EvaluationService,
+    private standardService: StandardService,
     private router: Router,
+    private route: ActivatedRoute,
     private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
     private dialog: MatDialog
@@ -58,6 +68,24 @@ export class EvaluationAdminComponent implements OnInit {
     this.getTheme();
     this.initMenuName();
     this.pageSize = PAGE_SIZE;
+    this.getStandards();
+
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      const raw = params.get('standardId');
+      this.standardId = raw ? Number(raw) : null;
+      this.get();
+    });
+  }
+
+  getStandards() {
+    this.standardService.getAll()
+      .subscribe((res: any) => {
+        this.standards = res.data;
+      }, error => ErrorManager.handleError(error));
+  }
+
+  onStandardChange() {
+    this.skip = 0;
     this.get();
   }
 
@@ -104,7 +132,7 @@ export class EvaluationAdminComponent implements OnInit {
 
   get() {
     this.loading = true;
-    this.evaluationService.get(this.skip, this.pageSize, this.searchText)
+    this.evaluationService.get(this.skip, this.pageSize, this.searchText, this.standardId)
       .subscribe((res: any) => {
         this.asignObjects(res);
         this.page = (this.skip / this.pageSize) + 1;

@@ -36,6 +36,11 @@ export class HomeComponent implements OnInit {
   standardId: string = '';
   standardName: string = '';
 
+  // Lista para el desplegable de "Resumen de resultados": todas las evaluaciones de
+  // la empresa (no solo la marcada como actual), para poder revisar históricas.
+  evaluationsList: any[] = [];
+  selectedEvaluationId: number;
+
   currentScope: Scope = new Scope();
   currentPolicy: Policy = new Policy();
 
@@ -58,20 +63,35 @@ export class HomeComponent implements OnInit {
       this.coreConfig = config;
     });
 
+    this.loadEvaluationsList();
     this.getCurrent();
 
   }
 
-  getCurrent() {
+  // Puebla el desplegable con todas las evaluaciones de la empresa. Se pide aparte de
+  // getCurrent() porque son dos endpoints distintos; no bloquea la carga principal.
+  loadEvaluationsList() {
+    this.evaluationService.getAll()
+      .subscribe((res: any) => {
+        this.evaluationsList = res.data || [];
+      }, error => {
+        ErrorManager.handleError(error);
+      });
+  }
+
+  // Sin evaluationId: trae la evaluación "actual" (carga inicial de la pantalla).
+  // Con evaluationId: trae esa evaluación puntual (selección desde el desplegable).
+  getCurrent(evaluationId?: number) {
     this.loading = true;
-    this.evaluationService.getCurrent()
+    this.evaluationService.getCurrent(evaluationId)
       .subscribe((res: any) => {
 
         this.evaluation = res.data;
         this.standardId = this.evaluation.standardId.toString();
         this.evaluationId =  this.evaluation.evaluationId.toString();
         this.standardName = this.evaluation.standard.name;
-       
+        this.selectedEvaluationId = this.evaluation.evaluationId;
+
         this.currentScope = res.data.currentScope;
         this.currentPolicy = res.data.currentPolicy;
 
@@ -81,6 +101,10 @@ export class HomeComponent implements OnInit {
         this.loading = false;
         ErrorManager.handleError(error);
       });
+  }
+
+  onEvaluationChange(evaluationId: string) {
+    this.getCurrent(Number(evaluationId));
   }
 
 

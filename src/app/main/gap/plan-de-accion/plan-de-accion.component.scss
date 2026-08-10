@@ -1,0 +1,228 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:host {
+    display: block;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #1c2733;
+}
+
+.mono {
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+.plan-de-accion {
+    background: #f5f7f8;
+    margin: -1.5rem -2rem;
+    padding: 20px 27px 40px;
+}
+
+.plan-de-accion__error {
+    background: #f5e3e1;
+    color: #a8443b;
+    border: 1px solid #e6b6ae;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.plan-de-accion__retry {
+    background: #a8443b;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.plan-de-accion__card {
+    background: #ffffff;
+    border: 1px solid #e2e7ea;
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+}
+
+.plan-de-accion__pct {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+    color: #a8443b;
+}
+
+.plan-de-accion__pct--good {
+    color: #2f6f5e;
+}
+
+.plan-de-accion__pct--bad {
+    color: #a8443b;
+}
+
+.plan-de-accion__caption {
+    font-size: 12px;
+    color: #8a939b;
+    margin-top: 4px;
+}
+
+.plan-de-accion__bar {
+    margin-top: 10px;
+    height: 6px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #eaedef;
+}
+
+.plan-de-accion__bar-seg {
+    height: 100%;
+    background: #2f6f5e;
+    transition: width .35s ease;
+}
+
+.plan-de-accion__filters {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.plan-de-accion__estado-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.plan-de-accion__filters-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-weight: 700;
+    font-family: inherit;
+    background: #ffffff;
+    color: #4a5560;
+    border: 1.5px solid #e2e7ea;
+    cursor: pointer;
+    transition: transform .12s ease;
+}
+
+.chip:hover {
+    transform: translateY(-1px);
+}
+
+.chip:focus-visible {
+    outline: 2px solid #1c2733;
+    outline-offset: 2px;
+}
+
+.chip.active {
+    background: #1c2733;
+    color: #f5f7f8;
+    border-color: #1c2733;
+}
+
+.chip--estado {
+    border-width: 1.5px;
+    border-style: solid;
+}
+
+.chip--group.active {
+    background: #1c2733;
+    border-color: #1c2733;
+    color: #f5f7f8;
+}
+
+.plan-de-accion__sort {
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 700;
+    font-family: inherit;
+    background: #eaedef;
+    color: #1c2733;
+    border: none;
+    cursor: pointer;
+}
+
+.plan-de-accion__theme-header {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 12px 4px 8px;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.plan-de-accion__breach {
+    background: #ffffff;
+    border: 1px solid #e2e7ea;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+}
+
+.plan-de-accion__breach-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px;
+    cursor: pointer;
+}
+
+.plan-de-accion__breach-code {
+    font-size: 12px;
+    font-weight: 700;
+    background: #edf1f3;
+    color: #1c2733;
+    padding: 3px 8px;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.plan-de-accion__breach-title {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.plan-de-accion__chevron {
+    color: #6b7480;
+    flex-shrink: 0;
+}
+
+.plan-de-accion__breach-detail {
+    padding: 0 16px 16px;
+    border-top: 1px solid #edf1f3;
+}
+
+.status-badge {
+    display: inline-block;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 3px 9px;
+    font-weight: 700;
+    font-size: 11px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .chip,
+    .plan-de-accion__bar-seg {
+        transition: none !important;
+    }
+}

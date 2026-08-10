@@ -1,0 +1,258 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:host {
+    display: block;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #1c2733;
+}
+
+.mono {
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+.hd {
+    background: #f5f7f8;
+    margin: -1.5rem -2rem;
+    padding: 20px 27px 40px;
+}
+
+.hd__error {
+    background: #f5e3e1;
+    color: #a8443b;
+    border: 1px solid #e6b6ae;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.hd__retry {
+    background: #a8443b;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.hd__card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .05);
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.hd__section-title {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: .2px;
+    margin-bottom: 10px;
+}
+
+.hd__card-title {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* Cumplimiento */
+
+.hd__compliance {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.hd__donut-wrap {
+    position: relative;
+    width: 118px;
+    height: 118px;
+    flex-shrink: 0;
+}
+
+.hd__donut {
+    width: 100%;
+    height: 100%;
+}
+
+.hd__donut circle {
+    transition: stroke-dasharray .25s ease;
+}
+
+.hd__donut-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.hd__donut-pct {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.hd__donut-label {
+    font-size: 10px;
+    color: #6b7480;
+}
+
+.hd__compliance-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.hd__compliance-subtitle {
+    font-size: 11.5px;
+    color: #6b7480;
+    margin: 2px 0 8px;
+}
+
+.hd__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+}
+
+.hd__legend span {
+    font-size: 11px;
+    color: #6b7480;
+    display: inline-flex;
+    align-items: center;
+}
+
+.hd__legend i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+    flex-shrink: 0;
+}
+
+/* Por área */
+
+.hd__area-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    margin-bottom: 20px;
+}
+
+.hd__area-card {
+    flex: 0 0 auto;
+    width: 140px;
+    padding: 12px;
+    border-radius: 14px;
+    border-top: 3px solid;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
+}
+
+.hd__area-name {
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.hd__area-pct {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.hd__area-fraction {
+    font-size: 10.5px;
+    color: #8a939b;
+}
+
+/* Stats grid */
+
+.hd__stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.hd__stat-tile {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .05);
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hd__stat-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.hd__stat-value {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.hd__stat-label {
+    font-size: 10px;
+    color: #6b7480;
+}
+
+/* Severidad */
+
+.hd__severity-bar {
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    background: #eaedef;
+}
+
+/* Continuar evaluando */
+
+.hd__pending-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .05);
+    padding: 10px 12px;
+    margin-bottom: 8px;
+}
+
+.hd__pending-code {
+    font-size: 11px;
+    font-weight: 700;
+    background: #edf1f3;
+    color: #1c2733;
+    padding: 3px 8px;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.hd__pending-name {
+    font-size: 12.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

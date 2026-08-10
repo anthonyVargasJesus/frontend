@@ -2,8 +2,6 @@
     display: block;
     font-family: 'Inter', system-ui, sans-serif;
     color: #1c2733;
-    max-width: 960px;
-    margin: 0 auto;
     padding: 24px;
 }
 
@@ -19,6 +17,113 @@
     font-size: 13px;
     color: #4a5560;
     margin-bottom: 20px;
+}
+
+.my-ap__error {
+    background: #f5e3e1;
+    color: #a8443b;
+    border: 1px solid #e6b6ae;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.my-ap__retry {
+    background: #a8443b;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.my-ap__filters {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.my-ap__priority-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.my-ap__filters-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-weight: 700;
+    font-family: inherit;
+    background: #ffffff;
+    color: #4a5560;
+    border: 1.5px solid #e2e7ea;
+    cursor: pointer;
+    transition: transform .12s ease;
+}
+
+.chip:hover {
+    transform: translateY(-1px);
+}
+
+.chip.active {
+    background: #1c2733;
+    color: #f5f7f8;
+    border-color: #1c2733;
+}
+
+.chip--priority {
+    border-width: 1.5px;
+    border-style: solid;
+}
+
+.chip--group.active {
+    background: #1c2733;
+    border-color: #1c2733;
+    color: #f5f7f8;
+}
+
+.my-ap__sort {
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 700;
+    font-family: inherit;
+    background: #eaedef;
+    color: #1c2733;
+    border: none;
+    cursor: pointer;
+}
+
+.my-ap__bucket-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 4px 8px;
+    font-size: 13px;
+    font-weight: 800;
+    color: #1c2733;
+}
+
+.my-ap__bucket-header--overdue {
+    color: #a8443b;
 }
 
 .my-ap__item {

@@ -1,1 +1,89 @@
-<p>gap-home works!</p>
+<div class="content-wrapper">
+    <div class="content-body">
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+        <div class="gap-home">
+
+            <header class="gap-home__header">
+                <div class="gap-home__header-inner">
+                    <div>
+                        <div class="gap-home__eyebrow">
+                            Análisis de brechas · {{ evaluation?.standard?.name || 'Estándar' }}
+                        </div>
+                        <h1 class="gap-home__title">{{ evaluation?.description || 'Cargando...' }}</h1>
+                    </div>
+                    <div class="gap-home__stat">
+                        <div class="gap-home__pct mono" [ngClass]="pctClass()">{{ stats.pct }}%</div>
+                        <div class="gap-home__stat-label">
+                            cumplimiento estimado · {{ stats.evaluados }}/{{ stats.total }} evaluados ·
+                            {{ totalEvidencias }} con evidencia
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="gap-home__body" *ngIf="!loading; else cargando">
+
+                <div class="gap-home__card">
+                    <div class="gap-home__card-title">Mapa de brecha por tema</div>
+
+                    <div class="gap-theme-row" *ngFor="let t of temaRows">
+                        <div class="gap-theme-row__label">{{ t.theme }}</div>
+                        <div class="gap-theme-row__bar">
+                            <div class="gap-theme-row__seg" *ngFor="let seg of t.segments"
+                                [style.width.%]="t.total ? (seg.count / t.total * 100) : 0"
+                                [style.background]="seg.color" [title]="seg.name + ': ' + seg.count"></div>
+                            <div class="gap-theme-row__seg"
+                                [style.width.%]="t.total ? (t.pendiente / t.total * 100) : 0"
+                                [title]="'Pendiente: ' + t.pendiente" style="background:#EAEDEF;"></div>
+                        </div>
+                        <div class="gap-theme-row__count mono">{{ t.evaluados }}/{{ t.total }}</div>
+                    </div>
+
+                    <div class="gap-theme-legend">
+                        <span *ngFor="let ml of maturityLevels">
+                            <i [style.background]="ml.color"></i> {{ ml.name }} ({{ countEstado(ml.name) }})
+                        </span>
+                        <span><i style="background:#8A939B"></i> Pendiente ({{ countEstado('Pendiente') }})</span>
+                    </div>
+                </div>
+
+                <input type="search" class="gap-home__search" [(ngModel)]="searchText"
+                    placeholder="Buscar por código o nombre..." />
+
+                <nav class="gap-home__filters">
+                    <button type="button" *ngFor="let tema of temas" class="chip"
+                        [class.active]="filtroTema === tema" (click)="filtroTema = tema">
+                        {{ tema }}
+                    </button>
+                </nav>
+
+                <app-gap-evaluation-item *ngFor="let item of pageItems; trackBy: trackByItem" [tipo]="item.tipo"
+                    [theme]="item.theme" [evaluacion]="item.evaluacion" [standardId]="standardId"
+                    [evaluationId]="evaluationId" [maturityLevelsInput]="maturityLevels"
+                    [responsiblesInput]="responsibles" (updateEvent)="onUpdate()">
+                </app-gap-evaluation-item>
+
+                <div class="text-muted text-center mt-3" *ngIf="pageItems.length === 0 && !loadingMore">
+                    No hay ítems que coincidan con la búsqueda o el filtro.
+                </div>
+
+                <!-- Sentinel: cuando entra en viewport (ver ngAfterViewInit), pide la siguiente
+                     página. Vacío en el DOM, solo marca el final de la lista cargada. -->
+                <div #scrollSentinel></div>
+
+                <div class="text-center py-3" *ngIf="loadingMore">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                </div>
+
+            </div>
+
+            <ng-template #cargando>
+                <div class="text-center py-5">
+                    <div class="spinner-grow text-primary" role="status"></div>
+                </div>
+            </ng-template>
+
+        </div>
+    </div>
+</div>

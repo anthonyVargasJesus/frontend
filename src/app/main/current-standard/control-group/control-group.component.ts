@@ -15,6 +15,8 @@ import { ErrorManager } from 'app/errors/error-manager';
 import Swal from 'sweetalert2';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { LoginModel } from 'app/models/login-model';
+import { StandardService } from 'app/services/standard.service';
+import { Standard } from 'app/models/standard';
 
 @Component({
   selector: 'app-control-group',
@@ -49,13 +51,15 @@ export class ControlGroupComponent implements OnInit {
 
   currentLoginModel: LoginModel = new LoginModel();
   coreConfig: any;
-  
+  standard: Standard = new Standard();
+
   constructor(
     private controlGroupService: ControlGroupService,
     private loginService: LoginService,
     private _coreConfigService: CoreConfigService,
     private dialog: MatDialog,
     private route: ActivatedRoute,
+    private standardService: StandardService,
   ) {
     this._unsubscribeAll = new Subject();
   }
@@ -70,15 +74,30 @@ export class ControlGroupComponent implements OnInit {
     this.currentLoginModel = this.loginService.getCurrentUser();
 
     this.getTheme();
-    this.initMenuName();
     this.pageSize = PAGE_SIZE;
     if (this.standardId == undefined) {
       this.route.paramMap.subscribe((params: ParamMap) => {
         this.standardId = Number(params.get('id').toString());
+        this.obtainStandard(this.standardId);
+      });
+    } else
+      this.obtainStandard(this.standardId);
+  }
+
+  // Trae la norma actual para mostrar su nombre real en el breadcrumb
+  // (antes usaba currentLoginModel.cs, un valor fijo de la sesión que no
+  // cambia según qué norma se esté viendo — mismo patrón que ya usa
+  // ResponsibleComponent).
+  obtainStandard(id: number) {
+    this.standardService.obtain(id.toString())
+      .subscribe((res: any) => {
+        this.standard = res.data;
+        this.initMenuName();
+        this.get();
+      }, error => {
+        this.initMenuName();
         this.get();
       });
-    } else 
-      this.get();
   }
 
   expandAll(){
@@ -117,7 +136,7 @@ export class ControlGroupComponent implements OnInit {
         type: '',
         links: [
           {
-            name: this.currentLoginModel.cs,
+            name: this.standard?.name || this.currentLoginModel.cs,
             isLink: false,
             link: '#'
           },
