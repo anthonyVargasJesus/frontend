@@ -16,6 +16,7 @@ import { GapHomeComponent } from './gap-home/gap-home.component';
 import { PlanDeAccionComponent } from './plan-de-accion/plan-de-accion.component';
 import { SoaReportComponent } from './soa-report/soa-report.component';
 import { HomeDashboardComponent } from './home-dashboard/home-dashboard.component';
+import { MaturityRadarComponent } from './evaluation-process/maturity-radar/maturity-radar.component';
 
 const routes: Routes = [
     // Destino real de la redirección por rol GAP (login.service.ts → redirectByRole()).
@@ -50,6 +51,7 @@ const routes: Routes = [
     },
     { path: 'action-plan-progress', component: ActionPlanProgressComponent },
     { path: 'compliance-evolution', component: ComplianceEvolutionComponent },
+    { path: 'maturity-radar', component: MaturityRadarComponent },
     { path: 'breach-severity-report', component: BreachSeverityReportComponent },
 ];
 

@@ -16,6 +16,7 @@ import { VulnerabilityComponent } from './vulnerability/vulnerability.component'
 import { RiskLevelComponent } from './risk-level/risk-level.component';
 import { RiskTreatmentMethodComponent } from './risk-treatment-method/risk-treatment-method.component';
 import { ResidualRiskComponent } from './residual-risk/residual-risk.component';
+import { RiskHeatmapComponent } from './risk-heatmap/risk-heatmap.component';
 
 const routes: Routes = [
     { path: 'identification', component: RisksIdentificationComponent, },
@@ -61,6 +62,11 @@ const routes: Routes = [
         path: 'residual-risk',
         component: ResidualRiskComponent,
         data: { animation: 'residual-risk' }
+    },
+    {
+        path: 'heatmap',
+        component: RiskHeatmapComponent,
+        data: { animation: 'risk-heatmap' }
     },
     //   },
 ];

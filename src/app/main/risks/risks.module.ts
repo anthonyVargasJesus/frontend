@@ -57,6 +57,7 @@ import { EditRiskTreatmentMethodComponent } from './risk-treatment-method/edit-r
 import { RiskLevelComponent } from './risk-level/risk-level.component';
 import { AddRiskLevelComponent } from './risk-level/add-risk-level/add-risk-level.component';
 import { EditRiskLevelComponent } from './risk-level/edit-risk-level/edit-risk-level.component';
+import { RiskHeatmapComponent } from './risk-heatmap/risk-heatmap.component';
 
 
 @NgModule({
@@ -73,6 +74,7 @@ import { EditRiskLevelComponent } from './risk-level/edit-risk-level/edit-risk-l
     ResidualRiskComponent, AddResidualRiskComponent, EditResidualRiskComponent,
     RiskLevelComponent, AddRiskLevelComponent, EditRiskLevelComponent,
     RiskTreatmentMethodComponent, AddRiskTreatmentMethodComponent, EditRiskTreatmentMethodComponent,
+    RiskHeatmapComponent,
   ],
   imports: [
     CommonModule,

@@ -60,6 +60,7 @@ import { EditEvaluationAdminComponent } from './evaluation-admin/edit-evaluation
 import { EvaluationProcessListComponent } from './evaluation-process-list/evaluation-process-list.component';
 import { ActionPlanProgressComponent } from './evaluation-process/action-plan-progress/action-plan-progress.component';
 import { ComplianceEvolutionComponent } from './evaluation-process/compliance-evolution/compliance-evolution.component';
+import { MaturityRadarComponent } from './evaluation-process/maturity-radar/maturity-radar.component';
 import { BreachSeverityReportComponent } from './evaluation-process/breach-severity-report/breach-severity-report.component';
 import { GapEvaluationItemComponent } from './gap-evaluation-item/gap-evaluation-item.component';
 import { GapPanelComponent } from './gap-panel/gap-panel.component';
@@ -91,6 +92,7 @@ import { HomeDashboardComponent } from './home-dashboard/home-dashboard.componen
          EvaluationAdminComponent, AddEvaluationAdminComponent, EditEvaluationAdminComponent, EvaluationProcessListComponent,
          ActionPlanProgressComponent,
          ComplianceEvolutionComponent,
+         MaturityRadarComponent,
          BreachSeverityReportComponent,
          GapEvaluationItemComponent,
          GapPanelComponent,

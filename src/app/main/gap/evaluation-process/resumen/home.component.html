@@ -26,51 +26,6 @@
       <ng-container *ngIf="!loading">
         <section class="users-list-wrapper">
 
-
-          <div class="row">
-
-            <div class="col-md-6">
-
-              <div class="card">
-
-                <div class="card-header">
-                  <div class="card-title">
-                    {{currentScope.name}}
-                  </div>
-                </div>
-
-                <div class="card-body">
-                  <!-- <div *ngIf="currentPolicy" class="card-text"> {{currentScope.name}}</div> -->
-                  <div *ngIf="currentPolicy" class="card-text"> {{currentScope.description}}</div>
-                </div>
-
-              </div>
-
-            </div>
-
-            <div class="col-md-6">
-
-
-              <div class="card">
-
-                <div class="card-header">
-                  <div class="card-title">
-                    {{currentPolicy.name}}
-                  </div>
-                </div>
-
-                <div class="card-body">
-                  <!-- <div *ngIf="currentPolicy" class="card-text"> {{currentPolicy.name}}</div> -->
-                  <div *ngIf="currentPolicy" class="card-text"> {{currentPolicy.description}}</div>
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-
           <div *ngIf="evaluation" class="card">
             <div class="card-body">
               <div class="row">

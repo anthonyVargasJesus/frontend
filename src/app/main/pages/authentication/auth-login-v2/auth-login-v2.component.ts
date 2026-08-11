@@ -141,9 +141,9 @@ export class AuthLoginV2Component implements OnInit {
 
       if (user) {
 
-        if (!user.emailVerified || user.emailVerified == false) {
-          this.router.navigate(['/pages/authentication/send-mail', email]);
-        } else {
+        // if (!user.emailVerified || user.emailVerified == false) {
+        //   this.router.navigate(['/pages/authentication/send-mail', email]);
+        // } else {
 
           let myUser = new User();
           myUser.email = email;
@@ -153,7 +153,7 @@ export class AuthLoginV2Component implements OnInit {
             myUser.token = idToken;
             this.loginToBackEnd(myUser);
           });
-        }
+        //}
 
       } else {
         this.loading = false;

@@ -1,0 +1,228 @@
+<div class="content-wrapper">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <!-- Toggle de vista + exportar. Fuera de #reportContent, igual que en compliance-evolution. -->
+    <div class="d-flex align-items-center justify-content-between mb-1">
+      <div class="btn-group" role="group" *ngIf="data?.inherent?.matrix?.length">
+        <button type="button" class="btn btn-sm" [class.btn-primary]="view === 'residual'"
+          [class.btn-outline-primary]="view !== 'residual'" (click)="setView('residual')">
+          Riesgo residual
+        </button>
+        <button type="button" class="btn btn-sm" [class.btn-primary]="view === 'inherent'"
+          [class.btn-outline-primary]="view !== 'inherent'" (click)="setView('inherent')">
+          Riesgo inherente
+        </button>
+      </div>
+      <div class="ml-auto" *ngIf="data?.inherent?.matrix?.length">
+        <button type="button" class="btn btn-outline-secondary btn-sm mr-1" [disabled]="exportingPdf" (click)="exportPdf()">
+          <span *ngIf="exportingPdf" class="spinner-border spinner-border-sm mr-50" role="status"></span>
+          <i data-feather="file-text" [hidden]="exportingPdf" style="width:14px;height:14px;vertical-align:-2px;"></i> PDF
+        </button>
+        <button type="button" class="btn btn-outline-success btn-sm" [disabled]="exporting" (click)="exportExcel()">
+          <span *ngIf="exporting" class="spinner-border spinner-border-sm mr-50" role="status"></span>
+          <i data-feather="download" [hidden]="exporting" style="width:14px;height:14px;vertical-align:-2px;"></i> Excel
+        </button>
+      </div>
+    </div>
+
+    <!-- Cargando -->
+    <ng-container *ngIf="loading">
+      <div class="container text-center mt-5 mb-5">
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+      </div>
+    </ng-container>
+
+    <!-- Sin evaluación / sin riesgos valorados -->
+    <ng-container *ngIf="!loading && (!data || !data.evaluationId || !data.inherent?.matrix?.length)">
+      <div class="card">
+        <div class="card-body text-center py-5">
+          <i data-feather="grid" style="width:48px;height:48px;" class="text-muted"></i>
+          <h5 class="mt-2">Sin riesgos valorados</h5>
+          <p class="text-muted" *ngIf="data && data.totalRisks > 0">
+            Hay {{ data.totalRisks }} riesgo(s) identificado(s) en la evaluación actual, pero ninguno tiene todavía una
+            evaluación de riesgo (amenaza/vulnerabilidad) registrada.
+          </p>
+          <p class="text-muted" *ngIf="!data || data.totalRisks === 0">
+            No hay riesgos registrados en la evaluación actual.
+          </p>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Con datos -->
+    <ng-container *ngIf="!loading && data && data.evaluationId && data.inherent?.matrix?.length">
+      <div #reportContent>
+
+        <div class="d-flex align-items-center mb-1">
+          <span class="badge badge-light-primary" style="font-size:1rem;padding:0.6rem 1rem;">
+            <i data-feather="shield" style="width:14px;height:14px;margin-right:6px;vertical-align:-2px;"></i>
+            Evaluación: {{ data.evaluationDescription }}
+          </span>
+        </div>
+
+        <!-- Tarjetas resumen -->
+        <div class="row match-height mb-2">
+
+          <div class="col-xl-3 col-md-6 col-12">
+            <div class="card card-statistics">
+              <div class="card-body statistics-body">
+                <div class="media align-items-center">
+                  <div class="media-body">
+                    <p class="card-text mb-25">Riesgos valorados</p>
+                    <h2 class="font-weight-bolder mb-0">{{ data.totalRisks - data.unassessedRisks }}</h2>
+                    <small class="text-muted" *ngIf="data.unassessedRisks > 0">
+                      + {{ data.unassessedRisks }} sin valorar
+                    </small>
+                  </div>
+                  <div class="avatar bg-light-primary ml-1">
+                    <div class="avatar-content"><i data-feather="layers" class="avatar-icon"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-6 col-12">
+            <div class="card card-statistics">
+              <div class="card-body statistics-body">
+                <div class="media align-items-center">
+                  <div class="media-body">
+                    <p class="card-text mb-25">Redujeron su nivel</p>
+                    <h2 class="font-weight-bolder mb-0 text-success">{{ data.reducedCount }}</h2>
+                    <small class="text-muted">por tratamiento efectivo</small>
+                  </div>
+                  <div class="avatar bg-light-success ml-1">
+                    <div class="avatar-content"><i data-feather="trending-down" class="avatar-icon"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-6 col-12">
+            <div class="card card-statistics">
+              <div class="card-body statistics-body">
+                <div class="media align-items-center">
+                  <div class="media-body">
+                    <p class="card-text mb-25">Sin cambio de nivel</p>
+                    <h2 class="font-weight-bolder mb-0 text-warning">{{ data.unchangedCount }}</h2>
+                    <small class="text-muted">tratamiento pendiente o insuficiente</small>
+                  </div>
+                  <div class="avatar bg-light-warning ml-1">
+                    <div class="avatar-content"><i data-feather="minus-circle" class="avatar-icon"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-6 col-12">
+            <div class="card card-statistics">
+              <div class="card-body statistics-body">
+                <div class="media align-items-center">
+                  <div class="media-body">
+                    <p class="card-text mb-25">Mayor exposición residual</p>
+                    <h2 class="font-weight-bolder mb-0" [style.color]="topRisk?.residualColor || '#ea5455'">
+                      {{ topRisk?.residualLevel || '—' }}
+                    </h2>
+                    <small class="text-muted text-truncate d-block" [title]="topRisk?.name">
+                      {{ topRisk?.name || 'Sin riesgos' }}
+                    </small>
+                  </div>
+                  <div class="avatar bg-light-danger ml-1">
+                    <div class="avatar-content"><i data-feather="alert-triangle" class="avatar-icon"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Grilla amenaza x vulnerabilidad -->
+        <div class="card border mb-2">
+          <div class="card-header">
+            <h4 class="card-title">
+              Matriz de riesgo — {{ view === 'inherent' ? 'Riesgo inherente' : 'Riesgo residual (real, hoy)' }}
+            </h4>
+            <small class="text-muted" *ngIf="view === 'residual'">
+              Vulnerabilidad ajustada según el % de controles efectivamente implementados por riesgo
+            </small>
+          </div>
+          <div class="card-body">
+            <div class="heatmap-wrapper">
+              <div class="heatmap-yaxis-label">{{ data.axisY.label }}</div>
+              <div class="heatmap-grid-area">
+                <div class="heatmap-row" *ngFor="let row of rowsTopDown">
+                  <div class="heatmap-ylabel">{{ data.axisY.binLabels[row] }}</div>
+                  <div class="heatmap-cell" *ngFor="let cell of grid.matrix[row]" [ngStyle]="cellStyle(cell)"
+                    [title]="cell.levelName + ' — ' + cell.count + ' riesgo(s)'">
+                    <span class="heatmap-count" [style.color]="textColorFor(cell.color)" *ngIf="cell.count > 0">{{ cell.count }}</span>
+                  </div>
+                </div>
+                <div class="heatmap-row heatmap-xlabels">
+                  <div class="heatmap-ylabel"></div>
+                  <div class="heatmap-xlabel" *ngFor="let label of data.axisX.binLabels">{{ label }}</div>
+                </div>
+                <div class="heatmap-xaxis-label">{{ data.axisX.label }}</div>
+              </div>
+            </div>
+
+            <!-- Leyenda -->
+            <div class="mt-2">
+              <span *ngFor="let seg of grid.byLevel" class="mr-2 d-inline-flex align-items-center">
+                <i [style.background]="seg.color" style="display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;"></i>
+                <small class="text-muted">{{ seg.name }} ({{ seg.count }})</small>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top riesgos residuales -->
+        <div class="card border">
+          <div class="card-header">
+            <h4 class="card-title">Riesgos con mayor exposición residual</h4>
+            <small class="text-muted">Lo que sigue expuesto hoy, ordenado de mayor a menor</small>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>RIESGO</th>
+                    <th>ACTIVO</th>
+                    <th class="text-center">NIVEL INHERENTE</th>
+                    <th class="text-center">NIVEL RESIDUAL</th>
+                    <th class="text-center">CONTROLES</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let r of data.topResidualRisks">
+                    <td><span class="font-weight-bold">{{ r.name }}</span></td>
+                    <td><small class="text-muted">{{ r.activesInventoryName || '—' }}</small></td>
+                    <td class="text-center">
+                      <span class="badge" [style.background]="r.inherentColor" [style.color]="textColorFor(r.inherentColor)">
+                        {{ r.inherentLevel || '—' }}
+                      </span>
+                    </td>
+                    <td class="text-center">
+                      <span class="badge" [style.background]="r.residualColor" [style.color]="textColorFor(r.residualColor)">
+                        {{ r.residualLevel || '—' }}
+                      </span>
+                    </td>
+                    <td class="text-center"><small>{{ r.controlSummary }}</small></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </ng-container>
+
+  </div>
+</div>

@@ -20,6 +20,14 @@ export class RiskService {
         return this.http.get(url);
     }
 
+    // evaluationId opcional: sin él, el backend lo resuelve a la evaluación "actual" — mismo
+    // criterio que getComplianceEvolution en evaluation.service.ts.
+    getHeatmap(evaluationId?: number) {
+        let url = environment.apiUrl + '/api/risk/Heatmap';
+        if (evaluationId) url += '?evaluationId=' + evaluationId;
+        return this.http.get<any>(url);
+    }
+
     getByevaluationId(skip: number, pageSize: number, riskStatusId: number, search: string) {
         const url = environment.apiUrl + '/api/risk' + '?skip=' + skip + '&pageSize=' + pageSize + '&riskStatusId=' + riskStatusId + '&search=' + search;
         return this.http.get(url);

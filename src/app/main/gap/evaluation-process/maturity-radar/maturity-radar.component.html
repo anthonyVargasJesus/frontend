@@ -1,0 +1,190 @@
+<div [class.content-wrapper]="!embedded">
+  <div [class.content-body]="!embedded">
+    <app-content-header *ngIf="!embedded" [contentHeader]="contentHeader"></app-content-header>
+
+    <div class="d-flex align-items-center justify-content-between mb-1">
+      <label class="d-flex align-items-center mb-0" *ngIf="!embedded && standards.length > 0">Norma
+        <select class="form-control mx-25 ng-untouched ng-pristine ng-valid"
+          [(ngModel)]="selectedStandardId" (change)="onStandardChange()"
+          style="margin-left: 10px !important;min-width: 260px;">
+          <option *ngFor="let s of standards" [ngValue]="s.standardId">{{ s.name }}</option>
+        </select>
+      </label>
+      <div class="ml-auto" *ngIf="data?.domains?.length">
+        <button type="button" class="btn btn-outline-secondary btn-sm mr-1" [disabled]="exportingPdf" (click)="exportPdf()">
+          <span *ngIf="exportingPdf" class="spinner-border spinner-border-sm mr-50" role="status"></span>
+          <i data-feather="file-text" [hidden]="exportingPdf" style="width:14px;height:14px;vertical-align:-2px;"></i> PDF
+        </button>
+        <button type="button" class="btn btn-outline-success btn-sm" [disabled]="exporting" (click)="exportExcel()">
+          <span *ngIf="exporting" class="spinner-border spinner-border-sm mr-50" role="status"></span>
+          <i data-feather="download" [hidden]="exporting" style="width:14px;height:14px;vertical-align:-2px;"></i> Excel
+        </button>
+      </div>
+    </div>
+
+    <!-- Cargando -->
+    <ng-container *ngIf="loading">
+      <div class="container text-center mt-5 mb-5">
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+      </div>
+    </ng-container>
+
+    <!-- Sin dominios -->
+    <ng-container *ngIf="!loading && !data?.domains?.length">
+      <div class="card">
+        <div class="card-body text-center py-5">
+          <i data-feather="target" style="width:48px;height:48px;" class="text-muted"></i>
+          <h5 class="mt-2">Sin controles evaluados</h5>
+          <p class="text-muted">No hay controles del Anexo A evaluados todavía en la evaluación actual.</p>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Con datos -->
+    <ng-container *ngIf="!loading && data?.domains?.length">
+      <div #reportContent>
+
+        <div class="d-flex align-items-center mb-1" *ngIf="embedded && data.standardName">
+          <span class="badge badge-light-primary" style="font-size:1rem;padding:0.6rem 1rem;">
+            <i data-feather="shield" style="width:14px;height:14px;margin-right:6px;vertical-align:-2px;"></i>
+            Norma: {{ data.standardName }}
+          </span>
+        </div>
+
+        <!-- Tarjetas resumen -->
+        <div class="row match-height mb-2">
+
+          <div class="col-xl-3 col-md-6 col-12">
+            <div class="card card-statistics">
+              <div class="card-body statistics-body">
+                <div class="media align-items-center">
+                  <div class="media-body">
+                    <p class="card-text mb-25">Promedio entre dominios</p>
+                    <h2 class="font-weight-bolder mb-0 text-primary">{{ getRateLabel(data.overallCurrentRate) }}</h2>
+                    <small [class]="getDeltaClass(data.overallCurrentRate - data.overallPreviousRate)" *ngIf="data.previousEvaluationId">
+                      {{ getDeltaIcon(data.overallCurrentRate - data.overallPreviousRate) }} vs anterior
+                    </small>
+                    <small class="text-muted" *ngIf="!data.previousEvaluationId">Primera evaluación</small>
+                  </div>
+                  <div class="avatar bg-light-primary ml-1">
+                    <div class="avatar-content"><i data-feather="target" class="avatar-icon"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-6 col-12">
+            <div class="card card-statistics">
+              <div class="card-body statistics-body">
+                <div class="media align-items-center">
+                  <div class="media-body">
+                    <p class="card-text mb-25">Dominio más débil</p>
+                    <h2 class="font-weight-bolder mb-0 text-danger">{{ getRateLabel(data.weakestDomain?.currentRate) }}</h2>
+                    <small class="text-muted text-truncate d-block" [title]="data.weakestDomain?.name">
+                      Anexo {{ data.weakestDomain?.code }} — {{ data.weakestDomain?.name }}
+                    </small>
+                  </div>
+                  <div class="avatar bg-light-danger ml-1">
+                    <div class="avatar-content"><i data-feather="alert-triangle" class="avatar-icon"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-6 col-12">
+            <div class="card card-statistics">
+              <div class="card-body statistics-body">
+                <div class="media align-items-center">
+                  <div class="media-body">
+                    <p class="card-text mb-25">Dominio más fuerte</p>
+                    <h2 class="font-weight-bolder mb-0 text-success">{{ getRateLabel(data.strongestDomain?.currentRate) }}</h2>
+                    <small class="text-muted text-truncate d-block" [title]="data.strongestDomain?.name">
+                      Anexo {{ data.strongestDomain?.code }} — {{ data.strongestDomain?.name }}
+                    </small>
+                  </div>
+                  <div class="avatar bg-light-success ml-1">
+                    <div class="avatar-content"><i data-feather="check-circle" class="avatar-icon"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-md-6 col-12">
+            <div class="card card-statistics">
+              <div class="card-body statistics-body">
+                <div class="media align-items-center">
+                  <div class="media-body">
+                    <p class="card-text mb-25">Dominios evaluados</p>
+                    <h2 class="font-weight-bolder mb-0">{{ data.domains.length }}</h2>
+                    <small class="text-muted">{{ data.currentEvaluationDescription }}</small>
+                  </div>
+                  <div class="avatar bg-light-info ml-1">
+                    <div class="avatar-content"><i data-feather="layers" class="avatar-icon"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Radar -->
+        <div class="card border mb-2">
+          <div class="card-header">
+            <h4 class="card-title">Madurez por dominio del Anexo A</h4>
+            <small class="text-muted" *ngIf="data.previousEvaluationId">
+              {{ data.previousEvaluationDescription }} → {{ data.currentEvaluationDescription }}
+            </small>
+          </div>
+          <div class="card-body">
+            <app-radar-chart [multi]="radarData" [colorScheme]="colorScheme"></app-radar-chart>
+          </div>
+        </div>
+
+        <!-- Tabla por dominio -->
+        <div class="card border">
+          <div class="card-header">
+            <h4 class="card-title">Detalle por dominio</h4>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>ANEXO</th>
+                    <th>DOMINIO</th>
+                    <th class="text-center">% ACTUAL</th>
+                    <th class="text-center" *ngIf="data.previousEvaluationId">% ANTERIOR</th>
+                    <th class="text-center" *ngIf="data.previousEvaluationId">VARIACIÓN</th>
+                    <th class="text-center">CONTROLES EVALUADOS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let d of data.domains">
+                    <td><span class="badge badge-light-secondary">A.{{ d.code }}</span></td>
+                    <td><span class="font-weight-bold">{{ d.name }}</span></td>
+                    <td class="text-center">
+                      <span class="font-weight-bold">{{ getRateLabel(d.currentRate) }}</span>
+                    </td>
+                    <td class="text-center" *ngIf="data.previousEvaluationId">{{ getRateLabel(d.previousRate) }}</td>
+                    <td class="text-center" [class]="getDeltaClass(d.delta)" *ngIf="data.previousEvaluationId">
+                      {{ getDeltaIcon(d.delta) }}
+                    </td>
+                    <td class="text-center"><small class="text-muted">{{ d.evaluatedControls }} / {{ d.totalControls }}</small></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </ng-container>
+
+  </div>
+</div>

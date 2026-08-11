@@ -58,8 +58,13 @@ const appRoutes: Routes = [
     loadChildren: () => import('./main/actives/actives.module').then(m => m.ActivesModule)
   },
   {
+    // '/home' no existe como ruta de nivel superior (solo 'current-standard/home', con
+    // prefijo) — el router lanzaba "Cannot match any routes: 'home'" como excepción sin
+    // capturar. GlobalErrorHandler solo hace console.error sin recuperar la navegación, así
+    // que CoreLoadingScreenService (que espera el primer NavigationEnd) nunca la recibía y
+    // la pantalla de carga quedaba congelada para siempre en la carga inicial ('/').
     path: '',
-    redirectTo: '/home',
+    redirectTo: '/pages/authentication/login-v2',
     pathMatch: 'full'
   },
   {

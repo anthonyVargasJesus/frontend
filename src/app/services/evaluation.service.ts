@@ -110,6 +110,13 @@ export class EvaluationService {
         return this.http.get<any>(url);
     }
 
+    // standardId opcional: mismo criterio que getComplianceEvolution.
+    getMaturityRadar(standardId?: number) {
+        let url = environment.apiUrl + '/api/evaluation/maturity-radar';
+        if (standardId) url += '?standardId=' + standardId;
+        return this.http.get<any>(url);
+    }
+
     getExcelDashboard(standardId: string, evaluationId: string) {
 
         const url = environment.apiUrl + '/api/evaluation/excel-dashboard?standardId=' + standardId + '&evaluationId=' + evaluationId;
