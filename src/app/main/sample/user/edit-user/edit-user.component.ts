@@ -33,6 +33,14 @@ export class EditUserComponent implements OnInit {
   standards: Standard[] = [];
 
   user: User = new User();
+  // Norma que se está viendo/editando en la pestaña "Grupos y Familias" -- independiente del
+  // campo "Norma" de "Datos del usuario" (user.standardId), que es un dato propio del usuario,
+  // no un selector de qué asignación estás configurando. Antes este tab usaba directamente
+  // user.standardId, así que solo se podía asignar grupos/familias para esa única norma; con
+  // esto el admin puede elegir cualquier norma y asignar por separado en cada una (los datos
+  // en MAE_USER_CONTROL_GROUP/MAE_USER_REQUIREMENT_FAMILY ya estaban armados para soportar
+  // esto, solo faltaba el selector acá).
+  scopeStandardId: number | null = null;
   loading = false;
   id: string;
   loading2 = false; public contentHeader: object; public form: FormGroup;
@@ -94,6 +102,9 @@ export class EditUserComponent implements OnInit {
       .subscribe((res: any) => {
         this.user = res.data;
         this.setFormValue(this.user);
+        // Arranca en la norma "principal" del usuario, pero queda libre para cambiarla --
+        // ver el comentario en la declaración de scopeStandardId.
+        this.scopeStandardId = this.user.standardId;
         this.loading = false;
       }, error => {
         this.loading = false;

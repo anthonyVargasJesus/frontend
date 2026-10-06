@@ -1,0 +1,41 @@
+<header class="gap-home__header">
+    <div class="gap-home__header-inner">
+        <div>
+            <div class="gap-home__eyebrow">
+                Análisis de brechas · {{ evaluation?.standard?.name || 'Estándar' }}
+            </div>
+            <h1 class="gap-home__title">{{ evaluation?.description || 'Cargando...' }}</h1>
+        </div>
+        <div class="gap-home__stat">
+            <div class="gap-home__pct mono" [ngClass]="pctClass()">{{ stats.pct }}%</div>
+            <div class="gap-home__stat-label">
+                cumplimiento estimado · {{ stats.evaluados }}/{{ stats.total }} evaluados
+                <ng-container *ngIf="showEvidencia">· {{ totalEvidencias }} con evidencia</ng-container>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="gap-home__card" *ngIf="showThemeMap">
+    <div class="gap-home__card-title">Mapa de brecha por tema</div>
+
+    <div class="gap-theme-row" *ngFor="let t of temaRows">
+        <div class="gap-theme-row__label">{{ t.theme }}</div>
+        <div class="gap-theme-row__bar">
+            <div class="gap-theme-row__seg" *ngFor="let seg of t.segments"
+                [style.width.%]="t.total ? (seg.count / t.total * 100) : 0"
+                [style.background]="seg.color" [title]="seg.name + ': ' + seg.count"></div>
+            <div class="gap-theme-row__seg"
+                [style.width.%]="t.total ? (t.pendiente / t.total * 100) : 0"
+                [title]="'Pendiente: ' + t.pendiente" style="background:#EAEDEF;"></div>
+        </div>
+        <div class="gap-theme-row__count mono">{{ t.evaluados }}/{{ t.total }}</div>
+    </div>
+
+    <div class="gap-theme-legend">
+        <span *ngFor="let ml of maturityLevels">
+            <i [style.background]="ml.color"></i> {{ ml.name }} ({{ countEstado(ml.name) }})
+        </span>
+        <span><i style="background:#8A939B"></i> Pendiente ({{ countEstado('Pendiente') }})</span>
+    </div>
+</div>

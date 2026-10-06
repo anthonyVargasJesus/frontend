@@ -1,0 +1,93 @@
+.action-plan-calendar {
+  padding: 16px;
+}
+
+.action-plan-calendar__error {
+  background: #FBEAEA;
+  color: #A8443B;
+  padding: 12px 16px;
+  border-radius: 6px;
+}
+
+.action-plan-calendar__control-name {
+  font-size: 10.5px;
+  color: #8A939B;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.action-plan-calendar__table {
+  border-collapse: collapse;
+  table-layout: fixed;
+
+  th, td {
+    border: 1px solid #C7CDD6;
+    font-size: 12px;
+    vertical-align: middle;
+    padding: 5px 6px;
+  }
+
+  thead th {
+    background: #1F3864;
+    color: #fff;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  tbody tr:nth-child(even) {
+    background: #F4F6F9;
+  }
+}
+
+// Ancho fijo para las 3 columnas de texto -- el contenido que no entra se corta con "..." y
+// queda disponible completo en el title (atributo nativo del navegador al pasar el mouse).
+.action-plan-calendar__col-control { width: 80px; }
+.action-plan-calendar__col-title { width: 200px; }
+.action-plan-calendar__col-responsible { width: 110px; }
+
+.action-plan-calendar__truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.action-plan-calendar__cell {
+  width: 30px;
+  min-width: 30px;
+}
+
+.action-plan-calendar__summary-row {
+  background: #EEF1F5;
+  font-weight: 600;
+}
+
+.action-plan-calendar__pagination-row td {
+  background: #fff;
+  padding: 8px;
+
+  .pagination {
+    margin-bottom: 0;
+  }
+}
+
+// Fila de título ("Resumen mensual · toda la evaluación...") dentro del propio tfoot -- borde
+// grueso arriba para que se note de un vistazo que a partir de acá es un TOTAL, no más filas
+// de la página.
+.action-plan-calendar__totals-label-row td {
+  border-top: 3px solid #495057 !important;
+  background: #495057;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+}
+
+.action-plan-calendar__status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}

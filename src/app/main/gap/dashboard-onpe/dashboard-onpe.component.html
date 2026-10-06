@@ -1,0 +1,296 @@
+<div class="content-wrapper">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <!-- Cargando -->
+    <ng-container *ngIf="loading">
+      <div class="container text-center mt-5 mb-5">
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+        <div class="spinner-grow text-primary" role="status"><span class="sr-only">Loading...</span></div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!loading">
+
+      <div class="alert alert-danger d-flex align-items-center justify-content-between mb-2" role="alert" *ngIf="errorMessage">
+        <span><i data-feather="alert-circle" class="mr-50" style="width:16px;height:16px;vertical-align:-3px;"></i>{{ errorMessage }}</span>
+        <button type="button" class="btn btn-outline-danger btn-sm" (click)="load()">Reintentar</button>
+      </div>
+
+      <!-- Sin evaluación activa -->
+      <ng-container *ngIf="!errorMessage && !hasCurrentEvaluation">
+        <div class="card">
+          <div class="card-body text-center py-5">
+            <i data-feather="alert-circle" style="width:48px;height:48px;" class="text-warning"></i>
+            <h5 class="mt-2">No hay una evaluación activa</h5>
+            <p class="text-muted">Para ver el dashboard de madurez, debe haber una evaluación marcada como actual en el sistema.</p>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Con evaluación activa -->
+      <ng-container *ngIf="!errorMessage && hasCurrentEvaluation">
+
+        <!-- Header oscuro que identifica de qué evaluación es este dashboard -- mismo componente
+             que ya usan Análisis de Brechas y Plan de acción (app-gap-breach-map), acá solo el
+             header (showThemeMap=false: la tarjeta "Mapa de brecha por tema" que trae ese
+             componente duplicaría el detalle por control de la pestaña "Resumen"). El % que
+             muestra es "Madurez General" (mismo número que la tarjeta de abajo), no el % de
+             Análisis de Brechas -- ese cuenta también las cláusulas 4-10, acá el alcance es solo
+             Anexo A. -->
+        <app-gap-breach-map [evaluation]="headerEvaluation" [stats]="headerStats"
+          [showThemeMap]="false" [showEvidencia]="false"
+          class="d-block mb-2 dashboard-onpe__header-map"></app-gap-breach-map>
+
+        <!-- Dos pestañas en vez de apilar todo en una sola pantalla: "Resumen" (cuadro + dona +
+             detalle por control, 93 filas) y "Radares" (los 5 radares que trae la hoja original
+             del Excel) -- juntas se ven sobrecargadas, así que se separan por intención: Resumen
+             responde "¿cómo estamos hoy, control por control?", Radares responde "¿cómo se
+             compara la forma del perfil de madurez entre grupos?". Mismo patrón ngbNav con pills
+             que ya usa home.component.html (pestaña "Resumen" del gap) -- NgbModule ya está
+             importado en gap.module.ts, no hace falta nada nuevo. -->
+        <ul ngbNav #onpeNav="ngbNav" [activeId]="1" class="nav nav-pills mb-2">
+          <li ngbNavItem [ngbNavItem]="1">
+            <a ngbNavLink class="d-flex align-items-center">
+              <i data-feather="grid" class="mr-sm-50"></i>
+              <span class="d-none d-sm-block">RESUMEN</span>
+            </a>
+            <ng-template ngbNavContent>
+              <ng-container *ngTemplateOutlet="resumenTab"></ng-container>
+            </ng-template>
+          </li>
+          <li ngbNavItem [ngbNavItem]="2">
+            <a ngbNavLink class="d-flex align-items-center">
+              <i data-feather="radio" class="mr-sm-50"></i>
+              <span class="d-none d-sm-block">RADARES</span>
+            </a>
+            <ng-template ngbNavContent>
+              <ng-container *ngTemplateOutlet="radaresTab"></ng-container>
+            </ng-template>
+          </li>
+        </ul>
+        <div [ngbNavOutlet]="onpeNav"></div>
+
+      </ng-container>
+
+    </ng-container>
+
+    <!-- ============ Pestaña "Resumen" ============ -->
+    <ng-template #resumenTab>
+
+        <!-- Cuadro resumen (izquierda) + dona "Madurez General" (chart4 del Excel, derecha),
+             lado a lado en el mismo grid de Bootstrap. -->
+        <div class="row">
+          <div class="col-xl-6 col-12">
+
+            <!-- Calcado del Excel de ONPE, pero con look de tarjeta Vuexy en vez de la grilla
+                 con bordes azules: franja "Madurez General" + tabla por grupo. h-100 para que
+                 quede a la misma altura que la tarjeta de la dona de al lado. -->
+            <div class="card dashboard-onpe__card h-100">
+              <div class="card-body">
+
+                <div class="table-responsive" *ngIf="grupos.length > 0">
+                  <table class="table table-bordered table-hover mb-0 dashboard-onpe__table">
+                    <thead>
+                      <!-- Fila de resumen (Madurez General) -- misma estructura que las filas de
+                           grupo, pero sin Meta (no aplica un solo valor "meta" a un total que ya
+                           promedia los 4 grupos) y destacada con más peso/fondo para que se lea
+                           como el total, no como un grupo más. Va arriba de los nombres de columna
+                           (Grupo/Actual/Meta/Actual %), no como una fila más de la tabla. -->
+                      <tr class="dashboard-onpe__row-general">
+                        <td class="dashboard-onpe__th-grupo">Madurez General</td>
+                        <td class="text-center font-weight-bold">{{ madurezGeneral | number:'1.2-2' }}</td>
+                        <td></td>
+                        <td>
+                          <div class="d-flex align-items-center justify-content-center">
+                            <div class="progress dashboard-onpe__bar mr-1">
+                              <div class="progress-bar bg-primary" role="progressbar"
+                                [style.width.%]="madurezGeneralPercent * 100"></div>
+                            </div>
+                            <span class="font-weight-bold text-primary" style="min-width:34px;">
+                              {{ percentLabel(madurezGeneralPercent) }}
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th class="dashboard-onpe__th-grupo">Grupo</th>
+                        <th class="text-center">Actual</th>
+                        <th class="text-center">Meta</th>
+                        <th class="text-center">Actual (%)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let g of grupos; let i = index; trackBy: trackByGrupo">
+                        <td>
+                          <div class="d-flex align-items-center">
+                            <span class="dashboard-onpe__dot" [ngClass]="'bg-' + groupColor(i)"></span>
+                            <span class="font-weight-bold">{{ g.grupo }}</span>
+                          </div>
+                        </td>
+                        <td class="text-center font-weight-bold">{{ g.actual | number:'1.2-2' }}</td>
+                        <td class="text-center text-muted">{{ g.meta | number:'1.0-0' }}</td>
+                        <td>
+                          <div class="d-flex align-items-center justify-content-center">
+                            <div class="progress dashboard-onpe__bar mr-1">
+                              <div class="progress-bar" role="progressbar" [ngClass]="'bg-' + groupColor(i)"
+                                [style.width.%]="g.actualPercent * 100"></div>
+                            </div>
+                            <span class="font-weight-bold" [ngClass]="'text-' + groupColor(i)" style="min-width:34px;">
+                              {{ percentLabel(g.actualPercent) }}
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Dona: un segmento por grupo, proporcional a su "Actual" (chart4 del Excel), con
+               Madurez General en el centro. La leyenda de color va a la izquierda del anillo,
+               igual que en el Excel de referencia. -->
+          <div class="col-xl-6 col-12" *ngIf="grupos.length > 0">
+            <div class="card h-100">
+              <div class="card-header">
+                <h4 class="card-title">Madurez General</h4>
+              </div>
+              <div class="card-body dashboard-onpe__donut-card-body">
+                <div class="dashboard-onpe__donut-legend">
+                  <div class="dashboard-onpe__donut-legend-item" *ngFor="let g of grupos; let i = index; trackBy: trackByGrupo">
+                    <span class="dashboard-onpe__legend-swatch" [ngClass]="'bg-' + groupColor(i)"></span>
+                    <span>{{ g.grupo }}</span>
+                  </div>
+                </div>
+                <div class="dashboard-onpe__donut-wrap">
+                  <svg viewBox="0 0 120 120" class="dashboard-onpe__donut">
+                    <circle cx="60" cy="60" r="50" fill="none" stroke="#EAEDEF" stroke-width="16"></circle>
+                    <circle *ngFor="let seg of donutSegments" cx="60" cy="60" r="50" fill="none"
+                      [attr.stroke]="seg.color" stroke-width="16"
+                      [attr.stroke-dasharray]="seg.dasharray" [attr.stroke-dashoffset]="seg.dashoffset"
+                      transform="rotate(-90 60 60)"></circle>
+                  </svg>
+                  <div class="dashboard-onpe__donut-center">
+                    <div class="dashboard-onpe__donut-value mono">{{ madurezGeneral | number:'1.2-2' }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Detalle control por control (B18:D65 / F18:H65 del Excel) -- una tarjeta por grupo
+             en vez de una sola tabla larga con filas divisorias: cada grupo es autocontenido y
+             fluyen de izquierda a derecha en el grid de Bootstrap (2 por fila en pantallas
+             grandes, se apilan en una columna en mobile), como cualquier otra sección de
+             tarjetas del gap. -->
+        <div class="d-flex align-items-center justify-content-between mt-2 mb-1" *ngIf="controles.length > 0">
+          <h4 class="mb-0">Detalle por control</h4>
+          <small class="text-muted">{{ controles.length }} controles del Anexo A</small>
+        </div>
+        <div class="row" *ngIf="controles.length > 0">
+          <div class="col-xl-6 col-12" *ngFor="let group of groupedControles; trackBy: trackByTheme">
+            <div class="card">
+              <div class="card-header" [ngClass]="'bg-light-' + themeColor(group.theme)">
+                <h4 class="card-title" [ngClass]="'text-' + themeColor(group.theme)">
+                  <span class="dashboard-onpe__dot" [ngClass]="'bg-' + themeColor(group.theme)"></span>
+                  {{ group.theme }}
+                </h4>
+                <small class="text-muted">{{ group.items.length }} controles</small>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-hover mb-0 dashboard-onpe__table">
+                    <thead>
+                      <tr>
+                        <th>Control</th>
+                        <th class="text-center" style="width:170px;">Madurez</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let c of group.items; trackBy: trackByCode">
+                        <td>
+                          <span class="badge badge-light-secondary mr-1 dashboard-onpe__code">{{ c.code }}</span>
+                          <span>{{ c.name }}</span>
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center justify-content-center">
+                            <span class="dashboard-onpe__level-badge" [style.color]="madurezColor(c)"
+                              [style.background]="pillBackground(madurezColor(c))">
+                              {{ madurezNumberLabel(c) }}
+                            </span>
+                            <span class="ml-50 font-weight-bold dashboard-onpe__level-name" [style.color]="madurezColor(c)">
+                              {{ c.nivel }}
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    </ng-template>
+
+    <!-- ============ Pestaña "Radares" ============ -->
+    <ng-template #radaresTab>
+
+        <!-- Radar de los 4 grupos (chart6 del Excel): un solo eje por grupo, para comparar la
+             forma del perfil de madurez entre áreas de un vistazo. La dona "Madurez General"
+             (chart4) volvió a la pestaña "Resumen", al lado del cuadro. -->
+        <div class="row" *ngIf="grupos.length > 0">
+          <div class="col-12 mb-2">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title">Madurez por grupo</h4>
+              </div>
+              <div class="card-body">
+                <!-- labelTrim=false: acá son solo 4 ejes con harto espacio angular entre sí --
+                     el default de la librería (10 caracteres) cortaba "Controles Organizacionales"
+                     a "Controles ...". Los radares por grupo de abajo sí lo dejan en default: ahí
+                     el eje es el código del control ("5.1"), nunca se acerca a 10 caracteres. -->
+                <app-radar-chart [multi]="radarGeneralData" [colorScheme]="radarGeneralColorScheme"
+                  [labelTrim]="false"></app-radar-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Un radar por grupo (chart1/2/3/5 del Excel): un eje por control, con "código -
+             nombre" completo, igual que el Excel de referencia. wrapLabels=true en
+             <app-radar-chart> cambia a un renderer propio (ver radar-chart.component.ts) que
+             wrappea el texto largo con CSS normal en vez de cortarlo -- <ngx-charts-polar-chart>
+             no puede mostrar esto con 8-37 ejes. Dos por fila (col-xl-6): en los grupos densos
+             (34-37 controles) las etiquetas en una sola línea (nowrap) se van a superponer más
+             que a ancho completo, es el trade-off de este layout más compacto. -->
+        <div class="row" *ngIf="groupedControles.length > 0">
+          <div class="col-xl-6 col-12 mb-2" *ngFor="let group of groupedControles; trackBy: trackByTheme">
+            <div class="card">
+              <div class="card-header" [ngClass]="'bg-light-' + themeColor(group.theme)">
+                <h4 class="card-title" [ngClass]="'text-' + themeColor(group.theme)">
+                  <span class="dashboard-onpe__dot" [ngClass]="'bg-' + themeColor(group.theme)"></span>
+                  {{ group.theme }}
+                </h4>
+                <small class="text-muted">{{ group.items.length }} controles</small>
+              </div>
+              <div class="card-body">
+                <app-radar-chart [multi]="group.radarData" [colorScheme]="group.radarColorScheme"
+                  [wrapLabels]="true"></app-radar-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    </ng-template>
+
+  </div>
+</div>

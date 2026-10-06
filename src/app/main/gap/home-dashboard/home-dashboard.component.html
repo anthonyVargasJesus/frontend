@@ -41,13 +41,17 @@
 
                     <!-- Por área -->
                     <div class="hd__section-title">Por área</div>
-                    <div class="hd__area-scroll" *ngIf="dashboard.themes.length > 0; else sinAreas">
-                        <div class="hd__area-card" *ngFor="let t of dashboard.themes; trackBy: trackByTheme"
-                            [style.border-top-color]="themeColor(t)">
-                            <div class="hd__area-name">{{ t.theme }}</div>
-                            <div class="hd__area-pct mono" [style.color]="themeColor(t)">{{ t.percentage }}%</div>
-                            <div class="hd__area-fraction mono">{{ t.evaluatedItems }}/{{ t.totalItems }}</div>
+                    <div class="swiper-container hd__area-swiper" *ngIf="dashboard.themes.length > 0; else sinAreas"
+                        [swiper]="areaSwiperConfig">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide hd__area-card" *ngFor="let t of dashboard.themes; trackBy: trackByTheme"
+                                [style.border-top-color]="themeColor(t)">
+                                <div class="hd__area-name">{{ t.theme }}</div>
+                                <div class="hd__area-pct mono" [style.color]="themeColor(t)">{{ t.percentage }}%</div>
+                                <div class="hd__area-fraction mono">{{ t.evaluatedItems }}/{{ t.totalItems }}</div>
+                            </div>
                         </div>
+                        <div class="swiper-pagination"></div>
                     </div>
                     <ng-template #sinAreas>
                         <div class="text-muted" style="font-size:12px; margin-bottom:16px;">Sin áreas para mostrar.</div>

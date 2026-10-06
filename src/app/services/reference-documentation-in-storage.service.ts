@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { ReferenceDocumentation } from 'app/models/reference-documentation';
-import Swal from 'sweetalert2';
 import { ErrorManager } from 'app/errors/error-manager';
+import { ToastManager } from 'app/errors/toast-manager';
 
 
 @Injectable({
@@ -80,7 +80,7 @@ export class ReferenceDocumentationInStorageService {
       collection.push(referenceDocumentation);
       this.save(collection);
 
-      Swal.fire('Evidencia registrada', 'La evidencia se registró satisfactoriamente', 'success');
+      ToastManager.success('Evidencia registrada');
       return of(referenceDocumentation);
     } catch (error) {
       ErrorManager.handleError(error);
@@ -103,7 +103,7 @@ export class ReferenceDocumentationInStorageService {
       collection[index] = referenceDocumentation;
       this.save(collection);
 
-      Swal.fire('Evidencia actualizada', 'La evidencia se actualizó satisfactoriamente', 'success');
+      ToastManager.success('Evidencia actualizada');
       return of(referenceDocumentation);
     } catch (error) {
       ErrorManager.handleError(error);
@@ -124,7 +124,7 @@ export class ReferenceDocumentationInStorageService {
       }
 
       this.save(newCollection);
-      Swal.fire('Evidencia eliminada', 'La evidencia se eliminó satisfactoriamente', 'success');
+      ToastManager.success('Evidencia eliminada');
       return of(true);
     } catch (error) {
       ErrorManager.handleError(error);

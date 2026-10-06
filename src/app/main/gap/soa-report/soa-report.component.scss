@@ -1,13 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
-
 :host {
     display: block;
-    font-family: 'Inter', system-ui, sans-serif;
     color: #1c2733;
-}
-
-.mono {
-    font-family: 'IBM Plex Mono', monospace;
 }
 
 .soa {
@@ -98,49 +91,79 @@
     gap: 6px;
 }
 
-.soa__card {
-    margin-bottom: 10px;
-}
-
-.soa__card-inner {
+.soa__table-wrap {
     background: #ffffff;
     border-radius: 12px;
-    border-left: 4px solid;
     box-shadow: 0 2px 6px rgba(0, 0, 0, .05);
-    padding: 12px;
+    padding: 4px;
 }
 
-.soa__code {
-    font-size: 11px;
+// Look "planilla" (grilla con bordes, header azul marino) igual que la vista tabla de
+// evaluación (gap-evaluation-table.component.scss) -- mismo criterio visual, para que el SOA se
+// sienta como el Excel de referencia de ONPE en vez de una lista mobile-first.
+.soa__table {
+    border-collapse: collapse;
+    margin-bottom: 0;
+
+    thead th {
+        background: #1F3864;
+        color: #fff;
+        border: 1px solid #1F3864;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+        vertical-align: middle;
+        padding: 8px;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    tbody td {
+        border: 1px solid #e2e7ea;
+        padding: 8px;
+        font-size: 12.5px;
+        vertical-align: top;
+    }
+
+    tbody tr:nth-child(even) td {
+        background: #F4F6F9;
+    }
+}
+
+.soa__theme-row td {
+    background: #DCE3EE !important;
+    color: #1F3864;
     font-weight: 700;
-    background: #edf1f3;
-    color: #1c2733;
-    padding: 3px 8px;
-    border-radius: 6px;
-    flex-shrink: 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    padding: 6px 8px !important;
+}
+
+.soa__col-code { width: 60px; }
+.soa__col-pill { width: 130px; }
+
+.soa__code {
+    font-weight: 700;
     white-space: nowrap;
 }
 
 .soa__name {
-    font-size: 13px;
     font-weight: 600;
+    min-width: 160px;
 }
 
-.soa__pills {
-    display: flex;
-    gap: 6px;
-    margin: 8px 0;
-    flex-wrap: wrap;
+.soa__desc, .soa__just {
+    color: #4a5560;
+    min-width: 220px;
 }
 
 .soa__pill {
+    display: inline-block;
     padding: 3px 8px;
     border-radius: 20px;
     font-size: 10.5px;
     font-weight: 700;
-}
-
-.soa__justificacion {
-    font-size: 12px;
-    color: #6b7480;
+    white-space: nowrap;
 }

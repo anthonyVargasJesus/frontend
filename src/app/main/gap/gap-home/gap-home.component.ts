@@ -10,25 +10,12 @@ import { Control } from 'app/models/control';
 import { MaturityLevel } from 'app/models/maturity-level';
 import { Responsible } from 'app/models/responsible';
 import { ErrorManager } from 'app/errors/error-manager';
+import { ThemeRow } from '../gap-breach-map/gap-breach-map.component';
 
 interface GapItem {
   tipo: 'requisito' | 'control';
   theme: string;
   evaluacion: RequirementEvaluation | ControlEvaluation;
-}
-
-interface ThemeRowSegment {
-  name: string;
-  color: string;
-  count: number;
-}
-
-interface ThemeRow {
-  theme: string;
-  total: number;
-  evaluados: number;
-  segments: ThemeRowSegment[];
-  pendiente: number;
 }
 
 const PAGE_SIZE = 30;
@@ -76,7 +63,7 @@ export class GapHomeComponent implements OnInit, OnDestroy {
   temaRows: ThemeRow[] = [];
   stats = { pct: 0, evaluados: 0, total: 0 };
   totalEvidencias = 0;
-  private legendCounts: { [name: string]: number } = {};
+  legendCounts: { [name: string]: number } = {};
 
   pageItems: GapItem[] = [];
   hasMore = true;
@@ -136,13 +123,13 @@ export class GapHomeComponent implements OnInit, OnDestroy {
 
   private initContentHeader() {
     this.contentHeader = {
-      headerTitle: 'Análisis del GAP',
+      headerTitle: 'Cumplimiento',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
-          { name: 'GAP', isLink: false, link: '#' },
-          { name: 'Análisis del GAP', isLink: false },
+          { name: 'Evaluación', isLink: false, link: '#' },
+          { name: 'Cumplimiento', isLink: false },
         ]
       }
     };
@@ -277,23 +264,13 @@ export class GapHomeComponent implements OnInit, OnDestroy {
     return item.tipo + '-' + ((item.evaluacion as any).requirement?.requirementId ?? (item.evaluacion as any).control?.controlId);
   }
 
-  countEstado(name: string): number {
-    return this.legendCounts[name] || 0;
-  }
-
-  pctClass(): string {
-    if (this.stats.pct >= 70) return 'gap-home__pct--good';
-    if (this.stats.pct >= 40) return 'gap-home__pct--warn';
-    return 'gap-home__pct--bad';
-  }
-
   onUpdate() {
-    // Un ítem se guardó: los contadores globales (header, mapa por tema) pudieron cambiar.
-    // La página actualmente cargada se vuelve a pedir para reflejar el nuevo estado del ítem
-    // guardado — mismo comportamiento de "recargar todo" que había antes, pero ahora cuesta
-    // 1 página en vez de los ~180 ítems completos.
+    // Un ítem se guardó: los contadores globales (header, mapa por tema) pudieron cambiar --
+    // eso sí hay que refrescarlo. La lista NO: app-gap-evaluation-item ya actualiza su propio
+    // estado local con la respuesta del guardado (ver evaluacion = res.data en ese componente),
+    // así que releer pageItems desde el principio (loadItems(true)) era puro costo -- perdía el
+    // scroll y la tarjeta que tenías expandida en cada guardado, sin ganar nada a cambio.
     this.loadResumen();
-    this.loadItems(true);
   }
 
 }

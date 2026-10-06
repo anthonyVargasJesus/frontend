@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SwiperModule } from 'ngx-swiper-wrapper';
 import { GapRoutingModule } from './gap-routing.module';
 import { ControlEvaluationComponent } from './control-evaluation/control-evaluation.component';
 import { CurrentRequirementEvaluationComponent } from './current-requirement-evaluation/current-requirement-evaluation.component';
@@ -63,6 +64,9 @@ import { ComplianceEvolutionComponent } from './evaluation-process/compliance-ev
 import { MaturityRadarComponent } from './evaluation-process/maturity-radar/maturity-radar.component';
 import { BreachSeverityReportComponent } from './evaluation-process/breach-severity-report/breach-severity-report.component';
 import { GapEvaluationItemComponent } from './gap-evaluation-item/gap-evaluation-item.component';
+import { GapBreachMapComponent } from './gap-breach-map/gap-breach-map.component';
+import { GapThemeFilterComponent } from './gap-theme-filter/gap-theme-filter.component';
+import { ActionPlanCalendarComponent } from './action-plan-calendar/action-plan-calendar.component';
 import { GapPanelComponent } from './gap-panel/gap-panel.component';
 import { GapEvidenceListComponent } from './gap-evidence-list/gap-evidence-list.component';
 import { GapActionPlanListComponent } from './gap-action-plan-list/gap-action-plan-list.component';
@@ -70,6 +74,7 @@ import { MyActionPlansComponent } from './my-action-plans/my-action-plans.compon
 import { PlanDeAccionComponent } from './plan-de-accion/plan-de-accion.component';
 import { SoaReportComponent } from './soa-report/soa-report.component';
 import { HomeDashboardComponent } from './home-dashboard/home-dashboard.component';
+import { DashboardOnpeComponent } from './dashboard-onpe/dashboard-onpe.component';
 
 
 @NgModule({
@@ -95,6 +100,9 @@ import { HomeDashboardComponent } from './home-dashboard/home-dashboard.componen
          MaturityRadarComponent,
          BreachSeverityReportComponent,
          GapEvaluationItemComponent,
+         GapBreachMapComponent,
+         GapThemeFilterComponent,
+         ActionPlanCalendarComponent,
          GapPanelComponent,
          GapEvidenceListComponent,
          GapActionPlanListComponent,
@@ -102,6 +110,7 @@ import { HomeDashboardComponent } from './home-dashboard/home-dashboard.componen
          PlanDeAccionComponent,
          SoaReportComponent,
          HomeDashboardComponent,
+         DashboardOnpeComponent,
   ],
   imports: [
     CommonModule,
@@ -120,7 +129,8 @@ import { HomeDashboardComponent } from './home-dashboard/home-dashboard.componen
     NgbModule,
     NgxChartsModule,
     MatRadioModule,
-    MatExpansionModule
+    MatExpansionModule,
+    SwiperModule
   ]
 })
 

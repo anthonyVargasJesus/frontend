@@ -11,15 +11,17 @@ import { ResponsibleService } from 'app/services/responsible.service';
 import { ErrorManager } from 'app/errors/error-manager';
 import { GapEvidenceListComponent } from '../gap-evidence-list/gap-evidence-list.component';
 
-type EstadoCumplimiento = 'Cumple' | 'Parcial' | 'No cumple' | 'No aplica' | 'Pendiente';
-
 /**
  * Fila de evaluación (requisito o control) con la interacción del prototipo de Fable:
  * selección de nivel de madurez en un clic + panel "Detalle y evidencias" expandible en la
- * misma fila, sin modal. El estado se deriva directamente del NOMBRE del nivel de madurez
- * seleccionado (Cumple/Parcial/No cumple/No aplica) — tu catálogo MaturityLevel ya usa esos
- * 4 nombres exactos, así que no hace falta adivinar por rango de valor. Conserva todos los
- * campos reales del registro (Responsable, Justificación, Acciones de mejora, Evidencias).
+ * misma fila, sin modal. El estado/color/% y si "Acciones de mejora" es obligatorio se derivan
+ * de las PROPIEDADES del nivel elegido (color, generatesBreach, isNotApplicable, value) — no de
+ * comparar su nombre contra una lista fija. Tu catálogo de niveles ya cambió de escala una vez
+ * (de 4 nombres a la escala CMM de 6 + "No aplicable") y este componente tenía los 4 nombres
+ * viejos hardcodeados, lo que rompió en silencio el cálculo de "Acciones de mejora obligatorias"
+ * y los colores. Con esto, un futuro cambio de catálogo (agregar/renombrar/quitar un nivel) no
+ * requiere tocar este componente. Conserva todos los campos reales del registro (Responsable,
+ * Justificación, Acciones de mejora, Evidencias).
  */
 @Component({
   selector: 'app-gap-evaluation-item',
@@ -125,7 +127,12 @@ export class GapEvaluationItemComponent implements OnInit, OnChanges {
       justification: ['', [Validators.required, Validators.maxLength(500)]],
       // El validador real se decide en updateImprovementActionsValidators() según el estado
       // elegido (Parcial/No cumple => obligatorio); acá solo se pone el límite de caracteres.
-      improvementActions: ['', [Validators.maxLength(1000)]],
+      // 500, no 1000: este componente evalúa controles Y requisitos con el mismo formulario, y
+      // MAE_CONTROL_EVALUATION.C_IMPROVEMENT_ACTIONS es varchar(500) (MAE_REQUIREMENT_EVALUATION
+      // la tiene como "text" sin límite, pero hay que usar el más chico de los dos para que no
+      // truene al guardar un control con texto de más de 500 -- mismo "22001: value too long"
+      // disfrazado de "Failed Request" que ya pasó con el título del plan de acción).
+      improvementActions: ['', [Validators.maxLength(500)]],
     });
     this.setFormValue();
   }
@@ -182,24 +189,24 @@ export class GapEvaluationItemComponent implements OnInit, OnChanges {
     control.updateValueAndValidity({ emitEvent: false });
   }
 
+  // Norma ISO 27001:2022, cláusula 10.2: la acción de mejora corresponde a una no conformidad
+  // -- es decir, a cualquier nivel que el catálogo marque como generador de brecha
+  // (MaturityLevel.generatesBreach), ya no a comparar el nombre contra "Parcial"/"No cumple".
   get improvementActionsRequired(): boolean {
-    return this.estado === 'Parcial' || this.estado === 'No cumple';
+    return this.selectedMaturityLevel?.generatesBreach ?? false;
   }
 
-  // Fondo pastel del chip cuando NO está seleccionado — mismos 4 pares (color oscuro/fondo
-  // pastel) que usaba el prototipo de Fable para Cumple/Parcial/No cumple/No aplica. La tabla
-  // MaturityLevel solo guarda un color (el oscuro, para el relleno cuando está seleccionado),
-  // así que el par pastel se resuelve acá por nombre. Si el nivel no está en esta lista (por
-  // ejemplo, si en el futuro vuelves a usar la escala de 7 niveles), cae a un gris neutro.
-  private static readonly PALE_BG_BY_NAME: { [name: string]: string } = {
-    'Cumple': '#E4F0EB',
-    'Parcial': '#F6EDDA',
-    'No cumple': '#F5E3E1',
-    'No aplica': '#EAEDEF',
-  };
-
+  // Fondo pastel del chip cuando NO está seleccionado: el mismo color del nivel, aclarado
+  // (mezclado con blanco vía alpha bajo) en vez de un color fijo por nombre -- así cualquier
+  // nivel del catálogo, incluidos los que se agreguen a futuro, se ve bien sin tocar este
+  // componente. Mismo criterio que soa-report.component.ts#pillBackground.
   paleBackgroundFor(maturityLevel: MaturityLevel): string {
-    return GapEvaluationItemComponent.PALE_BG_BY_NAME[maturityLevel.name] || '#F1F3F4';
+    const hex = maturityLevel.color || '#8A939B';
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) return '#F1F3F4';
+    return `rgba(${r}, ${g}, ${b}, 0.12)`;
   }
 
   toggleDetalle() {
@@ -226,31 +233,24 @@ export class GapEvaluationItemComponent implements OnInit, OnChanges {
     if (!this.expanded) this.expanded = true;
   }
 
-  // Estado = nombre del nivel de madurez elegido. Tu catálogo ya usa exactamente estos 4
-  // nombres (Cumple/Parcial/No cumple/No aplica), así que no hace falta un rango de valores.
-  get estado(): EstadoCumplimiento {
-    const name = this.selectedMaturityLevel?.name;
-    if (!name) return 'Pendiente';
-    if (name === 'Cumple' || name === 'Parcial' || name === 'No cumple' || name === 'No aplica')
-      return name;
-    return 'Pendiente';
+  // Nombre del nivel elegido, o 'Pendiente' si todavía no se seleccionó ninguno -- ya no valida
+  // contra una lista fija: cualquier nivel del catálogo de niveles de madurez de la empresa vale.
+  get estado(): string {
+    return this.selectedMaturityLevel?.name ?? 'Pendiente';
   }
 
   get porcentaje(): number {
-    if (this.estado === 'No aplica' || this.estado === 'Pendiente') return 0;
-    const value = this.selectedMaturityLevel?.value;
+    if (!this.selectedMaturityLevel || this.selectedMaturityLevel.isNotApplicable) return 0;
+    const value = this.selectedMaturityLevel.value;
+    // El catálogo usa una escala 0-5 (ver 001_maturity_levels_cmm_scale.sql); si en el futuro
+    // cambia el tope de la escala, este cálculo hay que revisarlo junto con esa migración.
     return value ? Math.round((value / 5) * 100) : 0;
   }
 
-  // Misma paleta que usa app-gap-panel (heredada del prototipo).
+  // El color de cada nivel ya vive en el catálogo (MaturityLevel.color) -- no hace falta
+  // duplicarlo acá por nombre. Gris neutro cuando todavía no se eligió ningún nivel.
   get estadoColor(): string {
-    switch (this.estado) {
-      case 'Cumple': return '#2F6F5E';
-      case 'Parcial': return '#B07A1F';
-      case 'No cumple': return '#A8443B';
-      case 'No aplica': return '#6B7480';
-      default: return '#8A939B';
-    }
+    return this.selectedMaturityLevel?.color || '#8A939B';
   }
 
   save() {

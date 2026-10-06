@@ -11,39 +11,33 @@ import { ErrorManager } from 'app/errors/error-manager';
 import { ActionPlanCounts } from '../gap-action-plan-list/gap-action-plan-list.component';
 
 // "Alcance" liviano de ítems que trae GET /api/gap/plan-de-accion: solo lo necesario
-// (tipo/itemId/maturityLevelId/theme) para resolver el estado y el tema de cada brecha sin
-// traer el árbol completo de requisitos/controles (eso lo resuelve /gap/evaluacion, no acá).
+// (tipo/itemId/maturityLevelId/theme/evaluationItemId) para resolver el estado y el tema de cada
+// brecha, y para pedirle evidencia a app-gap-evidence-list, sin traer el árbol completo de
+// requisitos/controles (eso lo resuelve /gap/evaluacion, no acá).
 interface GapScopeItem {
   tipo: 'requisito' | 'control';
   itemId: number;
   maturityLevelId: number | null;
   theme: string;
+  evaluationItemId: number;
 }
 
 interface ResolvedBreach {
   breach: Breach;
+  item: GapScopeItem;
   estado: string;
   colorHex: string;
   theme: string;
 }
 
-type EstadoFilter = 'todas' | 'noCumple' | 'parcial';
+// 'todas' o el nombre exacto de un nivel de madurez que genera brecha (MaturityLevel.name) --
+// ya no una lista fija de 2 nombres: el catálogo de niveles define cuántos chips hay y cuáles.
+type EstadoFilter = string;
 type SortOption = 'numeracion' | 'estado';
 
 type Row =
   | { kind: 'theme'; theme: string; count: number }
   | { kind: 'breach'; resolved: ResolvedBreach };
-
-// Colores fijos por estado (no vienen del catálogo) — mismos que usa la app móvil para los
-// chips de filtro (gap_status.dart: statusColorByName). El badge de cada tarjeta sí usa el
-// color real del catálogo de niveles de madurez (ver colorDeEstado()).
-const STATUS_COLOR_BY_NAME: { [name: string]: string } = {
-  'Cumple': '#2F6F5E',
-  'Parcial': '#B07A1F',
-  'No cumple': '#A8443B',
-  'No aplica': '#6B7480',
-};
-const STATUS_COLOR_DEFAULT = '#8A939B';
 
 /**
  * "Plan de acción" — misma pantalla que la app móvil (Flutter PlanDeAccionPage): resumen de
@@ -104,7 +98,7 @@ export class PlanDeAccionComponent implements OnInit {
       breadcrumb: {
         type: '',
         links: [
-          { name: 'GAP', isLink: false, link: '#' },
+          { name: 'Evaluación', isLink: false, link: '#' },
           { name: 'Plan de acción', isLink: false },
         ]
       }
@@ -126,11 +120,27 @@ export class PlanDeAccionComponent implements OnInit {
       this.users = res.users || [];
       this.loading = false;
       this.loadCounts();
+      this.loadHeaderStats();
     }, error => {
       this.loading = false;
       this.errorMessage = 'No se pudo cargar el plan de acción. Intenta de nuevo.';
       ErrorManager.handleError(error);
     });
+  }
+
+  // El header (app-gap-breach-map) debe mostrar el mismo % que "Cumplimiento" -- toda la
+  // evaluación, no solo lo asignado a este usuario -- para que identifique la evaluación con el
+  // mismo número en cualquier pantalla. "items"/"breaches" de arriba SÍ siguen acotados al
+  // usuario a propósito (son los que arma el resto de la pantalla), por eso esto es una llamada
+  // aparte a /api/gap/resumen con scopeToUser=false, el mismo endpoint que usa Cumplimiento.
+  headerStats: { pct: number; evaluados: number; total: number } = { pct: 0, evaluados: 0, total: 0 };
+  headerEvidencias = 0;
+
+  private loadHeaderStats() {
+    this._gapService.getResumen(false).subscribe((res: any) => {
+      this.headerStats = res.stats || { pct: 0, evaluados: 0, total: 0 };
+      this.headerEvidencias = res.evidencias || 0;
+    }, error => ErrorManager.handleError(error));
   }
 
   // Conteo agregado de entrada (bulk); cada tarjeta de brecha lo reemplaza con el conteo real
@@ -156,7 +166,7 @@ export class PlanDeAccionComponent implements OnInit {
         if (!item) return null;
         const estado = this.estadoDe(item.maturityLevelId);
         const colorHex = this.maturityLevels.find(m => m.name === estado)?.color || '#6B7480';
-        return { breach, estado, colorHex, theme: item.theme } as ResolvedBreach;
+        return { breach, item, estado, colorHex, theme: item.theme } as ResolvedBreach;
       })
       .filter((r): r is ResolvedBreach => r !== null);
   }
@@ -168,19 +178,26 @@ export class PlanDeAccionComponent implements OnInit {
 
   private filterByEstado(list: ResolvedBreach[], filter: EstadoFilter): ResolvedBreach[] {
     if (filter === 'todas') return list;
-    const estado = filter === 'noCumple' ? 'No cumple' : 'Parcial';
-    return list.filter(r => r.estado === estado);
+    return list.filter(r => r.estado === filter);
+  }
+
+  // Un chip "Todas" + un chip por cada nivel de madurez que genera brecha (MaturityLevel.
+  // generatesBreach) -- reemplaza los 2 chips fijos "No cumple"/"Parcial" de la escala vieja.
+  // Ordenados por valor ascendente (el nivel más grave primero, mismo criterio que sortResolved).
+  get breachGeneratingLevels(): MaturityLevel[] {
+    return this.maturityLevels
+      .filter(m => m.generatesBreach)
+      .sort((a, b) => (a.value ?? 0) - (b.value ?? 0));
   }
 
   // Cada chip cuenta sobre la lista completa, no sobre el filtro activo — así "Todas (23)"
-  // no cambia cuando estás filtrando por "Parcial".
-  get filterCounts(): { todas: number; noCumple: number; parcial: number } {
-    const all = this.resolved;
-    return {
-      todas: this.filterByEstado(all, 'todas').length,
-      noCumple: this.filterByEstado(all, 'noCumple').length,
-      parcial: this.filterByEstado(all, 'parcial').length,
-    };
+  // no cambia cuando estás filtrando por otro estado.
+  get todasCount(): number {
+    return this.resolved.length;
+  }
+
+  countForEstado(estado: string): number {
+    return this.filterByEstado(this.resolved, estado).length;
   }
 
   private compareByNumeracion(a: string, b: string): number {
@@ -194,12 +211,17 @@ export class PlanDeAccionComponent implements OnInit {
     return 0;
   }
 
+  // Prioridad = valor del nivel de madurez (más bajo = más grave = va primero) -- ya no un mapa
+  // fijo de 2 nombres. Un estado sin nivel resuelto (no debería pasar) queda al final.
+  private priorityValue(estado: string): number {
+    return this.maturityLevels.find(m => m.name === estado)?.value ?? Number.MAX_SAFE_INTEGER;
+  }
+
   private sortResolved(list: ResolvedBreach[]): ResolvedBreach[] {
     const sorted = [...list];
     if (this.sortOption === 'estado') {
-      const prioridad: { [name: string]: number } = { 'No cumple': 0, 'Parcial': 1 };
       sorted.sort((a, b) => {
-        const diff = (prioridad[a.estado] ?? 2) - (prioridad[b.estado] ?? 2);
+        const diff = this.priorityValue(a.estado) - this.priorityValue(b.estado);
         return diff !== 0 ? diff : this.compareByNumeracion(a.breach.numerationToShow, b.breach.numerationToShow);
       });
     } else {
@@ -276,6 +298,14 @@ export class PlanDeAccionComponent implements OnInit {
     this.countsByBreach.set(breachId, counts);
   }
 
+  // Para el badge de cada fila colapsada -- de dónde sale "¿esta brecha ya tiene acciones
+  // asignadas?" sin tener que expandirla. countsByBreach ya viene completo desde loadCounts()
+  // (bulk al cargar la pantalla); una brecha sin ninguna acción todavía simplemente no aparece
+  // en esa respuesta, por eso el default en {0,0}.
+  countsFor(breachId: number): ActionPlanCounts {
+    return this.countsByBreach.get(breachId) || { total: 0, completed: 0 };
+  }
+
   get totals(): ActionPlanCounts {
     let total = 0, completed = 0;
     this.countsByBreach.forEach(c => { total += c.total; completed += c.completed; });
@@ -286,8 +316,9 @@ export class PlanDeAccionComponent implements OnInit {
     return this.totals.total ? Math.round((this.totals.completed / this.totals.total) * 100) : 0;
   }
 
+  // Color real del catálogo de niveles de madurez -- ya no un mapa fijo por nombre.
   statusChipColor(estado: string): string {
-    return STATUS_COLOR_BY_NAME[estado] || STATUS_COLOR_DEFAULT;
+    return this.maturityLevels.find(m => m.name === estado)?.color || '#8A939B';
   }
 
 }

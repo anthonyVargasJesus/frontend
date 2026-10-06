@@ -1,0 +1,3 @@
+// Estilos de .gap-home__filters/.chip viven en gap-home.component.scss -- se importan en vez
+// de duplicarlos (mismo criterio que gap-breach-map.component.scss).
+@import '../gap-home/gap-home.component.scss';

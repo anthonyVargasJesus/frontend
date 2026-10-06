@@ -1,6 +1,5 @@
 :host {
     display: block;
-    font-family: 'Inter', system-ui, sans-serif;
 }
 
 .gap-ap__item {
@@ -19,7 +18,6 @@
 }
 
 .gap-ap__item-label {
-    font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.06em;
@@ -51,6 +49,19 @@
 .gap-ap__title:focus {
     outline: 2px solid #2f6f5e;
     border-color: #2f6f5e;
+}
+
+.gap-ap__char-count {
+    font-size: 10.5px;
+    color: #8a939b;
+    text-align: right;
+    margin-top: -6px;
+    margin-bottom: 10px;
+}
+
+.gap-ap__char-count--limit {
+    color: #a8443b;
+    font-weight: 600;
 }
 
 .gap-ap__row {
@@ -123,7 +134,15 @@
     transform: translateY(-1px);
 }
 
+.gap-ap__divider {
+    border: none;
+    border-top: 1px solid #e2e7ea;
+    margin: 14px 0;
+}
+
 .gap-ap__save-btn {
+    display: block;
+    margin: 0 auto;
     background: #1c2733;
     border: 1.5px solid #1c2733;
     color: #f5f7f8;

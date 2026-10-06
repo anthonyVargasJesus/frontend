@@ -367,7 +367,20 @@
                 <div class="tab-pane" role="tabpanel">
                   <div class="card border">
                     <div class="card-body">
-                      <app-user-scope-by-user *ngIf="!loading" [userId]="user.userId" [standardId]="user.standardId">
+                      <div class="form-group" style="max-width: 360px;">
+                        <label class="form-label">Norma a configurar</label>
+                        <select class="form-control" [(ngModel)]="scopeStandardId" [ngModelOptions]="{standalone: true}">
+                          <option *ngFor="let standard of standards" [value]="standard.standardId">
+                            {{ standard.name }}
+                          </option>
+                        </select>
+                        <small class="text-muted d-block mt-1">
+                          Los grupos y familias son independientes por norma -- un usuario puede tener
+                          asignaciones distintas en cada una. Elegí acá para cuál norma estás viendo/editando.
+                        </small>
+                      </div>
+                      <app-user-scope-by-user *ngIf="!loading && scopeStandardId" [userId]="user.userId"
+                        [standardId]="scopeStandardId">
                       </app-user-scope-by-user>
                     </div>
                   </div>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActionPlanService } from 'app/services/action-plan.service';
 import { LoginService } from 'app/services/login.service';
+import { GapService } from 'app/services/gap.service';
+import { Evaluation } from 'app/models/evaluation';
 import { ErrorManager } from 'app/errors/error-manager';
 
 // Forma exacta de cada tarea tal como la devuelve GET /api/actionPlan/my-actions-bootstrap
@@ -35,26 +37,17 @@ interface MyActionStatus {
   value: number;
 }
 
-interface Priority {
-  actionPlanPriorityId: number;
-  name: string;
-  color: string;
-  count: number;
-}
-
 type SortOption = 'fechaLimite' | 'prioridad';
-type DueBucket = 'vencidas' | 'proximaSemana' | 'masAdelante';
 
+// Una fila "breach" agrupa a todas las tareas de ese control/requisito que sobrevivieron el
+// filtro/orden actual -- reemplaza al viejo agrupado por vencimiento: con varias acciones para
+// el mismo control, el control se repetía una vez por acción (título completo cada vez), lo que
+// hacía parecer que la lista estaba duplicada en vez de mostrar acciones distintas del mismo
+// control. Mismo patrón que ThemeHeaderRow en plan-de-accion.component.ts, pero agrupando por
+// brecha en vez de por tema.
 type Row =
-  | { kind: 'bucket'; bucket: DueBucket; count: number }
+  | { kind: 'breach'; breachId: number; numerationToShow: string; title: string; count: number }
   | { kind: 'task'; task: MyActionTask };
-
-const DUE_BUCKET_ORDER: DueBucket[] = ['vencidas', 'proximaSemana', 'masAdelante'];
-const DUE_BUCKET_LABEL: { [k in DueBucket]: string } = {
-  vencidas: 'Vencidas',
-  proximaSemana: 'Vence esta semana',
-  masAdelante: 'Más adelante',
-};
 
 // Prioridades no vienen de un catálogo aparte en esta pantalla (se derivan de las tareas ya
 // cargadas, igual que en la app móvil) — este rank solo define el orden de los chips/orden
@@ -68,9 +61,11 @@ const PRIORITY_RANK_DEFAULT = 99;
  * es la vista del dueño del control, con todos los campos editables). Acá solo se puede avanzar
  * el estado de la propia tarea ("Mi avance") y adjuntar evidencia; todo lo demás (título,
  * prioridad, responsable) se edita desde /gap/panel. Misma pantalla que la app móvil
- * (MyActionPlansPage): filtro por prioridad, orden (Fecha límite/Prioridad) y agrupar por
- * vencimiento (Vencidas/Vence esta semana/Más adelante), todo client-side sobre la única
- * respuesta de carga (GET /api/actionPlan/my-actions-bootstrap).
+ * (MyActionPlansPage): filtro por estado, orden (Fecha límite/Prioridad) y agrupada siempre por
+ * control/requisito (una brecha puede tener varias acciones asignadas a distintas personas, o
+ * varias asignadas a vos mismo -- se listan juntas bajo el mismo encabezado en vez de repetir el
+ * título del control una vez por acción), todo client-side sobre la única respuesta de carga
+ * (GET /api/actionPlan/my-actions-bootstrap).
  */
 @Component({
   selector: 'app-my-action-plans',
@@ -83,22 +78,53 @@ export class MyActionPlansComponent implements OnInit {
   errorMessage = '';
   userEmail = '';
 
+  contentHeader: object;
+
   tasks: MyActionTask[] = [];
   statuses: MyActionStatus[] = [];
   savingIds = new Set<number>();
 
-  filtroPriorityId: number | 'todas' = 'todas';
+  filtroStatusId: number | 'todas' = 'todas';
   sortOption: SortOption = 'fechaLimite';
-  groupByDueDate = false;
+
+  // Acordeón por tarea, igual que /gap/plan-de-accion (toggleBreach/isExpanded/isVisited): con
+  // 3+ tareas mostrando "Mi avance" + toda la lista de evidencia siempre abierta, la pantalla se
+  // hacía larguísima. "visited" evita desmontar <app-gap-evidence-list> (y perder su estado/GET)
+  // cada vez que se colapsa una tarea ya vista.
+  private expanded = new Set<number>();
+  private visited = new Set<number>();
+
+  // Header compartido (app-gap-breach-map) para identificar en qué evaluación estás parado --
+  // mismos datos y mismo criterio que en Plan de acción: /api/gap/resumen con scopeToUser=false,
+  // no calculado sobre "tasks" (que son solo tuyas, no todos los ítems de la evaluación).
+  evaluation: Evaluation = new Evaluation();
+  headerStats: { pct: number; evaluados: number; total: number } = { pct: 0, evaluados: 0, total: 0 };
+  headerEvidencias = 0;
 
   constructor(
     private _actionPlanService: ActionPlanService,
     private _loginService: LoginService,
+    private _gapService: GapService,
   ) { }
 
   ngOnInit(): void {
     this.userEmail = this._loginService.getCurrentUser()?.em || '';
+    this.initContentHeader();
     this.load();
+  }
+
+  private initContentHeader() {
+    this.contentHeader = {
+      headerTitle: 'Mis acciones',
+      actionButton: false,
+      breadcrumb: {
+        type: '',
+        links: [
+          { name: 'Evaluación', isLink: false, link: '#' },
+          { name: 'Mis acciones', isLink: false },
+        ]
+      }
+    };
   }
 
   load() {
@@ -108,6 +134,7 @@ export class MyActionPlansComponent implements OnInit {
       this.tasks = res.tasks || [];
       this.statuses = res.statuses || [];
       this.loading = false;
+      this.loadHeaderStats();
     }, error => {
       this.loading = false;
       this.errorMessage = 'No se pudieron cargar tus acciones. Intenta de nuevo.';
@@ -115,8 +142,33 @@ export class MyActionPlansComponent implements OnInit {
     });
   }
 
+  private loadHeaderStats() {
+    this._gapService.getResumen(false).subscribe((res: any) => {
+      this.evaluation = res.evaluation;
+      this.headerStats = res.stats || { pct: 0, evaluados: 0, total: 0 };
+      this.headerEvidencias = res.evidencias || 0;
+    }, error => ErrorManager.handleError(error));
+  }
+
   isSaving(actionPlanId: number): boolean {
     return this.savingIds.has(actionPlanId);
+  }
+
+  isExpanded(actionPlanId: number): boolean {
+    return this.expanded.has(actionPlanId);
+  }
+
+  isVisited(actionPlanId: number): boolean {
+    return this.visited.has(actionPlanId);
+  }
+
+  toggleTask(actionPlanId: number) {
+    if (this.expanded.has(actionPlanId)) {
+      this.expanded.delete(actionPlanId);
+    } else {
+      this.expanded.add(actionPlanId);
+      this.visited.add(actionPlanId);
+    }
   }
 
   // El backend resuelve requirementEvaluationId/controlEvaluationId desde la brecha (Breach solo
@@ -154,33 +206,43 @@ export class MyActionPlansComponent implements OnInit {
     });
   }
 
-  // Derivadas de las tareas ya cargadas (esta pantalla no pide /api/actionPlanPriority/all
-  // aparte) — mismo criterio que distinctPriorities() en la app móvil.
-  get priorities(): Priority[] {
-    const byId = new Map<number, Priority>();
-    for (const t of this.tasks) {
-      const existing = byId.get(t.actionPlanPriorityId);
-      if (existing) {
-        existing.count++;
-      } else {
-        byId.set(t.actionPlanPriorityId, {
-          actionPlanPriorityId: t.actionPlanPriorityId,
-          name: t.priorityName,
-          color: t.priorityColor,
-          count: 1,
-        });
-      }
-    }
-    return Array.from(byId.values()).sort((a, b) => {
-      const rank = (p: Priority) => PRIORITY_RANK[(p.name || '').toLowerCase()] ?? PRIORITY_RANK_DEFAULT;
-      const diff = rank(a) - rank(b);
-      return diff !== 0 ? diff : a.name.localeCompare(b.name);
-    });
+  // El estado "más completo" del catálogo (mayor "value") se considera completado -- mismo
+  // criterio que ya usa gap-action-plan-list.component.ts (maxValueStatusId/isCompleted) para
+  // el contador de "Plan de acción"; acá es el mismo cálculo pero solo sobre MIS tareas.
+  private get maxValueStatusId(): number | undefined {
+    return [...this.statuses].sort((a, b) => (b.value ?? 0) - (a.value ?? 0))[0]?.actionPlanStatusId;
+  }
+
+  isCompleted(task: MyActionTask): boolean {
+    return task.actionPlanStatusId === this.maxValueStatusId;
+  }
+
+  get totals(): { total: number; completed: number } {
+    const total = this.tasks.length;
+    const completed = this.tasks.filter(t => this.isCompleted(t)).length;
+    return { total, completed };
+  }
+
+  get progressPct(): number {
+    return this.totals.total ? Math.round((this.totals.completed / this.totals.total) * 100) : 0;
+  }
+
+  // Chips de filtro por estado ("Mi avance") -- a diferencia de priorities() (que se derivaba
+  // solo de las tareas), el catálogo real viene de la BD (MAE_ACTION_PLAN_STATUS, ya cargado en
+  // this.statuses para los botones "Mi avance"): se reutiliza acá para no hardcodear
+  // "Pendiente/En curso/Completado" en el HTML. Ordenado por "value" del catálogo (mismo
+  // criterio que maxValueStatusId), no por conteo ni alfabético; solo se listan los estados que
+  // tienen al menos una tarea, igual que antes hacía priorities().
+  get statusFilters(): (MyActionStatus & { count: number })[] {
+    return [...this.statuses]
+      .sort((a, b) => (a.value ?? 0) - (b.value ?? 0))
+      .map(s => ({ ...s, count: this.tasks.filter(t => t.actionPlanStatusId === s.actionPlanStatusId).length }))
+      .filter(s => s.count > 0);
   }
 
   private get filtered(): MyActionTask[] {
-    if (this.filtroPriorityId === 'todas') return this.tasks;
-    return this.tasks.filter(t => t.actionPlanPriorityId === this.filtroPriorityId);
+    if (this.filtroStatusId === 'todas') return this.tasks;
+    return this.tasks.filter(t => t.actionPlanStatusId === this.filtroStatusId);
   }
 
   private sortTasks(list: MyActionTask[]): MyActionTask[] {
@@ -197,30 +259,50 @@ export class MyActionPlansComponent implements OnInit {
     return sorted;
   }
 
-  // Vencidas / Vence esta semana / Más adelante — ventanas relativas a hoy, no calendario, y sin
-  // "Sin fecha" (dueDate siempre viene con valor en esta pantalla). Mismo criterio que
-  // dueBucketOf() en la app móvil.
-  private dueBucketOf(task: MyActionTask): DueBucket {
+  // Días hasta el vencimiento (negativo = ya venció) -- base del badge de fecha de cada tarjeta
+  // (dueLabel/isOverdue), para no calcularlo dos veces con criterios ligeramente distintos.
+  private daysUntilDue(task: MyActionTask): number {
     const today = new Date(); today.setHours(0, 0, 0, 0);
     const due = new Date(task.dueDate); due.setHours(0, 0, 0, 0);
-    const daysUntilDue = Math.round((due.getTime() - today.getTime()) / 86400000);
-    if (daysUntilDue < 0) return 'vencidas';
-    if (daysUntilDue <= 7) return 'proximaSemana';
-    return 'masAdelante';
+    return Math.round((due.getTime() - today.getTime()) / 86400000);
   }
 
+  // Tareas completadas no se marcan como "vencidas" aunque la fecha ya haya pasado -- ya no hay
+  // nada pendiente que atrasar. Mismo criterio para el color/texto del badge de fecha.
+  isOverdue(task: MyActionTask): boolean {
+    return !this.isCompleted(task) && this.daysUntilDue(task) < 0;
+  }
+
+  daysOverdue(task: MyActionTask): number {
+    return Math.max(0, -this.daysUntilDue(task));
+  }
+
+  isDueToday(task: MyActionTask): boolean {
+    return !this.isCompleted(task) && this.daysUntilDue(task) === 0;
+  }
+
+  // Agrupa por brecha en el mismo orden en que ya salen de sortTasks() -- una brecha con varias
+  // acciones (asignadas a vos o a otras personas, con distinto estado cada una) aparece como un
+  // solo encabezado con sus tareas debajo, en vez de repetir el título del control una vez por
+  // acción. Mismo patrón que groupResolvedByTheme() en plan-de-accion.component.ts, pero
+  // agrupando por brecha (acá no hay "tema" -- todas las brechas de esta lista son del usuario).
   get rows(): Row[] {
     const sorted = this.sortTasks(this.filtered);
-
-    if (!this.groupByDueDate)
-      return sorted.map(task => ({ kind: 'task', task } as Row));
-
     const rows: Row[] = [];
-    for (const bucket of DUE_BUCKET_ORDER) {
-      const enBucket = sorted.filter(t => this.dueBucketOf(t) === bucket);
-      if (enBucket.length === 0) continue;
-      rows.push({ kind: 'bucket', bucket, count: enBucket.length });
-      rows.push(...enBucket.map(task => ({ kind: 'task', task } as Row)));
+    const seenBreaches = new Set<number>();
+    for (const task of sorted) {
+      if (!seenBreaches.has(task.breachId)) {
+        seenBreaches.add(task.breachId);
+        const count = sorted.filter(t => t.breachId === task.breachId).length;
+        rows.push({
+          kind: 'breach',
+          breachId: task.breachId,
+          numerationToShow: task.breachNumerationToShow,
+          title: task.breachTitle,
+          count,
+        });
+      }
+      rows.push({ kind: 'task', task });
     }
     return rows;
   }
@@ -229,17 +311,13 @@ export class MyActionPlansComponent implements OnInit {
   // ciclo de detección de cambios, porque "rows" arma objetos nuevos cada vez que se evalúa —
   // mismo bug ya corregido en /gap/plan-de-accion.
   trackByRow(_index: number, row: Row): string {
-    return row.kind === 'bucket' ? 'bucket:' + row.bucket : 'task:' + row.task.actionPlanId;
-  }
-
-  bucketLabel(bucket: DueBucket): string {
-    return DUE_BUCKET_LABEL[bucket];
+    return row.kind === 'breach' ? 'breach:' + row.breachId : 'task:' + row.task.actionPlanId;
   }
 
   get emptyMessage(): string {
-    return this.filtroPriorityId === 'todas'
+    return this.filtroStatusId === 'todas'
       ? 'No tienes acciones asignadas por ahora.'
-      : 'No hay acciones con esa prioridad.';
+      : 'No hay acciones con ese estado.';
   }
 
 }

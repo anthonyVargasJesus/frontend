@@ -1,13 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
-
 :host {
     display: block;
-    font-family: 'Inter', system-ui, sans-serif;
     color: #1c2733;
-}
-
-.mono {
-    font-family: 'IBM Plex Mono', monospace;
 }
 
 .hd {
@@ -140,22 +133,30 @@
 
 /* Por área */
 
-.hd__area-scroll {
-    display: flex;
-    gap: 12px;
-    overflow-x: auto;
-    padding-bottom: 4px;
-    margin-bottom: 20px;
+// El ancho/posición de cada .swiper-slide lo calcula Swiper (según slidesPerView/breakpoints),
+// no CSS flex/scroll manual -- por eso .hd__area-card ya no fija width ni scroll-snap-align.
+.hd__area-swiper {
+    // Deja lugar a los puntos de paginación de Swiper, que se posicionan absolutos abajo.
+    padding-bottom: 22px;
+    margin-bottom: 8px;
+
+    .swiper-pagination-bullet {
+        background: #d6dce0;
+        opacity: 1;
+    }
+
+    .swiper-pagination-bullet-active {
+        background: #4a5560;
+    }
 }
 
 .hd__area-card {
-    flex: 0 0 auto;
-    width: 140px;
     padding: 12px;
     border-radius: 14px;
     border-top: 3px solid;
     background: #ffffff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
+    height: auto;
 }
 
 .hd__area-name {

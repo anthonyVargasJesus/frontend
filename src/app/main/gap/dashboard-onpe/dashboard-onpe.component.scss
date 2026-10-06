@@ -1,0 +1,165 @@
+// Mismo -1.5rem que usan gap-home/soa-report/home-dashboard (".gap-home"/".soa"/".hd") entre
+// <app-content-header> y lo primero de la pantalla -- sin esto queda el padding-top default de
+// .content-body sin cancelar, y esta pantalla (a diferencia de esas) nunca lo compensaba: por
+// eso el banner de app-gap-breach-map se veía con mucho más aire arriba acá que en "Cumplimiento"
+// (gap-home), que usa el mismo componente. Solo el margen vertical, no el horizontal -2rem que
+// usan esas otras (esa parte sí cambiaría el resto del layout de la página, no hacía falta para
+// este ajuste puntual).
+.dashboard-onpe__header-map {
+  margin-top: -1.5rem;
+}
+
+// Cuadro único (Madurez General + tabla por grupo), calcado del Excel de ONPE pero con el
+// tratamiento visual de tarjeta que ya usa el resto del template (sombra suave, radios grandes,
+// colores del tema en vez de hex propios) -- no la grilla con bordes azules del Excel original.
+.dashboard-onpe__card {
+  max-width: 720px;
+}
+
+.dashboard-onpe__table {
+  thead th {
+    background: transparent;
+    color: #6e6b7b;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    border-top: none;
+    border-bottom-width: 1px;
+  }
+
+  tbody td {
+    vertical-align: middle;
+    font-size: 13.5px;
+  }
+}
+
+// "Grupo" es la columna título de la fila (identifica qué es cada renglón), no un campo más
+// como Actual/Meta/Actual(%) -- se destaca con más tamaño y peso que el resto del encabezado,
+// en vez de quedar igual de chica y en mayúsculas que las demás.
+.dashboard-onpe__th-grupo {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  color: #1c2733 !important;
+}
+
+// Fila de resumen (Madurez General): mismo alto que las filas de grupo, pero con fondo tenue
+// y borde inferior más marcado para que se lea como el total de la tabla, no como un grupo más.
+.dashboard-onpe__row-general {
+  background: rgba(115, 103, 240, .04);
+
+  td {
+    border-bottom: 2px solid #ebe9f1;
+  }
+}
+
+.dashboard-onpe__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.dashboard-onpe__bar {
+  width: 70px;
+  height: 6px;
+  border-radius: 4px;
+}
+
+// Código del control: mismo tratamiento que los códigos de dominio en el detalle de
+// maturity-radar (badge-light-secondary), no texto plano -- se lee como una etiqueta, no como
+// parte de la oración.
+.dashboard-onpe__code {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+// Badge circular con el número (0-5) + nombre del nivel al lado, en vez de un pill de texto
+// suelto -- mismo lenguaje visual que la tabla resumen de arriba (círculo de color + dato).
+.dashboard-onpe__level-badge {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.dashboard-onpe__level-name {
+  font-size: 11.5px;
+  min-width: 76px;
+  text-align: left;
+}
+
+// Dona "Madurez General" (chart4 del Excel): leyenda de color a la izquierda, anillo a la
+// derecha con el valor general superpuesto en el centro -- mismo truco de SVG que
+// .hd__donut/.hd__donut-center en home-dashboard.component.scss.
+.dashboard-onpe__donut-card-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  min-height: 220px;
+}
+
+.dashboard-onpe__donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.dashboard-onpe__donut-legend-item {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a5560;
+}
+
+.dashboard-onpe__legend-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  display: inline-block;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.dashboard-onpe__donut-wrap {
+  position: relative;
+  width: 190px;
+  height: 190px;
+  flex-shrink: 0;
+}
+
+.dashboard-onpe__donut {
+  width: 100%;
+  height: 100%;
+
+  circle {
+    transition: stroke-dasharray .25s ease;
+  }
+}
+
+.dashboard-onpe__donut-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-onpe__donut-value {
+  font-size: 30px;
+  font-weight: 700;
+  color: #1c2733;
+}

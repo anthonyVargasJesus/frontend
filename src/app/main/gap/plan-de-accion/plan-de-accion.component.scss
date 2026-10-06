@@ -1,19 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
-
 :host {
     display: block;
-    font-family: 'Inter', system-ui, sans-serif;
     color: #1c2733;
-}
-
-.mono {
-    font-family: 'IBM Plex Mono', monospace;
 }
 
 .plan-de-accion {
     background: #f5f7f8;
     margin: -1.5rem -2rem;
-    padding: 20px 27px 40px;
+    // Sin padding-top: el header (app-gap-breach-map) ya aporta su propio margin-top: 15px --
+    // igual que en Cumplimiento, que tampoco le suma padding-top propio al contenedor.
+    padding: 0 27px 40px;
 }
 
 .plan-de-accion__error {
@@ -208,6 +203,19 @@
     border-top: 1px solid #edf1f3;
 }
 
+.plan-de-accion__evidence {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #e2e7ea;
+}
+
+.plan-de-accion__evidence-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #4a5560;
+    margin-bottom: 8px;
+}
+
 .status-badge {
     display: inline-block;
     border: 1px solid;
@@ -217,6 +225,30 @@
     font-size: 11px;
     white-space: nowrap;
     flex-shrink: 0;
+}
+
+// Indica de un vistazo, sin expandir la fila, si esa brecha ya tiene acciones de mejora
+// registradas (verde) o ninguna todavía (ámbar) -- dato que ya se cargaba para el total de
+// arriba (countsByBreach) pero no se mostraba por brecha.
+.plan-de-accion__actions-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #2f6f5e;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+    }
+}
+
+.plan-de-accion__actions-badge--empty {
+    color: #b07a1f;
 }
 
 @media (prefers-reduced-motion: reduce) {

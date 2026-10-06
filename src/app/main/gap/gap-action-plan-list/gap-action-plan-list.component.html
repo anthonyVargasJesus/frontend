@@ -11,8 +11,16 @@
             <button type="button" class="gap-ap__delete-link" (click)="delete(ap)">Eliminar</button>
         </div>
 
-        <textarea rows="2" class="gap-ap__title" placeholder="¿Qué hay que hacer? (ej. contratar servicio de backup, redactar procedimiento, capacitar al equipo...)"
+        <textarea rows="2" class="gap-ap__title" maxlength="150"
+            placeholder="¿Qué hay que hacer? (ej. contratar servicio de backup, redactar procedimiento, capacitar al equipo...)"
             [(ngModel)]="ap.title"></textarea>
+        <!-- C_TITLE es varchar(150) en MAE_ACTION_PLAN -- sin este maxlength, un texto más largo
+             pasaba la validación del front (solo chequea que no esté vacío) y recién explotaba
+             en el INSERT con un "22001: value too long" que el backend disfraza como "Failed
+             Request" genérico (getExceptionErrorResponse). Mejor cortarlo acá. -->
+        <div class="gap-ap__char-count" [class.gap-ap__char-count--limit]="(ap.title?.length || 0) >= 150">
+            {{ ap.title?.length || 0 }}/150
+        </div>
 
         <div class="gap-ap__row gap-ap__row--single">
             <div class="gap-ap__field gap-ap__field--grow">
@@ -58,6 +66,8 @@
             </div>
         </div>
 
+        <hr class="gap-ap__divider">
+
         <button type="button" class="gap-ap__save-btn" [disabled]="isSaving(ap)" (click)="save(ap)">
             <span *ngIf="isSaving(ap)" class="spinner-border spinner-border-sm mr-1"></span>
             GUARDAR
@@ -65,7 +75,7 @@
     </div>
     </ng-container>
 
-    <button type="button" class="gap-ap__add-btn" *ngIf="!loading" (click)="add()">+ Agregar acción</button>
+    <button type="button" class="gap-ap__add-btn mt-1" *ngIf="!loading" (click)="add()">+ Agregar acción</button>
 
 </div> 
 

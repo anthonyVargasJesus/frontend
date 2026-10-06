@@ -2,11 +2,11 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import Swal from 'sweetalert2';
 
 import { environment } from 'environments/environment';
 import { ActionPlan } from 'app/models/action-plan';
 import { ErrorManager } from 'app/errors/error-manager';
+import { ToastManager } from 'app/errors/toast-manager';
 import { ApiResponse } from 'app/models/common/api-response.interface';
 import { ApiSingleResponse } from 'app/models/common/api-single-response.interface';
 
@@ -47,6 +47,20 @@ export class ActionPlanService {
   getByUser(evaluationId: number): Observable<ApiResponse<ActionPlan>> {
     const params = new HttpParams().set('evaluationId', evaluationId.toString());
     return this.http.get<ApiResponse<ActionPlan>>(`${this.endpoint}/byUser`, { params });
+  }
+
+  /**
+   * "Plan de Acción / Implementación" en vista calendario: planes de acción de la evaluación
+   * (paginado) con su rango de fechas, más el resumen Planificado/Ejecutado/Avance por mes
+   * (ese sí sobre el total, no solo la página -- lo arma el backend).
+   */
+  getCalendar(evaluationId: number, year: number, skip: number, pageSize: number): Observable<any> {
+    const params = new HttpParams()
+      .set('evaluationId', evaluationId.toString())
+      .set('year', year.toString())
+      .set('skip', skip.toString())
+      .set('pageSize', pageSize.toString());
+    return this.http.get<any>(`${this.endpoint}/calendar`, { params });
   }
 
   /**
@@ -118,7 +132,7 @@ export class ActionPlanService {
   // --- Helpers Privados ---
 
   private notify(action: string): void {
-    Swal.fire('¡Éxito!', `El registro se ${action} satisfactoriamente`, 'success');
+    ToastManager.success(`El registro se ${action} satisfactoriamente`);
   }
 
   private handleError(error: any): Observable<never> {

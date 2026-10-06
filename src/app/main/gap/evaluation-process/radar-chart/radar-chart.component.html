@@ -1,13 +1,53 @@
+<ng-container *ngIf="!wrapLabels; else customRadar">
+  <!-- yAxis (números 0-5 del anillo) probado y revertido: con muchos ejes (8-37, los radares por
+       grupo del dashboard ONPE) rompía las etiquetas de categoría (xAxis) por completo --
+       calculateViewDimensions reserva margen para "eje Y" pensado para gráficos cartesianos
+       (barra/línea), no para el radial de un polar chart, y ese margen le quita espacio a las
+       etiquetas de categoría hasta hacerlas desaparecer. Ver la etiqueta de cada control es más
+       importante que la escala numérica, así que se prioriza xAxis (wrapLabels=true trae su
+       propia escala sin este conflicto, ver más abajo). -->
+  <ngx-charts-polar-chart [results]="multi" [view]="view" [scheme]="colorScheme" [legend]="true" class="text-center"
+    [style]="coreConfig.layout.skin === 'dark'
+                          ? 'fill: #b4b7bd;'
+                          : 'fill: #6e6b7b;'" [legendTitle]="''" [xAxis]="xAxis" [animations]="true" legendPosition="below"
+    [showGridLines]="true" [showXAxisLabel]="true" [labelTrim]="labelTrim" [labelTrimSize]="labelTrimSize">
+  </ngx-charts-polar-chart>
+</ng-container>
 
-    <ngx-charts-polar-chart [results]="multi" [view]="view" [scheme]="colorScheme" [legend]="true" class="text-center"
-      [style]="coreConfig.layout.skin === 'dark'
-                            ? 'fill: #b4b7bd;'
-                            : 'fill: #6e6b7b;'" [legendTitle]="''" [xAxis]="xAxis" [animations]="true" legendPosition="below"
-      [showGridLines]="true" [showXAxisLabel]="true">
-    </ngx-charts-polar-chart>
+<!-- Renderer propio para ejes con nombres largos (wrapLabels=true): ngx-charts-polar-chart no
+     wrappea texto a varias líneas, así que con 8-37 ejes el nombre completo del control no tiene
+     forma de entrar. Acá las etiquetas son divs HTML posicionados con la misma trigonometría del
+     SVG (no ngx-charts) -- el navegador wrappea el texto solo con CSS normal (word-wrap), sin
+     necesidad de cortar a un largo fijo. -->
+<ng-template #customRadar>
+  <div class="radar" [style.width.px]="view[0]" [style.height.px]="view[1]">
+    <svg [attr.viewBox]="viewBox" class="radar__svg">
+      <polygon *ngFor="let ring of radarGridRings" [attr.points]="ring" class="radar__grid"></polygon>
+      <path *ngFor="let spoke of radarSpokes" [attr.d]="spoke" class="radar__spoke"></path>
+      <text *ngFor="let tick of radarScaleTicks" [attr.x]="view[0] / 2 + 4" [attr.y]="tick.y"
+        class="radar__tick">{{ tick.label }}</text>
 
+      <ng-container *ngFor="let s of radarSeries">
+        <polygon [attr.points]="s.points" [attr.fill]="s.color" [attr.stroke]="s.color"
+          class="radar__area"></polygon>
+        <circle *ngFor="let m of s.markers" [attr.cx]="m.x" [attr.cy]="m.y" r="3.5" [attr.fill]="s.color"
+          class="radar__point">
+          <title>{{ m.name }}: {{ m.value }}</title>
+        </circle>
+      </ng-container>
+    </svg>
 
+    <div class="radar__label" [class.radar__label--left]="a.align === 'left'"
+      [class.radar__label--right]="a.align === 'right'" [class.radar__label--center]="a.align === 'center'"
+      *ngFor="let a of radarAxes" [style.left.px]="a.x" [style.top.px]="a.y" [style.width.px]="a.width"
+      [title]="a.text">
+      {{ a.text }}
+    </div>
+  </div>
 
-<!-- <br>
-<hr>
-<br> -->
+  <div class="radar__legend" *ngIf="radarSeries.length > 0">
+    <span class="radar__legend-item" *ngFor="let s of radarSeries">
+      <i [style.background]="s.color"></i>{{ s.name }}
+    </span>
+  </div>
+</ng-template>

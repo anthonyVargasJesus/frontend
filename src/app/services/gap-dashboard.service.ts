@@ -18,6 +18,13 @@ export class GapDashboardService {
         return this.http.get(url);
     }
 
+    // GET /api/gapDashboard/dashboard-onpe — dashboard de madurez estilo ONPE (hoja "Dashboard"
+    // del Excel FM03-GPP_GC SoA). Por ahora solo trae Madurez General + los 4 grupos del Anexo A.
+    getDashboardOnpe() {
+        const url = environment.apiUrl + '/api/gapDashboard/dashboard-onpe';
+        return this.http.get(url);
+    }
+
     // GET /api/gapDashboard/bootstrap — mismo endpoint que usa la app móvil para "Inicio":
     // evaluación actual resuelta server-side + dashboard de cumplimiento + vista previa de
     // notificaciones, en una sola respuesta. A diferencia de /soa-report y /evaluacion, esta

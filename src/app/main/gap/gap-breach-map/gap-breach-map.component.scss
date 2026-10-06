@@ -1,0 +1,3 @@
+// Los estilos de .gap-home__header/.gap-home__card/.gap-theme-row/.gap-theme-legend viven en
+// gap-home.component.scss (la pantalla original) -- se importan acá en vez de duplicarlos.
+@import '../gap-home/gap-home.component.scss';

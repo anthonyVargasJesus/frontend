@@ -136,7 +136,7 @@ export class ControlGroupComponent implements OnInit {
         type: '',
         links: [
           {
-            name: this.standard?.name || this.currentLoginModel.cs,
+            name: this.standard?.name,
             isLink: false,
             link: '#'
           },

@@ -1,13 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
-
 :host {
     display: block;
-    font-family: 'Inter', system-ui, sans-serif;
     color: #1c2733;
-}
-
-.mono {
-    font-family: 'IBM Plex Mono', monospace;
 }
 
 .gap-eval-item {
@@ -24,7 +17,6 @@
 }
 
 .gap-eval-item__code {
-    font-family: 'IBM Plex Mono', monospace;
     font-size: 12px;
     font-weight: 600;
     background: #edf1f3;
@@ -150,7 +142,6 @@
 .gap-eval-item__panel .form-control,
 .gap-eval-item__panel select,
 .gap-eval-item__panel textarea {
-    font-family: 'Inter', system-ui, sans-serif;
     font-size: 13px;
     border: 1px solid #d6dce0;
     border-radius: 6px;

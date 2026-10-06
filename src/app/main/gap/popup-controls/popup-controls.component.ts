@@ -11,6 +11,8 @@ import { DialogData } from 'app/models/dialog-data';
 import { LoginModel } from 'app/models/login-model';
 import { ControlGroupService } from 'app/services/control-group.service';
 import { LoginService } from 'app/services/login.service';
+import { StandardService } from 'app/services/standard.service';
+import { Standard } from 'app/models/standard';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { Subject } from 'rxjs/internal/Subject';
 
@@ -47,6 +49,7 @@ export class PopupControlsComponent implements OnInit {
 
   currentLoginModel: LoginModel = new LoginModel();
   coreConfig: any;
+  standard: Standard = new Standard();
 
   constructor(
     private controlGroupService: ControlGroupService,
@@ -54,6 +57,7 @@ export class PopupControlsComponent implements OnInit {
     private _coreConfigService: CoreConfigService,
     private dialogRef: MatDialogRef<PopupControlsComponent>,
     @Inject(MAT_DIALOG_DATA) private data: DialogData,
+    private standardService: StandardService,
   ) {
     this._unsubscribeAll = new Subject();
   }
@@ -68,10 +72,23 @@ export class PopupControlsComponent implements OnInit {
     this.currentLoginModel = this.loginService.getCurrentUser();
 
     this.getTheme();
-    this.initMenuName();
     this.pageSize = PAGE_SIZE;
     this.standardId = this.data['standardId'];
+    this.obtainStandard(this.standardId);
     this.get();
+  }
+
+  // Trae la norma actual para mostrar su nombre real en el breadcrumb (antes usaba
+  // currentLoginModel.cs, un valor fijo de la sesión que ya no viene en el token --
+  // mismo patrón que ControlGroupComponent/RequirementComponent).
+  obtainStandard(id: number) {
+    this.standardService.obtain(id.toString())
+      .subscribe((res: any) => {
+        this.standard = res.data;
+        this.initMenuName();
+      }, error => {
+        this.initMenuName();
+      });
   }
 
   expandAll() {
@@ -110,7 +127,7 @@ export class PopupControlsComponent implements OnInit {
         type: '',
         links: [
           {
-            name: this.currentLoginModel.cs,
+            name: this.standard?.name,
             isLink: false,
             link: '#'
           },

@@ -13,17 +13,21 @@ import { BreachSeverityReportComponent } from './evaluation-process/breach-sever
 import { GapPanelComponent } from './gap-panel/gap-panel.component';
 import { MyActionPlansComponent } from './my-action-plans/my-action-plans.component';
 import { GapHomeComponent } from './gap-home/gap-home.component';
+import { ActionPlanCalendarComponent } from './action-plan-calendar/action-plan-calendar.component';
 import { PlanDeAccionComponent } from './plan-de-accion/plan-de-accion.component';
 import { SoaReportComponent } from './soa-report/soa-report.component';
 import { HomeDashboardComponent } from './home-dashboard/home-dashboard.component';
 import { MaturityRadarComponent } from './evaluation-process/maturity-radar/maturity-radar.component';
+import { DashboardOnpeComponent } from './dashboard-onpe/dashboard-onpe.component';
 
 const routes: Routes = [
     // Destino real de la redirección por rol GAP (login.service.ts → redirectByRole()).
     { path: 'gap-home', component: GapHomeComponent, },
+    { path: 'plan-de-accion-calendario', component: ActionPlanCalendarComponent, },
     { path: 'inicio', component: HomeDashboardComponent, },
     { path: 'plan-de-accion', component: PlanDeAccionComponent, },
     { path: 'soa-report', component: SoaReportComponent, },
+    { path: 'dashboard-onpe', component: DashboardOnpeComponent, },
     { path: 'panel', component: GapPanelComponent, },
     { path: 'my-action-plans', component: MyActionPlansComponent, },
     { path: 'requirement-evaluation', component: CurrentRequirementEvaluationComponent, },

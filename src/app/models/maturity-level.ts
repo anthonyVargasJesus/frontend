@@ -9,5 +9,6 @@ export class MaturityLevel {
         public color?: string,
         public generatesBreach?: boolean,
         public breachSeverityId?: number,
+        public isNotApplicable?: boolean,
     ) { }
 }

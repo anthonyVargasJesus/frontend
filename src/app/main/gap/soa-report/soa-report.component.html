@@ -19,7 +19,7 @@
 
                     <div class="soa__header">
                         <div class="soa__header-text">
-                            <div class="soa__title">Declaración de Aplicabilidad (SOA)</div>
+                            <div class="soa__title">Declaración de Aplicabilidad</div>
                             <div class="soa__subtitle">{{ subtitle }}</div>
                         </div>
                         <button type="button" class="soa__export-btn" [disabled]="exporting || controls.length === 0"
@@ -33,25 +33,46 @@
                         {{ pendingCount }} controles/cláusulas sin evaluar — el SOA está incompleto hasta cubrirlos.
                     </div>
 
-                    <div class="soa__card" *ngFor="let c of controls; trackBy: trackByCode">
-                        <div class="soa__card-inner" [style.border-left-color]="aplicaColor(c)">
-                            <div class="d-flex align-items-start" style="gap: 10px;">
-                                <span class="mono soa__code">{{ c.code }}</span>
-                                <div class="flex-grow-1 soa__name">{{ c.name }}</div>
-                            </div>
-
-                            <div class="soa__pills">
-                                <span class="soa__pill" [style.color]="aplicaColor(c)"
-                                    [style.background]="pillBackground(aplicaColor(c))">
-                                    {{ aplicaLabel(c) }}
-                                </span>
-                                <span class="soa__pill" style="color:#6B7480;" [style.background]="pillBackground('#6B7480')">
-                                    {{ c.implementacion }}
-                                </span>
-                            </div>
-
-                            <div class="soa__justificacion">{{ c.justificacion }}</div>
-                        </div>
+                    <!-- Tabla tipo Excel (columnas y filas, agrupado por área) en vez de tarjetas
+                         apiladas -- esta pantalla es un reporte formal, no un flujo mobile-first. -->
+                    <div class="table-responsive soa__table-wrap" *ngIf="controls.length > 0">
+                        <table class="table table-sm soa__table">
+                            <thead>
+                                <tr>
+                                    <th class="soa__col-code">N°</th>
+                                    <th class="soa__col-name">Control</th>
+                                    <th class="soa__col-desc">Descripción</th>
+                                    <th class="soa__col-pill">¿Aplica?</th>
+                                    <th class="soa__col-pill">Nivel de madurez</th>
+                                    <th class="soa__col-just">Justificación</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let group of groupedControls">
+                                    <tr class="soa__theme-row">
+                                        <td colspan="6">{{ group.theme }}</td>
+                                    </tr>
+                                    <tr *ngFor="let c of group.items; trackBy: trackByCode">
+                                        <td class="mono soa__code">{{ c.code }}</td>
+                                        <td class="soa__name">{{ c.name }}</td>
+                                        <td class="soa__desc">{{ c.description }}</td>
+                                        <td>
+                                            <span class="soa__pill" [style.color]="aplicaColor(c)"
+                                                [style.background]="pillBackground(aplicaColor(c))">
+                                                {{ aplicaLabel(c) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="soa__pill" style="color:#6B7480;"
+                                                [style.background]="pillBackground('#6B7480')">
+                                                {{ c.implementacion }}
+                                            </span>
+                                        </td>
+                                        <td class="soa__just">{{ c.justificacion }}</td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
                     </div>
 
                 </ng-container>

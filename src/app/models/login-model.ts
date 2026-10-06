@@ -19,7 +19,6 @@ export class LoginModel {
         public isd?: boolean,
         public cr?: string,
         public cmy?: string,
-        public cs?: string,
         public companyId?: number
     ) { }
 

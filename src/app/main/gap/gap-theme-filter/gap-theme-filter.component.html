@@ -1,0 +1,6 @@
+<nav class="gap-home__filters">
+    <button type="button" *ngFor="let tema of temas" class="chip" [class.active]="filtroTema === tema"
+        (click)="select(tema)">
+        {{ tema }}
+    </button>
+</nav>

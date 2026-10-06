@@ -2,3 +2,108 @@
   stroke: #000;       /* color de la línea */
   stroke-width: 1px;  /* grosor */
 }
+
+// display:flex + align-items:center centra el gráfico dentro de la tarjeta -- sin esto el host
+// queda "display: inline" por default (se encoge a su contenido) y de paso un ítem flex ignora
+// el "float: left" que ngx-charts le pone a su propio contenedor interno (.ngx-charts).
+// flex-direction:column: en la rama wrapLabels=true el host tiene DOS hijos directos (.radar y
+// .radar__legend, ver el .html) que tienen que quedar apilados (gráfico arriba, leyenda abajo),
+// no uno al lado del otro -- con la fila por default (row) quedaban lado a lado.
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+// Renderer propio del radar (wrapLabels=true) -- ver radar-chart.component.ts/.html.
+.radar {
+  position: relative;
+}
+
+.radar__svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.radar__grid {
+  fill: none;
+  stroke: #ddd;
+  stroke-dasharray: 3 4;
+}
+
+.radar__spoke {
+  stroke: #ddd;
+  stroke-width: 1;
+}
+
+.radar__tick {
+  font-size: 9px;
+  fill: #8a939b;
+  text-anchor: start;
+  dominant-baseline: middle;
+}
+
+.radar__area {
+  fill-opacity: .25;
+  stroke-width: 2;
+}
+
+.radar__point {
+  stroke: #fff;
+  stroke-width: 1;
+}
+
+// Las etiquetas son divs HTML (no texto SVG), pero acá se fuerza una sola línea (white-space:
+// nowrap) en vez de dejar que el navegador wrappee -- el texto que no entra en el ancho de la
+// caja (a.width, pensado para el wrap) se desborda hacia afuera del anillo, no se corta
+// (overflow visible por default en un div sin "overflow:hidden"). Con text-align derecho/
+// izquierdo/centro (según de qué lado del círculo esté) el desborde queda del lado correcto:
+// una etiqueta a la izquierda del círculo (text-align:right) se pasa hacia la izquierda, no
+// hacia el centro del gráfico.
+.radar__label {
+  position: absolute;
+  font-size: 10.5px;
+  color: #4a5560;
+  white-space: nowrap;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.radar__label--left {
+  text-align: left;
+}
+
+.radar__label--right {
+  text-align: right;
+}
+
+.radar__label--center {
+  text-align: center;
+}
+
+.radar__legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 16px;
+  margin-top: 10px;
+}
+
+.radar__legend-item {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  color: #4a5560;
+
+  i {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-right: 6px;
+    flex-shrink: 0;
+  }
+}

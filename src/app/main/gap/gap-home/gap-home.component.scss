@@ -1,13 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
-
 :host {
     display: block;
-    font-family: 'Inter', system-ui, sans-serif;
     color: #1c2733;
-}
-
-.mono {
-    font-family: 'IBM Plex Mono', monospace;
 }
 
 .gap-home {
@@ -17,19 +10,22 @@
 }
 
 .gap-home__header {
+    // Sin margin-left/right: <app-gap-breach-map> (donde vive este header) ya está dentro de
+    // .gap-home__body, que aplica padding-left/right: 27px -- si el header también le sumaba su
+    // propio margen quedaba con el doble de inset (54px) que .gap-home__card (27px, solo el del
+    // body), desalineados entre sí.
     background: #1c2733;
     color: #f5f7f8;
     padding: 20px 24px;
     border-radius: 10px;
-    margin-left: 27px;
-    margin-right: 27px;
     margin-top: 15px;
     margin-bottom: 10px;
 }
 
 .gap-home__header-inner {
-    max-width: 960px;
-    margin: 0 auto;
+    // Sin max-width/margin:auto a propósito -- centraba el contenido dejando espacio vacío a los
+    // costados en pantallas más anchas de 960px, en vez de ocupar todo el ancho real del header
+    // (que ya coincide con el de la tarjeta blanca de abajo).
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -38,7 +34,6 @@
 }
 
 .gap-home__eyebrow {
-    font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     letter-spacing: 0.14em;
     color: #8fb3a6;
@@ -57,7 +52,6 @@
 }
 
 .gap-home__pct {
-    font-family: 'IBM Plex Mono', monospace;
     font-size: 40px;
     font-weight: 600;
     line-height: 1;
@@ -181,7 +175,6 @@
 
 .gap-theme-row__count {
     width: 44px;
-    font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     color: #6b7480;
     text-align: right;

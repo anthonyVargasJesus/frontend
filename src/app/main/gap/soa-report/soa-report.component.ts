@@ -7,12 +7,18 @@ import { ErrorManager } from 'app/errors/error-manager';
 interface SoaControl {
   code: string;
   name: string;
+  description: string;
   theme: string;
   // null = todavía sin evaluar; true/false = aplica o no — mismo campo que devuelve el backend,
   // no se recalcula acá.
   aplica: boolean | null;
   implementacion: string;
   justificacion: string;
+}
+
+interface SoaThemeGroup {
+  theme: string;
+  items: SoaControl[];
 }
 
 const COLOR_ACCENT = '#2F6F5E';
@@ -59,7 +65,7 @@ export class SoaReportComponent implements OnInit {
       breadcrumb: {
         type: '',
         links: [
-          { name: 'GAP', isLink: false, link: '#' },
+          { name: 'Evaluación', isLink: false, link: '#' },
           { name: 'SOA', isLink: false },
         ]
       }
@@ -96,6 +102,25 @@ export class SoaReportComponent implements OnInit {
     return this.controls.filter(c => c.aplica === null).length;
   }
 
+  // Agrupa manteniendo el orden en que ya vienen (el backend los ordena por groupNumber/código),
+  // sin volver a ordenar acá -- mismo criterio que "Agrupar por tema" en otras pantallas, pero
+  // siempre activo en esta vista (no es un toggle, la tabla del SOA siempre se ve por área, como
+  // el Excel de referencia).
+  get groupedControls(): SoaThemeGroup[] {
+    const groups: SoaThemeGroup[] = [];
+    const byTheme = new Map<string, SoaThemeGroup>();
+    for (const c of this.controls) {
+      let group = byTheme.get(c.theme);
+      if (!group) {
+        group = { theme: c.theme, items: [] };
+        byTheme.set(c.theme, group);
+        groups.push(group);
+      }
+      group.items.push(c);
+    }
+    return groups;
+  }
+
   aplicaLabel(c: SoaControl): string {
     return c.aplica === null ? 'Sin evaluar' : (c.aplica ? 'Aplica' : 'No aplica');
   }
@@ -126,9 +151,11 @@ export class SoaReportComponent implements OnInit {
       const sheet = workbook.addWorksheet('SOA');
       sheet.columns = [
         { header: 'Código', key: 'code', width: 12 },
-        { header: 'Control', key: 'name', width: 42 },
+        { header: 'Control', key: 'name', width: 32 },
+        { header: 'Descripción', key: 'description', width: 50 },
+        { header: 'Área', key: 'theme', width: 26 },
         { header: '¿Aplica?', key: 'aplica', width: 14 },
-        { header: 'Implementación', key: 'implementacion', width: 18 },
+        { header: 'Nivel de madurez', key: 'implementacion', width: 18 },
         { header: 'Justificación', key: 'justificacion', width: 55 },
       ];
       sheet.getRow(1).font = { bold: true };
@@ -138,6 +165,8 @@ export class SoaReportComponent implements OnInit {
         sheet.addRow({
           code: c.code,
           name: c.name,
+          description: c.description,
+          theme: c.theme,
           aplica: c.aplica === null ? 'Sin evaluar' : (c.aplica ? 'Sí' : 'No'),
           implementacion: c.implementacion,
           justificacion: c.justificacion,

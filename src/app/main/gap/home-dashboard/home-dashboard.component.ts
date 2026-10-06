@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { GapDashboardService } from 'app/services/gap-dashboard.service';
 import { ErrorManager } from 'app/errors/error-manager';
+import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 
-interface MaturityCount { name: string; count: number; }
+interface MaturityCount { name: string; color: string; count: number; }
 interface DashboardTheme { theme: string; totalItems: number; evaluatedItems: number; compliantItems: number; percentage: number; }
 interface PendingItem { tipo: string; itemId: number; code: string; name: string; theme: string; }
 interface BreachSeverity { name: string; color: string; count: number; }
@@ -22,17 +23,6 @@ interface GapDashboard {
 }
 
 interface DonutSegment { name: string; count: number; color: string; dasharray: string; dashoffset: number; }
-
-// Mismo orden fijo que usa la app móvil para pintar la leyenda/anillo — no es el orden en que
-// llega maturityCounts del backend (ese es un GroupBy sin orden garantizado).
-const MATURITY_ORDER = ['Cumple', 'Parcial', 'No cumple', 'No aplica', 'Pendiente'];
-const MATURITY_COLOR: { [name: string]: string } = {
-  'Cumple': '#2F6F5E',
-  'Parcial': '#B07A1F',
-  'No cumple': '#A8443B',
-  'No aplica': '#6B7480',
-  'Pendiente': '#8A939B',
-};
 
 const RADIUS = 50;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
@@ -63,6 +53,26 @@ export class HomeDashboardComponent implements OnInit {
 
   contentHeader: object;
 
+  // Carrusel "Por área" con Swiper real (ngx-swiper-wrapper, ya venía como dependencia del
+  // template sin usarse) en vez de un scroll casero -- drag de mouse, touch, paginación y
+  // agrupado por página los resuelve la librería, no cálculos propios de scrollLeft/anchos.
+  readonly areaSwiperConfig: SwiperConfigInterface = {
+    slidesPerView: 2,
+    slidesPerGroup: 2,
+    spaceBetween: 12,
+    grabCursor: true,
+    watchOverflow: true,
+    // Sin "el" explícito: Swiper detecta solo el <div class="swiper-pagination"> que ya está
+    // dentro de este mismo .swiper-container en el HTML.
+    pagination: { clickable: true },
+    breakpoints: {
+      480: { slidesPerView: 3, slidesPerGroup: 3 },
+      700: { slidesPerView: 4, slidesPerGroup: 4 },
+      960: { slidesPerView: 5, slidesPerGroup: 5 },
+      1200: { slidesPerView: 6, slidesPerGroup: 6 },
+    },
+  };
+
   constructor(private _gapDashboardService: GapDashboardService) { }
 
   ngOnInit(): void {
@@ -72,13 +82,13 @@ export class HomeDashboardComponent implements OnInit {
 
   private initContentHeader() {
     this.contentHeader = {
-      headerTitle: 'Inicio',
+      headerTitle: 'Dashboard',
       actionButton: false,
       breadcrumb: {
         type: '',
         links: [
-          { name: 'GAP', isLink: false, link: '#' },
-          { name: 'Inicio', isLink: false },
+          { name: 'Evaluación', isLink: false, link: '#' },
+          { name: 'Dashboard', isLink: false },
         ]
       }
     };
@@ -97,22 +107,19 @@ export class HomeDashboardComponent implements OnInit {
     });
   }
 
-  // Segmentos del anillo en el orden fijo Cumple/Parcial/No cumple/No aplica/Pendiente,
-  // saltando los que están en cero — mismo criterio que _order en home_dashboard_page.dart.
-  // maturityCounts ya suma totalItems (incluye Pendiente/No aplica), así que cada segmento es
-  // proporción directa sobre el total, sin recalcular nada.
+  // Segmentos del anillo en el orden que ya llega resuelto del backend (por valor de madurez
+  // descendente, Pendiente al final -- ver GetGapDashboardQuery.maturityCounts), saltando los
+  // que están en cero. maturityCounts ya suma totalItems (incluye Pendiente/No aplicable), así
+  // que cada segmento es proporción directa sobre el total, sin recalcular nada.
   get donutSegments(): DonutSegment[] {
     if (!this.dashboard || this.dashboard.totalItems === 0) return [];
-    const byName = new Map(this.dashboard.maturityCounts.map(m => [m.name, m.count]));
     let offset = 0;
     const segments: DonutSegment[] = [];
-    for (const name of MATURITY_ORDER) {
-      const count = byName.get(name) || 0;
-      if (count === 0) continue;
-      const length = (count / this.dashboard.totalItems) * CIRCUMFERENCE;
+    for (const m of this.dashboard.maturityCounts) {
+      if (m.count === 0) continue;
+      const length = (m.count / this.dashboard.totalItems) * CIRCUMFERENCE;
       segments.push({
-        name, count,
-        color: MATURITY_COLOR[name] || '#8A939B',
+        name: m.name, count: m.count, color: m.color || '#8A939B',
         dasharray: `${length} ${CIRCUMFERENCE - length}`,
         dashoffset: -offset,
       });
@@ -126,9 +133,7 @@ export class HomeDashboardComponent implements OnInit {
   }
 
   get visibleLegend(): { name: string; count: number; color: string }[] {
-    return MATURITY_ORDER
-      .map(name => ({ name, count: this.legendCount(name), color: MATURITY_COLOR[name] }))
-      .filter(l => l.count > 0);
+    return (this.dashboard?.maturityCounts || []).filter(l => l.count > 0);
   }
 
   // Verde ≥80%, ámbar ≥50%, rojo <50% — mismo umbral que _accent() en la app móvil. Gris si el
@@ -152,12 +157,12 @@ export class HomeDashboardComponent implements OnInit {
     return '#A8443B';
   }
 
-  // Igual que la app móvil: el tile "Sin evaluar" muestra pendingItems.length (tope 8 puesto
-  // por el backend), NO el total real de "Pendiente" en maturityCounts — que sí se ve completo
-  // en la leyenda del anillo. Queda así a propósito para no divergir entre plataformas; si se
-  // quiere el total real, cambiar a legendCount('Pendiente').
+  // Total real de ítems sin evaluar (bucket "Pendiente" de maturityCounts, sin tope) -- antes
+  // mostraba pendingItems.length, que es solo el preview recortado a 8 por el backend
+  // (MAX_PENDING_ITEMS en GetGapDashboardQuery) para la lista de abajo, no un conteo. Con
+  // evaluaciones de más de 8 pendientes el tile mentía (mostraba "8" siempre).
   get pendingTileCount(): number {
-    return this.dashboard?.pendingItems.length || 0;
+    return this.legendCount('Pendiente');
   }
 
   get visiblePendingItems(): PendingItem[] {

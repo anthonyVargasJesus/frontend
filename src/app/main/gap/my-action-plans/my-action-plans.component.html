@@ -1,4 +1,22 @@
+<div class="content-wrapper">
+<div class="content-body">
+<app-content-header [contentHeader]="contentHeader"></app-content-header>
+
 <div class="my-ap">
+
+    <app-gap-breach-map *ngIf="!loading && !errorMessage" [evaluation]="evaluation" [stats]="headerStats"
+        [totalEvidencias]="headerEvidencias" [showThemeMap]="false"></app-gap-breach-map>
+
+    <div class="my-ap__card" *ngIf="!loading && !errorMessage">
+        <div class="my-ap__pct mono" [class.my-ap__pct--good]="totals.total > 0 && totals.completed === totals.total"
+            [class.my-ap__pct--bad]="totals.total === 0 || totals.completed < totals.total">
+            {{ totals.completed }}/{{ totals.total }}
+        </div>
+        <div class="my-ap__caption">acciones completadas</div>
+        <div class="my-ap__bar">
+            <div class="my-ap__bar-seg" [style.width.%]="progressPct"></div>
+        </div>
+    </div>
 
     <div class="my-ap__banner">
         Acciones asignadas a <strong>{{ userEmail }}</strong>. Actualiza "Mi avance" cuando cambies de estado — el
@@ -18,17 +36,17 @@
 
         <div class="my-ap__filters">
             <div class="my-ap__priority-chips">
-                <button type="button" class="chip" [class.active]="filtroPriorityId === 'todas'"
-                    (click)="filtroPriorityId = 'todas'">
+                <button type="button" class="chip" [class.active]="filtroStatusId === 'todas'"
+                    (click)="filtroStatusId = 'todas'">
                     Todas ({{ tasks.length }})
                 </button>
-                <button type="button" class="chip chip--priority" *ngFor="let p of priorities"
-                    [class.active]="filtroPriorityId === p.actionPlanPriorityId"
-                    [style.color]="filtroPriorityId === p.actionPlanPriorityId ? '#fff' : p.color"
-                    [style.background]="filtroPriorityId === p.actionPlanPriorityId ? p.color : '#fff'"
-                    [style.border-color]="p.color"
-                    (click)="filtroPriorityId = p.actionPlanPriorityId">
-                    {{ p.name }} ({{ p.count }})
+                <button type="button" class="chip chip--priority" *ngFor="let s of statusFilters"
+                    [class.active]="filtroStatusId === s.actionPlanStatusId"
+                    [style.color]="filtroStatusId === s.actionPlanStatusId ? '#fff' : s.color"
+                    [style.background]="filtroStatusId === s.actionPlanStatusId ? s.color : '#fff'"
+                    [style.border-color]="s.color"
+                    (click)="filtroStatusId = s.actionPlanStatusId">
+                    {{ s.name }} ({{ s.count }})
                 </button>
             </div>
 
@@ -37,11 +55,6 @@
                     <option value="fechaLimite">Orden: Fecha límite</option>
                     <option value="prioridad">Orden: Prioridad</option>
                 </select>
-
-                <button type="button" class="chip chip--group" [class.active]="groupByDueDate"
-                    (click)="groupByDueDate = !groupByDueDate">
-                    Agrupar por vencimiento
-                </button>
             </div>
         </div>
 
@@ -51,57 +64,69 @@
 
         <ng-container *ngFor="let row of rows; trackBy: trackByRow">
 
-            <div class="my-ap__bucket-header" [class.my-ap__bucket-header--overdue]="row.kind === 'bucket' && row.bucket === 'vencidas'"
-                *ngIf="row.kind === 'bucket'">
-                <mat-icon *ngIf="row.bucket === 'vencidas'" style="font-size:16px; vertical-align: middle;">warning_amber</mat-icon>
-                <span>{{ bucketLabel(row.bucket) }}</span>
+            <div class="my-ap__breach-header" *ngIf="row.kind === 'breach'">
+                <span class="mono my-ap__code">{{ row.numerationToShow }}</span>
+                <span class="my-ap__breach-header-title">{{ row.title }}</span>
                 <span class="text-muted">({{ row.count }})</span>
             </div>
 
             <div class="my-ap__item" *ngIf="row.kind === 'task'">
-                <div class="d-flex align-items-start flex-wrap" style="gap: 10px;">
-                    <span class="mono my-ap__code">{{ row.task.breachNumerationToShow }}</span>
+                <div class="my-ap__item-head" (click)="toggleTask(row.task.actionPlanId)">
                     <div class="flex-grow-1">
-                        <div class="my-ap__breach-title">{{ row.task.breachTitle }}</div>
+                        <div class="my-ap__breach-title">{{ row.task.title }}</div>
                     </div>
+                    <span class="my-ap__status-badge" [style.color]="row.task.statusColor" [style.border-color]="row.task.statusColor">
+                        {{ row.task.statusName }}
+                    </span>
                     <span class="my-ap__badge" [style.color]="row.task.priorityColor" [style.border-color]="row.task.priorityColor">
                         {{ row.task.priorityName }}
                     </span>
-                    <span class="my-ap__due">vence {{ row.task.dueDate | date:'yyyy-MM-dd' }}</span>
+                    <span class="my-ap__due" [class.my-ap__due--overdue]="isOverdue(row.task)"
+                        [class.my-ap__due--today]="isDueToday(row.task)">
+                        <ng-container *ngIf="isOverdue(row.task); else notOverdue">
+                            venció hace {{ daysOverdue(row.task) }} día{{ daysOverdue(row.task) === 1 ? '' : 's' }}
+                        </ng-container>
+                        <ng-template #notOverdue>{{ isDueToday(row.task) ? 'vence hoy' : ('vence ' + (row.task.dueDate | date:'yyyy-MM-dd')) }}</ng-template>
+                    </span>
+                    <mat-icon class="my-ap__chevron">
+                        {{ isExpanded(row.task.actionPlanId) ? 'expand_less' : 'expand_more' }}
+                    </mat-icon>
                 </div>
 
-                <div class="my-ap__title">{{ row.task.title }}</div>
+                <div class="my-ap__item-detail" *ngIf="isVisited(row.task.actionPlanId)"
+                    [hidden]="!isExpanded(row.task.actionPlanId)">
 
-                <div class="my-ap__progress">
-                    <span class="my-ap__progress-label">Mi avance:</span>
-                    <button type="button" *ngFor="let status of statuses" class="my-ap__pill"
-                        [disabled]="isSaving(row.task.actionPlanId)"
-                        [class.active]="row.task.actionPlanStatusId === status.actionPlanStatusId"
-                        [style.background]="row.task.actionPlanStatusId === status.actionPlanStatusId ? status.color : ''"
-                        [style.border-color]="status.color"
-                        [style.color]="row.task.actionPlanStatusId === status.actionPlanStatusId ? '#fff' : status.color"
-                        (click)="setStatus(row.task, status.actionPlanStatusId)">
-                        {{ status.name }}
-                    </button>
-                </div>
-
-                <div *ngIf="hasEvidenceTarget(row.task)" class="my-ap__evidence">
-                    <div class="d-flex align-items-center flex-wrap" style="gap: 10px;">
-                        <button type="button" class="my-ap__attach-btn" (click)="evidenceList.add()">
-                            <mat-icon style="font-size: 15px; vertical-align: middle;">attach_file</mat-icon>
-                            Adjuntar archivo
-                        </button>
-                        <button type="button" class="my-ap__attach-btn my-ap__attach-btn--solid"
-                            (click)="evidenceList.openAddLink()">
-                            <mat-icon style="font-size: 15px; vertical-align: middle;">link</mat-icon>
-                            Agregar enlace
+                    <div class="my-ap__progress">
+                        <span class="my-ap__progress-label">Mi avance:</span>
+                        <button type="button" *ngFor="let status of statuses" class="my-ap__pill"
+                            [disabled]="isSaving(row.task.actionPlanId)"
+                            [class.active]="row.task.actionPlanStatusId === status.actionPlanStatusId"
+                            [style.background]="row.task.actionPlanStatusId === status.actionPlanStatusId ? status.color : ''"
+                            [style.border-color]="status.color"
+                            [style.color]="row.task.actionPlanStatusId === status.actionPlanStatusId ? '#fff' : status.color"
+                            (click)="setStatus(row.task, status.actionPlanStatusId)">
+                            {{ status.name }}
                         </button>
                     </div>
 
-                    <app-gap-evidence-list #evidenceList [tipo]="tipoDe(row.task)" [standardId]="row.task.standardId"
-                        [evaluationId]="row.task.evaluationId" [requirementEvaluationId]="row.task.requirementEvaluationId"
-                        [controlEvaluationId]="row.task.controlEvaluationId">
-                    </app-gap-evidence-list>
+                    <div *ngIf="hasEvidenceTarget(row.task)" class="my-ap__evidence">
+                        <div class="d-flex align-items-center flex-wrap" style="gap: 10px;">
+                            <button type="button" class="my-ap__attach-btn" (click)="evidenceList.add()">
+                                <mat-icon style="font-size: 15px; vertical-align: middle;">attach_file</mat-icon>
+                                Adjuntar archivo
+                            </button>
+                            <button type="button" class="my-ap__attach-btn my-ap__attach-btn--solid"
+                                (click)="evidenceList.openAddLink()">
+                                <mat-icon style="font-size: 15px; vertical-align: middle;">link</mat-icon>
+                                Agregar enlace
+                            </button>
+                        </div>
+
+                        <app-gap-evidence-list #evidenceList [tipo]="tipoDe(row.task)" [standardId]="row.task.standardId"
+                            [evaluationId]="row.task.evaluationId" [requirementEvaluationId]="row.task.requirementEvaluationId"
+                            [controlEvaluationId]="row.task.controlEvaluationId">
+                        </app-gap-evidence-list>
+                    </div>
                 </div>
             </div>
 
@@ -109,4 +134,7 @@
 
     </ng-container>
 
+</div>
+
+</div>
 </div>

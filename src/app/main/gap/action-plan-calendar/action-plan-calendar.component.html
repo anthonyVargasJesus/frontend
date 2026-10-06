@@ -1,0 +1,106 @@
+<div class="content-wrapper">
+    <div class="content-body">
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+        <div class="action-plan-calendar">
+
+            <div class="text-center py-5" *ngIf="loading">
+                <div class="spinner-grow text-primary" role="status"></div>
+            </div>
+
+            <div class="action-plan-calendar__error" *ngIf="errorMessage">
+                {{ errorMessage }}
+                <button type="button" class="btn btn-sm btn-outline-secondary ml-2" (click)="load()">Reintentar</button>
+            </div>
+
+            <ng-container *ngIf="!loading && !errorMessage">
+
+                <div class="d-flex align-items-center justify-content-between flex-wrap mb-2" style="gap: 8px;">
+                    <div class="action-plan-calendar__year">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" (click)="changeYear(-1)">‹</button>
+                        <span class="mono mx-2">{{ year }}</span>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" (click)="changeYear(1)">›</button>
+                    </div>
+                    <div class="text-muted" style="font-size: 13px;">
+                        {{ results }}
+                    </div>
+                </div>
+
+                <div class="text-muted text-center py-5" *ngIf="total === 0">
+                    No hay planes de acción registrados en esta evaluación.
+                </div>
+
+                <div class="table-responsive" *ngIf="total > 0">
+                    <table class="table table-sm action-plan-calendar__table">
+                        <thead>
+                            <tr>
+                                <th class="action-plan-calendar__col-control">Control</th>
+                                <th class="action-plan-calendar__col-title">Acción de mejora</th>
+                                <th class="action-plan-calendar__col-responsible">Responsable</th>
+                                <th *ngFor="let mes of meses; let i = index">{{ mes }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of items; trackBy: trackByItem">
+                                <td class="mono action-plan-calendar__col-control" [title]="item.controlName">
+                                    {{ item.controlCode }}
+                                    <div class="action-plan-calendar__control-name">{{ item.controlName }}</div>
+                                </td>
+                                <td class="action-plan-calendar__col-title">
+                                    <span class="action-plan-calendar__truncate" [title]="item.title">{{ item.title }}</span>
+                                </td>
+                                <td class="action-plan-calendar__col-responsible">
+                                    <span class="action-plan-calendar__truncate"
+                                        [title]="item.responsibleName || ''">{{ item.responsibleName || '—' }}</span>
+                                </td>
+                                <td *ngFor="let mes of meses; let i = index" class="action-plan-calendar__cell text-center"
+                                    [style.background]="item.monthsInYear.has(i) ? item.statusColor : null"
+                                    [title]="item.monthsInYear.has(i) ? item.statusName : ''">
+                                </td>
+                            </tr>
+                            <tr class="action-plan-calendar__pagination-row">
+                                <td [attr.colspan]="3 + meses.length">
+                                    <ul class="pagination pagination-sm text-center justify-content-center mb-0">
+                                        <li class="page-item">
+                                            <button [disabled]="previous" (click)="changePage(-pageSize)" class="page-link">‹</button>
+                                        </li>
+                                        <li class="page-item" aria-current="page">
+                                            <label class="page-link">Pág. {{ page }} de {{ totalPages }}</label>
+                                        </li>
+                                        <li class="page-item">
+                                            <button [disabled]="next" (click)="changePage(pageSize)" class="page-link">›</button>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <!-- Misma tabla que tbody a propósito: es la única forma de garantizar
+                             que las columnas de los meses queden alineadas con las de arriba --
+                             dos <table> separadas no comparten el cálculo de anchos del
+                             navegador aunque tengan las mismas clases. El borde grueso + fondo
+                             distinto marcan que esto es un TOTAL (toda la evaluación), no la
+                             página que se ve arriba. -->
+                        <tfoot>
+                            <tr class="action-plan-calendar__totals-label-row">
+                                <td [attr.colspan]="3 + meses.length">
+                                    Resumen mensual · toda la evaluación ({{ total }} planes de acción)
+                                </td>
+                            </tr>
+                            <tr class="action-plan-calendar__summary-row" *ngFor="let s of statusSummary; trackBy: trackByStatus">
+                                <td class="action-plan-calendar__col-label" colspan="3">
+                                    <span class="action-plan-calendar__status-dot" [style.background]="s.statusColor"></span>
+                                    {{ s.statusName }}
+                                </td>
+                                <td *ngFor="let mes of meses; let i = index" class="mono text-center action-plan-calendar__cell">
+                                    {{ s.monthCounts[i] }}
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </ng-container>
+
+        </div>
+    </div>
+</div>

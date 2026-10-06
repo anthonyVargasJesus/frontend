@@ -1,16 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
-
 :host {
     display: block;
-    font-family: 'Inter', system-ui, sans-serif;
     color: #1c2733;
     background: #f5f7f8;
     margin: -2rem;
     padding-bottom: 40px;
-}
-
-.mono {
-    font-family: 'IBM Plex Mono', monospace;
 }
 
 .gap-panel__header {
@@ -25,8 +18,7 @@
 }
 
 .gap-panel__header-inner {
-    max-width: 960px;
-    margin: 0 auto;
+    // Sin max-width/margin:auto -- mismo motivo que .gap-home__header-inner en gap-home.component.scss.
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -35,7 +27,6 @@
 }
 
 .gap-panel__eyebrow {
-    font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     letter-spacing: 0.14em;
     color: #8fb3a6;
@@ -54,7 +45,6 @@
 }
 
 .gap-panel__pct {
-    font-family: 'IBM Plex Mono', monospace;
     font-size: 40px;
     font-weight: 600;
     line-height: 1;
@@ -207,7 +197,6 @@
 
 .gap-theme-row__count {
     width: 44px;
-    font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     color: #6b7480;
     text-align: right;

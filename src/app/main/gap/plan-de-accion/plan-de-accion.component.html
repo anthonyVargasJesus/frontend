@@ -13,6 +13,9 @@
 
                 <ng-container *ngIf="!errorMessage">
 
+                    <app-gap-breach-map [evaluation]="evaluation" [stats]="headerStats"
+                        [totalEvidencias]="headerEvidencias" [showThemeMap]="false"></app-gap-breach-map>
+
                     <div class="plan-de-accion__card">
                         <div class="plan-de-accion__pct mono"
                             [class.plan-de-accion__pct--good]="totals.total > 0 && totals.completed === totals.total"
@@ -20,7 +23,7 @@
                             {{ totals.completed }}/{{ totals.total }}
                         </div>
                         <div class="plan-de-accion__caption">
-                            acciones completadas · {{ filterCounts.todas }} brechas
+                            acciones completadas · {{ todasCount }} brechas
                         </div>
                         <div class="plan-de-accion__bar">
                             <div class="plan-de-accion__bar-seg" [style.width.%]="progressPct"></div>
@@ -31,21 +34,15 @@
                         <div class="plan-de-accion__estado-chips">
                             <button type="button" class="chip" [class.active]="filtroEstado === 'todas'"
                                 (click)="filtroEstado = 'todas'">
-                                Todas ({{ filterCounts.todas }})
+                                Todas ({{ todasCount }})
                             </button>
-                            <button type="button" class="chip chip--estado" [class.active]="filtroEstado === 'noCumple'"
-                                [style.color]="filtroEstado === 'noCumple' ? '#fff' : statusChipColor('No cumple')"
-                                [style.background]="filtroEstado === 'noCumple' ? statusChipColor('No cumple') : '#fff'"
-                                [style.border-color]="statusChipColor('No cumple')"
-                                (click)="filtroEstado = 'noCumple'">
-                                No cumple ({{ filterCounts.noCumple }})
-                            </button>
-                            <button type="button" class="chip chip--estado" [class.active]="filtroEstado === 'parcial'"
-                                [style.color]="filtroEstado === 'parcial' ? '#fff' : statusChipColor('Parcial')"
-                                [style.background]="filtroEstado === 'parcial' ? statusChipColor('Parcial') : '#fff'"
-                                [style.border-color]="statusChipColor('Parcial')"
-                                (click)="filtroEstado = 'parcial'">
-                                Parcial ({{ filterCounts.parcial }})
+                            <button type="button" class="chip chip--estado" *ngFor="let ml of breachGeneratingLevels"
+                                [class.active]="filtroEstado === ml.name"
+                                [style.color]="filtroEstado === ml.name ? '#fff' : statusChipColor(ml.name)"
+                                [style.background]="filtroEstado === ml.name ? statusChipColor(ml.name) : '#fff'"
+                                [style.border-color]="statusChipColor(ml.name)"
+                                (click)="filtroEstado = ml.name">
+                                {{ ml.name }} ({{ countForEstado(ml.name) }})
                             </button>
                         </div>
 
@@ -81,6 +78,16 @@
                                     [style.border-color]="row.resolved.colorHex">
                                     {{ row.resolved.estado }}
                                 </span>
+                                <span class="plan-de-accion__actions-badge"
+                                    [class.plan-de-accion__actions-badge--empty]="countsFor(row.resolved.breach.breachId).total === 0">
+                                    <mat-icon>{{ countsFor(row.resolved.breach.breachId).total === 0 ? 'assignment_late' : 'assignment_turned_in' }}</mat-icon>
+                                    <ng-container *ngIf="countsFor(row.resolved.breach.breachId).total === 0; else conAcciones">
+                                        Sin acciones
+                                    </ng-container>
+                                    <ng-template #conAcciones>
+                                        {{ countsFor(row.resolved.breach.breachId).completed }}/{{ countsFor(row.resolved.breach.breachId).total }} acciones
+                                    </ng-template>
+                                </span>
                                 <mat-icon class="plan-de-accion__chevron">
                                     {{ isExpanded(row.resolved.breach.breachId) ? 'expand_less' : 'expand_more' }}
                                 </mat-icon>
@@ -94,6 +101,20 @@
                                     [usersInput]="users"
                                     (countsChanged)="onActionPlanCounts(row.resolved.breach.breachId, $event)">
                                 </app-gap-action-plan-list>
+
+                                <!-- La evidencia cuelga del ítem evaluado (control/requisito), no de cada
+                                     acción -- por eso sale una sola vez acá, a nivel de brecha, y no dentro
+                                     de app-gap-action-plan-list (que solo maneja los campos propios de cada
+                                     acción). Es la MISMA lista que ya ven "Cumplimiento" y "Mis acciones"
+                                     para este mismo ítem. -->
+                                <div class="plan-de-accion__evidence">
+                                    <div class="plan-de-accion__evidence-label">Evidencia del control</div>
+                                    <app-gap-evidence-list [tipo]="row.resolved.item.tipo" [standardId]="standardId"
+                                        [evaluationId]="evaluationId"
+                                        [requirementEvaluationId]="row.resolved.item.tipo === 'requisito' ? row.resolved.item.evaluationItemId : null"
+                                        [controlEvaluationId]="row.resolved.item.tipo === 'control' ? row.resolved.item.evaluationItemId : null">
+                                    </app-gap-evidence-list>
+                                </div>
                             </div>
                         </div>
 

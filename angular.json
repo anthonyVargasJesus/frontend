@@ -146,7 +146,13 @@
             "assets": [
               "src/favicon.ico",
               "src/assets"
-            ]
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules",
+                "src/assets/"
+              ]
+            }
           }
         },
         "lint": {
